@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_post_paid_recharge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
+
+        <ImageButton
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@mipmap/back_arrow_icon" />
+
+        <TextView
+            android:id="@+id/user_balance"
+            style="@style/font_family_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:padding="8dp"
+            android:text="@string/tv_title_supplementary_information"
+            android:textColor="@color/color_tab_bg"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <!-- electricity meter -->
+
+            <TextView
+                android:id="@+id/electricity_meter"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_electricity_meter"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_electricity_meter"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+
+            <!-- water meter -->
+
+            <TextView
+                android:id="@+id/water_meter"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_water_meter"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_water_meter"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+            <!-- job -->
+
+            <TextView
+                android:id="@+id/job"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_job"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_job"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+            <!-- employer -->
+
+            <TextView
+                android:id="@+id/employer"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_employer"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_employer"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+            <!-- guarantee -->
+
+            <TextView
+                android:id="@+id/guarantee"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_guarantee"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_guarantee"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+
+            <!-- over balance -->
+
+            <TextView
+                android:id="@+id/over_balance"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_over_balance"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_over_balance"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+            <!-- date over balance -->
+
+            <TextView
+                android:id="@+id/date_over_balance"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_date_over_balance"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_date_over_balance"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+            <!-- refund date -->
+
+            <TextView
+                android:id="@+id/refund_date"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_refund_date"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_refund_date"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+            <!-- bank name -->
+
+            <TextView
+                android:id="@+id/bank_name"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_bank_name"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_bank_name"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+            <!-- bank account -->
+
+            <TextView
+                android:id="@+id/bank_account"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_setting_bank_account"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_text_bank_account"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+
+            <!-- add button -->
+            <Button
+                android:id="@+id/top_up"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_round_cornor_selector"
+                android:text="@string/add_button"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+

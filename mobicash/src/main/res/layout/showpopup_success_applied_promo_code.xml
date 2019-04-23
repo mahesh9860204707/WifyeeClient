@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/upper_linear"
+        >
+
+        <TextView
+            android:id="@+id/header_near_by"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="Success"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <TextView
+            android:id="@+id/info"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="fill_parent"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="Applied Promocode SuccessFully.Do You want to Continue plan Purchase."
+            />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/no"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textColor="#ffffff"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_weight="1"
+            android:background="@drawable/selector_xml_btn_red"
+            android:text="NO" />
+        <Button
+            android:id="@+id/yes"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:background="@drawable/selector_xml_btn_yellow"
+            android:text="Yes" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>

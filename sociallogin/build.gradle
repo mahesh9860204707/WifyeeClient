@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+
+android {
+  compileSdkVersion 25
+  buildToolsVersion '28.0.3'
+
+  defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 25
+    versionCode 1
+    versionName "1.0.2"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.google.android.gms:play-services-auth:10.2.1'
+  implementation 'com.google.android.gms:play-services-plus:10.2.1'
+  implementation ('com.facebook.android:facebook-android-sdk:4.20.0')
+ {
+    transitive = true;
+  }
+}
+
+//apply plugin: 'com.google.gms.google-services'

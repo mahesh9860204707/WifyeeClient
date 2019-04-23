@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+   android:background="#E8E2D0"
+    android:layout_height="match_parent"
+    tools:context=".foodorder.FoodOrderListActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mtoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#7D0A4E"
+        android:elevation="2dp"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
+
+        <ImageButton
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/ic_keyboard_backspace"/>
+
+        <TextView
+            android:id="@+id/food_oder"
+            style="@style/font_family_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:padding="8dp"
+            android:text="ORDER FOOD"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_below="@+id/mtoolbar"
+    android:background="#FFFEFA"
+    android:id="@+id/spinner_cat"
+    android:layout_height="40dp">
+    <TextView
+        android:id="@+id/merchant_names"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="#7D0A4E"
+        android:layout_marginTop="5dp"
+        android:textAllCaps="true"
+        android:textSize="18dp"
+        android:text="HALDIRAM"/>
+
+    <Spinner
+        android:id="@+id/select_category"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/merchant_names"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:dropDownSelector="@drawable/ic_arrow_drop_down"/>
+
+</RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/parentSlug_recyclerview_main"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/spinner_cat"
+        android:layout_height="wrap_content"
+        android:background="#CC000000"
+        android:visibility="gone"
+        android:layout_marginBottom="2dp"
+        android:scrollbars="horizontal"
+        />
+
+    <LinearLayout
+        android:id="@+id/empty_view_containers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/spinner_cat"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/empty_view_text"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_below="@+id/parentSlug_recyclerview_main"
+        android:layout_width="fill_parent"
+        android:background="#E9E2D2"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    </LinearLayout>
+
+</RelativeLayout>

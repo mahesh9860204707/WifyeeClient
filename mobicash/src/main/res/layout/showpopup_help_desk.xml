@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/upper_linear"
+        >
+        <TextView
+            android:id="@+id/header_near_by"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="HelpLine Number"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <TextView
+            android:id="@+id/helpline_number_first"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="fill_parent"
+            android:layout_margin="5dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="@string/office_number"
+            />
+        <TextView
+            android:id="@+id/helpline_number_second"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="fill_parent"
+            android:layout_margin="5dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="@string/office_number_second"
+            />
+        <TextView
+            android:id="@+id/helpline_email"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="fill_parent"
+            android:layout_margin="5dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="@string/office_email"
+            />
+
+        <Button
+            android:id="@+id/yes"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:textColor="#ffffff"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/selector_xml_btn_yellow"
+            android:text="Yes" />
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>

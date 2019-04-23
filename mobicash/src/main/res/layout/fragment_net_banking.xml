@@ -1,0 +1,155 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="5"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/choose_bank"
+                    android:textColor="#9C9C9C"
+                    android:textStyle="bold"></TextView>
+
+                <!-- <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="3"
+                     android:weightSum="5"
+                     android:orientation="horizontal">-->
+
+                <LinearLayout
+                    android:id="@+id/layout_axis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="3dp"
+                    android:visibility="visible">
+
+                    <RadioGroup
+                        android:id="@+id/myRadioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text"
+                        android:orientation="horizontal"
+                        android:checkedButton="@+id/sound">
+
+                        <RadioButton
+                            android:id="@+id/axis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/logo_axis"
+                            android:checked="true"
+                            android:text="@string/axis_bank" />
+
+                        <RadioButton
+                            android:id="@+id/hdfc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hdfc" />
+
+                        <RadioButton
+                            android:id="@+id/citi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/citi" />
+
+                        <RadioButton
+                            android:id="@+id/sbi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sbi" />
+
+                        <RadioButton
+                            android:id="@+id/icici"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icici" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:text="@string/select_bank"
+                    android:textStyle="bold"></TextView>
+
+                <!-- Operator Button-->
+                <Spinner
+                    android:id="@+id/bank_list_spinner"
+                    style="@style/font_family_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/tv_input"
+                    android:drawablePadding="@dimen/view_medium_padding"
+                    android:drawableRight="@mipmap/drop_down_arrow_icon"
+                    android:gravity="left|center_vertical"
+                    android:hint="@string/select"
+                    android:padding="@dimen/view_normal_padding"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_view_bank_down_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:textColor="@color/cb_errorRed"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/redirection_text"
+                    android:textStyle="bold"></TextView>
+
+            </LinearLayout>
+
+
+            <!--</ScrollView>-->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

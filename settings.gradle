@@ -1,0 +1,3 @@
+include ':mobicash'
+include ':qrcodereaderview'
+include ':placesearch'

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_post_paid_recharge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e8ebf0"
+    android:orientation="vertical"
+    tools:context="com.wifyee.greenfields.activity.PostPaidRechargeActivity">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
+
+        <ImageButton
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@mipmap/back_arrow_icon" />
+
+        <TextView
+            android:id="@+id/user_balance"
+            style="@style/font_family_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:padding="8dp"
+            android:text="@string/title_broadband"
+            android:textColor="@color/color_tab_bg"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e8ebf0"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/operator"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:text="@string/tv_operator"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <!-- Operator Button-->
+            <Button
+                android:id="@+id/button_operator"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:drawablePadding="@dimen/view_medium_padding"
+                android:drawableRight="@mipmap/drop_down_arrow_icon"
+                android:gravity="left|center_vertical"
+                android:hint="@string/select"
+                android:padding="@dimen/view_normal_padding"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/mobile_number"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_mobile_number"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+            <!-- mobile number -->
+            <EditText
+                android:id="@+id/edit_text_mobile_number"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/amount"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_amount"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <!-- amount -->
+            <EditText
+                android:id="@+id/edit_text_amount"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="number"
+                android:maxLength="4"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/type"
+                style="@style/font_family_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="right"
+                android:paddingRight="15dp"
+                android:text="@string/tv_view_fees_charges"
+                android:textColor="@color/link"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/service"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:text="@string/tv_service"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <!-- Operator Button-->
+            <Button
+                android:id="@+id/button_service"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:drawablePadding="@dimen/view_medium_padding"
+                android:drawableRight="@mipmap/drop_down_arrow_icon"
+                android:gravity="left|center_vertical"
+                android:hint="@string/select"
+                android:padding="@dimen/view_normal_padding"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/pay_type"
+                style="@style/font_family_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="15dp"
+                android:text="@string/select_payment_method"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_payment_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <RadioButton
+                    android:id="@+id/radio_button_wallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/type_wallet"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_payu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/type_payu"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="normal"/>
+            </RadioGroup>
+
+            <!-- Topup button -->
+            <Button
+                android:id="@+id/top_up"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_round_cornor_selector"
+                android:text="@string/submit_button"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

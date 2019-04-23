@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="4dp"
+        card_view:contentPadding="6dp">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/imageView"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                app:civ_border_color="@color/gray_1"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/out_of_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/imageView"
+                android:layout_alignLeft="@+id/imageView"
+                android:textSize="12sp"
+                android:layout_marginTop="32dp"
+                android:text="OUT OF STOCK"
+                android:background="#ffffff"
+                android:textStyle="bold"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:visibility="gone"
+                android:textColor="#ff6666"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="10dp"
+                android:text="Sampe Merchst"
+                android:textColor="@color/gray_1"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/item_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imageView"
+                android:layout_below="@+id/textViewQuality"
+                android:layout_marginTop="13dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:text="Add Item"
+                    android:textColor="@color/gray_1"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/decrease"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/round"
+                    android:src="@drawable/ic_minus_48" />
+
+                <TextView
+                    android:id="@+id/integer_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/increase"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/round"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_plus" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/dk_gray"
+                    android:textStyle="bold"
+                    android:text="Qty"/>
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/gray"
+                    android:drawSelectorOnTop="true"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unit : "
+                android:layout_toRightOf="@+id/imageView"
+                android:layout_below="@+id/textViewQuality"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/txt_unit"
+                android:layout_below="@+id/textViewQuality"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/textViewType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/imageView"
+                android:layout_toLeftOf="@+id/textViewPrice"
+                android:gravity="left"
+                android:text="Item Milk"
+                android:textColor="@color/dk_gray"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/textViewQuality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewType"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@+id/imageView"
+                android:gravity="left"
+                android:text="Item Milk"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/distcount_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/textViewType"
+                android:layout_toRightOf="@+id/textViewQuality"
+                android:gravity="left"
+                android:text="Discount: ₹ "
+                android:textColor="@color/white"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:textSize="12sp"
+                android:background="@color/blue_highlightener_color"/>
+
+
+            <TextView
+                android:id="@+id/textViewPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:gravity="right"
+                android:text="₹ 100"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/green_shade"
+                android:textSize="16sp"
+                />
+
+            <CheckBox
+                android:layout_below="@+id/textViewType"
+                android:id="@+id/chb_buy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@string/buy"
+                android:textColor="@color/red_shade" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <!--<View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/ratingBar"
+        android:layout_marginTop="10dp"
+        android:background="@color/lt_gray" />-->
+
+</LinearLayout>

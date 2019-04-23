@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "146470835077",
+    "project_id": "dulcet-streamer-184606"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146470835077:android:8f8e368b2e7e8eec",
+        "android_client_info": {
+          "package_name": "com.wifyee.greenfields"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146470835077-17j0q0r3b707e85gesi50s4vfmuk8mpm.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "146470835077-3h0quoa0lire5v945svu86pas35apq7c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wifyee.greenfields",
+            "certificate_hash": "9339fc48452a6a4783995178ffc7cf5fc2f9ec1e"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3F3gRUoo8bXetA01dlFiPQebTIjWeTRU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.wifyee.greenfields.activity.TransactionsListActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_logo"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:text="Transactions"/>
+
+    </android.support.v7.widget.Toolbar>
+    <!--  From date -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/toolbar"
+    android:id="@+id/linear_layout"
+    android:layout_above="@+id/btn_sign_up"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/et_from_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/ic_action_calendar_month"
+        android:drawablePadding="10dp"
+        android:focusable="true"
+        android:hint="@string/from_date"
+        android:inputType="phone"
+        android:maxLength="15"
+        android:maxLines="1"
+        android:padding="2dp"
+        android:textSize="16dp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="3dp"
+        android:background="@android:color/darker_gray"
+        android:padding="2dp" />
+    <EditText
+        android:id="@+id/et_to_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/ic_action_calendar_month"
+        android:drawablePadding="10dp"
+        android:focusable="true"
+        android:hint="@string/to_date"
+        android:inputType="phone"
+        android:maxLength="15"
+        android:maxLines="1"
+        android:padding="2dp"
+        android:textSize="16dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="3dp"
+        android:background="@android:color/darker_gray"
+        android:padding="2dp" />
+
+</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_trans"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/linear_layout"
+        android:layout_above="@+id/btn_submit"
+        android:padding="5dp"
+        android:layout_height="match_parent" />
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_round_cornor_selector"
+        android:padding="12dp"
+       android:layout_alignParentBottom="true"
+        android:text="@string/submit" />
+</RelativeLayout>

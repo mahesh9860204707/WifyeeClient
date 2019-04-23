@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.wifyee.greenfields.activity.SplitMoneyActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@string/split_money"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:text="@string/reference_number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:id="@+id/reference_number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:text="@string/pay_by_number_users"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/pay_by_no_user"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+
+        </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        style="@style/edit_text_style"
+                        android:layout_gravity="center"
+                        android:inputType="number"
+                        android:drawablePadding="5dp"
+                        android:hint="@string/amount"
+                        android:id="@+id/amount"
+                        android:drawableLeft="@drawable/ic_money"
+                        />
+                </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:id="@+id/linear_add_layout"
+            android:orientation="vertical">
+            <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                style="@style/edit_text_style"
+                android:layout_gravity="center"
+                android:drawablePadding="5dp"
+                android:visibility="gone"
+                android:hint="@string/first_mobile_number"
+                android:id="@+id/et_first_mobile_number"
+                android:drawableLeft="@drawable/ic_call"
+                />
+        </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/first_email_id"
+                    android:id="@+id/et_first_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/second_mobile_number"
+                    android:id="@+id/et_second_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/second_email_id"
+                    android:id="@+id/et_second_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/third_mobile_number"
+                    android:id="@+id/et_third_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/second_email_id"
+                    android:id="@+id/et_third_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/fourth_mobile_number"
+                    android:id="@+id/et_four_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/four_email_id"
+                    android:id="@+id/et_four_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/fifth_mobile_number"
+                    android:id="@+id/et_five_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/five_email_id"
+                    android:id="@+id/et_five_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/sixth_mobile_number"
+                    android:id="@+id/et_six_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/six_email_id"
+                    android:id="@+id/et_six_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/seven_mobile_number"
+                    android:id="@+id/et_seven_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/seven_email_id"
+                    android:id="@+id/et_seven_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/eight_mobile_number"
+                    android:id="@+id/et_eight_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/eight_email_id"
+                    android:id="@+id/et_eight_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/nine_mobile_number"
+                    android:id="@+id/et_nine_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/nine_email_id"
+                    android:id="@+id/et_nine_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/ten_mobile_number"
+                    android:id="@+id/et_ten_mobile_number"
+                    android:drawableLeft="@drawable/ic_call"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    style="@style/edit_text_style"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:drawablePadding="5dp"
+                    android:visibility="gone"
+                    android:hint="@string/ten_email_id"
+                    android:id="@+id/et_ten_email_id"
+                    android:drawableLeft="@drawable/ic_mail_outline"
+                    />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancel_action"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:textColor="#ffffff"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
+                android:background="@drawable/selector_xml_btn_red"
+                android:text="@string/cancel" />
+            <Button
+                android:id="@+id/generate"
+                android:layout_width="130dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/selector_xml_btn_yellow"
+                android:text="@string/generate_split_invoice" />
+
+            </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

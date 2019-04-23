@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_post_paid_recharge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e8ebf0"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/operator"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:text="@string/tv_from"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <!-- Operator Button-->
+            <AutoCompleteTextView
+                android:id="@+id/from_bus"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:drawablePadding="@dimen/view_medium_padding"
+                android:drawableRight="@mipmap/drop_down_arrow_icon"
+                android:gravity="left|center_vertical"
+                android:hint="@string/select"
+                android:padding="@dimen/view_normal_padding"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/to_bus_text"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:text="@string/tv_to"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+
+            <!-- Operator Button-->
+            <AutoCompleteTextView
+                android:id="@+id/to_bus"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:drawablePadding="@dimen/view_medium_padding"
+                android:drawableRight="@mipmap/drop_down_arrow_icon"
+                android:gravity="left|center_vertical"
+                android:hint="@string/select"
+                android:padding="@dimen/view_normal_padding"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/date_of_journey"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_departure_date"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+            <!-- mobile number -->
+            <EditText
+                android:id="@+id/edit_text_date_of_journey_ticketing"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:focusable="false"
+                android:editable="false"
+                android:clickable="true"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/mobile_number"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/tv_mobile_number"
+                android:textColor="@color/color_tab_bg"
+                android:textSize="16sp" />
+            <!-- mobile number -->
+            <EditText
+                android:id="@+id/edit_text_mobile_number"
+                style="@style/font_family_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@mipmap/tv_input"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+
+
+
+            <!-- Topup button -->
+            <Button
+                android:id="@+id/search_ticketing"
+                style="@style/font_family_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_round_cornor_selector"
+                android:text="@string/search_button"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+

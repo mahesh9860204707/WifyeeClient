@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@mipmap/home_icon"
+        android:title="@string/menu_home" />
+
+    <item
+        android:id="@+id/action_bank_transfer"
+        android:enabled="true"
+        android:icon="@mipmap/bank_transfer_icon"
+        android:title="@string/menu_bank_transfer" />
+
+    <item
+        android:id="@+id/action_product"
+        android:enabled="true"
+        android:icon="@mipmap/product_icon"
+        android:title="@string/menu_product" />
+
+    <item
+        android:id="@+id/action_log"
+        android:enabled="true"
+        android:icon="@mipmap/log_icon"
+        android:title="@string/menu_log" />
+
+    <item
+        android:id="@+id/action_profile"
+        android:enabled="true"
+        android:icon="@mipmap/profile_icon"
+        android:title="@string/menu_profile" />
+
+
+</menu>

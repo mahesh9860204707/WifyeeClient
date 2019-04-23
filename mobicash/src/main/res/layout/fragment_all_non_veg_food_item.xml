@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wifyee.greenfields.fragments.AllNonVegFoodItemFragment">
+
+        <LinearLayout
+            android:id="@+id/empty_view_containers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_below="@+id/toolbar"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/empty_view_text"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/non_veg_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_above="@+id/rl"/>
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#7D0A4E"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/add_to_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textColor="#FFFFFF"
+                android:background="#7D0A4E"
+                android:text="VIEW CART"/>
+            <TextView
+                android:layout_width="2dp"
+                android:background="#FFFFFF"
+                android:visibility="gone"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/buy_now"
+                android:layout_width="wrap_content"
+                android:textColor="#FFFFFF"
+                android:background="#101456"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="BUY NOW"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

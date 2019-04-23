@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="2dp"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
+
+        <!--<ImageButton
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@mipmap/back_arrow_icon" />-->
+
+        <TextView
+            android:id="@+id/user_balance"
+            style="@style/font_family_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="@string/sign_up_title_bar"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="20dp">
+
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/wi_fi_logo_png" />
+
+            <!-- first name -->
+            <EditText
+                android:id="@+id/tv_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:drawableLeft="@mipmap/first_name_icon"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:hint="@string/first_name"
+                android:maxLength="32"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />
+            <!--  last name -->
+            <EditText
+                android:id="@+id/tv_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:maxLength="32"
+                android:drawableLeft="@mipmap/first_name_icon"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:hint="@string/last_name"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textSize="16dp" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />
+
+            <!--  Customer Title -->
+            <EditText
+                android:id="@+id/tv_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:drawableLeft="@mipmap/phone_no_icon"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />
+            <EditText
+                android:id="@+id/tv_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:drawableLeft="@mipmap/passcode_icon"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:hint="@string/passcode"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />
+            <RadioGroup
+                android:id="@+id/radio_grp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:id="@+id/male"
+                    android:text="Male"/>
+                <RadioButton
+                    android:id="@+id/female"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Female"/>
+            </RadioGroup>
+            <!--<Spinner
+                android:id="@+id/spinner_customer_title"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />
+
+            &lt;!&ndash;  Customer Address &ndash;&gt;
+
+            <EditText
+                android:id="@+id/tv_customer_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:maxLength="25"
+                android:drawableLeft="@drawable/ic_action_address"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:hint="@string/customer_address"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />-->
+
+
+
+            <!-- <EditText
+                 android:id="@+id/tv_email"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentEnd="true"
+                 android:layout_alignParentLeft="true"
+                 android:layout_alignParentRight="true"
+                 android:layout_alignParentStart="true"
+                 android:layout_marginTop="20dp"
+                 android:background="@null"
+                 android:drawableLeft="@mipmap/email_icon"
+                 android:drawablePadding="10dp"
+                 android:focusable="true"
+                 android:hint="@string/email"
+                 android:inputType="textEmailAddress"
+                 android:maxLines="1"
+                 android:padding="2dp"
+                 android:textSize="16dp" />
+
+             <View
+                 android:layout_width="fill_parent"
+                 android:layout_height="1dip"
+                 android:layout_centerVertical="true"
+                 android:layout_marginTop="3dp"
+                 android:background="@android:color/darker_gray"
+                 android:padding="2dp" />-->
+
+            <!--  dob -->
+
+
+
+            <!--  &lt;!&ndash;  dob &ndash;&gt;
+
+              <EditText
+                  android:id="@+id/tv_customer_dob"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentEnd="true"
+                  android:layout_alignParentLeft="true"
+                  android:layout_alignParentRight="true"
+                  android:layout_alignParentStart="true"
+                  android:layout_marginTop="10dp"
+                  android:inputType="none"
+                  android:focusable="false"
+                  android:background="@null"
+                  android:drawableLeft="@drawable/ic_action_calendar_month"
+                  android:drawablePadding="10dp"
+                  android:hint="@string/customer_dob"
+                  android:maxLength="15"
+                  android:maxLines="1"
+                  android:padding="2dp"
+                  android:textSize="16dp" />
+
+              <View
+                  android:layout_width="fill_parent"
+                  android:layout_height="1dip"
+                  android:layout_centerVertical="true"
+                  android:layout_marginTop="3dp"
+                  android:background="@android:color/darker_gray"
+                  android:padding="2dp" />
+  -->
+
+            <!--  pass code -->
+
+            <!--<EditText
+                android:id="@+id/tv_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:drawableLeft="@mipmap/passcode_icon"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:hint="@string/passcode"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />-->
+            <EditText
+                android:id="@+id/tv_customer_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:maxLength="25"
+                android:visibility="gone"
+                android:drawableLeft="@drawable/ic_action_address"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:hint="@string/customer_address"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:visibility="visible"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_round_cornor_selector"
+                android:padding="12dp"
+                android:textColor="@color/white"
+                android:text="@string/button_sign_up" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/otp_layout"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:id="@+id/tv_otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+
+                    android:layout_marginTop="20dp"
+                    android:background="@null"
+                    android:drawableLeft="@mipmap/first_name_icon"
+                    android:drawablePadding="10dp"
+                    android:focusable="true"
+                    android:hint="@string/enter_otp_hints"
+                    android:maxLength="6"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="2dp"
+                    android:layout_margin="10dp"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:visibility="visible"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="3dp"
+                    android:background="@android:color/darker_gray"
+                    android:padding="2dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Link MacAddress"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        android:textSize="15sp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/link_mac"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Resend OTP"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        android:textSize="15sp"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/resend_otp"/>
+                </RelativeLayout>
+
+
+                <Button
+                    android:id="@+id/submit_otp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_round_cornor_selector"
+                    android:padding="12dp"
+                    android:layout_margin="10dp"
+                    android:text="@string/submit" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

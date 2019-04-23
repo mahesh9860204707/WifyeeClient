@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    tools:context=".activity.OrderItemDetails">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="2dp"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title"
+            android:textColor="#ffffff"
+            style="@style/font_family_medium"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+    </android.support.v7.widget.Toolbar>
+
+<!--
+    <View
+        android:id="@+id/hr"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignTop="@+id/ll"
+        android:layout_alignBottom="@+id/ll"
+        android:background="@color/log_gray_text_color"/>
+-->
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_done"
+            android:padding="2dp"
+            android:background="@drawable/tracking_oval_green"/>
+
+        <View
+            android:id="@+id/view_1"
+            android:layout_width="1dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="11dp"
+            android:background="@color/log_gray_text_color"/>
+
+
+        <ImageView
+            android:id="@+id/img2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_done"
+            android:padding="2dp"
+            android:background="@drawable/tracking_oval_gray"/>
+
+        <View
+            android:id="@+id/view_2"
+            android:layout_width="1dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="11dp"
+            android:background="@color/log_gray_text_color"/>
+
+
+        <ImageView
+            android:id="@+id/img3"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_done"
+            android:padding="2dp"
+            android:background="@drawable/tracking_oval_gray"/>
+
+        <View
+            android:id="@+id/view_3"
+            android:layout_width="1dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="11dp"
+            android:background="@color/log_gray_text_color"/>
+
+
+        <ImageView
+            android:id="@+id/img4"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_done"
+            android:padding="2dp"
+            android:background="@drawable/tracking_oval_gray"/>
+
+        <View
+            android:id="@+id/view_4"
+            android:layout_width="1dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="11dp"
+            android:background="@color/log_gray_text_color"/>
+
+        <ImageView
+            android:id="@+id/img5"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_done"
+            android:padding="2dp"
+            android:background="@drawable/tracking_oval_gray"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignTop="@+id/ll"
+        android:layout_alignBottom="@+id/ll"
+        android:layout_toEndOf="@+id/ll"
+        >
+
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ordered"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/txt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Processing"
+            android:textSize="12sp"
+            android:layout_marginTop="32dp"
+            />
+
+        <TextView
+            android:id="@+id/txt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Packing"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:layout_marginTop="32dp"
+            />
+
+        <TextView
+            android:id="@+id/txt4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shipping"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"
+            android:layout_marginTop="32dp"
+            />
+
+        <TextView
+            android:id="@+id/txt5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivered"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"
+            android:layout_marginTop="35dp"
+            />
+
+    </LinearLayout>
+    
+    <!--
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true">
+    
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_done"
+                android:padding="2dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/tracking_oval_green"/>
+    
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_done"
+                android:padding="2dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/tracking_oval_green"/>
+    
+            <ImageView
+                android:id="@+id/img3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_done"
+                android:padding="2dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/tracking_oval_green"/>
+    
+            <ImageView
+                android:id="@+id/img4"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_done"
+                android:padding="2dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/tracking_oval_green"/>
+    
+            <ImageView
+                android:id="@+id/img5"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_active"
+                android:padding="6dp"
+                android:background="@drawable/tracking_oval_yellow"/>
+    
+        </LinearLayout>
+    -->
+
+<!--
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll"
+        android:layout_alignStart="@+id/ll"
+        android:layout_alignEnd="@+id/ll"
+        android:layout_marginTop="10dp"
+        android:weightSum="5">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ordered"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Processing"
+            android:textSize="12sp"/>
+
+      <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Packing"
+            android:textAlignment="center"
+            android:textSize="12sp"/>
+
+      <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Shipping"
+          android:textAlignment="textEnd"
+          android:textSize="12sp"/>
+        
+     <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delivered"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"/>
+        
+    </LinearLayout>
+-->
+
+
+
+
+
+
+
+<!--
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_below="@+id/toolbar"
+        tools:ignore="HardcodedText">
+
+
+        &lt;!&ndash;android:theme="@style/RadioButtonStyle"&ndash;&gt;
+
+        <com.transferwise.sequencelayout.SequenceLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:id="@+id/seq1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Order Received"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:id="@+id/seq2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Gadget Received"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:id="@+id/seq3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Under Analyzation"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:id="@+id/seq4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Quotation Sent"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:id="@+id/seq5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Under Repair"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <com.transferwise.sequencelayout.SequenceStep
+                android:id="@+id/seq6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Delivered"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+        </com.transferwise.sequencelayout.SequenceLayout>
+
+    </LinearLayout>
+-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"/>
+
+</RelativeLayout>

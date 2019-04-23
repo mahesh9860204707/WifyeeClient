@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/typeLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
+
+            <TextView
+                android:id="@+id/type"
+                style="@style/font_family_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="15dp"
+                android:text="@string/transfer_type"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_transfer_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <RadioButton
+                    android:id="@+id/radio_button_neft"
+                    style="@style/font_family_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/neft" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_imps"
+                    style="@style/font_family_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/imps" />
+            </RadioGroup>
+        </LinearLayout>
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:text="@string/select_beneficiary"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinner_select_beneficiary"
+            style="@style/font_family_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1.5"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="@mipmap/tv_input"
+            android:inputType="phone"
+            android:maxLength="19"
+            android:paddingLeft="10dp"
+            android:textSize="16sp" />
+
+    <TextView
+        style="@style/font_family_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:text="VERIFY"
+        android:layout_marginTop="5dp"
+        android:id="@+id/verify_otp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/link"
+        />
+</LinearLayout>
+        <!-- Beneficiary name -->
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="@string/beneficiary_amount"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edit_beneficiary_amount"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@mipmap/tv_input"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:paddingLeft="10dp"
+            android:textSize="16sp" />
+        <!-- Beneficiary name -->
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="@string/beneficiary_name"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_beneficiary_name"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:background="@mipmap/tv_input"
+            android:inputType="text"
+            android:maxLength="16" />
+        <!-- bank account -->
+
+        <TextView
+
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="@string/beneficiary_account_number"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_bank_account"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:background="@mipmap/tv_input"
+            android:inputType="number"
+            android:maxLength="16"
+           />
+
+        <!-- ifsc code -->
+
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="@string/beneficiary_ifsc"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_ifsc"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:background="@mipmap/tv_input"
+            android:inputType="text"
+            android:maxLength="19"
+             />
+
+        <!-- bank_name -->
+
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="@string/beneficiary_bank_name"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_bank_name"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:background="@mipmap/tv_input"
+            android:inputType="text"
+            android:maxLength="16"/>
+
+        <!-- mobile number -->
+
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:text="@string/beneficiary_mobile_number"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_beneficiary_mobile_number"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:background="@mipmap/tv_input"
+            android:inputType="number"
+            android:maxLength="10" />
+
+
+
+        <!-- kyc status -->
+
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="@string/beneficiary_kyc_status"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_kyc_status"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:background="@mipmap/tv_input"
+            android:inputType="text"
+            android:maxLength="10" />
+
+        <!-- Comments -->
+
+        <TextView
+            style="@style/font_family_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="@string/comments"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/edit_text_comments"
+            style="@style/font_family_medium"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="@string/comments"
+            android:layout_marginTop="5dp"
+            android:background="@mipmap/tv_input"
+            android:inputType="text"
+            android:maxLength="19"
+            android:paddingLeft="10dp"
+            android:textSize="16sp" />
+
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_round_cornor_selector"
+            android:padding="12dp"
+            android:text="@string/submit_button" />
+
+
+    </LinearLayout>
+
+</ScrollView>
+
+

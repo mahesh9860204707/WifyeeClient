@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/get_started_button_selected_color_light">
+
+    <item android:drawable="@drawable/button_round_corner_shape_selected_horizontal" />
+
+</ripple>

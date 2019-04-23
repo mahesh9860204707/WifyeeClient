@@ -1,0 +1,689 @@
+<resources>
+
+    <string name="app_name_">Wifyee</string>
+    <string name="login_title">Login to Wifyee</string>
+    <string name="phone_number">Phone No</string>
+    <string name="customer_dob">DOB</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <string name="pass_code">Passcode</string>
+    <string name="login_title_bar">User Login</string>
+    <string name="sign_up_title_bar">SignUp</string>
+    <string name="otp">OTP</string>
+    <string name="request_credit">Request Credit</string>
+    <string name="validate_mobile">Validate Mobile Number</string>
+    <string name="send_passcode">Send Passcode?</string>
+    <string name="resend_otp">Did You Miss OTP Please verify?</string>
+    <string name="text_signup">New User?To SignUp</string>
+    <string name="first_name">First Name</string>
+    <string name="empty_view_text">No data found. Please try after sometimes.</string>
+    <string name="last_name">Last Name</string>
+    <string name="customer_title">Title</string>
+    <string name="customer_address">Address</string>
+    <string name="select_plan">Please select atleast one plan.</string>
+    <string name="select_payment_mode">Choose Payment Mode</string>
+    <string name="enter_phone_number"><font size="16">mobile number</font></string>
+    <string name="enter_otp_hints">Enter your otp</string>
+    <string name="password_recovery_title">Password recovery questions:</string>
+    <string name="otp_validation_title">OTP Validation</string>
+    <string name="invalid_number">Invalid Number</string>
+    <string name="already_register">Already registered</string>
+    <string name="invalid_otp">Invalid OTP</string>
+    <string name="check_your_network_status">Check status</string>
+    <string name="account_verification_string">Your account is not verified,Click OK to verify.</string>
+    <string name="otp_resend">Click here to resend</string>
+    <string name="network_status">Checking Connectivity Status</string>
+    <string name="email">E-mail</string>
+    <string name="dob">Date of Birth</string>
+    <string name="payment_process_title">Payment Process</string>
+    <string name="address">Address</string>
+    <string name="pincode">Pincode</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="enter_otp">Please enter OTP</string>
+    <string name="passcode">Enter 4 digit Numeric value</string>
+    <string name="re_psscode">Re-Enter-Passcode</string>
+    <string name="sign_in_progress">Logging In...</string>
+    <string name="phone_number_verification">Phone verification</string>
+    <string name="user_registration">Registration</string>
+    <string name="email_id">Email address</string>
+    <string name="profile_gender">Gender</string>
+    <string name="phone_verification_message">Enter your mobile number</string>
+    <string name="phone_verification_message1">Verify your mobile number</string>
+    <string name="answer">answer</string>
+    <string name="button_login">Login</string>
+    <string name="button_continue">Continue</string>
+    <string name="button_qr_code">Qr Code</string>
+    <string name="button_next">Next</string>
+    <string name="button_sign_up">Sign Up</string>
+    <string name="error_message">Something went wrong.Please contact to Admin</string>
+    <string name="dialog_error">Error</string>
+    <string name="feature_is_not_available_message">Feature is not available.</string>
+    <string name="recharge_pay_for">Recharge or Pay</string>
+    <string name="login_status_text">"You have Successfully logged in to OZONE"</string>
+    <string name="plan_activity">Select Plan</string>
+    <string name="progress_wait_text">Please Wait ...</string>
+    <string name="internet_innovator">INNOVATING INTERNET</string>
+
+    <!--Validation message-->
+    <string name="empty_clientid_or_passcode_or_hash_error_message">Something went wrong. Please login again!</string>
+    <string name="firstname_error_message">First name required.</string>
+    <string name="lastname_error_message">Last name required.</string>
+    <string name="username_error_message">User name required.</string>
+    <string name="language_error_message">Select your lanuage.</string>
+    <string name="phone_number_error_message">Invalid Phone no. Enter 10 digit phone no.</string>
+    <string name="email_error_message">Enter valid email id.</string>
+    <string name="zipcode_error_message">Invalid Postal code.</string>
+    <string name="adhaar_number_error_message">Invalid Adhaar Number.</string>
+    <string name="pan_number_error_message">Invalid PAN account number.</string>
+    <string name="passcode_error_message">Invalid Passcode. Please use 4 digit passcode</string>
+    <string name="new_passcode_error_message">Invalid New Passcode. Please use 4 digit passcode</string>
+    <string name="reenter_passcode_error_message">Invalid New Passcode reentered. Please use 4 digit passcode</string>
+    <string name="passcode_not_matching_error_message">New password and Re-Entered password not matching</string>
+    <string name="dialog_ok">OK</string>
+    <string name="google_maps_key">AIzaSyAcgqH5BZNM_JwvxVV9paC1Z8-df0mYqeo</string>
+    <string name="place_api_key">AIzaSyBMIqw8GSiNIEW_ccxIPUNcPxDVR1vQ0G0</string>
+
+    <string name="show_the_nearest_restaurants">Show the nearest restaurants</string>
+
+    <!--Signup-->
+    <string name="signup_status_title">SignUp Status</string>
+
+    <string name="otp_status_title">OTP Status</string>
+    <string name="title_status">Status</string>
+    <string name="registration_success">You are successfully register.</string>
+    <string name="otp_success">You are successfully Generate OTP.</string>
+
+    <!-- Bottom tab bar item string-->
+    <string name="menu_home">Home</string>
+    <string name="menu_bank_transfer">Transfer</string>
+    <string name="menu_add_benificery">Beneficiary</string>
+    <string name="my_cart">Cart</string>
+    <string name="my_order">My Order</string>
+    <string name="menu_product">Dairy Product</string>
+    <string name="menu_medicine">Medicine Order</string>
+    <string name="menu_log">Log</string>
+    <string name="menu_profile">Profile</string>
+    <string name="add_bene">Add Beneficiary</string>
+    <string name="add_kyc">Add KYC</string>
+    <string name="update_bene">Update Beneficiary</string>
+
+
+    <!---KYC Strings-->
+    <string name="add_kyc_details">Add KYC Details:</string>
+    <string name="for_id_proof">For ID Proof:</string>
+    <string name="kyc_document">KYC Document:</string>
+    <string name="kyc_type">KYC Type:</string>
+    <string name="travel_category">Travel Category:</string>
+    <string name="travel_to">To:</string>
+    <string name="number_of_people">Number of people:</string>
+    <string name="travel_from">From:</string>
+    <string name="document_number">Document Number:</string>
+    <string name="upload_document_file">Upload Document File:</string>
+    <string name="for_address_proof">For Address Proof:</string>
+
+    <string name="place_details">
+    <![CDATA[
+        <b>%1$s</b>
+        <br/>
+        <i>Place Id: %2$s</i>
+        <br/>
+        Address: %3$s
+        <br/>
+        Phone: %4$s
+        <br/>
+        Website: %5$s
+    ]]>
+    </string>
+
+    <!---Beneficiary List Add Update Delete-->
+    <string name="serial_number">S.NO.</string>
+    <string name="name">NAME</string>
+    <string name="nick_name">NICK NAME</string>
+    <string name="mobile">MOBILE</string>
+    <string name="bank_name">BANK NAME</string>
+    <string name="account_number">ACCOUNT NUMBER</string>
+    <string name="ifsc_code">IFSC CODE</string>
+    <string name="status">STATUS</string>
+    <string name="is_verified">ISVERIFIED</string>
+
+    <!---Transaction List-->
+    <string name="transaction_id"> ID</string>
+    <string name="transaction_date">DATE</string>
+    <string name="transaction_amount">AMOUNT</string>
+    <string name="transaction_ben_mobile">BENEFICIARY MOBILE</string>
+    <string name="transaction_account_number">ACCOUNT NUMBER</string>
+    <string name="transaction_ifsc_code">IFSC CODE</string>
+    <string name="transaction_status">STATUS</string>
+    <string name="transaction_reference_number">REFERENCE NO</string>
+
+
+    <string name="beneficiary_first_name">Beneficiary First Name:</string>
+    <string name="beneficiary_last_name">Beneficiary Last Name:</string>
+    <string name="beneficiary_account_number">Account Number:</string>
+    <string name="beneficiary_ifsc_code">IFSC Code:</string>
+    <string name="beneficiary_mobile">Beneficiary Mobile Number:</string>
+    <string name="branch">Bank Branch Name:</string>
+    <string name="bank">Bank Name:</string>
+    <string name="bank_address">Bank Address:</string>
+    <string name="bank_state">Bank State:</string>
+    <string name="bank_city">Bank City:</string>
+
+    <!---Fund tranfer Ui String-->
+    <string name="beneficiary_name">BENEFICIARY NAME:</string>
+    <string name="beneficiary_amount">AMOUNT:</string>
+    <string name="beneficiary_ac_number"> ACCOUNT NUMBER:</string>
+    <string name="beneficiary_ifsc"> IFSC CODE:</string>
+    <string name="beneficiary_mobile_number"> BENEFICIARY MOBILE:</string>
+    <string name="beneficiary_bank_name"> BANK NAME:</string>
+    <string name="beneficiary_kyc_status">KYC STATUS:</string>
+
+    <!--- Add Kyc-->
+    <string name="id_proof_number">ID Proof Document Number:</string>
+    <string name="address_proof_number">Address Proof Document Number:</string>
+    <string name="update_kyc">Update KYC</string>
+
+
+    <!-- top tab bar item string-->
+    <string name="menu_prepaid">Prepaid</string>
+    <string name="menu_postpaid">Postpaid</string>
+    <string name="menu_landline">Landline</string>
+    <string name="menu_dth">DTH</string>
+    <string name="menu_gas">Gas</string>
+    <string name="menu_broadband">Broadband</string>
+    <string name="menu_electricity">Electricity</string>
+
+    <string name="status_connected_text">You are successfully connected to \n %1$s</string>
+    <string name="status_error_text">An error has occurred. Please try again after some time.</string>
+    <string name="error_ozone_network">This Application is to be used in an OZONE network only. Please open when connected to a valid OZONE Network</string>
+    <string name="error_no_ozone_zone"> Your current connection is not via an OZONE Network</string>
+
+    <!-- food Order and Connetc Wifyee-->
+
+    <string name="order_food">Order Food</string>
+    <string name="deals_around_me">Deals around Me</string>
+    <string name="calling">Calling</string>
+    <string name="connect">Connect</string>
+    <string name="buy_plans">Buy Plans</string>
+    <string name="free_wifyee">FREE WIFI + OFFERS</string>
+    <string name="discover_wifyee">SHOPPING MALL</string>
+
+    <!-- top tab bar below item string-->
+    <string name="menu_offer_discount">Offers/Discounts</string>
+    <string name="menu_add_money">Add Money</string>
+    <string name="menu_request_credit">Request Credit</string>
+    <string name="menu_send_money">Send Money</string>
+    <string name="menu_request_money">Request Money</string>
+    <string name="menu_air_line">Air Line</string>
+    <string name="menu_bus_ticket">Bus Ticket</string>
+    <string name="menu_pay_merchant">Pay Merchant</string>
+    <string name="menu_split_money">Split Money</string>
+    <string name="menu_transaction">Transactions</string>
+    <string name="menu_ticketing">Ticketing</string>
+    <string name="menu_air_ticket">Air Ticket</string>
+    <string name="menu_railway_ticket">Railway Ticket</string>
+    <string name="menu_movie_ticket">Movie Ticket</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_logout">Log out</string>
+    <string name="wallet_balance">Wallet Balance</string>
+    <string name="call_us">Help Desk</string>
+    <string name="approved_limit">Approved Credit </string>
+
+    <string name="Rs">\u20B9 %1$s</string>
+    <string name="Rss">\u20B9 </string>
+    <string name="submit_button">Submit</string>
+    <string name="update_button">Update</string>
+    <string name="search_button">Search</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="save_changes_button">Save Changes</string>
+    <string name="add_button">Add</string>
+    <string name="tv_operator">Operator</string>
+    <string name="select">--Select--</string>
+    <string name="tv_mobile_number">Mobile Number</string>
+    <string name="tv_amount">Amount</string>
+    <string name="tv_view_fees_charges">View Fees/Charges</string>
+    <string name="title_postpaid">Postpaid</string>
+    <string name="title_prepaid">Prepaid</string>
+    <string name="title_broadband">Broadband</string>
+    <string name="tv_service">Service</string>
+    <string name="medicine_upload_success">Your order has been received successfully and we will get back with medical shop details which will accept your order
+</string>
+    <string name="payment_success">Transaction Successfully Done</string>
+    <string name="office_number">+91 22 6236 1058</string>
+    <string name="office_number_second">9643818020</string>
+    <string name="office_email">info@wifyee.com</string>
+
+    <string name="delete_beneficiary">Do You Want To Delete Beneficiary??</string>
+    <string name="delete_kyc">Do You Want To Delete KYC??</string>
+    <string name="wifi_config">Please Manualy Connect Wifyee</string>
+    <string name="register_success">Registerd Successfully Done</string>
+    <string name="beneficiary_delete_success">Delete Beneficiary Successfully Done</string>
+    <!-- landline -->
+    <string name="title_land_line">LandLine</string>
+    <string name="tv_number_customer">Landline Number/Customer Account Number</string>
+    <string name="amount">Amount</string>
+
+    <!-- dth -->
+    <string name="title_dth">DTH</string>
+    <string name="tv_number_dth">DTH Number</string>
+
+    <!-- Gas bill -->
+    <string name="title_gas_bill">Gas Bill</string>
+    <string name="tv_customer_account_number">Customer Account/Subscriber Number</string>
+    <string name="tv_bill_amount">Bill Amount</string>
+    <string name="cycle_number">Cycle Number</string>
+    <string name="bill_group_number">Bill Group Number</string>
+    <string name="billing_amount">Billing Unit</string>
+    <string name="processing_cycle_number">Processing Cycle</string>
+    <string name="tv_note">Note:- Partial payment is not allowed for Gas Operator, Please make ensure you are passing correct bill amount of outstanding bill amount.</string>
+
+    <!-- Electricity -->
+    <string name="title_electric_bill">Electricity Bill</string>
+    <string name="select_city">City Name</string>
+    <string name="tv_elect_customer_account_number">Customer A/C Number/Subscriber Number</string>
+    <string name="tv_note_electricity">Note:- Partial payment is not allowed for Electricity Operator, Please make ensure you are passing correct bill amount of outstanding bill amount.</string>
+
+    <!-- Bank Transfer -->
+    <string name="transfer_type">Transfer Type</string>
+    <string name="transactions">Transaction List</string>
+    <string name="neft">NEFT</string>
+    <string name="imps">IMPS</string>
+    <string name="tv_bank_account">Bank A/C No.</string>
+    <string name="select_beneficiary">Select Beneficiary:</string>
+    <string name="tv_ifsc_code">IFSC CODE</string>
+    <string name="tv_bank_name">Bank Name</string>
+    <string name="tv_branch_name">Branch Name</string>
+    <string name="comments">Comments</string>
+    <string name="tv_beneficiary_mobile_no">Beneficiary Mobile No.</string>
+
+    <!-- Product -->
+    <string name="gv_bus_ticket">BUS TICKET</string>
+    <string name="gv_air_line">AIR LINE</string>
+    <string name="gv_car_booking">CAB BOOKING</string>
+    <string name="gv_railway_ticket">RAILWAY TICKET</string>
+    <string name="gv_fees_collection">FEES COLLECTION</string>
+    <string name="gv_movie_ticket">MOVIE TICKET</string>
+    <string name="gv_tour_packages">TOUR PACKAGES</string>
+    <string name="gv_hotel_booking">HOTEL BOOKING</string>
+    <string name="gv_mutual_fund_payment">MUTUAL FUND PAYMENT</string>
+    <string name="gv_insurance_payment">INSURANCE PAYMENT</string>
+
+
+    <!-- user profile -->
+    <string name="tv_user_name">User Name</string>
+    <string name="tv_address">Address</string>
+    <string name="tv_postal_code">Postal Code </string>
+    <string name="tv_city_town">City/Town</string>
+    <string name="tv_country">Country</string>
+    <string name="tv_language">Language</string>
+    <string name="tv_email">Email</string>
+    <string name="tv_dob">Date Of Birth</string>
+    <string name="tv_adhaar">Adhaar No.</string>
+    <string name="tv_pan_card">Pan No.</string>
+
+
+    <string name="tv_coming_soon">Coming Soon...</string>
+
+    <!-- bus ticket booking -->
+    <string name="title_bus_ticket_booking">Bus Ticket Booking</string>
+    <string name="tv_from">From</string>
+    <string name="tv_to">To</string>
+    <string name="tv_departure_date">Departure Date</string>
+    <string name="tv_date_format">DD-MM-YYYY</string>
+
+    <!-- settings -->
+    <string name="list_item_account">Account</string>
+    <string name="list_item_identity">Identity</string>
+    <string name="list_item_supplementary_information">Supplementary Information</string>
+    <string name="list_item_authorized_phones_for_this_account">Authorized Phones for this Account</string>
+    <string name="list_item_notifications">Notifications</string>
+    <string name="list_item_payment">Payment</string>
+    <string name="list_item_change_password">Change Passcode</string>
+
+    <!-- setting account -->
+    <string name="tv_title_account">Account</string>
+    <string name="tv_account_number">Number</string>
+    <string name="tv_account_service">Service</string>
+    <string name="tv_account_created_date">Create Date</string>
+    <string name="tv_account_state">State</string>
+
+    <!-- setting Supplementary Information -->
+    <string name="tv_title_supplementary_information">Supplementary Information</string>
+    <string name="tv_setting_electricity_meter">Electricity Meter</string>
+    <string name="tv_setting_water_meter">Water Meter</string>
+    <string name="tv_setting_job">Job</string>
+    <string name="tv_setting_employer">Employer</string>
+    <string name="tv_setting_guarantee">Guarantee</string>
+    <string name="tv_setting_over_balance">Over Balance</string>
+    <string name="tv_setting_date_over_balance">Date Over Balance</string>
+    <string name="tv_setting_refund_date">Refund Date</string>
+    <string name="tv_setting_bank_name">Bank Name</string>
+    <string name="tv_setting_bank_account">Bank Account</string>
+
+    <!-- change password -->
+    <string name="title_change_password">Change Passcode</string>
+    <string name="tv_setting_existing_pass_code">Existing Passcode</string>
+    <string name="tv_setting_new_pass_code">New Passcode</string>
+    <string name="tv_setting_re_enter_pass_code">Re-Enter Passcode</string>
+
+    <!-- payment -->
+    <string name="title_payment">Payment</string>
+    <string name="tv_setting_payment_card">Payment Card</string>
+    <string name="tv_payment_number">Number</string>
+    <string name="tv_expiration_date">Expiration Date</string>
+    <string name="tv_valid_code">Valid Code</string>
+
+    <!-- Authorized -->
+    <string name="title_authorized">Authorized Phones</string>
+    <string name="tv_authorized_number">Number</string>
+    <string name="tv_authorized_remove">Remove</string>
+    <string name="tv_authorized_sms">SMS</string>
+    <string name="tv_authorized_phone_number_nick_name">Phone Number Nick Name</string>
+    <string name="tv_authorized_count">Count of Uses</string>
+    <string name="tv_hint_enter_number">Enter Phone Number</string>
+
+    <!-- Identity -->
+    <string name="title_identity">Identity</string>
+    <string name="tv_identity_number">ID Number</string>
+    <string name="tv_identity_password">ID or Password</string>
+    <string name="tv_identity_choose_file">Choose File</string>
+    <string name="tv_identity_no_chosen_file">No file chosen</string>
+    <string name="tv_identity_file_size_limit">Image file (.jpg .png .gif) maximum size 300 Kb</string>
+
+    <!-- Logs screen -->
+    <string name="log_item_date_label">Date</string>
+    <string name="log_item_ref_label">Ref #</string>
+    <string name="log_item_balance_label">Balance</string>
+    <string name="log_item_debit_or_credit_label">Debit/Credit</string>
+    <string name="log_item_fees_label">Fees</string>
+    <string name="log_item_description_label">Description</string>
+
+
+    <!-- dashboard new item -->
+    <string name="get_wifi">Connect</string>
+    <string name="wifi_wallet">Wifyee Wallet</string>
+    <string name="get_plans">Buy Plans</string>
+    <string name="monthly_wallet_limit">Monthly Wallet Limit Balance</string>
+    <string name="operator_title">Select Operator</string>
+    <string name="bank_title">Select Bank</string>
+    <string name="alert_dialog_error_title">Error</string>
+    <string name="alert_dialog_ok">Ok</string>
+    <string name="recharge_status_title">Recharge Status</string>
+    <string name="bank_transfer_status_title">Bank Transfer Status</string>
+
+    <string name="network_not_available">You are not connected to the Internet. Check your connection and try again.</string>
+
+    <!-- airtime recharge status string -->
+
+    <string name="tv_recharge_status">Recharge Status: </string>
+    <string name="tv_reference_id">Reference ID: </string>
+    <string name="tv_recharge_id">Recharge ID: </string>
+    <string name="tv_recharge_transaction_date">Transaction_Date: </string>
+    <string name="tv_recharge_number">Recharge Number: </string>
+    <string name="tv_recharge_amount">Recharge Amount: </string>
+    <string name="loading_network_data">loading credits...</string>
+
+
+    <!-- airtime input validation-->
+
+    <string name="improper_input_msg">Please make sure you have entered correct information.</string>
+    <string name="improper_input_title">Invalid Details.</string>
+    <string name="alert_dialog_min_balance_alert_message">Please enter valid amount.</string>
+    <string name="alert_dialog_choose_operator_message">Select operator!</string>
+    <string name="alert_dialog_choose_operator_title">Choose Operator</string>
+    <string name="phone_validation_alert_title">Invalid Mobile Number</string>
+    <string name="Invalid_alert_title">Invalid </string>
+    <string name="all_fields_required">All fields are required. </string>
+    <string name="landline_validation_alert_title">Invalid Landline Number</string>
+    <string name="dth_validation_alert_title">Invalid DTH Number</string>
+    <string name="gas_validation_alert_title">Invalid Customer/Subscriber Number</string>
+    <string name="error_empty_landline_number">The landline number cannot be empty.</string>
+    <string name="error_empty_dth_number">The DTH number cannot be empty.</string>
+    <string name="error_empty_gas_number">The Customer/Subscriber  number cannot be empty.</string>
+    <string name="error_empty_phone_number">The phone number cannot be empty.</string>
+    <string name="phone_validation_alert_message">Please enter a valid mobile number. Do not include country code or leading zeros</string>
+    <string name="landline_validation_alert_message">Please enter a valid LandLine number. Do not include country code or leading zeros</string>
+    <string name="dth_validation_alert_message">Please enter a valid DTH number.</string>
+    <string name="gas_validation_alert_message">Please enter a valid Customer/Subscriber number.</string>
+
+
+    <!-- Profile screen-->
+    <string name="language_dialog_title">Select Language</string>
+    <string name="country_dialog_title">Select Country</string>
+    <string name="english_code">en</string>
+    <string name="hindi_code">en</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+    <string name="india_code">356</string>
+    <string name="india">India</string>
+
+    <!-- Money Transfer text -->
+    <string name="money_transfer_activity_title">Pay or Send Money</string>
+    <string name="mobicash_code_fragment_title">Mobicash Code</string>
+    <string name="mobile_no_fragment_title">Mobile No.</string>
+    <string name="show_code_fragment_title">Show Code</string>
+
+    <!-- send money by mobile -->
+
+    <string name="mobile_money_transfer_title">Send Money to Mobile Number</string>
+    <string name="mobile_money_transfer_botton">SEND MONEY</string>
+
+
+    <!-- reset passcode -->
+    <string name="send_pass_code_activity_title">Send Passcode</string>
+    <string name="authenticate_otp">Authenticate OTP</string>
+    <string name="send_pass_code_button_reset">Send</string>
+    <string name="tv_log_empty_view_">You do not have any transaction yet.</string>
+
+    <!--SendPasscode-->
+    <string name="successful">Successful</string>
+    <string name="passcode_successfully_sent">Passcode successfully sent!</string>
+    <string name="send_passcode_failed">Something went wrong. Please try again later.</string>
+
+    <!--ResetPasscode-->
+    <string name="passcode_changed_successfully_sent">Passcode changed successfully !</string>
+    <string name="reset_passcode_failed">Something went wrong. Please try again later.</string>
+
+    <!-- bank transfer status dialog string -->
+    <string name="bank_transfer_status">Transaction status:</string>
+    <string name="bank_transfer_reference_id">Reference Id:</string>
+    <string name="bank_transfer_transaction_id">Transaction Id:</string>
+    <string name="bank_transfer_description">Transaction Desc:</string>
+    <string name="bank_transfer_date">Transaction Date:</string>
+    <string name="bank_transfer_amount">Transaction Amount:</string>
+
+    <!-- wifi scan list -->
+    <string name="title_wifi_scan">Wifi List</string>
+    <string name="empty_wifi_list">No Wifyee List Found.</string>
+
+    <string name="permission_denied">Permission Denied</string>
+    <string name="wifi_permission_denied_message">WIFI permission is mandatory for this application to use.</string>
+    <string name="sms_permission_denied_message">Read SMS permission is mandatory for this application to use.</string>
+    <string name="otp_msg">otp for ozone wifi access is</string>
+    <string name="connectivity_log">Log for Connectivity</string>
+    <string name="error_msg_password">Password should be between 8 to 14 characters</string>
+    <string name="password_retrieval_text">Password Retrieval</string>
+    <string name="dob_text">Please provide valid DOB</string>
+    <string name="mother_name_text">Mother maiden name cannot be empty</string>
+    <string name="error_country_code">Please provide valid country code</string>
+    <string name="error_phone_number">Please provide valid mobile number</string>
+    <string name="error_invalid_data">Invalid Details</string>
+    <string name="error_msg_user_name">Please enter User Name</string>
+    <string name="retrieve_password_text">"Your Password is:"</string>
+    <string name="password_text">password</string>
+    <string name="dialog_password_title">"Login Password"</string>
+    <string name="dialog_type">Info</string>
+    <string name="login_using">Login OZONE Network </string>
+    <color name="gray_1">#4A4A4A</color>
+    <string name="user_login_using">Login Using </string>
+
+    <string-array name="CountryCodes">
+        <item>93,AF</item>
+        <item>355,AL</item>
+    </string-array>
+
+    <!-- button -->
+    <string name="submit">Submit</string>
+    <string name="send">Send</string>
+    <string name="sign_up">Sign up</string>
+    <string name="save">Save</string>
+    <string name="verify">Register</string>
+    <string name="user_login">Login</string>
+    <string name="error_msg_email">Please provide valid email.</string>
+
+    <string name="name_on_card">Name On Card</string>
+    <string name="card_type_hint">--Select Card Type--</string>
+    <string name="city_hint">--Select City--</string>
+    <string name="card_number_format">xxxx-xxxx-xxxx-xxxx</string>
+    <string name="cvv">CVV</string>
+    <string name="month_format">MM</string>
+    <string name="year_format">YYYY</string>
+    <string name="expires">Expires:</string>
+    <string name="pay_now">PAY NOW</string>
+    <string name="enter_card_details">Enter Card Details</string>
+    <string name="save_card">Save card for faster checkouts.</string>
+    <string name="enable_one_click_checkout">Enable one click checkout.</string>
+    <string name="choose_bank">Choose Your Bank</string>
+    <string name="select_bank">Select Other Banks</string>
+    <string name="bank_prompt">Select your Bank</string>
+    <string name="redirection_text">You will be redirected to your banks website to complete payment</string>
+    <string name="current_wallet_balance">(Your current balance is Rs  %1$s)</string>
+
+    <string name="axis_bank">AXIS</string>
+    <string name="hdfc">HDFC</string>
+    <string name="citi">CITI</string>
+    <string name="sbi">SBI</string>
+    <string name="icici">ICICI</string>
+
+    <string name="select_payment_method">Select Payment Method</string>
+    <string name="type_wallet">Wifyee Wallet</string>
+    <string name="type_payu">Payu Money</string>
+    <string name="use_wallet">Use Wifyee Wallet</string>
+    <string name="add_to_wallet">To complete payment, add to Wifyee Wallet</string>
+    <string name="payment_credit_card">Credit Card</string>
+    <string name="payment_debit_card">Debit Card</string>
+    <string name="payment_netbanking">Net Banking</string>
+    <string name="insta_mojo">InstaMojo</string>
+    <string name="total_amount">Rs %1$s</string>
+
+    <string name="ok">OK</string>
+    <string name="Cancel">Cancel</string>
+
+    <string name="select_card_type">Select Card Type</string>
+
+
+    <string-array name="bank_names">
+        <item>State Bank Of India</item>
+        <item>HDFC</item>
+        <item>CITI</item>
+        <item>ICICI</item>
+        <item>Kotak Mahindra</item>
+        <item>Canara Bank</item>
+        <item>Axis Bank</item>
+        <item>State Bank of Hyderabad</item>
+        <item>State Bank Of Mysore</item>
+        <item>Central Bank of India</item>
+        <item>Yes Bank</item>
+        <item>Bank Of India</item>
+    </string-array>
+
+    <string name="facebook_app_id">116600562442299</string>
+    <string name="title_activity_plans">PlansActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Button label to connect to a wifi network-->
+    <string name="toastFailed">Failed!</string>
+    <string name="buttonOp">More&#8230;</string>
+
+
+    <string name="please_type_passphrase">Wireless password</string>
+    <string name="wifi_show_password">Show password.</string>
+    <string name="money">Add Money</string>
+    <string name="send_money">Send Money</string>
+    <string name="pay_merchant">Pay Merchant</string>
+    <string name="request_money">Request Money</string>
+    <string name="split_money">Split Money</string>
+    <string name="split_participent">Split Participent</string>
+    <string name="wifi_change_password">Change password</string>
+    <string name="button_change_password">Modify</string>
+    <string name="bus_booking">Bus Booking</string>
+    <!-- An edit field's grayed out value when it has not been modified -->
+    <string name="wifi_password_unchanged">(unchanged)</string>
+    <!-- Button caption to save a configuration wifi -->
+    <string name="wifi_save_config">Save</string>
+
+    <string name="adhoc_not_supported_yet">AdHoc is not supported by Android platform yet!</string>
+
+    <string name="dummy_content_description">""</string>
+    <!-- Split money-->
+    <string name="reference_number">"Reference Number"</string>
+    <string name="split_amount">"Amount"</string>
+    <string name="pay_by_number_users">"Pay by No. of Users"</string>
+    <string name="paid_by_number_users">"Paid By Users"</string>
+    <string name="generate_split_invoice">"Generate Split Invoice"</string>
+    <string name="cancel">"Cancel"</string>
+    <string name="first_mobile_number">"First Mobile Number"</string>
+    <string name="second_mobile_number">"Second Mobile Number"</string>
+    <string name="third_mobile_number">"Third Mobile Number"</string>
+    <string name="fourth_mobile_number">"Four Mobile Number"</string>
+    <string name="fifth_mobile_number">"Five Mobile Number"</string>
+    <string name="sixth_mobile_number">"Six Mobile Number"</string>
+    <string name="seven_mobile_number">"Seven Mobile Number"</string>
+    <string name="eight_mobile_number">"Eight Mobile Number"</string>
+    <string name="nine_mobile_number">"Nine Mobile Number"</string>
+    <string name="ten_mobile_number">"Ten Mobile Number"</string>
+
+    <string name="first_email_id">"First Email Id"</string>
+    <string name="second_email_id">"Second Email Id"</string>
+    <string name="third_email_id">"Third Email Id"</string>
+    <string name="four_email_id">"Four Email Id"</string>
+    <string name="five_email_id">"Five Email Id"</string>
+    <string name="six_email_id">"Six Email Id"</string>
+    <string name="seven_email_id">"Seven Email Id"</string>
+    <string name="eight_email_id">"Eight Email Id"</string>
+    <string name="nine_email_id">"Nine Email Id"</string>
+    <string name="ten_email_id">"Ten Email Id"</string>
+    <!--Plan Info-->
+    <string name="plan_name">Plan Name</string>
+    <string name="time_used">Time Used</string>
+    <string name="data_downloading">Data Downloading</string>
+    <string name="data_remaining">Data Remaining</string>
+    <string name="data_total">Data Total</string>
+    <string name="time_remaining">Time Remaining</string>
+    <string name="time_total">Time Total</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Dairy Product -->
+    <string-array name="dairy_product">
+        <item>Milk</item>
+        <item>Curd/Yogurt</item>
+        <item>Ghee</item>
+        <item>Lassi</item>
+        <item>Chaas</item>
+    </string-array>
+
+    <string name="dairy_title">Dairy Product</string>
+    <string name="order_summary_title">Order Summary</string>
+    <string name="product_title">Products</string>
+    <string name="dairy_item_title">Dairy Item</string>
+    <string name="item_title">Item</string>
+    <string name="buy">BUY</string>
+    <string name="cart">IN CART</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="order_summary_details">Order Details</string>
+
+    <string-array name="qty_array">
+        <item>1 Liter</item>
+        <item>1/2 Liter</item>
+        <item>1 Kg</item>
+        <item>500 Gram</item>
+        <item>200 Gram</item>
+    </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_add_address">Map</string>
+</resources>

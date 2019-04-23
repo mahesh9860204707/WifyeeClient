@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomNavigationBehavior_Params">
+        <attr name="tabLayoutId" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="SlidingTabLayout">
+        <!-- Radius of the circles. This is also the spacing between circles. -->
+        <attr name="tab_view_padding_dips" format="dimension" />
+
+    </declare-styleable>
+</resources>

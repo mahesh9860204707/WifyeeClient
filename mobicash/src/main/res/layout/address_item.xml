@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#ffffff"
+        android:paddingTop="8dp"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <RadioButton
+            android:id="@+id/radio_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="-4dp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/radio_address"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/radio_address"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/name"
+            android:textSize="12sp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/mobile_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1234567890"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/radio_address"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/address"
+            android:textSize="11sp"
+            android:textColor="#000" />
+
+        <View
+            android:id="@+id/horion_view"
+            android:layout_width="match_parent"
+            android:layout_height="0.7dp"
+            android:layout_below="@+id/mobile_no"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/divider"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/horion_view"
+            android:layout_toLeftOf="@+id/rl_delete"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/ic_edit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_edit_add"
+                android:layout_alignBottom="@+id/tv_edit"
+                android:tint="#808080"
+                android:paddingTop="4dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:paddingTop="4dp"
+                android:textSize="12sp"
+                android:layout_toRightOf="@id/ic_edit"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/horion_view"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/ic_delete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/trash"
+                android:layout_alignBottom="@+id/tv_delete"
+                android:tint="#808080"
+                android:paddingTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:paddingTop="4dp"
+                android:textSize="12sp"
+                android:layout_toRightOf="@id/ic_delete"/>
+
+
+        </RelativeLayout>
+
+
+        <!--<Button
+            android:id="@+id/edit"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:layout_below="@+id/horion_view"
+            android:layout_toLeftOf="@+id/delete"
+            android:textColor="@color/colorPrimary"
+            android:background="@android:color/transparent"
+            android:layout_marginEnd="8dp"
+            android:visibility="visible"/>-->
+
+        <!--<ImageView
+            android:id="@+id/delete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/trash"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:layout_below="@+id/horion_view"/>-->
+
+
+
+
+
+       <!-- <Button
+            android:id="@+id/edit"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/colorPrimary"
+            android:background="@android:color/transparent"
+            android:layout_marginEnd="8dp"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/trash"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:layout_alignTop="@+id/address"
+            android:layout_alignBottom="@+id/mobile_no"
+            android:layout_below="@+id/edit"/>-->
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/rl_delete"
+            android:layout_marginTop="5dp"
+            android:background="@color/divider" />
+
+</RelativeLayout>
+
+</RelativeLayout>

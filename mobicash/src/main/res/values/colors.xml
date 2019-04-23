@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="primaryDarkLight">#485abf</color>
+    <color name="hintColor">#979A9A</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBlack">#51515f</color>
+    <color name="color_logo">#FFA500</color>
+    <color name="color_tab_bg">#51515f</color>
+    <color name="color_gray">#d7d7d7</color>
+    <color name="transparent">#00000000</color>
+    <color name="get_started_button_selected_color_light">#FFA500</color>
+    <color name="theme_primary">#3f51b5</color>
+    <color name="transy_black4">#11000000</color>
+    <color name="blue_highlightener_color">#35acd3</color>
+    <color name="non_selected_tab_color">#80a7b8</color>
+    <color name="background">#EEEEEE</color>
+    <color name="color_primary">#4A6FAF</color>
+    <color name="state1">#FB5865</color>
+    <color name="state2">#58ACFA</color>
+    <color name="cb_errorRed">#e40000</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="tracking_green">#35C399</color>
+
+    <color name="lt_orange">#edae39</color>
+    <color name="lt_pink">#FFDBFF</color>
+    <color name="lt_blue">#C7C7FF</color>
+    <color name="lt_yellow">#FFFFD1</color>
+
+    <color name = "dashboard_invite_text_color">#fac545</color>
+    <color name = "dashboard_short_description">#9b9b9b</color>
+    <color name = "dashboard_credit_color">#68b36b</color>
+    <color name = "dashboard_title_color">#212121</color>
+
+    <color name="cyan_blue">#4991B0</color>
+    <color name="red_shade">#EA4A51</color>
+    <color name="orange_shade">#F06F47</color>
+    <color name="green_shade">#57B560</color>
+    <color name="listBackgroundColor">#F4F4F4</color>
+    <color name="transy_black2">#55000000</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_87">#DEFFFFFF</color>
+    <color name="white_54">#8AFFFFFF</color>
+    <color name="green_shade1">#41b53f</color>
+    <color name="green_shade2">#8fd16b</color>
+    <color name="green_shade3">#00FFCC</color>
+    <color name="black">#000</color>
+    <color name="blue">#05234C</color>
+    <color name="gray">#eaeaea</color>
+    <color name="lt_gray">#cccccc</color>
+    <color name="lt_gray1">#bdbdbd</color>
+    <color name="dk_gray">#181818</color>
+    <color name="dk_gray1">#8c8c8c</color>
+    <color name="gray_goose">#D1D0CE</color>
+    <color name="link">#001ba6</color>
+
+    <color name="orange_shade1">#ed9818</color>
+    <color name="orange_shade2">#fac34d</color>
+    <color name="bk_transfer_type_color">#717171</color>
+    <color name="product_border">#e5e5e5</color>
+
+
+    <color name="log_gray_text_color">#a3737373</color>
+
+
+    <!--   <color name="colorPrimary">#3F51B5</color>
+        <color name="colorPrimaryDark">#303F9F</color>-->
+</resources>

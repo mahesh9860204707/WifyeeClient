@@ -62,6 +62,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
     /**
      * List of actions supported.
      */
+
     private String[] broadCastReceiverActionList = {
             ACTION_STATUS,
             ACTION_STATUS_FAIL,
@@ -147,6 +148,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
                  data.put("amount",getIntent().getStringExtra("pay_amount"));
                 //data.put("amount","10");
                 data.put("loginType", "client");
+                data.put("transactionPurpose", "other order purchase");
                 data.put("userid", LocalPreferenceUtility.getUserCode(DairyOrderSummaryWebViewActivity.this));
                 data.put("buyerMobile",LocalPreferenceUtility.getUserMobileNumber(DairyOrderSummaryWebViewActivity.this));
                 data.put("buyerEmail",LocalPreferenceUtility.getUserEmail(DairyOrderSummaryWebViewActivity.this));
@@ -178,6 +180,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
         @JavascriptInterface
         public void processContent(String aContent) {
             final String content = aContent;
+            Log.e("PAYMENT",aContent);
             if (content.toLowerCase().contains("status") || content.toLowerCase().contains("Credit")){
                    // || content.toLowerCase().contains(DairyNetworkConstant.ORDER_REF_ID) ) {
 

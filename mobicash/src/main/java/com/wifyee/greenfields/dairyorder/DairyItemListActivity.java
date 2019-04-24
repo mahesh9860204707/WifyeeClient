@@ -255,7 +255,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             orderItem.add(data);
 
             insert(item.getItemImagePath(), item.getItemName(), item.getItemQuality(), merId, itemId,
-                    quantity, quantityUnit, item.getItemPrice());
+                    quantity, quantityUnit, item.getItemPrice(),item.getItemDiscount());
     }
 
     @Override
@@ -347,14 +347,14 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
     }
 
     private void insert(String image_path,String item_name, String item_type, String merchant_id,
-                        String item_id, String quantity, String unit,String price){
+                        String item_id, String quantity, String unit,String price,String discount){
         SQLController controller = new SQLController(getApplicationContext());
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "Insert into cart(image_path,item_name,item_type,merchant_id,item_id,quantity,unit,price) values " +
-                "('"+image_path+"','"+item_name+"','"+item_type+"','"+merchant_id+"','"+item_id+"','"+quantity+"','"+unit+"','"+price+"');";
+        String query = "Insert into cart(image_path,item_name,item_type,merchant_id,item_id,quantity,unit,price,discount) values " +
+                "('"+image_path+"','"+item_name+"','"+item_type+"','"+merchant_id+"','"+item_id+"','"+quantity+"','"+unit+"','"+price+"','"+discount+"');";
 
         Log.e("query",query);
 

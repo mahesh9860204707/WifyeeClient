@@ -8,7 +8,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green_shade"
+        android:background="@color/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -21,7 +21,7 @@
         <WebView
             android:id="@+id/webView1"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></WebView>
+            android:layout_height="fill_parent"/>
 
         <LinearLayout
             android:id="@+id/refresh_list"

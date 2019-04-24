@@ -246,6 +246,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
                 String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
                 String unit = cursor.getString(cursor.getColumnIndex("unit"));
                 String price = cursor.getString(cursor.getColumnIndex("price"));
+                String discount = cursor.getString(cursor.getColumnIndex("discount"));
 
                 double calculateAmount = Double.parseDouble(price) * Integer.parseInt(quantity);
 
@@ -259,6 +260,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
                 data.setQuantityUnit(unit);
                 data.setOrderPrice(price);
                 data.setCalculatedAmt(String.valueOf(calculateAmount));
+                data.setItemDiscount(discount);
                 orderItem.add(data);
 
             }while (cursor.moveToNext());

@@ -8,8 +8,8 @@ android {
         applicationId "com.wifyee.greenfields"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 67
-        versionName "1.2.25"
+        versionCode 69
+        versionName "1.2.26"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

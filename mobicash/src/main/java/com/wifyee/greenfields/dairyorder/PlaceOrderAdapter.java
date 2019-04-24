@@ -103,7 +103,9 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
                     myViewHolder.integerNumber.setText("" + value);
                     place.setQuantity(myViewHolder.integerNumber.getText().toString());
                     double sum = Double.parseDouble(place.getOrderPrice()) * value;
-                    myViewHolder.tvPrice.setText(""+sum);
+                    double discount = Double.parseDouble(place.getItemDiscount()) * value;
+                    myViewHolder.discountAmt.setText("Discount ₹"+discount);
+                    myViewHolder.tvPrice.setText("₹"+sum);
                     updateCart(place.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
                 }
@@ -122,7 +124,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
 
         public TextView textViewType;
         public CircleImageView imageView;
-        public TextView tvQuality;
+        public TextView tvQuality,discountAmt;
         public TextView tvPrice;
         public TextView tvItemUnit;
         public TextView tvQuantity,integerNumber;
@@ -143,12 +145,13 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
             decrease = (ImageView) v.findViewById(R.id.decrease);
             integerNumber = (TextView) v.findViewById(R.id.integer_number);
             exceed = (View) v.findViewById(R.id.exceed);
+            discountAmt = (TextView) v.findViewById(R.id.distcount_amt);
         }
 
         public void setData(PlaceOrderData item) {
             //this.item = item;
             textViewType.setText(item.getItemName());
-            tvPrice.setText("Rs " + item.getCalculatedAmt());
+            tvPrice.setText("₹" + item.getCalculatedAmt());
             tvQuantity.setText("Total item:"+item.getQuantity());
             integerNumber.setText(item.getQuantity());
             tvQuality.setText(item.getItemType());
@@ -156,6 +159,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
             Picasso.with(mContext)
                     .load(item.getItemImagePath())
                     .noFade().into(imageView);
+            discountAmt.setText("Discount: ₹"+item.getItemDiscount());
 
         }
 
@@ -215,7 +219,9 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
                         if(quantity<=qty){
                             viewHolder.integerNumber.setText("" + quantity);
                             double sum = Double.parseDouble(place.getOrderPrice()) * quantity;
-                            viewHolder.tvPrice.setText(""+sum);
+                            double discount = Double.parseDouble(place.getItemDiscount()) * quantity;
+                            viewHolder.tvPrice.setText("₹"+sum);
+                            viewHolder.discountAmt.setText("Discount ₹"+discount);
                             place.setQuantity(viewHolder.integerNumber.getText().toString());
                             updateCart(itemId,String.valueOf(quantity));
                             fInterface.fragmentBecameVisible();

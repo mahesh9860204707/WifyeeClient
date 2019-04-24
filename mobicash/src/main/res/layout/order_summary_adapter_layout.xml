@@ -70,6 +70,24 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/distcount_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/textViewType"
+                android:layout_toRightOf="@+id/textViewQuality"
+                android:gravity="left"
+                android:text="Discount: ₹ "
+                android:textColor="@color/white"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:textSize="12sp"
+                android:background="@color/blue_highlightener_color"/>
+
+            <TextView
                 android:id="@+id/textViewPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

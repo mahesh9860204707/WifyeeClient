@@ -20,6 +20,7 @@ public class PlaceOrderData implements Parcelable {
     private String itemImagePath;
     private String merchantId;
     private String calculatedAmt;
+    private String itemDiscount;
 
     public PlaceOrderData() {}
 
@@ -45,6 +46,7 @@ public class PlaceOrderData implements Parcelable {
         dest.writeString(getItemImagePath());
         dest.writeString(getMerchantId());
         dest.writeString(getCalculatedAmt());
+        dest.writeString(getItemDiscount());
         //dest.writeByte((byte) (this.isExceed ? 1 : 0));
     }
 
@@ -69,6 +71,7 @@ public class PlaceOrderData implements Parcelable {
         this.itemImagePath = in.readString();
         this.merchantId = in.readString();
         this.calculatedAmt = in.readString();
+        this.itemDiscount = in.readString();
         //this.isExceed = in.readByte() == 1;
 
     }
@@ -205,5 +208,13 @@ public class PlaceOrderData implements Parcelable {
 
     public void setCalculatedAmt(String calculatedAmt) {
         this.calculatedAmt = calculatedAmt;
+    }
+
+    public String getItemDiscount() {
+        return itemDiscount;
+    }
+
+    public void setItemDiscount(String itemDiscount) {
+        this.itemDiscount = itemDiscount;
     }
 }

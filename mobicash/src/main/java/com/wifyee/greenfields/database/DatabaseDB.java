@@ -13,6 +13,7 @@ public class DatabaseDB {
             ",  quantity TEXT " +
             ",  unit TEXT " +
             ",  price TEXT " +
+            ",  discount TEXT " +
             ",  active_status INTEGER);";
 
     public String Address="CREATE TABLE IF NOT EXISTS address(" +

@@ -57,8 +57,8 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
     private String pay_mode="";
     private ArrayList<PlaceOrderData> orderData;
     private String totalAmount;
-    private String payAmount,location,latitude,longitude,complete_add;
-
+    private String payAmount,location,latitude,longitude,complete_add,discount_amt,dateFrom,dateTo,
+            perDay,claimType,voucherId,voucherNo;
     /**
      * List of actions supported.
      */
@@ -141,7 +141,15 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
         location = getIntent().getStringExtra("location");
         latitude = getIntent().getStringExtra("latitude");
         longitude = getIntent().getStringExtra("longitude");
-        complete_add = getIntent().getStringExtra("complete_add ");
+        complete_add = getIntent().getStringExtra("complete_add");
+        discount_amt = getIntent().getStringExtra("discount_amt");
+        dateFrom = getIntent().getStringExtra("date_from");
+        dateTo = getIntent().getStringExtra("date_to");
+        perDay = getIntent().getStringExtra("per_day");
+        claimType = getIntent().getStringExtra("claim_type");
+        voucherId = getIntent().getStringExtra("voucher_id");
+        voucherNo = getIntent().getStringExtra("voucher_no");
+
         if(intent!=null) {
             JSONObject data = new JSONObject();
             try {
@@ -158,7 +166,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
                 Log.d("url",DairyNetworkConstant.PAYMENT_URL);
                  //Show the web page
                 webView.postUrl(DairyNetworkConstant.PAYMENT_URL, ("data=" + data.toString()).getBytes());
-              //  webView.loadUrl("http://google.com");
+                //webView.loadUrl("http://google.com");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -245,7 +253,9 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
                             String refId3 = refId2.substring(refId2.indexOf("/")+1);
                             String refId = refId3.substring(0,(refId3.indexOf("/") - 1));
                             DairyProductIntentService.startActionAddOrder(DairyOrderSummaryWebViewActivity.this, orderData,
-                                    payAmount, DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO, refId,location,latitude,longitude,complete_add);
+                                    payAmount, DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO, refId,
+                                    location,latitude,longitude,complete_add,discount_amt,dateFrom,dateTo,
+                                    perDay,claimType,voucherId,voucherNo);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -307,7 +317,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "DELETE from cart";
+        String query = "DELETE from cart_item";
         String result = controller.fireQuery(query);
         if(result.equals("Done")){
             Log.w("delete","Delete all successfully");

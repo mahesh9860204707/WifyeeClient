@@ -1,7 +1,10 @@
 package com.wifyee.greenfields.dairyorder;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +15,18 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.AddAddress;
+import com.wifyee.greenfields.database.DatabaseDB;
+import com.wifyee.greenfields.database.SQLController;
 
 import org.w3c.dom.Text;
 
@@ -54,6 +61,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         public ImageView decrease;
         public CheckBox chbbuy;
         public Spinner spinner;
+        public LinearLayout ll;
         DairyProductListItem item;
 
         public ViewHolder(View v) {
@@ -75,6 +83,8 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
             unit = (TextView) v.findViewById(R.id.unit);
             out_of_stock = (TextView) v.findViewById(R.id.out_of_stock);
             chbbuy = (CheckBox)v.findViewById(R.id.chb_buy);
+            ll = (LinearLayout)v.findViewById(R.id.ll);
+
             increase.setOnClickListener(this);
             decrease.setOnClickListener(this);
             spinner.setOnItemSelectedListener(this);
@@ -139,44 +149,59 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         myViewHolder.setData((DairyProductListItem) mValues.get(position));
 
         int qty = Integer.parseInt(((DairyProductListItem)mValues.get(position)).getItemQuantity());
-        if(qty<=0){
-            myViewHolder.out_of_stock.setVisibility(View.VISIBLE);
-            myViewHolder.imageView.setAlpha(0.4f);
+        if(qty<=0 || ((DairyProductListItem) mValues.get(position)).getCurrentStatus().equals("0")){
+            if (qty<=0) {
+                myViewHolder.out_of_stock.setVisibility(View.VISIBLE);
+                myViewHolder.imageView.setAlpha(0.4f);
+            }
+            if (((DairyProductListItem) mValues.get(position)).getCurrentStatus().equals("0")){
+                myViewHolder.ll.setAlpha(0.4f);
+            }
             myViewHolder.chbbuy.setEnabled(false);
-            myViewHolder.increase.setEnabled(false);
-            myViewHolder.decrease.setEnabled(false);
+            //myViewHolder.increase.setEnabled(false);
+            //myViewHolder.decrease.setEnabled(false);
             myViewHolder.chbbuy.setAlpha(0.5f);
             //myViewHolder.itemView.setEnabled(false);
         }else{
             myViewHolder.out_of_stock.setVisibility(View.GONE);
             myViewHolder.imageView.setAlpha(1f);
+            myViewHolder.ll.setAlpha(1f);
             myViewHolder.chbbuy.setEnabled(true);
-            myViewHolder.increase.setEnabled(true);
-            myViewHolder.decrease.setEnabled(true);
+            //myViewHolder.increase.setEnabled(true);
+            //myViewHolder.decrease.setEnabled(true);
             myViewHolder.chbbuy.setAlpha(1f);
         }
 
-        myViewHolder.chbbuy.setOnClickListener(new View.OnClickListener() {
+        if(checkInCart(((DairyProductListItem) mValues.get(position)).getItemId())!=0){
+            myViewHolder.chbbuy.setChecked(true);
+            myViewHolder.chbbuy.setText(mContext.getString(R.string.cart));
+        }else {
+            myViewHolder.chbbuy.setChecked(false);
+            myViewHolder.chbbuy.setText(mContext.getString(R.string.buy));
+        }
 
-            @Override
-            public void onClick(View arg0) {
-                if(myViewHolder.chbbuy.isChecked() && myViewHolder.chbbuy.getText().equals(mContext.getString(R.string.buy))){
-                    mListener.onBuyCallBack(((DairyProductListItem) mValues.get(position)),
-                            ((DairyProductListItem) mValues.get(position)).getItemId(),
-                            myViewHolder.integerNumber.getText().toString(),
-                            myViewHolder.unit.getText().toString());
-                    myViewHolder.chbbuy.setText(mContext.getString(R.string.cart));
-                    LocalPreferenceUtility.putLatitudeOther(mContext,LocalPreferenceUtility.getLatitude(mContext));
-                    LocalPreferenceUtility.putLongitudeOther(mContext,LocalPreferenceUtility.getLongitude(mContext));
-                    Log.e("Lat","Lat set in other cart");
+            myViewHolder.chbbuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    if((myViewHolder.chbbuy.isEnabled())) {
+                        if (myViewHolder.chbbuy.isChecked() && myViewHolder.chbbuy.getText().equals(mContext.getString(R.string.buy))) {
+                            mListener.onBuyCallBack(((DairyProductListItem) mValues.get(position)),
+                                    ((DairyProductListItem) mValues.get(position)).getItemId(),
+                                    myViewHolder.integerNumber.getText().toString(),
+                                    myViewHolder.unit.getText().toString());
+                            myViewHolder.chbbuy.setText(mContext.getString(R.string.cart));
+                            LocalPreferenceUtility.putLatitudeOther(mContext, LocalPreferenceUtility.getLatitude(mContext));
+                            LocalPreferenceUtility.putLongitudeOther(mContext, LocalPreferenceUtility.getLongitude(mContext));
+                            //Log.e("Lat","Lat set in other cart");
 
 
-                }else if(!myViewHolder.chbbuy.isChecked() && myViewHolder.chbbuy.getText().equals(mContext.getString(R.string.cart))){
-                    mListener.onRemoveCartCallBack(((DairyProductListItem) mValues.get(position)).getItemId());
-                    myViewHolder.chbbuy.setText(mContext.getString(R.string.buy));
+                        } else if (!myViewHolder.chbbuy.isChecked() && myViewHolder.chbbuy.getText().equals(mContext.getString(R.string.cart))) {
+                            mListener.onRemoveCartCallBack(((DairyProductListItem) mValues.get(position)).getItemId());
+                            myViewHolder.chbbuy.setText(mContext.getString(R.string.buy));
+                        }
+                    }
                 }
-            }
-        });
+            });
 
         myViewHolder.increase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +220,18 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
                     myViewHolder.integerNumber.setText("" + value);
             }
         });
+
+        /*if(((DairyProductListItem) mValues.get(position)).getCurrentStatus().equals("0")){
+            myViewHolder.ll.setAlpha(0.4f);
+                *//*ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                imageView.setColorFilter(filter);*//*
+            myViewHolder.chbbuy.setEnabled(false);
+        }else {
+            myViewHolder.ll.setAlpha(1f);
+            myViewHolder.chbbuy.setEnabled(true);
+        }*/
     }
 
 
@@ -209,5 +246,23 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         void onItemClick(DairyProductListItem item);
         void onBuyCallBack(DairyProductListItem item,String itemId,String quantity,String qtyInUnit);
         void onRemoveCartCallBack(String topicId);
+    }
+
+    public int checkInCart(String itemId) {
+        int total=0;
+        SQLController controller=new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT item_id from cart_item where item_id='"+itemId+"'";
+
+        Cursor data = controller.retrieve(query);
+
+        total = data.getCount();
+        Log.e("itemCount",String.valueOf(total));
+
+        data.close();
+        controller.close();
+        return total;
     }
 }

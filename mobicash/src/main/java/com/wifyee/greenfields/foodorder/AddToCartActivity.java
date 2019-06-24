@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -37,11 +38,17 @@ import com.wifyee.greenfields.SharedPrefence.SharedPreference;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.activity.AddAddress;
+import com.wifyee.greenfields.activity.MobicashDashBoardActivity;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
+import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
+import com.wifyee.greenfields.dairyorder.PlaceOrderData;
+import com.wifyee.greenfields.database.DatabaseDB;
+import com.wifyee.greenfields.database.SQLController;
 import com.wifyee.greenfields.foodorder.SharedPrefenceAdapter;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.PaymentConstants;
 import com.wifyee.greenfields.foodorder.CartFoodOderRequest;
+import com.wifyee.greenfields.interfaces.FragmentInterface;
 import com.wifyee.greenfields.mapper.*;
 import com.wifyee.greenfields.models.requests.DeductMoneyWallet;
 import com.wifyee.greenfields.foodorder.Items;
@@ -68,7 +75,7 @@ import java.util.Locale;
 
 import static com.wifyee.greenfields.activity.WebViewActivity.ACTION_STATUS_VALUE;
 
-public class AddToCartActivity extends AppCompatActivity {
+public class AddToCartActivity extends AppCompatActivity implements FragmentInterface {
 
     private Toolbar mToolbar;
     private ImageButton back;
@@ -87,8 +94,8 @@ public class AddToCartActivity extends AppCompatActivity {
     public ProgressDialog progressDialog = null;
     ///  public static List<SharedPrefenceList> DefaultOder_list;
     ArrayList<SharedPrefenceList> Current_favoritesList = new ArrayList<>();
-    static public TextView tv_totalamount;
-    private List<SharedPrefenceList> favorites;
+    public TextView tv_totalamount;
+    private List<SharedPrefenceList> favorites = new ArrayList<>();
     RelativeLayout rl_address;
     LinearLayout llBottom;
     public static boolean is_address_set;
@@ -112,9 +119,11 @@ public class AddToCartActivity extends AppCompatActivity {
         selected_merchant=(TextView)findViewById(R.id.merchant_names);
         sharedPreference = new SharedPreference(mcontext);
         // DefaultOder_list= sharedPreference.getFavorites(mcontext);
-        favorites = sharedPreference.getFavorites(mcontext);
+        //favorites = sharedPreference.getFavorites(mcontext);
+
         selected_merchant.setText(LocalPreferenceUtility.getMerchantName(mcontext));
-        MobicashIntentService.startActionGstONFoodItem(mcontext);
+
+        //MobicashIntentService.startActionGstONFoodItem(mcontext);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
@@ -124,31 +133,6 @@ public class AddToCartActivity extends AppCompatActivity {
             back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   /* String json = "{\"responseStatus\":\"success\",\"responseCode\":\"000\",\"ResponseMsg\":\"Transaction has been done successfully.\",\"RefId\":\"6683597859\",\"userId\":\"222\",\"userType\":\"client\",\"merIdtId\":\"\",\"transactionAmount\":\"1.00\",\"orderId\":\"1462284021\",\"transactionId\":\"178\",\"productInfo\":\"Airtime Mobile\"}";
-                   try {
-                        JSONObject response = new JSONObject(json);
-                        response.getString("responseStatus");
-                        if (response != null) {
-                            PayUPaymentGatewayResponse  payUPaymentGatewayResponse = new PayUPaymentGatewayResponse();
-                            if (response.has(ResponseAttributeConstants.RESPONSE_STATUS))
-                                payUPaymentGatewayResponse.responseStatus = response.getString(ResponseAttributeConstants.RESPONSE_STATUS);
-                            if (response.has(ResponseAttributeConstants.RESPONSE_CODE))
-                                payUPaymentGatewayResponse.responseCode = response.getString(ResponseAttributeConstants.RESPONSE_CODE);
-                            if (response.has(ResponseAttributeConstants.RESPONSE_MSG))
-                                payUPaymentGatewayResponse.ResponseMsg = response.getString(ResponseAttributeConstants.RESPONSE_MSG);
-                            if (response.has(ResponseAttributeConstants.REF_ID))
-                                payUPaymentGatewayResponse.RefId = response.getString(ResponseAttributeConstants.REF_ID);
-                            if (response.has(ResponseAttributeConstants.CLI_IDT_ID))
-                                payUPaymentGatewayResponse.cliIdtId = response.getString(ResponseAttributeConstants.CLI_IDT_ID);
-                            if (response.has(ResponseAttributeConstants.MER_IDT_ID))
-                                payUPaymentGatewayResponse.merIdtId = response.getString(ResponseAttributeConstants.MER_IDT_ID);
-                        }
-                        Log.d("My App", response.toString());
-                        Log.d("phonetype value ", response.getString("phonetype"));
-
-                    } catch (Throwable tx) {
-                        Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
-                    }*/
                     finish();
                     overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 }
@@ -166,7 +150,7 @@ public class AddToCartActivity extends AppCompatActivity {
                 if (!tv_totalamount.getText().toString().equalsIgnoreCase("0.0")) {
                     double h = (gst * Double.parseDouble(tv_totalamount.getText().toString())) / 100;
                     total_amount = Double.parseDouble(tv_totalamount.getText().toString()) + h;
-                    Toast.makeText(getApplicationContext(), String.valueOf(total_amount), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), String.valueOf(total_amount), Toast.LENGTH_SHORT).show();
                     setDialog();
                   //  MobicashIntentService.startActionSendFoodRequest(mcontext,getaddToCartRequest(String.valueOf(total_amount)));
                 }
@@ -194,23 +178,80 @@ public class AddToCartActivity extends AppCompatActivity {
             }
         });
 
-        if (favorites != null) {
-            Double totalamount = 0.00;
+        //if (favorites != null) {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
             recyclerView_favorites.setLayoutManager(linearLayoutManager);
-            favoritesAdapter = new SharedPrefenceAdapter(mcontext, recyclerView_favorites, favorites);
-            for (int k = 0; k < favorites.size(); k++) {
-                try {
-                    String pricevlaue = favorites.get(k).price.trim();
-                    Double current = Double.valueOf(pricevlaue);
-                    totalamount = current + totalamount;
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-            }
-            tv_totalamount.setText(String.valueOf(totalamount));
+            favoritesAdapter = new SharedPrefenceAdapter(mcontext, recyclerView_favorites, favorites,this);
             recyclerView_favorites.setAdapter(favoritesAdapter);
-            favoritesAdapter.notifyDataSetChanged();
+
+            //fillList();
+
+        //}
+    }
+
+    public void fillList() {
+        SQLController controller=new SQLController(getApplicationContext());
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT * from food_cart_item order by id desc";
+
+        Cursor cursor = controller.retrieve(query);
+        if(cursor.getCount()>0){
+            Log.e("if","in if");
+            //emptyCartIcon.setVisibility(View.GONE);
+            //emptyCartTxt.setVisibility(View.GONE);
+            //recyclerView.setVisibility(View.VISIBLE);
+            //rl_discount.setVisibility(View.VISIBLE);
+            //rlBottom.setVisibility(View.VISIBLE);
+            cursor.moveToFirst();
+            do{
+                String image_path =  cursor.getString(cursor.getColumnIndex("image_path"));
+                String item_name =  cursor.getString(cursor.getColumnIndex("item_name"));
+                String item_id = cursor.getString(cursor.getColumnIndex("item_id"));
+                String item_description = cursor.getString(cursor.getColumnIndex("item_description"));
+                String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
+                String price = cursor.getString(cursor.getColumnIndex("price"));
+
+                double calculateAmount = Double.parseDouble(price) * Integer.parseInt(quantity);
+
+                SharedPrefenceList data = new SharedPrefenceList();
+                data.setFoodImage(image_path);
+                data.setName(item_name);
+                data.setItemId(item_id);
+                data.setDescription(item_description);
+                data.setQuantiy(quantity);
+                data.setPrice(price);
+                data.setCalculatedAmt(String.valueOf(calculateAmount));
+                favorites.add(data);
+                Log.w("data ","Data Fetched");
+
+            }while (cursor.moveToNext());
+        }else {
+            //Log.e("else","in else");
+            //recyclerView.setVisibility(View.GONE);
+            //rl_discount.setVisibility(View.GONE);
+            //emptyCartIcon.setVisibility(View.VISIBLE);
+            //emptyCartTxt.setVisibility(View.VISIBLE);
+            //rlBottom.setVisibility(View.GONE);
+        }
+
+        favoritesAdapter.notifyDataSetChanged();
+        cursor.close();
+        controller.close();
+
+        Double totalamount = 0.00;
+        for (int k = 0; k < favorites.size(); k++) {
+            try {
+                String pricevlaue = favorites.get(k).calculatedAmt.trim();
+                Double current = Double.valueOf(pricevlaue);
+                totalamount = current + totalamount;
+                Log.e("amount",String.valueOf(totalamount));
+                tv_totalamount.setText(String.valueOf(totalamount));
+
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -278,6 +319,7 @@ public class AddToCartActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
     private DeductMoneyWallet getpaymetbywallet(String amount) {
         DeductMoneyWallet foodPaymentbywallet = new DeductMoneyWallet();
         foodPaymentbywallet.clientMobile = LocalPreferenceUtility.getUserMobileNumber(mcontext);
@@ -295,6 +337,7 @@ public class AddToCartActivity extends AppCompatActivity {
         ;
         return foodPaymentbywallet;
     }
+
     private CartFoodOderRequest getaddToCartRequest(String finalprice) {
         foodOrderRequest =new CartFoodOderRequest();
         itemsArrayList.clear();
@@ -305,12 +348,11 @@ public class AddToCartActivity extends AppCompatActivity {
         String code_format=format.format(today);
         foodOrderRequest.orderId ="C_"+LocalPreferenceUtility.getMerchantId(mcontext)+code_format;
 
-        for (int y = 0; y < sharedPreference.getFavorites(mcontext).size(); y++) {
-           itemsArrayList.add(new Items(sharedPreference.getFavorites(mcontext).get(y).mercantId,
-                   sharedPreference.getFavorites(mcontext).get(y).quantiy,
-                   sharedPreference.getFavorites(mcontext).get(y).price));
+        for (int y = 0; y < favorites.size(); y++) {
+           itemsArrayList.add(new Items(favorites.get(y).itemId, favorites.get(y).quantiy, favorites.get(y).price));
            foodOrderRequest.setItems(itemsArrayList);
         }
+
         if (paymentSelectedIndex==0) {
             foodOrderRequest.payment_mode="wallet";
         } else if (paymentSelectedIndex==1)  {
@@ -353,12 +395,18 @@ public class AddToCartActivity extends AppCompatActivity {
             broadcastManager.registerReceiver(gstOnFoodItem, new IntentFilter(action));
         }
 
-        sharedPreference=new SharedPreference(mcontext);
-        favorites=sharedPreference.getFavorites(mcontext);
-        favoritesAdapter = new SharedPrefenceAdapter(mcontext, recyclerView_favorites, favorites);
-        recyclerView_favorites.setAdapter(favoritesAdapter);
-        favoritesAdapter.notifyDataSetChanged();
-        if (favorites != null) {
+        if (favorites!=null){
+            favorites.clear();
+        }
+
+        fillList();
+
+        //sharedPreference=new SharedPreference(mcontext);
+        //favorites = sharedPreference.getFavorites(mcontext);
+        //favoritesAdapter = new SharedPrefenceAdapter(mcontext, recyclerView_favorites, favorites);
+        //recyclerView_favorites.setAdapter(favoritesAdapter);
+        //favoritesAdapter.notifyDataSetChanged();
+        /*if (favorites != null) {
             Double totalamount = 0.00;
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
             recyclerView_favorites.setLayoutManager(linearLayoutManager);
@@ -375,7 +423,7 @@ public class AddToCartActivity extends AppCompatActivity {
             tv_totalamount.setText(String.valueOf(totalamount));
             recyclerView_favorites.setAdapter(favoritesAdapter);
             favoritesAdapter.notifyDataSetChanged();
-        }
+        }*/
 
         if (is_address_set){
             rl_address.setVisibility(View.VISIBLE);
@@ -409,6 +457,7 @@ public class AddToCartActivity extends AppCompatActivity {
             NetworkConstant.STATUS_DEDUCTMONEY_WALLET_SUCCESS,
             NetworkConstant.STATUS_DEDUCT_MONEY_WALLET_FAIL
     };
+
     private BroadcastReceiver gstOnFoodItem = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -493,6 +542,7 @@ public class AddToCartActivity extends AppCompatActivity {
             alertDialog.setCancelable(true);
             alertDialog.show();
         }
+
         private void showSuccessDialog(final String msg) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mcontext);
             alertDialogBuilder
@@ -501,17 +551,17 @@ public class AddToCartActivity extends AppCompatActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
-                            SharedPreference sharedPreference = new SharedPreference();
-                            sharedPreference.clearCart(AddToCartActivity.this);
-                            finish();
+                            deleteCart();
+                            startActivity(new Intent(AddToCartActivity.this, MobicashDashBoardActivity.class));
                             overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-
+                            finish();
                         }
                     });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
     };
+
     private void onPayUSuccess(PayUPaymentGatewayResponse payUPaymentGatewayResponse) {
         cancelProgressDialog();
         //sharedPreference.removeFavoriteItem(mcontext, curent_productItem);
@@ -597,6 +647,7 @@ public class AddToCartActivity extends AppCompatActivity {
          // showSuccessDialog("Transaction Fail");
         }
     }
+
     private void showSuccessDialog(final String msg) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mcontext);
         alertDialogBuilder
@@ -611,6 +662,34 @@ public class AddToCartActivity extends AppCompatActivity {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void fragmentBecameVisible() {
+        double amount = 0.0;
+        if(favorites.size()>0){
+            for(int i= 0;i<favorites.size();i++){
+                int quantityValue = Integer.parseInt(favorites.get(i).getQuantiy());
+                double quantityAmount = (quantityValue * Double.parseDouble(favorites.get(i).getPrice()));
+                amount = amount + quantityAmount;
+            }
+        }
+        tv_totalamount.setText(String.valueOf(amount));
+    }
+
+    private void deleteCart(){
+        SQLController controller=new SQLController(AddToCartActivity.this);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "DELETE from food_cart_item";
+        String result = controller.fireQuery(query);
+        if(result.equals("Done")){
+            Log.w("delete","Delete all successfully");
+        }else {
+            Log.w("result",result);
+        }
+        controller.close();
     }
 
     /*@Override
@@ -633,5 +712,3 @@ public class AddToCartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }*/
 }
-
-

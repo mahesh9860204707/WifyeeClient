@@ -24,6 +24,7 @@ public class DairyMerchantListModel implements Parcelable {
     private String idtNationality;
     private String idtContactPhone;
     private String idtAlternatePhone;
+    private String currentStatus;
 
     public DairyMerchantListModel() {
 
@@ -38,12 +39,22 @@ public class DairyMerchantListModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
        dest.writeString(getId());
-        dest.writeString(getName());dest.writeString(getCompany());
-        dest.writeString(getType()); dest.writeString(getImage()); dest.writeString(getIdtId());
-        dest.writeString(getIdtName());  dest.writeString(getIdtRole());dest.writeString(getIdtEmail());
-        dest.writeString(getIdtAddress());dest.writeString(getIdtCity());dest.writeString(getIdtZipCode());
-        dest.writeString(getIdtFax());dest.writeString(getIdtNationality());dest.writeString(getIdtContactPhone());
+        dest.writeString(getName());
+        dest.writeString(getCompany());
+        dest.writeString(getType());
+        dest.writeString(getImage());
+        dest.writeString(getIdtId());
+        dest.writeString(getIdtName());
+        dest.writeString(getIdtRole());
+        dest.writeString(getIdtEmail());
+        dest.writeString(getIdtAddress());
+        dest.writeString(getIdtCity());
+        dest.writeString(getIdtZipCode());
+        dest.writeString(getIdtFax());
+        dest.writeString(getIdtNationality());
+        dest.writeString(getIdtContactPhone());
         dest.writeString(getIdtAlternatePhone());
+        dest.writeString(getCurrentStatus());
     }
 
     /**
@@ -68,6 +79,7 @@ public class DairyMerchantListModel implements Parcelable {
         this.idtNationality = in.readString();
         this.idtContactPhone = in.readString();
         this.idtAlternatePhone = in.readString();
+        this.currentStatus = in.readString();
     }
 
     public static final Parcelable.Creator<DairyMerchantListModel> CREATOR = new Parcelable.Creator<DairyMerchantListModel>() {
@@ -225,5 +237,13 @@ public class DairyMerchantListModel implements Parcelable {
 
     public void setIdtAlternatePhone(String idtAlternatePhone) {
         this.idtAlternatePhone = idtAlternatePhone;
+    }
+
+    public String getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
     }
 }

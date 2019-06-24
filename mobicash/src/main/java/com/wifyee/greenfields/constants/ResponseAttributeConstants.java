@@ -117,6 +117,7 @@ public class ResponseAttributeConstants {
     public static final String RESTAURANRAME = "restaurant_name";
     public static final String RESTAURANT = "restaurant";
     public static final String LOGO = "logo";
+    public static final String CURRENT_STATUS = "current_status";
     public static final String STATUS = "status";
     public static final String ITEM = "items";
     public static final String USERTYPE="user_type";
@@ -194,6 +195,7 @@ public class ResponseAttributeConstants {
     public static final String ADDRESS1 = "address1";
     public static final String STATE = "state";
     public static final String USER_ID = "userId";
+    public static final String TOKEN = "token";
     public static final String USER_TYPE = "userType";
     public static final String BANK_CODE = "bankCode";
     public static final String CCNAME = "ccname";

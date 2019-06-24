@@ -1,11 +1,15 @@
 package com.wifyee.greenfields.activity;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
@@ -43,10 +47,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -57,10 +65,15 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.compat.Place;
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete;
 import com.google.android.libraries.places.compat.ui.PlaceSelectionListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.MobicashApplication;
@@ -148,6 +161,8 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
     GPSTracker gps;
     Geocoder geocoder;
     List<Address> addresses;
+    String currentVersion,newVersion;
+    LinearLayout ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,6 +287,39 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         } else {
             gps.showSettingsAlert();
         }
+
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            CheckVersion(currentVersion);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("MyNotifications","MyNotifications", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }*/
+
+        FirebaseMessaging.getInstance().subscribeToTopic("All");
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String msg = task.getResult().getToken();
+                        sendRegistrationToServer(msg);
+                        Log.d(TAG, msg);
+                    }
+                });
+
     }
 
     @Override
@@ -596,11 +644,25 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         if (id == R.id.home) {
             //new HomeFragment();
 
-        } else if (id == R.id.transfer) {
+        } else if (id == R.id.my_cashback) {
+            Intent intent = new Intent(MobicashDashBoardActivity.this,MyCashback.class);
+            startActivity(intent);
              //new BankTransferFragment();
 
         } else if (id == R.id.beneficiary) {
             //new ManageBeneficiaryFragment();
+
+        }  else if (id == R.id.refund_cancellation) {
+                Intent intent = new Intent(MobicashDashBoardActivity.this,WebViewPolicy.class);
+                intent.putExtra("url",NetworkConstant.REFUND_CANCELLATION);
+                intent.putExtra("title","Refund & Cancellation");
+                startActivity(intent);
+
+        }  else if (id == R.id.privacy_policy) {
+            Intent intent = new Intent(MobicashDashBoardActivity.this,WebViewPolicy.class);
+            intent.putExtra("url",NetworkConstant.PRIVACY_POLICY);
+            intent.putExtra("title","Privacy Policy");
+            startActivity(intent);
 
         }  else if (id == R.id.nav_share) {
             try {
@@ -642,14 +704,14 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         public View getTabView(int position) {
             // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
             View view = LayoutInflater.from(MobicashDashBoardActivity.this).inflate(R.layout.custom_tab, null);
-            TextView title = (TextView) view.findViewById(R.id.title);
+            TextView title =  view.findViewById(R.id.title);
             title.setText(mTabsTitle[position]);
-            ImageView icon = (ImageView) view.findViewById(R.id.icon);
+            ImageView icon =  view.findViewById(R.id.icon);
             icon.setImageResource(mTabsIcons[position]);
-            TextView b = (TextView) view.findViewById(R.id.badge);
-            LinearLayout ll = view.findViewById(R.id.badgeCotainer);
+            TextView b =  view.findViewById(R.id.badge);
+            ll = view.findViewById(R.id.badgeCotainer);
             if(position==2) {
-                setupBadge(b,ll);
+                //setupBadge(b,ll);
             }
 
             return view;
@@ -664,6 +726,7 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
                     //return new BankTransferFragment();
                     return new OrderFragment();
                 case 2:
+                    //ll.setVisibility(View.GONE);
                     return new MyCartFragment();
                 case 3:
                     return new LogFragment();
@@ -700,7 +763,7 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
             controller.open();
             DatabaseDB db = new DatabaseDB();
             db.createTables(controller);
-            String query = "SELECT count(*) as total from cart";
+            String query = "SELECT count(*) as total from cart_item";
 
             Cursor data = controller.retrieve(query);
             if(data.getCount()>0){
@@ -1044,4 +1107,162 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         }
         return addr;
     }
+
+    private void CheckVersion(final String currentVersion){
+
+        String uri = NetworkConstant.CHECK_VERSION;
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.w("JSON",response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    newVersion = object.getString("app_version");
+
+                    if (Float.valueOf(currentVersion) < Float.valueOf(newVersion)) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MobicashDashBoardActivity.this);
+                        alert.setTitle("Update");
+                        alert.setCancelable(false);
+                        alert.setMessage("Please update to new version to continue use");
+                        alert.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                                }
+                            }
+                        });
+
+                        alert.show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error",error.toString());
+                //Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(policy);
+        requestQueue.add(stringRequest);
+    }
+
+    private void sendRegistrationToServer(String token) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put(ResponseAttributeConstants.USER_TYPE, "client");
+                jsonObject.put(ResponseAttributeConstants.USER_ID, LocalPreferenceUtility.getUserCode(getApplicationContext()));
+                jsonObject.put(ResponseAttributeConstants.TOKEN, token);
+                Log.e("json", jsonObject.toString());
+            } catch (JSONException e) {
+                Timber.e("JSONException. message : " + e.getMessage());
+            }
+            AndroidNetworking.post(NetworkConstant.TOKEN_UPDATE)
+                    .addJSONObjectBody(jsonObject)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Log.e("RSP_TOKEN_UPDATE", response.toString());
+                            try {
+                                if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
+                                    Log.w("TOKEN","token updated");
+                                } else {
+                                    Log.w("TOKEN","token not updated");
+                                }
+                            } catch (JSONException e) {
+                                Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            // handle error
+                            Timber.e("called onError of User Login API.");
+                            Timber.e("Error Message : " + error.getMessage());
+                            Timber.e("Error code : " + error.getErrorCode());
+                            Timber.e("Error Body : " + error.getErrorBody());
+                            Timber.e("Error Detail : " + error.getErrorDetail());
+                        }
+                    });
+    }
+
+/*
+    public void sendFCMPush(String msg, String title, String token, Context context) {
+
+        JSONObject obj = null;
+        JSONObject objData = null;
+        JSONObject dataobjData = null;
+
+        try {
+            obj = new JSONObject();
+            objData = new JSONObject();
+
+            objData.put("body", msg);
+            objData.put("title", title);
+            objData.put("sound", "default");
+            objData.put("icon", "icon_name"); //   icon_name
+            objData.put("tag", token);
+            objData.put("priority", "high");
+
+            dataobjData = new JSONObject();
+            dataobjData.put("text", msg);
+            dataobjData.put("title", title);
+            dataobjData.put("image", "http://daily-basket.com/images/slider/7.jpg");
+
+            obj.put("to", token);
+            //obj.put("priority", "high");
+
+            obj.put("notification", objData);
+            obj.put("data", dataobjData);
+            Log.e("return here>>", obj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("True", response + "");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("False", error + "");
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "key=AAAAfStBltM:APA91bEYQcgpLPIXd4s7Eue1Dbi6LEDgdItgJnTCGE3tnIiqxN6LsrsGFViCxfygpGp31OERpxHkulc389LNAYQGtXhOF8ZdrmzN0jc1ezsDF_3vY8PW2uNI-obaFNITmlzzgnNBG7uU");
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        int socketTimeout = 3000 * 60;// 60 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsObjRequest.setRetryPolicy(policy);
+        requestQueue.add(jsObjRequest);
+    }
+*/
+
 }

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -80,7 +81,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
     private int selectedIndex = 0;
     private TextView walletBalance,totalAmountToPay;
     private Spinner spinnerCustom;
-    private String amountToPay ;
+    private String amountToPay;
     private RadioButton bn,cc,dc,im;
     private String cardTypeValue="";
     private String bankCode="";
@@ -150,6 +151,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_ubase);
+
         keyAddMoney= getIntent().getStringExtra("addMoneyKey");
         keyMerchantPay = getIntent().getStringExtra("merchantPay");
         wiFypayment = getIntent().getStringExtra("wifyee");
@@ -167,7 +169,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         amountToPay = getIntent().getStringExtra(PaymentConstants.STRING_EXTRA);
         airtimeBeanData= (AirtimeRequest) getIntent().getSerializableExtra(PaymentConstants.AIRTIME_EXTRA);
-      /*  if (amountToPay != null) {
+       /*if (amountToPay != null) {
             finalAmount = Integer.parseInt(amountToPay);
         }
         else{
@@ -326,6 +328,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
             });
 
         }
+
         cardNameEditText.setVisibility(View.GONE);
         enableOneClickPaymentCheckBox.setVisibility(View.GONE);
         cardCvvEditText.addTextChangedListener(new TextWatcher() {
@@ -420,32 +423,37 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
 
     private void initCustomSpinner() {
         spinnerCustom= (Spinner) findViewById(R.id.spinner_card_type);
-        cardDetails=new CardDetails();
+        cardDetails= new CardDetails();
         cardDetails.setCardName("--Select Card Type--");
         cardDetails.setCardType("None");
         cardDetailsArrayList.add(cardDetails);
 
-        cardDetails=new CardDetails();
-        cardDetails.setCardName("Visa Debit Cards (All Banks");
+        cardDetails= new CardDetails();
+        cardDetails.setCardName("Credit Cards (All Banks)");
         cardDetails.setCardType("VISA");
         cardDetailsArrayList.add(cardDetails);
 
-        cardDetails=new CardDetails();
+        cardDetails= new CardDetails();
+        cardDetails.setCardName("Visa Debit Cards (All Banks)");
+        cardDetails.setCardType("VISA");
+        cardDetailsArrayList.add(cardDetails);
+
+        cardDetails= new CardDetails();
         cardDetails.setCardName("MasterCard Debit Cards (All Banks)");
         cardDetails.setCardType("MAST");
         cardDetailsArrayList.add(cardDetails);
 
-        cardDetails=new CardDetails();
+        cardDetails= new CardDetails();
         cardDetails.setCardName("CITI Debit Card");
         cardDetails.setCardType("CITD");
         cardDetailsArrayList.add(cardDetails);
 
-        cardDetails=new CardDetails();
+        cardDetails= new CardDetails();
         cardDetails.setCardName("State Bank Maestro Cards");
         cardDetails.setCardType("SMAE");
         cardDetailsArrayList.add(cardDetails);
 
-        cardDetails=new CardDetails();
+        cardDetails= new CardDetails();
         cardDetails.setCardName("Other Maestro Cards");
         cardDetails.setCardType("MAES");
         cardDetailsArrayList.add(cardDetails);
@@ -784,6 +792,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
             }
                 if ((cc.isChecked() || dc.isChecked()) && cardTypeIndex!=0 && validate()) {
+                    Log.e("PayU","creditCard select");
                       flag =0;
                     PayUPaymentGatewayRequest mPayUPaymentGatewayRequestCCDC = new PayUPaymentGatewayRequest();
                     checkBoxLinearLayout.setVisibility(View.GONE);

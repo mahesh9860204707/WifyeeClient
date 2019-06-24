@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/ll"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,7 +28,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 app:civ_border_color="@color/gray_1"
-                app:civ_border_width="2dp"
+                app:civ_border_width="1dp"
+                android:layout_marginTop="5dp"
                 android:layout_centerHorizontal="true"/>
 
             <TextView

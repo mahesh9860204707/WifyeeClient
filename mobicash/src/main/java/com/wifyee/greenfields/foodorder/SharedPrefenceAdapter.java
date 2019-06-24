@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,9 @@ import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.SharedPrefence.SharedPreference;
 
 import com.wifyee.greenfields.constants.NetworkConstant;
+import com.wifyee.greenfields.database.DatabaseDB;
+import com.wifyee.greenfields.database.SQLController;
+import com.wifyee.greenfields.interfaces.FragmentInterface;
 
 import java.util.List;
 /**
@@ -34,14 +38,18 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
     Double actual_foodAmount = 0.00;
     Double Chnge_totalamount = 0.00;
     SharedPreference sharedPreference;
+    FragmentInterface fInterface;
 
-    public SharedPrefenceAdapter(Context context, RecyclerView recyclerView, List<SharedPrefenceList> foodItemCollection) {
+    public SharedPrefenceAdapter(Context context, RecyclerView recyclerView, List<SharedPrefenceList> foodItemCollection,
+                                 FragmentInterface fInterface) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mFoodOderItemCollection = foodItemCollection;
         mRecyclerView = recyclerView;
-        sharedPreference=new SharedPreference(mContext);
+        this.fInterface = fInterface;
+    //sharedPreference = new SharedPreference(mContext);
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_foodName, tv_foodprice, tv_fooddescrp, tv_foodquanity, tv_quantityNumber, tv_view, tv_remove;
         ImageView imag_foodimage;
@@ -60,23 +68,25 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
             img_plus = (ImageView) v.findViewById(R.id.plus);
         }
     }
+
    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view1 = LayoutInflater.from(mContext).inflate(R.layout.addtocartlistlayout, parent, false);
         ViewHolder viewHolder1 = new ViewHolder(view1);
         return viewHolder1;
     }
+
     @Override
     public void onBindViewHolder(final ViewHolder Vholder, final int position) {
-        SharedPrefenceList CartFoodOderItem = mFoodOderItemCollection.get(position);
+        final SharedPrefenceList CartFoodOderItem = mFoodOderItemCollection.get(position);
         //  holder.mDateValue.setText(logItem.date);
         Vholder.tv_foodName.setText(CartFoodOderItem.name);
         Vholder.tv_fooddescrp.setText(CartFoodOderItem.description);
-        Vholder.tv_foodprice.setText(CartFoodOderItem.price);
+        Vholder.tv_foodprice.setText("₹"+CartFoodOderItem.getCalculatedAmt());
         Vholder.tv_foodquanity.setText(CartFoodOderItem.quantiy);
         Vholder.tv_quantityNumber.setText(CartFoodOderItem.quantiy);
 
-        Vholder.tv_view.setOnClickListener(new View.OnClickListener() {
+        /*Vholder.tv_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, SingleFoodItemActivity.class);
@@ -88,11 +98,12 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                 intent.putExtra("food_id", mFoodOderItemCollection.get(position).mercantId);
                 mContext.startActivity(intent);
             }
-        });
+        });*/
+
         Vholder.tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Double curent_total = 0.00;
+                /*Double curent_total = 0.00;
                 //add the item to remove
                 SharedPrefenceList curent_productItem;
                 curent_productItem = new SharedPrefenceList();
@@ -109,13 +120,30 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                     curent_total = current + curent_total;
                 }
                 AddToCartActivity.tv_totalamount.setText(String.valueOf(curent_total));
+                notifyDataSetChanged();*/
+
+                mFoodOderItemCollection.remove(position);
+                deleteCart(CartFoodOderItem.getItemId());
                 notifyDataSetChanged();
+                fInterface.fragmentBecameVisible();
             }
         });
+
         Vholder.img_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Chnge_totalamount = 0.00;
+                int value = Integer.parseInt(Vholder.tv_quantityNumber.getText().toString()) + 1;
+                if (value >= 1) {
+                    //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
+                    Vholder.tv_quantityNumber.setText("" + value);
+                    CartFoodOderItem.setQuantiy(Vholder.tv_quantityNumber.getText().toString());
+                    double sum = Double.parseDouble(CartFoodOderItem.getPrice()) * value;
+                    Vholder.tv_foodprice.setText("₹"+sum);
+                    updateCart(CartFoodOderItem.getItemId(),String.valueOf(value));
+                    fInterface.fragmentBecameVisible();
+                }
+
+                /*Chnge_totalamount = 0.00;
                 SharedPrefenceList sharedPrefenceList = mFoodOderItemCollection.get(position);
                 int curent_quty = Integer.parseInt(sharedPrefenceList.getQuantiy()) + 1;
                 sharedPrefenceList.setQuantiy(String.valueOf(curent_quty));
@@ -145,13 +173,26 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                 curent_productItem.setQuantiy(mFoodOderItemCollection.get(position).quantiy);
                 sharedPreference.updateFavoriteItem(mContext, curent_productItem);
                 Vholder.tv_quantityNumber.setText(sharedPrefenceList.getQuantiy());
-                notifyDataSetChanged();
+                notifyDataSetChanged();*/
+
             }
         });
+
         Vholder.img_minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Chnge_totalamount = 0.00;
+                int value = Integer.parseInt(Vholder.tv_quantityNumber.getText().toString()) - 1;
+                if (value >= 1) {
+                    //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
+                    Vholder.tv_quantityNumber.setText("" + value);
+                    CartFoodOderItem.setQuantiy(Vholder.tv_quantityNumber.getText().toString());
+                    double sum = Double.parseDouble(CartFoodOderItem.getPrice()) * value;
+                    Vholder.tv_foodprice.setText("₹"+sum);
+                    updateCart(CartFoodOderItem.getItemId(),String.valueOf(value));
+                    fInterface.fragmentBecameVisible();
+                }
+
+                /*Chnge_totalamount = 0.00;
                 SharedPrefenceList sharedPrefenceList = mFoodOderItemCollection.get(position);
                 if (Integer.parseInt(sharedPrefenceList.getQuantiy()) > 1) {
                     int curent_quty = Integer.parseInt(sharedPrefenceList.getQuantiy()) - 1;
@@ -185,7 +226,10 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                 curent_productItem.setQuantiy(mFoodOderItemCollection.get(position).quantiy);
                 sharedPreference.updateFavoriteItem(mContext, curent_productItem);
                 Vholder.tv_quantityNumber.setText(sharedPrefenceList.getQuantiy());
-                notifyDataSetChanged();
+                notifyDataSetChanged();*/
+
+
+
             }
         });
         // imageLoader.DisplayImage(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+FoodOderItem.foodImage, Vholder.imag_foodimage);
@@ -196,5 +240,39 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
     public int getItemCount() {
         return (mFoodOderItemCollection != null) ? mFoodOderItemCollection.size() : 0;
         //return  mFoodOderItemCollection.size() ;
+    }
+
+    private void deleteCart(String id){
+        SQLController controller = new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+
+        String query = "DELETE from food_cart_item where item_id ='"+id+"'";
+        String result = controller.fireQuery(query);
+
+        if(result.equals("Done")){
+            Log.d("delete","Record delete");
+        }else {
+            Log.d("result",result);
+        }
+        controller.close();
+    }
+
+    private void updateCart(String id,String quantity){
+        SQLController controller = new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+
+        String query = "UPDATE food_cart_item set quantity='"+quantity+"' where item_id ='"+id+"'";
+        String result = controller.fireQuery(query);
+
+        if(result.equals("Done")){
+            Log.d("update","Record update");
+        }else {
+            Log.d("result",result);
+        }
+        controller.close();
     }
 }

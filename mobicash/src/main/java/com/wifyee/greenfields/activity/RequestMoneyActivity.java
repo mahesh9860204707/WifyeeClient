@@ -14,8 +14,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -89,6 +91,7 @@ public class RequestMoneyActivity extends BaseActivity implements View.OnClickLi
             Toast.makeText(RequestMoneyActivity.this, "Fill Mobile Number", Toast.LENGTH_SHORT).show();
             return;
         }
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(senderMobile);
         stringBuilder.append(recieverMobile);
@@ -115,18 +118,23 @@ public class RequestMoneyActivity extends BaseActivity implements View.OnClickLi
                 jsonObject.put("clientsender",requestMoney.getClientsender());
                 jsonObject.put("clientreceiver",requestMoney.getClientreceiver());
                 jsonObject.put("hash",requestMoney.getHash());
+
+                Log.e("JsonObject",jsonObject.toString());
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, NetworkConstant.REQUEST_MONEY_TO_CLIENT_API ,jsonObject, new com.android.volley.Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                NetworkConstant.REQUEST_MONEY_TO_CLIENT_API ,jsonObject,
+                new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.e("Getting Response", response.toString());
                 try {
                     if (response.getInt(ResponseAttributeConstants.STATUS) != 0)
                     {
+                        Log.e("MSG",response.getString(ResponseAttributeConstants.MSG));
                         cancelProgressDialog();
                         showSuccessDialog(RequestMoneyActivity.this);
                     }
@@ -142,8 +150,8 @@ public class RequestMoneyActivity extends BaseActivity implements View.OnClickLi
         }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("volley_error", String.valueOf(error));
-                Toast.makeText(context,"response Error",Toast.LENGTH_SHORT).show();
+                Log.e("volley_request_money", String.valueOf(error));
+                //Toast.makeText(context,"response Error",Toast.LENGTH_SHORT).show();
                 cancelProgressDialog();
             }
         }) {
@@ -155,6 +163,11 @@ public class RequestMoneyActivity extends BaseActivity implements View.OnClickLi
                 return params;
             }
         };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
         requestQueue.add(jsonObjectRequest);
         jsonObjectRequest.setShouldCache(false);
     }

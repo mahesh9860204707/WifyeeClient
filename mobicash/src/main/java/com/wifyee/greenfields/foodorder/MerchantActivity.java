@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,8 @@ import com.wifyee.greenfields.Utils.RecyclerTouchListener;
 import com.wifyee.greenfields.constants.NetworkConstant;
 
 import com.wifyee.greenfields.dairyorder.DairyProductActivity;
+import com.wifyee.greenfields.database.DatabaseDB;
+import com.wifyee.greenfields.database.SQLController;
 import com.wifyee.greenfields.models.response.FailureResponse;
 
 import com.wifyee.greenfields.services.MobicashIntentService;
@@ -52,6 +55,7 @@ public class MerchantActivity extends AppCompatActivity {
     //LinearLayout emptyView;
     ImageView icNotHere;
     TextView txtNotHere,txtDetailNotHere;
+    TextView textCartItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,15 +102,18 @@ public class MerchantActivity extends AppCompatActivity {
                 Intent intent = new Intent(MerchantActivity.this, FoodOrderListActivity.class);
                 intent.putExtra("merchantid",category_List.get(position).getMerchant_id());
                 intent.putExtra("merchantName",dataModel.restaurant_name);
+                intent.putExtra("current_status",dataModel.getStatus());
                 startActivity(intent);
 
                 //startActivity(IntentFactory.createAddOderByMerchantFoodActivity(getApplicationContext()));
             }
+
             @Override
             public void onLongClick(View view, int position) {
 
             }
         }));
+
 //        merchant_horiz.addOnItemTouchListener(new RecyclerTouchListener(mContext,
 //                merchant_rest, new RecyclerTouchListener.ClickListener() {
 //            @Override
@@ -164,14 +171,19 @@ public class MerchantActivity extends AppCompatActivity {
         for (String action : broadCastReceiverActionList) {
             broadcastManager.registerReceiver(merchantcategoryListReceiver, new IntentFilter(action));
         }
+
         //  showProgressDialog();
 
         MobicashIntentService.startActionFoodMerchantByLocation(this, getLatitudeAndLongitude());
+
+        setupBadge();
     }
+
     private String[] broadCastReceiverActionList = {
             NetworkConstant.STATUS_FOODODER_BYMERCHANT_LIST_SUCCESS,
             NetworkConstant.STATUS_FOODORDER_BYMERCHANT_LIST_FAIL
     };
+
     private BroadcastReceiver merchantcategoryListReceiver = new BroadcastReceiver()
     {
         @Override
@@ -201,7 +213,7 @@ public class MerchantActivity extends AppCompatActivity {
                     //merchant_rest.setVisibility(View.INVISIBLE);
                     icNotHere.setVisibility(View.VISIBLE);
                     txtNotHere.setVisibility(View.VISIBLE);
-                    txtDetailNotHere.setVisibility(View.VISIBLE);
+                     txtDetailNotHere.setVisibility(View.VISIBLE);
                     merchant_rest.setVisibility(View.GONE);
 
                     LocalPreferenceUtility.putMerchantId(mContext,"");
@@ -230,6 +242,7 @@ public class MerchantActivity extends AppCompatActivity {
 
         }
     };
+
     public void showErrorDialog(String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(message);
@@ -245,6 +258,7 @@ public class MerchantActivity extends AppCompatActivity {
         alertDialog.setCancelable(true);
         alertDialog.show();
     }
+
     protected void showProgressDialog() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             progressDialog = new ProgressDialog(mContext, ProgressDialog.THEME_DEVICE_DEFAULT_LIGHT);
@@ -256,6 +270,7 @@ public class MerchantActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
+
     public void setupUI() {
         cancelProgressDialog();
         merchant_rest.setVisibility(View.VISIBLE);
@@ -268,7 +283,77 @@ public class MerchantActivity extends AppCompatActivity {
        // merchant_horiz.setAdapter(merchantRestuarantAdapter);
         merchant_rest.setAdapter(merchantRestuarantAdapter);
     }
+
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.cart_menu,menu);
+        final MenuItem menuItem = menu.findItem(R.id.action_cart);
+
+        View actionView = menuItem.getActionView();
+        textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
+        setupBadge();
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cart: {
+                startActivity(IntentFactory.createAddTOCartActivity(this));
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupBadge() {
+        if (textCartItemCount != null) {
+            if (fillList() == 0) {
+                if (textCartItemCount.getVisibility() != View.GONE) {
+                    textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textCartItemCount.setText(String.valueOf(Math.min(fillList(), 99)));
+                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                    textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    public int fillList() {
+        int total=0;
+        SQLController controller = new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT count(*) as total from food_cart_item";
+
+        Cursor data = controller.retrieve(query);
+        if(data.getCount()>0){
+            data.moveToFirst();
+            do{
+                total =  data.getInt(data.getColumnIndex("total"));
+
+            }while (data.moveToNext());
+        }
+
+        data.close();
+        controller.close();
+        return total;
+    }
+
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.foodorder_menu, menu);
@@ -292,5 +377,5 @@ public class MerchantActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

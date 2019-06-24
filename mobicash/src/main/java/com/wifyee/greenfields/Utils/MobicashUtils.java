@@ -184,7 +184,7 @@ public class MobicashUtils {
     }
 
     public static String getIPAddress(Context context) {
-        WifiManager wifiManager = (WifiManager)context. getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager)context.getApplicationContext(). getSystemService(Context.WIFI_SERVICE);
         String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
         return ipAddress;
     }

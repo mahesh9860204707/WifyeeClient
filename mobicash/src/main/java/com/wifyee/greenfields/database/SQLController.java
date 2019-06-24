@@ -16,7 +16,7 @@ public class SQLController {
     }
 
     public SQLController open() throws SQLException {
-        dbHelper = new DBManager(ourcontext,"DatabaseDB",null,1);
+        dbHelper = new DBManager(ourcontext,"DatabaseDB",null,2);
         database = dbHelper.getWritableDatabase();
         database = dbHelper.getReadableDatabase();
         return this;

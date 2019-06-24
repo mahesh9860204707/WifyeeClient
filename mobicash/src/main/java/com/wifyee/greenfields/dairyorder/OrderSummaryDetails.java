@@ -1,6 +1,7 @@
 package com.wifyee.greenfields.dairyorder;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,10 +15,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -37,7 +42,10 @@ import com.wifyee.greenfields.models.response.GetProfile;
 import com.wifyee.greenfields.services.MobicashIntentService;
 
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,14 +92,19 @@ public class OrderSummaryDetails extends BaseActivity {
     private ArrayList<PlaceOrderData> orderItem ;
     private int paymentSelectedIndex;
     private Context mContext = null;
-    private String totalAmount,location,latitude,longitude,complete_add;
+    private String totalAmount,location,latitude,longitude,complete_add,discount_amt;
     private int totalItem;
 
     public static String fullname,mobile_no,alternate_no,city , locality , flat_no, pincode, state;
     public static boolean addressChange = false;
     TextView name,address,mobileNo;
     Button addressBtn;
-
+    LinearLayout subscribe,ll_subscribe;
+    private DatePickerDialog mDatePickerDialog;
+    private SimpleDateFormat dateFormatter;
+    private EditText dateFrom,dateTo;
+    private Spinner perDayLitreSpinner;
+    String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo;
     /**
      * List of actions supported.
      */
@@ -112,6 +125,11 @@ public class OrderSummaryDetails extends BaseActivity {
         address = findViewById(R.id.address_tv);
         mobileNo = findViewById(R.id.mobile_no);
         addressBtn = findViewById(R.id.btn_address);
+        subscribe = findViewById(R.id.subscription_layout);
+        ll_subscribe = findViewById(R.id.ll_subscribe);
+        dateFrom = findViewById(R.id.date_from);
+        dateTo = findViewById(R.id.date_to);
+        perDayLitreSpinner = findViewById(R.id.per_day_litre);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
@@ -129,6 +147,47 @@ public class OrderSummaryDetails extends BaseActivity {
             });
         }
 
+        subscribe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ll_subscribe.getVisibility()==View.GONE){
+                    ll_subscribe.setVisibility(View.VISIBLE);
+                }else {
+                    ll_subscribe.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+        /*perDayLitreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getItemAtPosition(i).toString();
+                Log.e("item",item);
+                perDay = item.replace(" Litre","");
+                Log.e("itemPerDay",perDay);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });*/
+
+        dateFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDate(dateFrom);
+            }
+        });
+
+        dateTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDate(dateTo);
+            }
+        });
+
         addressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,13 +197,18 @@ public class OrderSummaryDetails extends BaseActivity {
         });
 
         orderItem = getIntent().getParcelableArrayListExtra("data");
-        Log.e("orderItem",orderItem.toString());
-        Log.e("orderItem",orderItem.toArray().toString());
+        //Log.e("orderItem",orderItem.toString());
+        //Log.e("orderItem",orderItem.toArray().toString());
         totalAmount = getIntent().getStringExtra("amount");
         location = getIntent().getStringExtra("location");
         latitude = getIntent().getStringExtra("latitude");
         longitude = getIntent().getStringExtra("longitude");
         complete_add = getIntent().getStringExtra("complete_add");
+        discount_amt = getIntent().getStringExtra("discount_amt");
+        claimType = getIntent().getStringExtra("claim_type");
+        voucherId = getIntent().getStringExtra("voucher_id");
+        voucherNo = getIntent().getStringExtra("voucher_no");
+
         tvSubTotal.setText("Rs"+totalAmount);
         tvTotal.setText("Rs"+totalAmount);
         paymentGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -185,6 +249,14 @@ public class OrderSummaryDetails extends BaseActivity {
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                dtFrom = dateFrom.getText().toString();
+                dtTo = dateTo.getText().toString();
+                perDay = perDayLitreSpinner.getSelectedItem().toString().replace(" Litre","");
+                if(perDay.equalsIgnoreCase("Please select milk quantity")){
+                    perDay="";
+                }
+
                 if(paymentSelectedIndex == 1){
                     Double amount = Double.parseDouble(totalAmount);
                     int walletAmount = Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this));
@@ -192,7 +264,9 @@ public class OrderSummaryDetails extends BaseActivity {
                     if (walletAmount > amount) {
                         showProgressDialog();
                         DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
-                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_WALLET,"",location,latitude,longitude,complete_add);
+                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_WALLET,
+                                "",location,latitude,longitude,complete_add,discount_amt,dtFrom,dtTo,perDay,
+                                claimType,voucherId,voucherNo);
                     } else {
                         //add amount and then place order.
                         Intent i = new Intent(OrderSummaryDetails.this, DairyOrderSummaryWebViewActivity.class);
@@ -204,6 +278,16 @@ public class OrderSummaryDetails extends BaseActivity {
                         i.putExtra("latitude",latitude);
                         i.putExtra("longitude",longitude);
                         i.putExtra("complete_add",complete_add);
+                        i.putExtra("discount_amt",discount_amt);
+                        i.putExtra("date_from",dtFrom);
+                        i.putExtra("date_to",dtTo);
+                        i.putExtra("per_day",perDay);
+                        i.putExtra("per_day",perDay);
+                        i.putExtra("per_day",perDay);
+                        i.putExtra("per_day",perDay);
+                        i.putExtra("claim_type",claimType);
+                        i.putExtra("voucher_id",voucherId);
+                        i.putExtra("voucher_no",voucherNo);
                         startActivity(i);
                         finish();
                     }
@@ -218,6 +302,13 @@ public class OrderSummaryDetails extends BaseActivity {
                         i.putExtra("latitude",latitude);
                         i.putExtra("longitude",longitude);
                         i.putExtra("complete_add",complete_add);
+                        i.putExtra("discount_amt",discount_amt);
+                        i.putExtra("date_from",dtFrom);
+                        i.putExtra("date_to",dtTo);
+                        i.putExtra("per_day",perDay);
+                        i.putExtra("claim_type",claimType);
+                        i.putExtra("voucher_id",voucherId);
+                        i.putExtra("voucher_no",voucherNo);
                         startActivity(i);
                         finish();
                     }else{
@@ -227,7 +318,9 @@ public class OrderSummaryDetails extends BaseActivity {
                     if (!LocalPreferenceUtility.getPinCode(OrderSummaryDetails.this).isEmpty()) {
                         showProgressDialog();
                         DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
-                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_COD,"",location,latitude,longitude,complete_add);
+                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_COD,
+                                "",location,latitude,longitude,complete_add,discount_amt,dtFrom,dtTo,perDay,
+                                claimType,voucherId,voucherNo);
                     }else{
                         showErrorDialog("Please update your profile before proceed!");
                     }
@@ -294,7 +387,7 @@ public class OrderSummaryDetails extends BaseActivity {
 
         MobicashIntentService.startActionGetClientProfile(mContext, mGetClientProfileRequest);
 
-        if(addressChange){
+        /*if(addressChange){
             name.setVisibility(View.VISIBLE);
             address.setVisibility(View.VISIBLE);
             mobileNo.setVisibility(View.VISIBLE);
@@ -303,7 +396,7 @@ public class OrderSummaryDetails extends BaseActivity {
             mobileNo.setText(mobile_no);
         }else {
             fillList();
-        }
+        }*/
     }
 
     public void fillList() {
@@ -408,7 +501,7 @@ public class OrderSummaryDetails extends BaseActivity {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "DELETE from cart";
+        String query = "DELETE from cart_item";
         String result = controller.fireQuery(query);
         if(result.equals("Done")){
             Log.w("delete","Delete all successfully");
@@ -416,5 +509,22 @@ public class OrderSummaryDetails extends BaseActivity {
             Log.w("result",result);
         }
         controller.close();
+    }
+
+    private void setDate(final EditText editText){
+
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Calendar newCalendar = Calendar.getInstance();
+        mDatePickerDialog = new DatePickerDialog(OrderSummaryDetails.this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                editText.setText(dateFormatter.format(newDate.getTime()));
+            }
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        mDatePickerDialog.show();
+        mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+
     }
 }

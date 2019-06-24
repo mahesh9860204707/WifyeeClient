@@ -182,6 +182,7 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
         Intent intent = new Intent(this,DairyItemListActivity.class);
         intent.putExtra("data",item.getId());
         intent.putExtra("id",item.getId());
+        intent.putExtra("current_status",item.getCurrentStatus());
         Log.e("data",item.getId());
         startActivity(intent);
     }

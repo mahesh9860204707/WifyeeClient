@@ -33,6 +33,8 @@ import com.wifyee.greenfields.Utils.RecyclerTouchListener;
 
 import com.wifyee.greenfields.constants.NetworkConstant;
 
+import com.wifyee.greenfields.database.DatabaseDB;
+import com.wifyee.greenfields.database.SQLController;
 import com.wifyee.greenfields.interfaces.FragmentInterface;
 import com.wifyee.greenfields.models.response.FailureResponse;
 
@@ -45,20 +47,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//import static com.facebook.FacebookSdk.getApplicationContext;
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AllFoodItemFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AllFoodItemFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-
-public class AllFoodItemFragment extends Fragment implements FragmentInterface {
+public class AllFoodItemFragment extends Fragment implements FoodOderListAdapter.ItemListener {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Context mContext = null;
@@ -80,7 +70,7 @@ public class AllFoodItemFragment extends Fragment implements FragmentInterface {
     private OnFragmentInteractionListener mListener;
     public ProgressDialog progressDialog = null;
     public static int selectedPostion;
-    FragmentInterface fInterface;
+    FoodOderListAdapter.ItemListener listener;
     TextView itemQuantity;
 
     public AllFoodItemFragment() {
@@ -96,6 +86,7 @@ public class AllFoodItemFragment extends Fragment implements FragmentInterface {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +95,7 @@ public class AllFoodItemFragment extends Fragment implements FragmentInterface {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         mContext = this.getActivity();
-        fInterface = this;
+        listener = this;
     }
 
     @Override
@@ -342,7 +333,7 @@ public class AllFoodItemFragment extends Fragment implements FragmentInterface {
         ///  RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(mContext, 3);
         LinearLayoutManager recyclerViewLayoutManager = new LinearLayoutManager(mContext);
         foododerRecycler.setLayoutManager(recyclerViewLayoutManager);
-        foodOderListAdapter = new FoodOderListAdapter(mContext, foodOder_List,fInterface);
+        foodOderListAdapter = new FoodOderListAdapter(mContext, foodOder_List,listener);
         foododerRecycler.setAdapter(foodOderListAdapter);
     }
 
@@ -391,6 +382,7 @@ public class AllFoodItemFragment extends Fragment implements FragmentInterface {
             }
         }
     };
+
     public void showErrorDialog(String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
         alertDialogBuilder.setMessage(message);
@@ -413,9 +405,60 @@ public class AllFoodItemFragment extends Fragment implements FragmentInterface {
     }
 
     @Override
-    public void fragmentBecameVisible() {
-       // viewCart();
+    public void onBuyCallBack(FoodOderList item, String quantity) {
+
+        Log.e("onbuy","calling");
+        insert(item.foodImage,item.name,item.itemID,item.description,quantity,item.price);
     }
+
+    @Override
+    public void onRemoveCartCallBack(String id) {
+        deleteCart(id);
+
+    }
+
+    private void insert(String image_path,String item_name,String item_id, String item_description,
+                        String quantity,String price){
+        SQLController controller = new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+
+        String query = "Insert into food_cart_item(image_path,item_name,item_id,item_description,quantity,price) values " +
+                "('"+image_path+"','"+item_name+"','"+item_id+"','"+item_description+"','"+quantity+"','"+price+"');";
+
+        //Log.e("query",query);
+
+        String result = controller.fireQuery(query);
+
+        if(result.equals("Done")){
+            Log.e("added","Record Added successfully");
+            //setupBadge();
+        }else {
+            Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
+            Log.e("result",result);
+        }
+        controller.close();
+    }
+
+    private void deleteCart(String id){
+        SQLController controller = new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+
+        String query = "DELETE from food_cart_item where item_id ='"+id+"'";
+        String result = controller.fireQuery(query);
+
+        if(result.equals("Done")){
+            Log.d("delete","Record delete");
+            //setupBadge();
+        }else {
+            Log.d("result",result);
+        }
+        controller.close();
+    }
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

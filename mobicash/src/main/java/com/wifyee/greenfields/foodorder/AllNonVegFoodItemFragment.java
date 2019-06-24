@@ -248,7 +248,7 @@ public class AllNonVegFoodItemFragment extends Fragment implements FragmentInter
         } else  if (foodType.equalsIgnoreCase("non-veg")) {
             foodOrderRequest.FoodType = NetworkConstant.TYPE_FOODNONVEG;
         }else {
-            foodOrderRequest.FoodType =foodType;
+            foodOrderRequest.FoodType = foodType;
         }
         return foodOrderRequest;
     }

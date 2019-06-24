@@ -84,6 +84,7 @@ public class OrderFragment extends Fragment implements FragmentInterface {
             listArray.clear();
         }
         Log.e("in data","in load");
+        Log.e("id",LocalPreferenceUtility.getUserCode(getContext()));
         showProgressDialog();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -91,6 +92,7 @@ public class OrderFragment extends Fragment implements FragmentInterface {
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
+
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_MYORDER)
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.HIGH)

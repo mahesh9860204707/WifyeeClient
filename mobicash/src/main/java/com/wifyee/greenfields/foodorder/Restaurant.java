@@ -13,6 +13,7 @@ public  class Restaurant  extends JSONObject implements Serializable {
     public String merchant_id;
     public String restaurant_name;
     public String logo;
+    public String status;
 
     public String getMerchant_id() {
         return merchant_id;
@@ -38,6 +39,11 @@ public  class Restaurant  extends JSONObject implements Serializable {
         this.logo = logo;
     }
 
+    public String getStatus() {
+        return status;
+    }
 
-
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

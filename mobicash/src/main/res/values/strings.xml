@@ -10,6 +10,7 @@
     <string name="login_title_bar">User Login</string>
     <string name="sign_up_title_bar">SignUp</string>
     <string name="otp">OTP</string>
+    <string name="ref_can">Refund &amp; Cancellation</string>
     <string name="request_credit">Request Credit</string>
     <string name="validate_mobile">Validate Mobile Number</string>
     <string name="send_passcode">Send Passcode?</string>
@@ -75,7 +76,8 @@
     <string name="zipcode_error_message">Invalid Postal code.</string>
     <string name="adhaar_number_error_message">Invalid Adhaar Number.</string>
     <string name="pan_number_error_message">Invalid PAN account number.</string>
-    <string name="passcode_error_message">Invalid Passcode. Please use 4 digit passcode</string>
+    <string name="passcode_error_message">Invalid Password. Please use 4 digit passcode</string>
+    <string name="pincode_error_message">Invalid Pincode. Please use 6 digit of your pincode(postal code)</string>
     <string name="new_passcode_error_message">Invalid New Passcode. Please use 4 digit passcode</string>
     <string name="reenter_passcode_error_message">Invalid New Passcode reentered. Please use 4 digit passcode</string>
     <string name="passcode_not_matching_error_message">New password and Re-Entered password not matching</string>
@@ -683,7 +685,27 @@
         <item>200 Gram</item>
     </string-array>
 
+    <string-array name="subscribe">
+        <item>Please select milk quantity</item>
+        <item>0.5 Liter</item>
+        <item>1 Liter</item>
+        <item>1.25 Liter</item>
+        <item>1.5 Litre </item>
+        <item>1.75 Litre </item>
+        <item>2 Litre </item>
+        <item>2.25 Litre </item>
+        <item>2.5 Litre </item>
+        <item>2.75 Litre </item>
+        <item>3 Litre </item>
+        <item>3.25 Litre </item>
+        <item>3.5 Litre </item>
+        <item>3.75 Litre </item>
+        <item>4 Litre </item>
+
+    </string-array>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_add_address">Map</string>
+    <string name="token">1</string>
 </resources>

@@ -15,6 +15,7 @@ public class SharedPrefenceList extends JSONObject implements Serializable {
     public String quantiy;
     public String foodImage;
     public String itemId;
+    public String calculatedAmt;
 
     public String getMercantId() {
         return mercantId;
@@ -37,6 +38,15 @@ public class SharedPrefenceList extends JSONObject implements Serializable {
     }
 public SharedPrefenceList()
 {}
+
+    public String getCalculatedAmt() {
+        return calculatedAmt;
+    }
+
+    public void setCalculatedAmt(String calculatedAmt) {
+        this.calculatedAmt = calculatedAmt;
+    }
+
     public String getName() {
         return name;
     }

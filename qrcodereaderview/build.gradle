@@ -27,12 +27,12 @@ android {
     abortOnError false
   }
 
-  compileSdkVersion 25
+  compileSdkVersion 26
   buildToolsVersion '28.0.3'
 
   defaultConfig {
     minSdkVersion 10
-    targetSdkVersion 25
+    targetSdkVersion 26
     versionCode 1
     versionName libVersionCode
   }
@@ -132,8 +132,10 @@ artifacts {
   archives sourcesJar
 }
 
-task findConventions << {
-  println project.getConvention()
+task findConventions {
+  doLast {
+    println project.getConvention()
+  }
 }
 
 

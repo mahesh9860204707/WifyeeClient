@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorPrimary">#3F51B5</color><!--#3F51B5-->
+    <color name="colorPrimaryDark">#3F51B5</color><!--3F51B5-->
     <color name="primaryDarkLight">#485abf</color>
     <color name="hintColor">#979A9A</color>
     <color name="colorAccent">#FF4081</color>
+    <!--<color name="secondaryPrimary">#008FFF</color>-->
+    <!--<color name="secondaryPrimary">#55AA29</color>-->
+    <color name="secondaryPrimary">#24A249</color>
     <color name="colorBlack">#51515f</color>
     <color name="color_logo">#FFA500</color>
     <color name="color_tab_bg">#51515f</color>
@@ -22,6 +25,8 @@
     <color name="cb_errorRed">#e40000</color>
     <color name="divider">#BDBDBD</color>
     <color name="tracking_green">#35C399</color>
+    <color name="prescription_color">#20ADAD</color>
+    <color name="food_btn_color">#7D0A4E</color>
 
     <color name="lt_orange">#edae39</color>
     <color name="lt_pink">#FFDBFF</color>
@@ -47,6 +52,14 @@
     <color name="green_shade2">#8fd16b</color>
     <color name="green_shade3">#00FFCC</color>
     <color name="black">#000</color>
+    <color name="headings">#3797CF</color>
+    <color name="gradEnd">#67EFC8</color>
+    <color name="gradStart">#63C9FF</color>
+    <color name="successfulStatusBar">#0E9954</color>
+    <color name="unsuccessfulStatusBar">#186066</color>
+    <color name="successful_transaction">#12C06A</color>
+    <color name="unsuccessful_transaction">#0E6870</color>
+    <color name="grey">#E5E5E5</color>
     <color name="blue">#05234C</color>
     <color name="gray">#eaeaea</color>
     <color name="lt_gray">#cccccc</color>

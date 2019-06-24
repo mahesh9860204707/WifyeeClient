@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -34,29 +35,31 @@ public class MerchantRestuarantAdapter extends RecyclerView.Adapter<MerchantRest
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView tv_fooddescrp;
-        ImageView imag_foodimage;
+        public ImageView imag_foodimage;
+        public LinearLayout ll;
 
         public ViewHolder(View v){
             super(v);
             tv_fooddescrp = (TextView) v.findViewById(R.id.tv_descprition);
-            imag_foodimage=(ImageView)v.findViewById(R.id.imag_food);
+            imag_foodimage = (ImageView)v.findViewById(R.id.imag_food);
+            ll = (LinearLayout) v.findViewById(R.id.ll);
         }
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view1 = LayoutInflater.from(mContext).inflate(R.layout.merchantbylocation,parent,false);
-        ViewHolder viewHolder1 = new ViewHolder(view1);
-        return viewHolder1;
+        return new ViewHolder(view1);
     }
     @Override
     public void onBindViewHolder(ViewHolder Vholder, int position){
         final Restaurant FoodOderItem = mFoodOderItemCollection.get(position);
-        //  holder.mDateValue.setText(logItem.date);
-        Vholder.tv_fooddescrp.setText(FoodOderItem.restaurant_name );
-
-        // imageLoader.DisplayImage(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+FoodOderItem.foodImage, Vholder.imag_foodimage);
+        Vholder.tv_fooddescrp.setText(FoodOderItem.restaurant_name);
         Picasso.with(mContext).load(FoodOderItem.logo).into(Vholder.imag_foodimage);
-      //  Vholder.imag_foodimage.setBackgroundResource(R.drawable.no_images);
+        if(FoodOderItem.status.equals("0")) {
+            Vholder.ll.setAlpha(0.3f);
+        }else {
+            Vholder.ll.setAlpha(1f);
+        }
     }
     @Override
     public int getItemCount() {

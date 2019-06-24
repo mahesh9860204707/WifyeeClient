@@ -1,5 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    tools:context=".ForgotPassword"
+    android:background="#F2EDED">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password"
+            android:id="@+id/toolbar_title"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="4dp"
+        card_view:cardElevation="3dp"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forgot Your Password?"
+                android:textSize="18sp"
+                android:textColor="#000"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/txt_please"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please enter your registered mobile no. to reset your password."
+                android:layout_marginTop="4dp"
+                android:textSize="15sp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:theme="@style/LoginTextLabel">
+
+                    <EditText
+                        android:id="@+id/edit_text_mobile_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="5dp"
+                        android:ems="10"
+                        android:hint="Mobile No"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:textSize="16sp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/progressbar"
+        style="@style/SpinKitView.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/secondaryPrimary"
+        android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@color/colorPrimaryDark"
+            android:layout_alignParentBottom="true"
+            android:text="Submit"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="14sp"/>
+
+</RelativeLayout>
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_post_paid_recharge"
     android:layout_width="match_parent"
@@ -9,7 +118,8 @@
     tools:context="com.wifyee.greenfields.activity.PostPaidRechargeActivity">
 
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +149,8 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
@@ -63,7 +174,7 @@
                 android:text="@string/tv_mobile_number"
                 android:textColor="@color/color_tab_bg"
                 android:textSize="16sp" />
-            <!-- mobile number -->
+            &lt;!&ndash; mobile number &ndash;&gt;
             <EditText
                 android:id="@+id/edit_text_mobile_number"
                 style="@style/font_family_medium"
@@ -79,7 +190,7 @@
                 android:paddingLeft="10dp"
                 android:textSize="16sp" />
 
-            <!-- Topup button -->
+            &lt;!&ndash; Topup button &ndash;&gt;
             <Button
                 android:id="@+id/send_button"
                 style="@style/font_family_medium"
@@ -100,5 +211,5 @@
 
     </ScrollView>
 
-</LinearLayout>
+</LinearLayout>-->
 

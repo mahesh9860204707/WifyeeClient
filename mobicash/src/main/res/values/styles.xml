@@ -6,7 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -25,6 +27,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#7D0A4E</item>
         <item name="colorAccent">#7D0A4E</item>
+    </style>
+
+    <style name="LoginTextLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/hintColor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="colorAccent">@color/secondaryPrimary</item>
+        <item name="colorControlNormal">@color/hintColor</item>
     </style>
 
     <style name="DairyTheme" parent="Theme.AppCompat.Light.NoActionBar">

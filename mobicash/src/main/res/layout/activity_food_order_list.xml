@@ -33,6 +33,7 @@
             android:text="ORDER FOOD"
             android:textColor="@color/white"
             android:textSize="18sp"
+            android:textAllCaps="true"
             android:textStyle="bold" />
 
     </android.support.v7.widget.Toolbar>
@@ -42,7 +43,8 @@
     android:layout_below="@+id/mtoolbar"
     android:background="#FFFEFA"
     android:id="@+id/spinner_cat"
-    android:layout_height="40dp">
+    android:layout_height="40dp"
+    android:visibility="gone">
     <TextView
         android:id="@+id/merchant_names"
         android:layout_width="wrap_content"
@@ -73,8 +75,7 @@
         android:background="#CC000000"
         android:visibility="gone"
         android:layout_marginBottom="2dp"
-        android:scrollbars="horizontal"
-        />
+        android:scrollbars="horizontal" />
 
     <LinearLayout
         android:id="@+id/empty_view_containers"
@@ -85,7 +86,7 @@
         android:layout_marginBottom="5dp"
         android:layout_below="@+id/spinner_cat"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -98,6 +99,7 @@
             android:textSize="18sp" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/fragment_container"
         android:layout_below="@+id/parentSlug_recyclerview_main"
@@ -105,7 +107,44 @@
         android:background="#E9E2D2"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
+        android:visibility="gone">
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/food_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/add_to_cart"
+        android:layout_below="@+id/spinner_cat"
+        android:layout_marginBottom="-1dp"
+        android:scrollbars="vertical" />
+
+    <RelativeLayout
+        android:id="@+id/add_to_cart"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="#7D0A4E"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <TextView
+            android:id="@+id/item_count_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ITEM"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/view_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIEW CART"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

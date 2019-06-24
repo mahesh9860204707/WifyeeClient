@@ -1,6 +1,8 @@
 package com.wifyee.greenfields.dairyorder;
 
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,6 +70,9 @@ public class JSONParser {
                     if(dataObject.has(DairyNetworkConstant.MER_IDT_ALT_PHONE)){
                         list.setIdtAlternatePhone(dataObject.getString(DairyNetworkConstant.MER_IDT_ALT_PHONE));
                     }
+                    if(dataObject.has(DairyNetworkConstant.MER_CURRENT_STATUS)){
+                        list.setCurrentStatus(dataObject.getString(DairyNetworkConstant.MER_CURRENT_STATUS));
+                    }
 
                     item.add(list);
                 }
@@ -94,6 +99,9 @@ public class JSONParser {
                 for(int i=0;i<length;i++){
                     DairyProductListItem list = new DairyProductListItem();
                     JSONObject dataObject = itemArray.getJSONObject(i);
+                    if(dataObject.has(DairyNetworkConstant.MERCHANT_ID)){
+                        list.setMerchantId(dataObject.getString(DairyNetworkConstant.MERCHANT_ID));
+                    }
                     if(dataObject.has(DairyNetworkConstant.ITEM_ID)){
                         list.setItemId(dataObject.getString(DairyNetworkConstant.ITEM_ID));
                     }
@@ -135,6 +143,9 @@ public class JSONParser {
                     }
                     if(dataObject.has(DairyNetworkConstant.ITEM_UNIT)){
                         list.setItemUnit(dataObject.getString(DairyNetworkConstant.ITEM_UNIT));
+                    }
+                    if(dataObject.has(DairyNetworkConstant.MER_CURRENT_STATUS)){
+                        list.setCurrentStatus(dataObject.getString(DairyNetworkConstant.MER_CURRENT_STATUS));
                     }
 
                     if(dataObject.has(DairyNetworkConstant.ITEM_IMAGE_OBJ)){

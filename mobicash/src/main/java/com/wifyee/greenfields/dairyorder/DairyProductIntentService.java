@@ -24,7 +24,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 /**
@@ -52,6 +54,18 @@ public class DairyProductIntentService extends IntentService {
     private static final String EXTRA_PARAM6 = "com.wifyee.greenfields.dairyorder.extra.PARAM6";
     private static final String EXTRA_PARAM7 = "com.wifyee.greenfields.dairyorder.extra.PARAM7";
     private static final String EXTRA_PARAM8 = "com.wifyee.greenfields.dairyorder.extra.PARAM8";
+    private static final String EXTRA_PARAM9 = "com.wifyee.greenfields.dairyorder.extra.PARAM9";
+    private static final String EXTRA_PARAM10 = "com.wifyee.greenfields.dairyorder.extra.PARAM10";
+    private static final String EXTRA_PARAM11 = "com.wifyee.greenfields.dairyorder.extra.PARAM11";
+    private static final String EXTRA_PARAM12 = "com.wifyee.greenfields.dairyorder.extra.PARAM12";
+    private static final String EXTRA_PARAM13 = "com.wifyee.greenfields.dairyorder.extra.PARAM13";
+    private static final String EXTRA_PARAM14 = "com.wifyee.greenfields.dairyorder.extra.PARAM14";
+    private static final String EXTRA_PARAM15 = "com.wifyee.greenfields.dairyorder.extra.PARAM15";
+
+    private static final String EXTRA_PARAM_CATEGORY = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_CATEGORY";
+    private static final String EXTRA_PARAM_MER_TYPE = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_MER_TYPE";
+    private static final String EXTRA_PARAM_LATITUDE = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_LATITUDE";
+    private static final String EXTRA_PARAM_LONGITUDE = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_LONGITUDE";
 
     private static Context ctx = null;
 
@@ -102,9 +116,14 @@ public class DairyProductIntentService extends IntentService {
      * @see IntentService
      */
 
-    public static void startActionListDairyItem(Context context,String merId) {
+    public static void startActionListDairyItem(Context context,String merId, String categoryId,
+                                                String merchantId, String latitude, String longitude) {
         Intent intent = new Intent(context, DairyProductIntentService.class);
         intent.putExtra(EXTRA_PARAM1,merId);
+        intent.putExtra(EXTRA_PARAM_CATEGORY,categoryId);
+        intent.putExtra(EXTRA_PARAM_MER_TYPE,merchantId);
+        intent.putExtra(EXTRA_PARAM_LATITUDE,latitude);
+        intent.putExtra(EXTRA_PARAM_LONGITUDE,longitude);
         intent.setAction(ACTION_GET_ITEM_LIST);
         context.startService(intent);
     }
@@ -117,7 +136,10 @@ public class DairyProductIntentService extends IntentService {
      */
 
     public static void startActionAddOrder(Context context, ArrayList<PlaceOrderData> orderItem,
-                                           String totalAmount, String paymentMode,String refId,String location, String lat, String lng, String complete_add) {
+                                           String totalAmount, String paymentMode,String refId,
+                                           String location, String lat, String lng, String complete_add,
+                                           String discount_amt,String dateFrom,String dateTo, String perDay,
+                                           String claimType, String voucherId, String voucherNo) {
         ctx = context;
         Intent intent = new Intent(context, DairyProductIntentService.class);
         intent.putParcelableArrayListExtra(EXTRA_PARAM1,orderItem);
@@ -129,6 +151,13 @@ public class DairyProductIntentService extends IntentService {
         intent.putExtra(EXTRA_PARAM6,lat);
         intent.putExtra(EXTRA_PARAM7,lng);
         intent.putExtra(EXTRA_PARAM8,complete_add);
+        intent.putExtra(EXTRA_PARAM9,discount_amt);
+        intent.putExtra(EXTRA_PARAM10,dateFrom);
+        intent.putExtra(EXTRA_PARAM11,dateTo);
+        intent.putExtra(EXTRA_PARAM12,perDay);
+        intent.putExtra(EXTRA_PARAM13,claimType);
+        intent.putExtra(EXTRA_PARAM14,voucherId);
+        intent.putExtra(EXTRA_PARAM15,voucherNo);
         intent.setAction(ACTION_ADD_ORDER);
         context.startService(intent);
     }
@@ -161,8 +190,16 @@ public class DairyProductIntentService extends IntentService {
             jsonObject.put(DairyNetworkConstant.WALLET_PARAM, intent.getStringExtra(EXTRA_PARAM1));
         } catch (JSONException e) {
         }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(DairyNetworkConstant.WALLET_BALANCE_URL)
                 .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -215,8 +252,16 @@ public class DairyProductIntentService extends IntentService {
 
     //Handle Merchant CurrencyList
     private void handleActionGetMerchantTypeList(Intent paramData) {
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.get(NetworkConstant.MOBICASH_BASE_URL_TESTING + DairyNetworkConstant.GET_MERCHAN_TYPE_LIST_END_POINT)
                 .setTag(TAG_PERFORM_MERCHANT_TYPE_LIST)
+                .setOkHttpClient(okHttpClient)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
@@ -276,10 +321,19 @@ public class DairyProductIntentService extends IntentService {
             jsonObject.put(ResponseAttributeConstants.LATITUDE, mAddressRequest.latitude);
             jsonObject.put(ResponseAttributeConstants.LONGITUDE,mAddressRequest.longitude);
 
+            Log.e("merchantList",jsonObject.toString());
         } catch (JSONException e) {
         }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(DairyNetworkConstant.BASE_URL_DAIRY + DairyNetworkConstant.REQUEST_PARAM_MAIN_LIST)
                 .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -340,16 +394,31 @@ public class DairyProductIntentService extends IntentService {
         String lat = intent.getStringExtra(EXTRA_PARAM6);
         String lng = intent.getStringExtra(EXTRA_PARAM7);
         String complete_add = intent.getStringExtra(EXTRA_PARAM8);
+        String discount_amt = intent.getStringExtra(EXTRA_PARAM9);
+        String dateFrom = intent.getStringExtra(EXTRA_PARAM10);
+        String dateTo = intent.getStringExtra(EXTRA_PARAM11);
+        String perDay = intent.getStringExtra(EXTRA_PARAM12);
+        String claimType = intent.getStringExtra(EXTRA_PARAM13);
+        String voucherId = intent.getStringExtra(EXTRA_PARAM14);
+        String voucherNo = intent.getStringExtra(EXTRA_PARAM15);
         try {
             obj = JSONBuilder.getAddOrderJSon(ctx,intent.<PlaceOrderData>getParcelableArrayListExtra(EXTRA_PARAM1)
                     ,intent.getStringExtra(EXTRA_PARAM2), paymentMode,pinCode,intent.getStringExtra("ref_id"),
-                    location,lat,lng,complete_add);
-            Log.e("JSON",obj.toString());
+                    location,lat,lng,complete_add,discount_amt,dateFrom,dateTo,perDay,claimType,voucherId,voucherNo);
+            Log.e("ORDER_JSON",obj.toString());
         } catch (Exception e) {
             obj = new JSONObject();
         }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(DairyNetworkConstant.ADD_ORDER_URL)
                 .addJSONObjectBody(obj)
+                .setOkHttpClient(okHttpClient)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -381,6 +450,7 @@ public class DairyProductIntentService extends IntentService {
                     @Override
                     public void onError(ANError error) {
                         // handle error
+                        Log.e("ErrorAddOrder",error.toString());
                         Timber.e("called onError of User dairy order API.");
                         Timber.e("Error Message : " + error.getMessage());
                         Timber.e("Error code : " + error.getErrorCode());
@@ -394,7 +464,6 @@ public class DairyProductIntentService extends IntentService {
                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
                     }
                 });
-
     }
 
     /**
@@ -405,10 +474,25 @@ public class DairyProductIntentService extends IntentService {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userId", intent.getStringExtra(EXTRA_PARAM1));
-        } catch (JSONException e) {
+            jsonObject.put("categoryId", intent.getStringExtra(EXTRA_PARAM_CATEGORY));
+            jsonObject.put("merchantType", intent.getStringExtra(EXTRA_PARAM_MER_TYPE));
+            jsonObject.put("latitude", intent.getStringExtra(EXTRA_PARAM_LATITUDE));
+            jsonObject.put("longitude", intent.getStringExtra(EXTRA_PARAM_LONGITUDE));
+
+            Log.e("ItemListJson",jsonObject.toString());
         }
-        AndroidNetworking.get(DairyNetworkConstant.BASE_URL_DAIRY + DairyNetworkConstant.REQUEST_LIST_ITEM+intent.getStringExtra(EXTRA_PARAM1))
-                //.addJSONObjectBody(jsonObject)
+        catch (JSONException e) {
+        }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
+        AndroidNetworking.post(DairyNetworkConstant.BASE_URL_DAIRY + DairyNetworkConstant.REQUEST_LIST_ITEM)
+                .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {

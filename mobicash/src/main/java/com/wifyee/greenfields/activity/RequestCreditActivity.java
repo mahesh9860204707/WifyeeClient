@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 public class RequestCreditActivity extends BaseActivity implements View.OnClickListener
@@ -40,12 +42,29 @@ public class RequestCreditActivity extends BaseActivity implements View.OnClickL
     private EditText mobileNumber,amount,comments;
     private Button submitBtn;
     private String hash="";
+    private Toolbar mToolbar;
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_credit);
         bindUI();
+
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                }
+            });
+        }
     }
     //Bind Ui
     private void bindUI() {
@@ -53,6 +72,7 @@ public class RequestCreditActivity extends BaseActivity implements View.OnClickL
         amount=(EditText)findViewById(R.id.merchant_amount);
         comments=(EditText)findViewById(R.id.edit_text_comments);
         submitBtn=(Button) findViewById(R.id.submit);
+        mToolbar = findViewById(R.id.toolbar);
         submitBtn.setOnClickListener(this);
     }
 
@@ -81,6 +101,11 @@ public class RequestCreditActivity extends BaseActivity implements View.OnClickL
     //Send Amount to Merchant Api
     private void sendAmountToMerchentApi(final Context mContext, String mobileNumber, String amount,String comment)
     {
+        pDialog = new SweetAlertDialog(RequestCreditActivity.this, SweetAlertDialog.PROGRESS_TYPE)
+                .setTitleText("Please wait...");
+        pDialog.show();
+        pDialog.setCancelable(false);
+
         StringBuilder sb = new StringBuilder(LocalPreferenceUtility.getUserMobileNumber(mContext));
         sb.append(mobileNumber);
         sb.append(amount);
@@ -108,13 +133,26 @@ public class RequestCreditActivity extends BaseActivity implements View.OnClickL
                 Log.e("Getting Response", response.toString());
                 try {
                     if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
-                        cancelProgressDialog();
-                        Toast.makeText(mContext,"Credited Successfully",Toast.LENGTH_SHORT).show();
-                        showSuccessDialogCustomize(RequestCreditActivity.this);
+                        //cancelProgressDialog();
+                        pDialog.setTitleText("Success!")
+                                .setContentText(response.getString(ResponseAttributeConstants.MSG))
+                                .setConfirmText("OK")
+                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                onPause();
+                            }
+                        });
+                        //Toast.makeText(mContext,"Credited Successfully",Toast.LENGTH_SHORT).show();
+                        //showSuccessDialogCustomize(RequestCreditActivity.this);
                     }
                     else {
-                        cancelProgressDialog();
-                        Toast.makeText(mContext, "Some Issue in Getting response", Toast.LENGTH_SHORT).show();
+                        //cancelProgressDialog();
+                        pDialog.setTitleText("Failed! Please Try Again.")
+                                .setContentText(response.getString(ResponseAttributeConstants.MSG))
+                                .setConfirmText("OK")
+                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -125,8 +163,12 @@ public class RequestCreditActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("volley_error", String.valueOf(error));
-                Toast.makeText(mContext,"response Error",Toast.LENGTH_SHORT).show();
-                cancelProgressDialog();
+                pDialog.setTitleText("Error!")
+                        .setContentText(error.toString())
+                        .setConfirmText("OK")
+                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                //Toast.makeText(mContext,"response Error",Toast.LENGTH_SHORT).show();
+                //cancelProgressDialog();
             }
         }) {
             @Override
@@ -145,6 +187,14 @@ public class RequestCreditActivity extends BaseActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if ( pDialog!=null && pDialog.isShowing() ){
+            pDialog.dismiss();
+        }
     }
 
     //SuccesFully Transaction
@@ -177,7 +227,5 @@ public class RequestCreditActivity extends BaseActivity implements View.OnClickL
 
             }
         });
-
-
     }
 }

@@ -31,6 +31,7 @@ public class AddMoneyActivity extends AppCompatActivity implements View.OnClickL
     private String addMoneyKey="addMoneyKey";
     private Toolbar mToolbar;
     private ImageButton back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class AddMoneyActivity extends AppCompatActivity implements View.OnClickL
                 }
             });
         }
+
         bindView();
         setTitle("Add Money");
     }

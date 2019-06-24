@@ -74,9 +74,9 @@ public class MoreCategory extends AppCompatActivity {
                 "Send Money",
                 "Pay Merchant",
                 "Add Money",
-                "Request Credit",
-                "Ticketing",
-                "Book Experiences",
+                //"Request Credit",
+                //"Ticketing",
+                //"Book Experiences",
                 "Order Broadband"
         };
 
@@ -95,9 +95,9 @@ public class MoreCategory extends AppCompatActivity {
                 R.mipmap.send_money_icon,
                 R.mipmap.pay_merchant,
                 R.drawable.ic_payment,
-                R.drawable.ic_request_credit,
-                R.mipmap.ticketing,
-                R.drawable. book_flight,
+               // R.drawable.ic_request_credit,
+               // R.mipmap.ticketing,
+                //R.drawable. book_flight,
                 R.drawable.ic_internet
         };
         
@@ -133,44 +133,37 @@ public class MoreCategory extends AppCompatActivity {
                 public void onClick(View v) {
                     switch (position) {
                         case 0:
-                                startActivity(IntentFactory.createPrepaidActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createPrepaidActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 1:
-
-                                startActivity(IntentFactory.createPostpaidActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createPostpaidActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 2:
-
-                                startActivity(IntentFactory.createLandLineActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createLandLineActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 3:
-
-                                startActivity(IntentFactory.createDthActivity(getApplicationContext()));
-                               overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createDthActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 4:
-
-                                startActivity(IntentFactory.createGasBillPaymentActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createGasBillPaymentActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 5:
-
-                                startActivity(IntentFactory.createBroadbandBillPaymentActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-
+                            startActivity(IntentFactory.createBroadbandBillPaymentActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             break;
                         case 6:
-
-                                startActivity(IntentFactory.createElectricityBillPaymentActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createElectricityBillPaymentActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 7:
@@ -179,63 +172,53 @@ public class MoreCategory extends AppCompatActivity {
 
                             break;
                         case 8:
-
-                                startActivity(IntentFactory.createTransactionActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createTransactionActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
-                        case 9:
 
-                                startActivity(IntentFactory.createSplitMoneyActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                        case 9:
+                            startActivity(IntentFactory.createSplitMoneyActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 10:
-
-                                startActivity(IntentFactory.createRequestMoneyActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createRequestMoneyActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 11:
-
-                                startActivity(IntentFactory.createSendMoneyActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createSendMoneyActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 12:
-
-                                startActivity(IntentFactory.scanQRCodeActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.scanQRCodeActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
                         case 13:
-
-                                startActivity(IntentFactory.createAddMoneyActivity(getApplicationContext()));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            startActivity(IntentFactory.createAddMoneyActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
-                        case 14:
 
-                                startActivity(IntentFactory.createRequestCreditActivity(getApplicationContext()));
-                               overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-
+                        /*case 14:
+                           startActivity(IntentFactory.createRequestCreditActivity(getApplicationContext()));
+                           overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             break;
                         case 15:
-
-                                startActivity(IntentFactory.createTicketingActivity(getApplicationContext()));
-                               overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-
+                            startActivity(IntentFactory.createTicketingActivity(getApplicationContext()));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             break;
                         case 16:
+                            startActivity(new Intent(getApplicationContext(), BookExperinceActivity.class));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            break;*/
 
-                                startActivity(new Intent(getApplicationContext(), BookExperinceActivity.class));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-
-                            break;
-                        case 17:
-
-                                startActivity(new Intent(getApplicationContext(), RequestBroadbandActivity.class));
-                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                        case 14:
+                            startActivity(new Intent(getApplicationContext(), RequestBroadbandActivity.class));
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
                             break;
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.DiscountClaim">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mtoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"/>
+
+    <TextView
+        android:id="@+id/txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mtoolbar"
+        android:text="To claim discount amount select below option."
+        android:textSize="16sp"
+        android:layout_margin="8dp"
+        android:textColor="@color/black"/>
+
+    <RadioGroup
+        android:id="@+id/claim_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt"
+        android:orientation="horizontal"
+        android:layout_marginStart="8dp"
+        android:gravity="center_horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_cashback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Cashback" />
+
+        <RadioButton
+            android:id="@+id/rb_voucher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_weight="1"
+            android:text="Voucher"
+            android:layout_marginStart="50dp"/>
+
+    </RadioGroup>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/claim_group"
+        android:layout_margin="8dp"
+        android:layout_above="@+id/back_to_cart"
+        android:visibility="gone"/>
+
+
+    <Button
+        android:id="@+id/back_to_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to cart"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"/>
+
+</RelativeLayout>

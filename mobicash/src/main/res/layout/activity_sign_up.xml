@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +36,7 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fitsSystemWindows="true">
@@ -46,14 +47,14 @@
             android:orientation="vertical"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
-            android:paddingTop="20dp">
+            android:paddingTop="20dp"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/wi_fi_logo_png" />
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/wifyee_new_logo" />
 
             <!-- first name -->
             <EditText
@@ -121,7 +122,7 @@
                 android:drawableLeft="@mipmap/phone_no_icon"
                 android:drawablePadding="10dp"
                 android:focusable="true"
-                android:hint="@string/phone_number"
+                android:hint="Mobile No"
                 android:inputType="phone"
                 android:maxLength="10"
                 android:maxLines="1"
@@ -135,6 +136,7 @@
                 android:layout_marginTop="3dp"
                 android:background="@android:color/darker_gray"
                 android:padding="2dp" />
+
             <EditText
                 android:id="@+id/tv_password"
                 android:layout_width="match_parent"
@@ -144,7 +146,7 @@
                 android:drawableLeft="@mipmap/passcode_icon"
                 android:drawablePadding="10dp"
                 android:focusable="true"
-                android:hint="@string/passcode"
+                android:hint="Enter 4 Digit Password"
                 android:inputType="numberPassword"
                 android:maxLength="4"
                 android:maxLines="1"
@@ -158,6 +160,46 @@
                 android:layout_marginTop="3dp"
                 android:background="@android:color/darker_gray"
                 android:padding="2dp" />
+
+            <LinearLayout
+                android:id="@+id/ll9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/pincode"
+                    android:paddingEnd="2dp"
+                    android:layout_gravity="bottom" />
+
+                <EditText
+                    android:id="@+id/tv_pin_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@null"
+                    android:paddingStart="6dp"
+                    android:focusable="true"
+                    android:hint="Enter Pin Code (Postal Code)"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:padding="2dp"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/darker_gray"
+                android:padding="2dp" />
+
             <RadioGroup
                 android:id="@+id/radio_grp"
                 android:layout_width="match_parent"
@@ -165,6 +207,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:weightSum="2"
                 android:layout_height="wrap_content">
+
                 <RadioButton
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -179,6 +222,7 @@
                     android:layout_height="wrap_content"
                     android:text="Female"/>
             </RadioGroup>
+
             <!--<Spinner
                 android:id="@+id/spinner_customer_title"
                 android:padding="5dp"
@@ -341,11 +385,12 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dip"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="3dp"
                 android:background="@android:color/darker_gray"
-                android:padding="2dp" />
+                android:padding="2dp"
+                />
 
             <Button
                 android:id="@+id/btn_sign_up"

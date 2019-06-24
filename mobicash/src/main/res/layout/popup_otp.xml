@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_custom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+    <ImageButton
+        android:id="@+id/ib_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:elevation="5dp"
+        android:padding="3dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+
+    <ImageView
+        android:id="@+id/ic_mobile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_mobile"
+        android:layout_below="@+id/ib_close"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ic_mobile"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="Verification code send to your mobile number"/>
+
+    <TextView
+        android:id="@+id/txt_mobile_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+91-9890109733"
+        android:gravity="center"
+        android:layout_below="@+id/txt"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
+
+
+</RelativeLayout>

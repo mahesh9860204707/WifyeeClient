@@ -22,10 +22,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.BaseActivity;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.database.DatabaseDB;
@@ -51,8 +54,8 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
     private LinearLayout emptyListView;
     private RecyclerView recyclerView;
     private Button btnPlaceOrder;
-    private String  itemId;
-    private String  merId;
+    private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="";
+
     DairyListItemAdapter.ItemListener listener ;
     ArrayList<DairyProductListItem> selectedItem = new ArrayList<>();
     ArrayList<PlaceOrderData> orderItem = new ArrayList<>();
@@ -63,7 +66,10 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_SUCCESS,
             DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_FAILURE,
     };
+
     TextView textCartItemCount;
+    ImageView icNotHere;
+    TextView txtNotHere,txtDetailNotHere;
 
 
     @Override
@@ -90,10 +96,20 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         }
 
         btnPlaceOrder = (Button)findViewById(R.id.btn_place_order);
-        itemId = getIntent().getStringExtra("data");
-        merId = getIntent().getStringExtra("id");
-        emptyListView = (LinearLayout) findViewById(R.id.empty_list);
+        //emptyListView = (LinearLayout) findViewById(R.id.empty_list);
         recyclerView = (RecyclerView) findViewById(R.id.dairy_list_item);
+        icNotHere = findViewById(R.id.ic_not_here);
+        txtNotHere = findViewById(R.id.txt_we_are_not);
+        txtDetailNotHere = findViewById(R.id.txt_detail_we_are_not);
+
+        itemId = getIntent().getStringExtra("data");
+        categoryId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID);
+        merchantType = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA);
+        latitude = LocalPreferenceUtility.getLatitude(DairyItemListActivity.this);
+        longitude = LocalPreferenceUtility.getLongitude(DairyItemListActivity.this);
+
+        merId = itemId;
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -107,7 +123,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
     public void onClick(View v) {
         switch (v.getId()) {
             case  R.id.btn_place_order:
-                if(orderItem.size()>0) {
+                if(countCart()!=0) {
                     Intent intent = new Intent(this, OrderSummaryActivity.class);
                     Bundle data = new Bundle();
                     //data.putParcelableArrayList("data", orderItem);
@@ -121,6 +137,28 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
                 }
                 break;
         }
+    }
+
+    public int countCart() {
+        int total=0;
+        SQLController controller=new SQLController(getApplicationContext());
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT count(*) as total from cart_item";
+
+        Cursor data = controller.retrieve(query);
+        if(data.getCount()>0){
+            data.moveToFirst();
+            do{
+                total =  data.getInt(data.getColumnIndex("total"));
+
+            }while (data.moveToNext());
+        }
+
+        data.close();
+        controller.close();
+        return total;
     }
 
     @Override
@@ -138,7 +176,9 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             broadcastManager.registerReceiver(getMerchantListDairyItemReceiver, new IntentFilter(action));
         }
         showProgressDialog();
-        DairyProductIntentService.startActionListDairyItem(this,itemId);
+        DairyProductIntentService.startActionListDairyItem(this,itemId,categoryId,merchantType,latitude,longitude);
+
+        setupBadge();
     }
 
     /**
@@ -153,8 +193,21 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             try {
                 if (action.equals(DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_SUCCESS)) {
                     ArrayList<DairyProductListItem> item = intent.getParcelableArrayListExtra(NetworkConstant.EXTRA_DATA);
-                    DairyListItemAdapter adapter = new DairyListItemAdapter(DairyItemListActivity.this, item, listener);
-                    recyclerView.setAdapter(adapter);
+                    if (item.size()>0) {
+                        icNotHere.setVisibility(View.GONE);
+                        txtNotHere.setVisibility(View.GONE);
+                        txtDetailNotHere.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        btnPlaceOrder.setVisibility(View.VISIBLE);
+                        DairyListItemAdapter adapter = new DairyListItemAdapter(DairyItemListActivity.this, item, listener);
+                        recyclerView.setAdapter(adapter);
+                    }else {
+                        icNotHere.setVisibility(View.VISIBLE);
+                        txtNotHere.setVisibility(View.VISIBLE);
+                        txtDetailNotHere.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                        btnPlaceOrder.setVisibility(View.GONE);
+                    }
                 }else if(action.equals(DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_FAILURE)){
 
                 }
@@ -223,7 +276,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
                 data.putParcelableArrayList("data", orderItem);
                 intent.putExtra("main_data", data);
                 startActivity(intent);
-                selectedItem = new ArrayList<>();;
+                selectedItem = new ArrayList<>();
                 orderItem = new ArrayList<>();
 
                 return true;
@@ -247,14 +300,14 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             data.setItemImagePath(item.getItemImagePath());
             data.setItemName(item.getItemName());
             data.setItemType(item.getItemQuality());
-            data.setMerchantId(merId);
+            data.setMerchantId(item.getMerchantId());
             data.setItemId(itemId);
             data.setQuantity(quantity);
             data.setQuantityUnit(quantityUnit);
             data.setOrderPrice(item.getItemPrice());
             orderItem.add(data);
 
-            insert(item.getItemImagePath(), item.getItemName(), item.getItemQuality(), merId, itemId,
+            insert(item.getItemImagePath(), item.getItemName(), item.getItemQuality(), item.getMerchantId(), itemId,
                     quantity, quantityUnit, item.getItemPrice(),item.getItemDiscount());
     }
 
@@ -326,11 +379,11 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
 
     public int fillList() {
         int total=0;
-        SQLController controller=new SQLController(getApplicationContext());
+        SQLController controller=new SQLController(mContext);
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT count(*) as total from cart";
+        String query = "SELECT count(*) as total from cart_item";
 
         Cursor data = controller.retrieve(query);
         if(data.getCount()>0){
@@ -348,12 +401,12 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
 
     private void insert(String image_path,String item_name, String item_type, String merchant_id,
                         String item_id, String quantity, String unit,String price,String discount){
-        SQLController controller = new SQLController(getApplicationContext());
+        SQLController controller = new SQLController(mContext);
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "Insert into cart(image_path,item_name,item_type,merchant_id,item_id,quantity,unit,price,discount) values " +
+        String query = "Insert into cart_item(image_path,item_name,item_type,merchant_id,item_id,quantity,unit,price,discount) values " +
                 "('"+image_path+"','"+item_name+"','"+item_type+"','"+merchant_id+"','"+item_id+"','"+quantity+"','"+unit+"','"+price+"','"+discount+"');";
 
         Log.e("query",query);
@@ -364,18 +417,19 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             Log.e("added","Record Added successfully");
             setupBadge();
         }else {
+            Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
             Log.e("result",result);
         }
         controller.close();
     }
 
     private void deleteCart(String id){
-        SQLController controller = new SQLController(getApplicationContext());
+        SQLController controller = new SQLController(mContext);
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from cart where item_id ='"+id+"'";
+        String query = "DELETE from cart_item where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

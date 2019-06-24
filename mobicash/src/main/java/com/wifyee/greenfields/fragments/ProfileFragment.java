@@ -15,21 +15,28 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.MobicashApplication;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.CircularNetworkImageView;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
+import com.wifyee.greenfields.activity.UploadPrescription;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.models.requests.ClientProfileUpdateRequest;
 import com.wifyee.greenfields.models.requests.GetClientProfileRequest;
@@ -51,6 +58,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
@@ -170,6 +178,7 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
     /**
      * List of actions supported.
      */
+
     private String[] broadCastReceiverActionList = {
             NetworkConstant.STATUS_GET_CLIENT_PROFILE_SUCCESS,
             NetworkConstant.STATUS_GET_CLIENT_PROFILE_FAIL,
@@ -190,6 +199,7 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
     ProfileFragmentListner mProfileFragmentListner;
     private Context mContext = null;
     private boolean mUploadPictureAction;
+    private SweetAlertDialog pDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -206,6 +216,7 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
         mDateOfBirthButtonRef = mDateOfBirthButton;
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -284,6 +295,10 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
             } catch (NoSuchAlgorithmException e) {
                 Timber.e("NoSuchAlgorithmException catched." + e.getMessage());
             }
+            pDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE)
+                    .setTitleText("Please wait...");
+            pDialog.show();
+            pDialog.setCancelable(false);
             MobicashIntentService.startActionUploadClientProfilePicture(mContext, mUploadClientPictureRequest);
         }
     }
@@ -292,6 +307,9 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mClientProfileReceiver);
+        if ( pDialog!=null && pDialog.isShowing() ){
+            pDialog.dismiss();
+        }
     }
 
     @OnClick(R.id.btn_language)
@@ -364,6 +382,7 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
 
     @OnClick(R.id.btn_update)
     public void updateProfile() {
+        //Toast.makeText(getContext(),"BtnCLicked",Toast.LENGTH_SHORT).show();
         ClientProfileUpdateRequest mClientProfileUpdateRequest = new ClientProfileUpdateRequest();
         mClientProfileUpdateRequest.clientId = LocalPreferenceUtility.getUserCode(mContext);
         mClientProfileUpdateRequest.pincode = MobicashUtils.md5(LocalPreferenceUtility.getUserPassCode(mContext));
@@ -388,8 +407,12 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
 
         if (validateProfileUpdateData(mClientProfileUpdateRequest)) {
             Timber.e("Validation is successfull ");
+            pDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE)
+                    .setTitleText("Please wait...");
+            pDialog.show();
+            pDialog.setCancelable(false);
             MobicashIntentService.startActionClientProfileUpdate(mContext, mClientProfileUpdateRequest);
-            mProfileFragmentListner.showProgress();
+            //mProfileFragmentListner.showProgress();
         }
 
     }
@@ -707,6 +730,7 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
                         if (mClientProfileUpdateResponse != null && mClientProfileUpdateResponse.clientProfile != null && mClientProfileUpdateResponse.clientProfile.mobicashClientProfile != null) {
                             Profile mProfile = mClientProfileUpdateResponse.clientProfile.mobicashClientProfile;
 
+
                             if (mProfile.clientFirstName != null) {
                                 mFirstNameEditTextView.setText(mProfile.clientFirstName);
                             } else {
@@ -739,6 +763,17 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
 
                             if (mProfile.clientZipcode != null) {
                                 mPostalCodeEditTextView.setText(mProfile.clientZipcode);
+                                FirebaseMessaging.getInstance().subscribeToTopic(mPostalCodeEditTextView.getText().toString())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (!task.isSuccessful()) {
+                                                    Log.w("ProfileFragment", "getInstanceId failed", task.getException());
+                                                }else {
+                                                    Log.i("ProfileFragment","Successfully subscribeToTopic "+mPostalCodeEditTextView.getText().toString());
+                                                }
+                                            }
+                                        });
                             } else {
                                 mPostalCodeEditTextView.setText("");
                             }
@@ -792,6 +827,18 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
                                 mUserImageView.setDefaultImageResId(R.mipmap.ic_user_default);
                             }
 
+                            pDialog.setTitleText("Success!")
+                                    .setConfirmText("OK")
+                                    .setContentText("Profile updated successfully")
+                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    onPause();
+                                    //onResume();
+                                }
+                            });
+
                         } else {
                             Timber.d("STATUS_CLIENT_PROFILE_UPDATE_SUCCESS = > GetClientProfileResponse is null");
                         }
@@ -806,17 +853,34 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
                         if (profileUpdateFailureResponse != null && profileUpdateFailureResponse.msg != null) {
                             mProfileFragmentListner.showError(profileUpdateFailureResponse.msg);
                         } else {
-                            String errorMessage = getString(R.string.error_message);
-                            mProfileFragmentListner.showError(errorMessage);
+                            pDialog.setTitleText("Failed! Please Try Again.")
+                                    .setConfirmText("OK")
+                                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                            //String errorMessage = getString(R.string.error_message);
+                            //mProfileFragmentListner.showError(errorMessage);
                         }
                         break;
                     case NetworkConstant.STATUS_UPLOAD_CLIENT_PROFILE_PICTURE_SUCCESS:
                         mUploadPictureAction = false;
-                        mProfileFragmentListner.showError("Profile Picture Uploaded successfully");
+                        pDialog.setTitleText("Success!")
+                                .setContentText("Profile picture uploaded successfully")
+                                .setConfirmText("OK")
+                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                onPause();
+                                //onResume();
+                            }
+                        });
+                        //mProfileFragmentListner.showError("Profile Picture Uploaded successfully");
                         break;
                     case NetworkConstant.STATUS_UPLOAD_CLIENT_PROFILE_PICTURE_FAIL:
                         mUploadPictureAction = false;
-                        mProfileFragmentListner.showError("profile Picture Uploaded failed");
+                        pDialog.setTitleText("Failed! Please Try Again.")
+                                .setConfirmText("OK")
+                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        //mProfileFragmentListner.showError("profile Picture Uploaded failed");
                         break;
                 }
 

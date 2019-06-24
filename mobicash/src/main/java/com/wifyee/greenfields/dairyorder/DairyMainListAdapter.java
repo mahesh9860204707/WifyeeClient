@@ -53,6 +53,12 @@ public class DairyMainListAdapter extends RecyclerView.Adapter  {
             Picasso.with(mContext)
                     .load(item.getImage())
                     .noFade().into(imageView);
+
+            if(item.getCurrentStatus().equals("0")) {
+                relativeLayout.setAlpha(0.3f);
+            }else {
+                relativeLayout.setAlpha(1);
+            }
         }
 
         @Override

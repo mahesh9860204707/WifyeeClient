@@ -6,15 +6,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.models.requests.ClientSendPassCodeRequest;
@@ -33,11 +41,14 @@ public class SendPassCodeActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.toolbar_back)
-    ImageButton back;
-
     @BindView(R.id.edit_text_mobile_number)
     EditText mMobileNumber;
+
+    @BindView(R.id.progressbar)
+    SpinKitView loading;
+
+    @BindView(R.id.send_button)
+    Button sendBtn;
 
     @BindString(R.string.dialog_error)
     String mDialogErrorTitle;
@@ -76,17 +87,63 @@ public class SendPassCodeActivity extends BaseActivity {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 }
             });
         }
+
+        TextInputLayout tilMobile   = findViewById(R.id.til_mobile);
+        TextView txtForgot   = findViewById(R.id.txt_reset);
+        TextView txtPlease   = findViewById(R.id.txt_please);
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+
+        txtForgot.setTypeface(Fonts.getSemiBold(this));
+        txtPlease.setTypeface(Fonts.getRegular(this));
+        mMobileNumber.setTypeface(Fonts.getSemiBold(this));
+        sendBtn.setTypeface(Fonts.getSemiBold(this));
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+        tilMobile.setTypeface(Fonts.getRegular(this));
+
+        mMobileNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mMobileNumber.getText().toString().length()==10){
+                    mMobileNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mMobileNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validateMobileNo()) {
+                    loading.setVisibility(View.VISIBLE);
+                    ClientSendPassCodeRequest mClientSendPassCodeRequest = new ClientSendPassCodeRequest();
+                    mClientSendPassCodeRequest.clientmobile = mMobileNumber.getText().toString();
+                    MobicashIntentService.startActionClientSendPasscode(mContext, mClientSendPassCodeRequest);
+                }
+            }
+        });
     }
 
     @Override
@@ -106,14 +163,15 @@ public class SendPassCodeActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.send_button)
+    /*@OnClick(R.id.send_button)
     void sendPasscode() {
         if (validateMobileNo()) {
+            loading.setVisibility(View.VISIBLE);
             ClientSendPassCodeRequest mClientSendPassCodeRequest = new ClientSendPassCodeRequest();
             mClientSendPassCodeRequest.clientmobile = mMobileNumber.getText().toString();
             MobicashIntentService.startActionClientSendPasscode(mContext, mClientSendPassCodeRequest);
         }
-    }
+    }*/
 
     public boolean validateMobileNo() {
         String regex = "\\d+";
@@ -154,9 +212,8 @@ public class SendPassCodeActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            cancelProgressDialog();
+            loading.setVisibility(View.INVISIBLE);
             if (action.equals(NetworkConstant.STATUS_CLIENT_SEND_PASSCODE_SUCCESS)) {
-
                 ClientSendPassCodeResponse mClientSendPassCodeResponse = (ClientSendPassCodeResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (mClientSendPassCodeResponse != null && mClientSendPassCodeResponse.sendStatus != null) {
                     Timber.d("STATUS_CLIENT_SEND_PASSCODE_SUCCESS = > ClientSendPassCodeResponse  ==>" + new Gson().toJson(mClientSendPassCodeResponse));
@@ -192,5 +249,4 @@ public class SendPassCodeActivity extends BaseActivity {
         finish();
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
-
 }

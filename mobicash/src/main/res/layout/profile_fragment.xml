@@ -7,15 +7,25 @@
     <RelativeLayout
         android:id="@+id/top_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/grad">
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/header_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
-            android:src="@mipmap/profile_bg" />
+            android:src="@mipmap/profile_bg"
+            android:visibility="invisible"/>-->
+
+    <RelativeLayout
+        android:id="@+id/imgUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/circle_border">
 
         <com.wifyee.greenfields.Utils.CircularNetworkImageView
             android:id="@+id/user_image"
@@ -25,19 +35,24 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:layout_margin="10dp"
             android:adjustViewBounds="true"
+            android:padding="3dp"
             android:contentDescription="@null"
-            android:scaleType="fitCenter"
+            android:background="@drawable/circle"
             android:src="@mipmap/ic_user_default" />
+
+    </RelativeLayout>
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_image"
+            android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Wifyee"
@@ -64,422 +79,446 @@
 
             <TextView
                 android:id="@+id/tv_fname"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/first_name"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_fname"
-                style="@style/font_family_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:background="@android:color/transparent"
                 android:inputType="textPersonName"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
             <!-- last_name -->
 
             <TextView
                 android:id="@+id/tv_lname"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/last_name"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_lname"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:background="@android:color/transparent"
                 android:inputType="textPersonName"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
 
             <!-- user name -->
 
             <TextView
                 android:id="@+id/user_name"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_user_name"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_user_name"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:background="@android:color/transparent"
                 android:inputType="textPersonName"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
             <!-- dob -->
 
             <TextView
                 android:id="@+id/tv_dob"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_dob"
-                android:textColor="@color/color_tab_bg"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <Button
                 android:id="@+id/btn_dob"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@mipmap/tv_input"
+                android:background="@android:color/transparent"
                 android:drawableEnd="@mipmap/calendar_icon"
                 android:drawablePadding="@dimen/view_medium_padding"
-                android:drawableRight="@mipmap/calendar_icon"
                 android:gravity="start|center_vertical"
-                android:padding="@dimen/view_normal_padding"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
             <!-- address -->
 
             <TextView
                 android:id="@+id/tv_address"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_address"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_address"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:background="@android:color/transparent"
                 android:inputType="text"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
             <!-- pin code -->
 
             <TextView
                 android:id="@+id/tv_pin_code"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_postal_code"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_postal_code"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:background="@android:color/transparent"
                 android:inputType="number"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
+
 
             <!-- city/town -->
 
             <TextView
                 android:id="@+id/tv_city_town"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_city_town"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_city_town"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:inputType="text"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
             <!-- country -->
 
             <TextView
                 android:id="@+id/tv_country"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_country"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <!-- Country Button-->
 
             <Button
                 android:id="@+id/button_country"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@mipmap/tv_input"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:drawableEnd="@mipmap/drop_down_arrow_icon"
-                android:drawablePadding="@dimen/view_medium_padding"
                 android:drawableRight="@mipmap/drop_down_arrow_icon"
+                android:drawablePadding="@dimen/view_medium_padding"
                 android:gravity="start|center_vertical"
                 android:hint="@string/select"
-                android:padding="@dimen/view_normal_padding"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
+
 
 
             <!-- language -->
 
             <TextView
                 android:id="@+id/tv_language"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_language"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <!-- Language Button-->
 
             <Button
                 android:id="@+id/btn_language"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@mipmap/tv_input"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:drawableEnd="@mipmap/drop_down_arrow_icon"
-                android:drawablePadding="@dimen/view_medium_padding"
                 android:drawableRight="@mipmap/drop_down_arrow_icon"
+                android:drawablePadding="@dimen/view_medium_padding"
                 android:gravity="start|center_vertical"
                 android:hint="@string/select"
-                android:padding="@dimen/view_normal_padding"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
 
             <!-- Email. -->
 
             <TextView
                 android:id="@+id/tv_email"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/email"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_email"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:inputType="textEmailAddress"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
 
 
             <!-- Adhaar no. -->
 
             <TextView
                 android:id="@+id/tv_adhaar"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_adhaar"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_adhaar"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:inputType="number"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
+
 
             <!-- Pan no. -->
 
             <TextView
                 android:id="@+id/tv_pan"
-                style="@style/font_family_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:text="@string/tv_pan_card"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="@color/headings"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/edit_text_pan"
-                style="@style/font_family_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@mipmap/tv_input"
+                android:background="@android:color/transparent"
                 android:inputType="textPhonetic"
-                android:maxLength="19"
-                android:paddingEnd="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="0dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/grey" />
+
 
             <Button
                 android:id="@+id/btn_update"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:background="@drawable/button_round_cornor_selector"
+                android:background="@drawable/grad"
                 android:padding="12dp"
                 android:text="@string/update_button"
+                android:textSize="16sp"
                 android:textColor="@android:color/white" />
 
 

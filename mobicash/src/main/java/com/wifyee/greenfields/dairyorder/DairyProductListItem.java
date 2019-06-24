@@ -7,6 +7,7 @@ public class DairyProductListItem implements Parcelable {
 
 //    private Integer status;
 //    private String message;
+    private String merchantId;
     private String itemId;
     private String itemName;
     private String itemPrice;
@@ -23,6 +24,7 @@ public class DairyProductListItem implements Parcelable {
     private String itemImageId;
     private String itemImagePath;
     private String itemUnit;
+    private String currentStatus;
 
     public DairyProductListItem() {}
 
@@ -33,6 +35,7 @@ public class DairyProductListItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getMerchantId());
         dest.writeString(getItemId());
         dest.writeString(getItemName());
         dest.writeString(getItemPrice());
@@ -49,6 +52,7 @@ public class DairyProductListItem implements Parcelable {
         dest.writeString(getItemImageId());
         dest.writeString(getItemImagePath());
         dest.writeString(getItemUnit());
+        dest.writeString(getCurrentStatus());
     }
 
     /**
@@ -57,6 +61,7 @@ public class DairyProductListItem implements Parcelable {
      * the object CREATOR
      **/
     public DairyProductListItem(Parcel in){
+        this.merchantId = in.readString();
         this.itemId = in.readString();
         this.itemName = in.readString();
         this.itemPrice = in.readString();
@@ -73,6 +78,7 @@ public class DairyProductListItem implements Parcelable {
         this.itemImageId = in.readString();
         this.itemImagePath = in.readString();
         this.itemUnit = in.readString();
+        this.currentStatus = in.readString();
     }
 
     public static final Parcelable.Creator<DairyMerchantListModel> CREATOR = new Parcelable.Creator<DairyMerchantListModel>() {
@@ -103,6 +109,15 @@ public class DairyProductListItem implements Parcelable {
 //    public void setMessage(String message) {
 //        this.message = message;
 //    }
+
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
     public String getItemId() {
         return itemId;
@@ -230,6 +245,14 @@ public class DairyProductListItem implements Parcelable {
 
     public void setItemUnit(String itemUnit) {
         this.itemUnit = itemUnit;
+    }
+
+    public String getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
     }
 }
 

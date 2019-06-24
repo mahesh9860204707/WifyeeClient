@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="90dp"
     xmlns:camomile="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:id="@+id/rl">
 
     <RelativeLayout
         android:id="@+id/list_item_view"

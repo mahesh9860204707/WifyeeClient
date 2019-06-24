@@ -8,11 +8,20 @@
             android:id="@+id/home"
             android:title="Home" />
         <item
-            android:id="@+id/transfer"
-            android:title="Transfer" />
+            android:id="@+id/my_cashback"
+            android:title="My Cashback" />
         <item
             android:id="@+id/beneficiary"
-            android:title="Beneficiary" />
+            android:title="Beneficiary"
+            android:visible="false"/>
+        <item
+            android:id="@+id/refund_cancellation"
+            android:title="@string/ref_can"
+            />
+        <item
+            android:id="@+id/privacy_policy"
+            android:title="Privacy Policy"
+            />
         <item
             android:id="@+id/nav_share"
             android:title="Share" />

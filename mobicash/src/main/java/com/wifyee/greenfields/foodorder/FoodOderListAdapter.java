@@ -2,6 +2,7 @@ package com.wifyee.greenfields.foodorder;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,7 +26,10 @@ import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.SharedPrefence.SharedPreference;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.constants.NetworkConstant;
+import com.wifyee.greenfields.dairyorder.DairyProductListItem;
 import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
+import com.wifyee.greenfields.database.DatabaseDB;
+import com.wifyee.greenfields.database.SQLController;
 import com.wifyee.greenfields.foodorder.SwitchButton;
 import com.wifyee.greenfields.foodorder.FoodOderList;
 import com.wifyee.greenfields.interfaces.FragmentInterface;
@@ -43,22 +47,18 @@ import java.util.List;
 
 import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPostion;
 
-/**
- * Created by user on 12/5/2017.
- */
-
-    public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapter.ViewHolder> {
+public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapter.ViewHolder> {
     private List<FoodOderList> mFoodOderLists;
     private String id="";
     private Context context;
     private SharedPrefenceList productItem = new SharedPrefenceList();
     private Double actual_foodAmount = 0.00;
-    private FragmentInterface fragmentInterface;
+    private FoodOderListAdapter.ItemListener mListener;
 
-    public FoodOderListAdapter(Context ctx, List<FoodOderList> list,FragmentInterface fragmentInterface) {
+    public FoodOderListAdapter(Context ctx, List<FoodOderList> list,FoodOderListAdapter.ItemListener mListener) {
         this.mFoodOderLists = list;
         this.context = ctx;
-        this.fragmentInterface = fragmentInterface;
+        this.mListener = mListener;
     }
 
     @Override
@@ -82,6 +82,19 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
             holder.sb.setChecked(object.isCheckvalue());
             Picasso.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage).into( holder.imag_foodimage);
 
+            if(checkInCart(object.itemID)!=0){
+                holder.tv_add.setText("IN CART");
+            }else {
+                holder.tv_add.setText("ADD");
+            }
+
+            if(FoodOrderListActivity.currentStatus.equals("0")){
+                holder.tv_add.setEnabled(false);
+                holder.ll.setAlpha(0.3f);
+            }else {
+                holder.tv_add.setEnabled(true);
+                holder.ll.setAlpha(1f);
+            }
             /*List<SharedPrefenceList> alreadyAddItems= null;
             try {
                 alreadyAddItems = AllFoodItemFragment.sharedPreference.getFavorites(context);
@@ -107,7 +120,7 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                 e.printStackTrace();
             }*/
 
-            holder.img_add.setOnClickListener(new View.OnClickListener() {
+            /*holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     try {
@@ -123,6 +136,7 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                                 break;
                             }
                         }
+
                         Double curent_amount = actual_foodAmount * curent_quty;
                         try {
                             for (int z=0;z<alreadyAddItem.size();z++)
@@ -170,7 +184,7 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
 
                                         break;
                                     }
-                                }
+                                 }
                             }
                             holder.tv_qty.setText(String.valueOf(curent_quty));
 
@@ -180,8 +194,7 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                     }
                 }
             });
-
-
+*/
         holder.tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,7 +202,20 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                 Log.e("LocalPreferenceUtility",LocalPreferenceUtility.getMerchantId(context));
                 Log.e("MerchantName","merName"+LocalPreferenceUtility.getMerchantName(context));
                 if(FoodOrderListActivity.merchantId.equals(LocalPreferenceUtility.getMerchantId(context)) || LocalPreferenceUtility.getMerchantId(context).equals("")) {
-                    try {
+                    if (holder.tv_add.getText().equals("ADD")) {
+                        mListener.onBuyCallBack(object, "1");
+                        holder.tv_add.setText("IN CART");
+                        LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
+                        LocalPreferenceUtility.putMerchantName(context, FoodOrderListActivity.merchantName);
+                        LocalPreferenceUtility.putLatitudeFood(context,LocalPreferenceUtility.getLatitude(context));
+                        LocalPreferenceUtility.putLongitudeFood(context,LocalPreferenceUtility.getLongitude(context));
+
+                    }else if (holder.tv_add.getText().equals("IN CART")){
+                        mListener.onRemoveCartCallBack(object.itemID);
+                        holder.tv_add.setText("ADD");
+                    }
+
+                    /*try {
                         LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
                         LocalPreferenceUtility.putMerchantName(context, FoodOrderListActivity.merchantName);
                         if (AllFoodItemFragment.sharedPreference.getFavorites(context) != null) {
@@ -257,10 +283,7 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
-                    LocalPreferenceUtility.putLatitudeFood(context,LocalPreferenceUtility.getLatitude(context));
-                    LocalPreferenceUtility.putLongitudeFood(context,LocalPreferenceUtility.getLongitude(context));
-                    Log.e("LNG",LocalPreferenceUtility.getLongitude(context));
+                    }*/
                 }else{
                     final Dialog layout = new Dialog(context);
                     layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -283,11 +306,15 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                     confirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            SharedPreference sharedPreference = new SharedPreference();
-                            sharedPreference.clearCache(context);
+                            /*SharedPreference sharedPreference = new SharedPreference();
+                            sharedPreference.clearCache(context);*/
+
+                            //clear cart table
+                            deleteCart();
                             LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
                             LocalPreferenceUtility.putMerchantName(context, FoodOrderListActivity.merchantName);
-                            productItem = new SharedPrefenceList();
+                            mListener.onBuyCallBack(object,"1");
+                            /*productItem = new SharedPrefenceList();
                             productItem.setMercantId(object.itemID);
                             productItem.setName(object.name);
                             productItem.setDescription(object.description);
@@ -295,19 +322,19 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                             productItem.setPrice(object.price);
                             productItem.setQuantiy("1");
                             Log.w("ITEM--", "ITEM ID " + productItem.getMercantId());
-                            AllFoodItemFragment.sharedPrefenceListProduct.add(productItem);
+                            AllFoodItemFragment.sharedPrefenceListProduct.add(productItem);*/
                             holder.tv_add.setText("IN CART");
 
                             layout.dismiss();
                         }
                     });
                 }
-                AllFoodItemFragment.sharedPreference.addFavorite(context,AllFoodItemFragment.sharedPrefenceListProduct);
-                fragmentInterface.fragmentBecameVisible();
+                //AllFoodItemFragment.sharedPreference.addFavorite(context,AllFoodItemFragment.sharedPrefenceListProduct);
+                //fragmentInterface.fragmentBecameVisible();
             }
         });
 
-        holder.img_sub.setOnClickListener(new View.OnClickListener() {
+        /*holder.img_sub.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     try {
@@ -403,11 +430,9 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
                         e.printStackTrace();
                     }
                 }
-            });
+            });*/
 
         }
-        
-
     }
 
 
@@ -430,7 +455,7 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
         private SwitchButton sb;
         private ImageView imag_foodimage;
         private CheckBox checkBox;
-        private LinearLayout changeLayout;
+        private LinearLayout changeLayout,ll;
         ImageView img_add,img_sub;
 
         public ViewHolder(View v) {
@@ -446,6 +471,47 @@ import static com.wifyee.greenfields.foodorder.AllFoodItemFragment.selectedPosti
             imag_foodimage=(ImageView)v.findViewById(R.id.imag_food);
             checkBox=(CheckBox)v.findViewById(R.id.food_checkbox);
             sb=(SwitchButton)v.findViewById(R.id.switchbutton);
+            ll =(LinearLayout) v.findViewById(R.id.ll);
         }
+    }
+
+    public interface ItemListener {
+        void onBuyCallBack(FoodOderList item,String quantity);
+        void onRemoveCartCallBack(String id);
+    }
+
+    public int checkInCart(String itemId) {
+        int total;
+        SQLController controller=new SQLController(context);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT item_id from food_cart_item where item_id='"+itemId+"'";
+
+        Cursor data = controller.retrieve(query);
+
+        total = data.getCount();
+        Log.e("itemCount",String.valueOf(total));
+
+        data.close();
+        controller.close();
+        return total;
+    }
+
+    private void deleteCart(){
+        SQLController controller = new SQLController(context);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+
+        String query = "DELETE from food_cart_item";
+        String result = controller.fireQuery(query);
+
+        if(result.equals("Done")){
+            Log.d("delete","Record All delete");
+        }else {
+            Log.d("result",result);
+        }
+        controller.close();
     }
 }

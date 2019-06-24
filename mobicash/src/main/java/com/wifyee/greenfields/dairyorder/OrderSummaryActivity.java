@@ -14,9 +14,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -40,6 +42,7 @@ import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.activity.AddAddress;
 import com.wifyee.greenfields.activity.BaseActivity;
+import com.wifyee.greenfields.activity.DiscountClaim;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.database.DatabaseDB;
@@ -73,7 +76,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
     private RecyclerView recyclerView;
     private Button btn_continue,addAddress;
     private Context mContext = null;
-    public TextView totalAmount,tvExceed,address,change;
+    public TextView totalAmount,tvExceed,address,change,totalDiscountAmt,claimHere,txtClaimText,emptyCartTxt;
     private ArrayList<PlaceOrderData> orderItem = new ArrayList<>() ;
     PlaceOrderAdapter adapter;
     FragmentInterface fInterface;
@@ -81,10 +84,11 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
     ItemQtyModel[] item;
     JSONObject object;
     ArrayList<Integer> exceed = new ArrayList<>();
-    RelativeLayout rl_address;
+    RelativeLayout rl_address,rl_discount;
     LinearLayout llBottom;
-    public static boolean is_address_set;
-    public static String completeAddress,location,latitude,longitude;
+    public static boolean is_address_set,isVoucherClaim;
+    public static String completeAddress,location,latitude,longitude,voucherId="",voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
+    ImageView emptyCartIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +118,24 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
         tvExceed = (TextView)findViewById(R.id.tv_exceed);
         addAddress = (Button) findViewById(R.id.add_address);
         rl_address = (RelativeLayout) findViewById(R.id.rl_address);
+        rl_discount = (RelativeLayout) findViewById(R.id.rl_discount);
         address = (TextView) findViewById(R.id.address);
         change = (TextView) findViewById(R.id.change);
+        totalDiscountAmt = (TextView) findViewById(R.id.total_discount_amt);
         llBottom = (LinearLayout) findViewById(R.id.ll);
         recyclerView = (RecyclerView) findViewById(R.id.order_recyclerview);
+        claimHere = (TextView) findViewById(R.id.claim_here);
+        txtClaimText = (TextView) findViewById(R.id.txt);
+        emptyCartIcon = findViewById(R.id.empty_cart_icon);
+        emptyCartTxt = findViewById(R.id.empty_txt);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new PlaceOrderAdapter(OrderSummaryActivity.this, orderItem,fInterface);
         recyclerView.setAdapter(adapter);
+
         fillList();
 
         btn_continue = (Button) findViewById(R.id.btn_continue);
@@ -131,24 +143,32 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             @Override
             public void onClick(View view) {
                 String text = totalAmount.getText().toString();
-                if (containsDigit(text) && !text.equals("0.0")) {
-                  //  setDialog();
-                    orderItem = adapter.placeOrderData;
-                    checkItemQuantity(object);
-                   /* Intent intent = IntentFactory.createOrderSummaryDetailsActivity(OrderSummaryActivity.this);
+                if(isVoucherClaim) {
+                    if (containsDigit(text) && !text.equals("0.0")) {
+                        //  setDialog();
+                        orderItem = adapter.placeOrderData;
+                        checkItemQuantity(object);
+
+                    /* Intent intent = IntentFactory.createOrderSummaryDetailsActivity(OrderSummaryActivity.this);
                     intent.putParcelableArrayListExtra("data",orderItem);
                     intent.putExtra("amount",totalAmount.getText().toString());
                     startActivity(intent);
                     overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     finish();*/
-                }else{
-                    showErrorDialog("Add item quantity to continue payment!");
+
+                    }else{
+                        showErrorDialog("Add item quantity to continue payment!");
+                    }
+                }else {
+                    showErrorDialog("Please claim the discount amount first.");
                 }
             }
         });
+
         totalAmount = (TextView)findViewById(R.id.tv_totalamount);
        // int quantity = 0;
-        Double amount = 0.0;
+        double amount = 0.0;
+        double discountAmt = 0.0;
         object = new JSONObject();
         JSONArray jsonArr = new JSONArray();
         try {
@@ -162,6 +182,9 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                     int quantityValue = Integer.parseInt(orderItem.get(i).getQuantity());
                     double quantityAmount = (quantityValue * Double.parseDouble(orderItem.get(i).getOrderPrice()));
                     amount = amount + quantityAmount;
+
+                    double quantityDiscountAmt = (quantityValue * Double.parseDouble(orderItem.get(i).getItemDiscount()));
+                    discountAmt = discountAmt + quantityDiscountAmt;
                 }
                 object.put(ResponseAttributeConstants.ITEM, jsonArr);
 
@@ -170,6 +193,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             e.printStackTrace();
         }
         totalAmount.setText(String.valueOf(amount));
+        totalDiscountAmt.setText("₹"+String.valueOf(discountAmt));
 
         addAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +209,16 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             public void onClick(View view) {
                 Intent intent = new Intent(OrderSummaryActivity.this, AddAddress.class);
                 intent.putExtra("cart","other_summary_cart");
+                startActivity(intent);
+            }
+        });
+
+        claimHere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderSummaryActivity.this, DiscountClaim.class);
+                intent.putExtra("flag","order_summary");
+                intent.putExtra("amount",totalDiscountAmt.getText().toString());
                 startActivity(intent);
             }
         });
@@ -209,13 +243,14 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from cart order by id desc";
+        String query = "SELECT * from cart_item order by id desc";
 
         Cursor cursor = controller.retrieve(query);
         if(cursor.getCount()>0){
-            //emptyCartIcon.setVisibility(View.GONE);
-           //emptyCartTxt.setVisibility(View.GONE);
+            emptyCartIcon.setVisibility(View.GONE);
+            emptyCartTxt.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+            rl_discount.setVisibility(View.VISIBLE);
             //rlBottom.setVisibility(View.VISIBLE);
             cursor.moveToFirst();
             do{
@@ -247,12 +282,12 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
 
             }while (cursor.moveToNext());
         }else {
-            //emptyCartIcon.setVisibility(View.VISIBLE);
-            //emptyCartTxt.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
+            rl_discount.setVisibility(View.GONE);
+            emptyCartIcon.setVisibility(View.VISIBLE);
+            emptyCartTxt.setVisibility(View.VISIBLE);
             //rlBottom.setVisibility(View.GONE);
         }
-
         adapter.notifyDataSetChanged();
         cursor.close();
         controller.close();
@@ -267,6 +302,16 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             addAddress.setClickable(false);
             address.setText(completeAddress);
         }
+
+        if(isVoucherClaim){
+            if (claimType.equals("1")){
+                txtClaimText.setText("Cashback amount will be added in your wallet within 24 hours");
+            }else {
+                txtClaimText.setText(Html.fromHtml("You have selected <b>"+voucherName+"</b> voucher of <b>₹"+voucherDiscAmt+"</b>"));
+            }
+            //isVoucherClaim = false;
+        }
+
         super.onResume();
     }
 
@@ -326,7 +371,12 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                             intent.putExtra("latitude",latitude);
                             intent.putExtra("longitude",longitude);
                             intent.putExtra("complete_add",completeAddress);
+                            intent.putExtra("claim_type",claimType);
+                            intent.putExtra("voucher_id",voucherId);
+                            intent.putExtra("voucher_no",voucherNo);
+                            intent.putExtra("discount_amt",totalDiscountAmt.getText().toString().replace("₹",""));
                             startActivity(intent);
+                            isVoucherClaim = false;
                         }else {
                             Toast.makeText(OrderSummaryActivity.this,"Please check item quantity is exceeding",Toast.LENGTH_SHORT).show();
                             Log.e("exceedArray",String.valueOf(exceed));
@@ -372,15 +422,20 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
 
     @Override
     public void fragmentBecameVisible() {
-        Double amount = 0.0;
+        double amount = 0.0;
+        double discountAmt = 0.0;
         if(orderItem.size()>0){
             for(int i= 0;i<orderItem.size();i++){
                 int quantityValue = Integer.parseInt(orderItem.get(i).getQuantity());
                 double quantityAmount = (quantityValue * Double.parseDouble(orderItem.get(i).getOrderPrice()));
                 amount = amount + quantityAmount;
+
+                double quantityDiscountAmt = (quantityValue * Double.parseDouble(orderItem.get(i).getItemDiscount()));
+                discountAmt = discountAmt + quantityDiscountAmt;
             }
         }
         totalAmount.setText(String.valueOf(amount));
+        totalDiscountAmt.setText("₹"+String.valueOf(discountAmt));
     }
 }
 

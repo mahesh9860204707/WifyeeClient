@@ -23,10 +23,11 @@ public class DairyNetworkConstant {
     public static final String DAIRY_LIST_ITEM_STATUS_SUCCESS = "merchant_list_item_status_success";
     public static final String DAIRY_LIST_ITEM_STATUS_FAILURE = "merchant_list_item_status_failure";
     public static final String REQUEST_PARAM_LIST_ITEM = "/api/dairyusersellingitemapi.php?request=dairylistSellingItems";
-    public static final String REQUEST_LIST_ITEM = "/api/usersellingitemapi.php?request=listSellingItems&userId=";
+    //public static final String REQUEST_LIST_ITEM = "/api/usersellingitemapi.php?request=listSellingItems&userId=";
+    public static final String REQUEST_LIST_ITEM = "/api/usersellingitemapi.php?request=listSellingItems";
 
     //public static final String DAIRY_ADD_ORDER_URL = "http://45.249.108.75/api/dairy_order.php?request=addorder";
-    public static final String ADD_ORDER_URL = "http://45.249.108.75/api/wifyee_order.php?request=addorder";
+    public static final String ADD_ORDER_URL = BASE_URL_DAIRY+"/api/wifyee_order.php?request=addorder";
     public static final String DAIRY_ADD_ORDER_STATUS_SUCCESS = "merchant_add_order_status_success";
     public static final String DAIRY_ADD_ORDER_STATUS_FAILURE = "merchant_add_order_status_failure";
 
@@ -85,11 +86,13 @@ public class DairyNetworkConstant {
     public static final String MER_IDT_NATIONALITY= "idt_nationality";
     public static final String MER_IDT_PHONE= "idt_contactphone";
     public static final String MER_IDT_ALT_PHONE= "idt_alternatephone";
+    public static final String MER_CURRENT_STATUS= "current_status";
 
     /**
      * dairy list item
      */
 
+    public static final String MERCHANT_ID = "merchantId";
     public static final String ITEM_ID = "itemId";
     public static final String ITEM_NAME= "itemName";
     public static final String ITEM_PRICE= "itemPrice";
@@ -127,11 +130,18 @@ public class DairyNetworkConstant {
     public static final String ORDER_LONG ="usa_long";
     public static final String ORDER_LOCATION ="usa_geo_address";
     public static final String ORDER_COMPLETE_ADD ="usa_complete_address";
+    public static final String ORDER_DISCOUNT_AMT ="discount_amt";
     public static final String ORDER_PAYMENT_MODE ="payment_mode";
     public static final String ORDER_MERCHANT_ID = "merchantId";
     public static final String ORDER_MOB_NUMBER = "moblile";
     public static final String ORDER_DESCRIPTION = "description";
     public static final String ORDER_PIN = "pincode";
+    public static final String SUBSCRIPTION_FROM_DATE = "subscription_from_date";
+    public static final String SUBSCRIPTION_TO_DATE = "subscription_to_date";
+    public static final String SUBSCRIPTION_PER_DAY = "subscription_perday_qty";
+    public static final String CLAIM_TYPE = "claim_type";
+    public static final String VOUCHER_ID = "voucher_id";
+    public static final String VOUCHER_NO = "voucher_no";
 
     public static final String ORDER_REF_ID = "ref_id";
 

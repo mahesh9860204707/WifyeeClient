@@ -17,14 +17,20 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +49,7 @@ import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.GPSTracker;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
@@ -84,27 +91,29 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
     Button mLoginButton;
 
     @BindView(R.id.tv_sign_up)
-    TextView mSignUpTextView;
+    LinearLayout mSignUpTextView;
 
     @BindView(R.id.tv_send_passcode)
     TextView mSendPassword;
 
-    @BindView(R.id.tv_otp_verify)
-    TextView mOtpVerify;
+    /*@BindView(R.id.tv_otp_verify)
+    TextView mOtpVerify;*/
 
-    @BindView(R.id.update_device)
-    TextView updateDevice;
-    @BindView(R.id.otp_layout)
-    LinearLayout otp_layout;
+    /*@BindView(R.id.update_device)
+    TextView updateDevice;*/
 
-    @BindView(R.id.tv_otp)
-    EditText tv_otp;
+    /*@BindView(R.id.otp_layout)
+    LinearLayout otp_layout;*/
 
-    @BindView(R.id.resend_otp)
-    TextView resend_otp;
+    /*@BindView(R.id.tv_otp)
+    EditText tv_otp;*/
 
-    @BindView(R.id.submit_otp)
-    Button btn_otp;
+    /*@BindView(R.id.resend_otp)
+    TextView resend_otp;*/
+
+    /*@BindView(R.id.submit_otp)
+    Button btn_otp;*/
+
   //  @BindView(R.id.fb_login_button)
   //  Button fbLoginButton;
 
@@ -118,6 +127,8 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
 
     @BindString(R.string.passcode_error_message)
     String mPasscodeErrorMessage;
+
+    TextInputLayout tilMobile,tilPassword;
     // GPSTracker class
     GPSTracker gps;
     //private GoogleHelper mGoogle;
@@ -134,6 +145,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
     private OTP_Response mSendOtpData;
     private String mobileNumber="";
     private EditText mobileRecharge;
+
     /**
      * List of actions supported.
      */
@@ -153,7 +165,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in_base);
+        setContentView(R.layout.login_new);
        // FacebookSdk.sdkInitialize(getApplicationContext());
       //  mGoogle = new GoogleHelper(this, this, null);
       //  mFacebook = new FacebookHelper(this);
@@ -162,9 +174,10 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
         mLoginButton.setOnClickListener(this);
         mSignUpTextView.setOnClickListener(this);
         mSendPassword.setOnClickListener(this);
-        mOtpVerify.setOnClickListener(this);
+        //mOtpVerify.setOnClickListener(this);
        // fbLoginButton.setOnClickListener(this);
       //  gmailLoginButton.setOnClickListener(this);
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         mprovider = locationManager.getBestProvider(criteria, false);
@@ -179,17 +192,113 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
               //  Toast.makeText(getBaseContext(), "No Location Provider Found Check Your Code", Toast.LENGTH_SHORT).show();
         }
 
+        ImageView icSetting = findViewById(R.id.ic_setting);
+        TextView favName = findViewById(R.id.com_name);
+        TextView txtNewUser = findViewById(R.id.txt_new_user);
+        TextView txtSignUp = findViewById(R.id.txt_signup);
+        tilMobile   = findViewById(R.id.til_mobile);
+        tilPassword = findViewById(R.id.til_password);
+        TextView txtLogin = findViewById(R.id.txt_login);
+
+        favName.setTypeface(Fonts.getSemiBold(this));
+        mClientMobileNo.setTypeface(Fonts.getSemiBold(this));
+        mClientPasscode.setTypeface(Fonts.getSemiBold(this));
+        txtLogin.setTypeface(Fonts.getSemiBold(this));
+        txtNewUser.setTypeface(Fonts.getSemiBold(this));
+        txtSignUp.setTypeface(Fonts.getSemiBold(this));
+        mSendPassword.setTypeface(Fonts.getSemiBold(this));
+        tilMobile.setTypeface(Fonts.getRegular(this));
+        tilPassword.setTypeface(Fonts.getRegular(this));
+        mLoginButton.setTypeface(Fonts.getSemiBold(this));
+
+        mClientMobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mClientMobileNo.getText().toString().length()==10){
+                    mClientMobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mClientMobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        icSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+                popup.inflate(R.menu.setting_menu);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu1:
+                                final Dialog layout1 = new Dialog(SignInBaseActivity.this);
+                                //layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                layout1.setContentView(R.layout.popup_otp);
+                                /*otpView.setListener(new OtpListener() {
+                                    @Override public void onOtpEntered(String otp) {
+
+                                        // do Stuff
+                                        Log.d("onOtpEntered=>", otp);
+                                    }
+                                });*/
+
+                                layout1.show();
+
+                                break;
+
+                            case R.id.menu2:
+                                final Dialog layout = new Dialog(SignInBaseActivity.this);
+                                //layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                layout.setContentView(R.layout.popup_update_device);
+                                TextView tv = layout.findViewById(R.id.tv);
+                                EditText mobileNo =  layout.findViewById(R.id.tv_phone_number);
+                                TextInputLayout til =  layout.findViewById(R.id.til_mobile);
+                                Button cancel =  layout.findViewById(R.id.cancel_btn);
+                                Button ok =  layout.findViewById(R.id.confirm_btn);
+
+                                tv.setTypeface(Fonts.getRegular(SignInBaseActivity.this));
+                                til.setTypeface(Fonts.getRegular(SignInBaseActivity.this));
+                                mobileNo.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
+                                cancel.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
+                                ok.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
+
+                                layout.show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
+
+/*
         updateDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPopupUpdateMac(SignInBaseActivity.this);
             }
-        });
-        otp_layout.setVisibility(View.INVISIBLE);
+        });*/
+
+        //otp_layout.setVisibility(View.INVISIBLE);
+
+
         /*resend_otp.setEnabled(false);
         tv_otp.setEnabled(false);
         btn_otp.setEnabled(false);*/
-        resend_otp.setOnClickListener(new View.OnClickListener() {
+
+        /*resend_otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String clientMobile=LocalPreferenceUtility.getUserMobileNumber(SignInBaseActivity.this);
@@ -200,8 +309,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     MobicashIntentService.startActionCallOTPDetails(mContext,clientMobile);
                 }
             }
-        });
-        btn_otp.setOnClickListener(new View.OnClickListener() {
+        });*/
+
+        /*btn_otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -226,7 +336,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                 }
 
             }
-        });
+        });*/
     }
 
     //Show Popup Mac device ID
@@ -256,7 +366,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                         Toast.makeText(activity, "Fill Mobile Number", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    MacAddressUpdate macAddressUpdate=new MacAddressUpdate();
+                    MacAddressUpdate macAddressUpdate = new MacAddressUpdate();
                     StringBuilder builder = new StringBuilder(MobicashUtils.getMacAddress(activity));
                     builder.append(mobileNumber);
                     try {
@@ -266,12 +376,12 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     {
                         e.printStackTrace();
                     }
-                    macAddressUpdate.hash=MobicashUtils.getSha1(builder.toString());
-                    macAddressUpdate.mobileNumbers=mobileNumber;
+                    macAddressUpdate.hash = MobicashUtils.getSha1(builder.toString());
+                    macAddressUpdate.mobileNumbers = mobileNumber;
 
                     //Call Api for Mac Update
                     showProgressDialog();
-                  MobicashIntentService.startActionMacUpdateRequest(getApplicationContext(),macAddressUpdate);
+                    MobicashIntentService.startActionMacUpdateRequest(getApplicationContext(),macAddressUpdate);
                     layout.dismiss();
                 }
                 catch (Exception ex)
@@ -435,9 +545,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 break;
 
-            case R.id.tv_otp_verify:
+            /*case R.id.tv_otp_verify:
                showPopup_FOROTP(SignInBaseActivity.this);
-                break;
+                break;*/
 
 
         }
@@ -497,13 +607,14 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
         String regex = "\\d+";
         String phoneNumber = mClientMobileNo.getText().toString();
         String passCode = mClientPasscode.getText().toString();
-        if (phoneNumber.length() != 10 && phoneNumber.matches(regex)) {
+        //if (phoneNumber.length() != 10 && phoneNumber.matches(regex)) {
+        if (phoneNumber.length() != 10) {
             Timber.d(" phone number are invalid");
             showDialog(mPhoneNumberErrorMessage);
             return false;
         }
-        if (passCode.length() != 4 && !passCode.matches(regex)) {
-            Timber.d(" passcode are invalid");
+        if (passCode.length() != 4) {
+            Timber.d(" password are invalid");
             showDialog(mPasscodeErrorMessage);
             return false;
         }
@@ -611,7 +722,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                       /*  String code=otp_response.code;
                         String timeFrom=otp_response.timefrom;
                         String mobile=otp_response.mobile;*/
-                        otp_layout.setVisibility(View.VISIBLE);
+
+                        //otp_layout.setVisibility(View.VISIBLE);
+
                         /*resend_otp.setEnabled(true);
                         tv_otp.setEnabled(true);
                         btn_otp.setEnabled(true);*/
@@ -619,7 +732,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     }
                     else{
                         mLoginButton.setEnabled(true);
-                        otp_layout.setVisibility(View.INVISIBLE);
+                        //otp_layout.setVisibility(View.INVISIBLE);
                     }
 
                 } else if (action.equals(NetworkConstant.STATUS_USER_OTP_FAIL)){
@@ -679,7 +792,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 try {
-                   otp_layout.setVisibility(View.INVISIBLE);
+                   //otp_layout.setVisibility(View.INVISIBLE);
                    mLoginButton.setEnabled(true);
                     layout.dismiss();
                 } catch (Exception ex) {
@@ -823,6 +936,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
     protected void onStop() {
         super.onStop();
     }
+
 
    /* @Override
     public void onGoogleAuthSignIn(String authToken, String userId, String displayName, Uri photoUri, String givenName, String Email)

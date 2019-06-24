@@ -11,6 +11,8 @@ import com.wifyee.greenfields.activity.BusBookActivity;
 import com.wifyee.greenfields.activity.ChangePasswordSettingActivity;
 import com.wifyee.greenfields.activity.ChoosePaymentWalletActivity;
 import com.wifyee.greenfields.activity.DTHRechargeActivity;
+import com.wifyee.greenfields.activity.UploadPrescription;
+import com.wifyee.greenfields.dairyorder.DairyItemListActivity;
 import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
 import com.wifyee.greenfields.dairyorder.DairyProductActivity;
 import com.wifyee.greenfields.activity.ElectricityBillPaymentActivity;
@@ -354,7 +356,8 @@ public class IntentFactory {
      */
 
     public static Intent createMedicinePreciptionActivity(Context context) {
-        Intent intent = new Intent(context, UploadMedicinePrescriptionActivity.class);
+        //Intent intent = new Intent(context, UploadMedicinePrescriptionActivity.class);
+        Intent intent = new Intent(context, UploadPrescription.class);
         return intent;
     }
 
@@ -368,6 +371,11 @@ public class IntentFactory {
      */
     public static Intent createDairyProductActivity(Context ctx){
         Intent intent = new Intent(ctx, DairyProductActivity.class);
+        return intent;
+    }
+
+    public static Intent createDairyItemLisActivity(Context ctx){
+        Intent intent = new Intent(ctx, DairyItemListActivity.class);
         return intent;
     }
 

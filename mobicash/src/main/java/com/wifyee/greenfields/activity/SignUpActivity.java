@@ -16,6 +16,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -45,6 +46,9 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
@@ -125,6 +129,9 @@ public class SignUpActivity extends BaseActivity  {
     @BindView(R.id.tv_password)
     EditText mPassword;
 
+    @BindView(R.id.tv_pin_code)
+    EditText mPincode;
+
     @BindView(R.id.btn_sign_up)
     Button mSignupButton;
 
@@ -150,6 +157,9 @@ public class SignUpActivity extends BaseActivity  {
 
     @BindString(R.string.passcode_error_message)
     String mPasscodeErrorMessage;
+
+    @BindString(R.string.pincode_error_message)
+    String mPincodeErrorMessage;
 
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
@@ -567,6 +577,12 @@ public class SignUpActivity extends BaseActivity  {
             return false;
         }
 
+        if (mPincode.getText().toString().trim().length() == 0
+                || mPincode.getText().toString().length() != 6) {
+            showDialog(mPincodeErrorMessage);
+            return false;
+        }
+
         return true;
     }
 
@@ -650,6 +666,19 @@ public class SignUpActivity extends BaseActivity  {
                 if (action.equals(NetworkConstant.STATUS_USER_SIGNUP_SUCCESS)) {
                    final SignupResponse signupResponse = (SignupResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                     Timber.d("STATUS_USER_SIGNUP_SUCCESS = > signupResponse  ==>" + new Gson().toJson(signupResponse));
+
+                    FirebaseMessaging.getInstance().subscribeToTopic(mPincode.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                            }else {
+                                Log.i(TAG,"Successfully subscribeToTopic "+mPincode.getText().toString());
+                            }
+                        }
+                    });
+
                     startWifyeeRegistrationRequest(signupResponse);
                     startWifyeeRegistration(SignUpActivity.this);
                     MobicashIntentService.startActionCallOTPDetails(mContext,signupResponse.clientMobile);
@@ -659,6 +688,7 @@ public class SignUpActivity extends BaseActivity  {
                             callSendApi(SignUpActivity.this,signupResponse.clientMobile);
                         }
                     });*/
+
                     saveDataToLocalPreferences(signupResponse);
                     //onSuccess("Msg","Successfuly Register.Please Confirm Your Otp Number.");
                     pDialog = new SweetAlertDialog(SignUpActivity.this, SweetAlertDialog.SUCCESS_TYPE);

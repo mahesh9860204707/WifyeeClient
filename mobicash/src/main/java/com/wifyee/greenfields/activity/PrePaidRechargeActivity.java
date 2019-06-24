@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,8 +52,8 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.toolbar_back)
-    ImageButton back;
+    //@BindView(R.id.toolbar_back)
+    //ImageButton back;
 
     @BindView(R.id.button_operator)
     Button buttonOperator;
@@ -100,9 +101,9 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -183,13 +184,31 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
                 if (failureResponse != null && failureResponse.msg != null && !failureResponse.msg.isEmpty()) {
                     showErrorDialog(failureResponse.msg);
                 }
-            } else if (actionOperatorList.equals(NetworkConstant.STATUS_USER_CLIENT_AIRTIME_SUCCESS)) {
+            }
+            else if (actionOperatorList.equals(NetworkConstant.STATUS_USER_CLIENT_AIRTIME_SUCCESS)) {
                 cancelProgressDialog();
                 AirtimeResponse airtimeResponse = (AirtimeResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (airtimeResponse != null && airtimeResponse.msg != null && !airtimeResponse.msg.isEmpty()) {
-                    onSuccess(getString(R.string.recharge_status_title), airtimeResponse);
+                    //onSuccess(getString(R.string.recharge_status_title), airtimeResponse);
+                    Log.e("txn_status",airtimeResponse.rechargeStatus);
+                    Log.e("txn_id",airtimeResponse.referenceID);
+                    Log.e("recharge_id",airtimeResponse.rechargeID);
+                    Log.e("txn_date",airtimeResponse.txnDate);
+                    Log.e("number",airtimeResponse.number);
+                    Log.e("amount",airtimeResponse.amount);
+
+                    Intent intent1 = new Intent(getApplicationContext(),SuccessTransaction.class);
+                    intent1.putExtra("txn_status",airtimeResponse.rechargeStatus);
+                    intent1.putExtra("txn_id",airtimeResponse.referenceID);
+                    intent1.putExtra("recharge_id",airtimeResponse.rechargeID);
+                    intent1.putExtra("txn_date",airtimeResponse.txnDate);
+                    intent1.putExtra("number",airtimeResponse.number);
+                    intent1.putExtra("amount",airtimeResponse.amount);
+                    startActivity(intent1);
+                    finish();
                 }
-            }else if (actionOperatorList.equals(NetworkConstant.ACTION_SHOW_ID_SUCCESS_PAID)) {
+            }
+            else if (actionOperatorList.equals(NetworkConstant.ACTION_SHOW_ID_SUCCESS_PAID)) {
                 if (operatorCodeListMap != null && operatorCodeListMap.containsKey(buttonOperator.getText().toString())) {
                     String operatorCode = (String) operatorCodeListMap.get(buttonOperator.getText().toString());
                     staticOperatorCode=operatorCode;

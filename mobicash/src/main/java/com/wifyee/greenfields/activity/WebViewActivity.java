@@ -73,6 +73,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import timber.log.Timber;
@@ -139,15 +140,16 @@ public class WebViewActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(getString(R.string.payment_process_title));
+
+            // For back button in tool bar handling.
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                }
+            });
         }
-        // For back button in tool bar handling.
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-            }
-        });
 
         webView.addJavascriptInterface(new MyJavaScriptInterface(webView, webLoading), "INTERFACE");
         webView.setWebViewClient(new WebViewClient() {
@@ -203,6 +205,7 @@ public class WebViewActivity extends BaseActivity {
             instaMojoRequest.setResponseUrl("http://wifyee.com/thanks.php");
             MobicashIntentService.startActionInstaMojoPayment(WebViewActivity.this, instaMojoRequest);
         }
+
         webView.getSettings().setJavaScriptEnabled(true);
         if (intent != null) {
             JSONObject jsonObjectPayRequest = new JSONObject();
@@ -242,6 +245,7 @@ public class WebViewActivity extends BaseActivity {
                     Timber.e("JSONException. message : " + e.getMessage());
                 }
                 // Show the web page
+                //Log.e("-JSON-",jsonObjectPayRequest.toString());
                 webView.postUrl(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.USER_CLIENT_PAYU_PAYMENT_GATEWAY_END_POINT,
                         (jsonObjectPayRequest.toString()).getBytes());
                 // webView.loadUrl("http://google.com");
@@ -261,6 +265,7 @@ public class WebViewActivity extends BaseActivity {
                     jsonObject.put(ResponseAttributeConstants.ADD_WALLET_HASH, addMoneyWallet.hash);
                     jsonObject.put(ResponseAttributeConstants.ADD_WALLET_PINCODE, addMoneyWallet.pincode);
                     jsonObject.put(ResponseAttributeConstants.ADD_WALLET_TXN_ID, addMoneyWallet.txnId);
+                    //Log.e("WALLETjson",jsonObject.toString());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -271,7 +276,7 @@ public class WebViewActivity extends BaseActivity {
         }
         if (intent != null) {
             PayUPaymentGatewayRequest mPayUPaymentGatewayRequest = (PayUPaymentGatewayRequest) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
             String currentDateandTime = sdf.format(new Date());
             planPaymentReques = new PlanPaymentRequest();
             planPaymentReques.plan_id = mPayUPaymentGatewayRequest.planId;
@@ -427,6 +432,7 @@ public class WebViewActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+
         AndroidNetworking.post(NetworkConstant.PLAN_UPDATE_ON_WIFYEE_SERVER)
                 .addJSONObjectBody(jsondata)
                 .setPriority(Priority.HIGH)
@@ -570,7 +576,6 @@ public class WebViewActivity extends BaseActivity {
         for (String action : broadCastReceiverActionList) {
             broadcastManager.registerReceiver(transactionHistoryReceiver, new IntentFilter(action));
         }
-
     }
 
     @Override
@@ -868,6 +873,7 @@ public class WebViewActivity extends BaseActivity {
     /**
      * show profile upload progress dialog
      */
+
     protected void showProgressDialog() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

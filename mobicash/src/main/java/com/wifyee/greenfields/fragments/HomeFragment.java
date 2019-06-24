@@ -168,7 +168,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         turn3GOff();
         requestData(getActivity());
         connectWifiOpenHomeScreen("Wifyee",getActivity());
-        mLoginRequest=new LoginRequest();
+        mLoginRequest = new LoginRequest();
         mLoginRequest.clientmobile=LocalPreferenceUtility.getUserMobileNumber(getActivity());
         mLoginRequest.pincode=LocalPreferenceUtility.getUserPassCode(getActivity());
         Calendar c = Calendar.getInstance();
@@ -435,23 +435,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recyclerViewOrders= (RecyclerView) view.findViewById(R.id.horizontal_recycler_item);
 
         recycleViewPagerAdapter = new RecycleViewPagerAdapter();
-        recycleView.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL));
-        recycleView.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.VERTICAL));
-        //LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        //recycleView.addItemDecoration(new DividerItemDecoration(mContext,
+               // DividerItemDecoration.HORIZONTAL));
+        //recycleView.addItemDecoration(new DividerItemDecoration(mContext,
+                //DividerItemDecoration.VERTICAL));
         LinearLayoutManager horizontalLayoutManagaer =  new GridLayoutManager(mContext, 4);
         recycleView.setLayoutManager(horizontalLayoutManagaer);
         recycleView.setAdapter(recycleViewPagerAdapter);
 
 
         recycleViewOrdersPagerAdapter= new RecycleViewOrdersPagerAdapter();
-        //LinearLayoutManager horizontalLayoutManagaerOreders
-                //= new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewOrders.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL));
-        recyclerViewOrders.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.VERTICAL));
+
+        //recyclerViewOrders.addItemDecoration(new DividerItemDecoration(mContext,
+                //DividerItemDecoration.HORIZONTAL));
+       // recyclerViewOrders.addItemDecoration(new DividerItemDecoration(mContext,
+                //DividerItemDecoration.VERTICAL));
         LinearLayoutManager horizontalLayoutManagaerOreders =  new GridLayoutManager(mContext, 3);
         recyclerViewOrders.setLayoutManager(horizontalLayoutManagaerOreders);
         recyclerViewOrders.setHasFixedSize(true);
@@ -460,10 +458,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         //Grocer recyclerview
         recycleViewGroceryAdapter = new RecycleViewGroceryAdapter();
-        recyclerViewGrocery.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.HORIZONTAL));
-        recyclerViewGrocery.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.VERTICAL));
+        //recyclerViewGrocery.addItemDecoration(new DividerItemDecoration(mContext,
+                //DividerItemDecoration.HORIZONTAL));
+        //recyclerViewGrocery.addItemDecoration(new DividerItemDecoration(mContext,
+                //DividerItemDecoration.VERTICAL));
         LinearLayoutManager llm =  new GridLayoutManager(mContext, 3);
         recyclerViewGrocery.setLayoutManager(llm);
         recyclerViewGrocery.setHasFixedSize(true);
@@ -888,12 +886,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 getString(R.string.menu_landline),
                 getString(R.string.menu_electricity),
                 "Add Money",
-                "Request Credit",
+                //"Request Credit",
                 "Send Money",
                 "Pay Merchant",
                 "Request Money",
                 "Order Broadband",
-                "Ticketing",
+                //"Ticketing",
                 "More"
         };
 
@@ -924,12 +922,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 R.mipmap.landline_icon,
                 R.mipmap.electricity_icon,
                 R.drawable.ic_payment,
-                R.drawable.ic_request_credit,
+                //R.drawable.ic_request_credit,
                 R.mipmap.send_money_icon,
                 R.mipmap.pay_merchant,
                 R.mipmap.request_money_icon,
                 R.drawable.ic_internet,
-                R.mipmap.ticketing,
+                //R.mipmap.ticketing,
                 R.drawable.ic_more
 
         };
@@ -1015,43 +1013,43 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
-                        case 5:
+                        /*case 5:
                             if (getActivity() != null && isAdded()) {
                                 startActivity(IntentFactory.createRequestCreditActivity(getContext()));
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
-                            break;
-                        case 6:
+                            break;*/
+                        case 5:
                             if (getActivity() != null && isAdded()) {
                                 startActivity(IntentFactory.createSendMoneyActivity(getContext()));
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
-                        case 7:
+                        case 6:
                             if (getActivity() != null && isAdded()) {
                                 startActivity(IntentFactory.scanQRCodeActivity(getContext()));
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
-                        case 8:
+                        case 7:
                             if (getActivity() != null && isAdded()) {
                                 startActivity(IntentFactory.createRequestMoneyActivity(getContext()));
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
-                        case 9:
+                        case 8:
                             if (getActivity() != null && isAdded()) {
                                 startActivity(new Intent(getContext(), RequestBroadbandActivity.class));
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
-                        case 10:
+                        /*case 9:
                             if (getActivity() != null && isAdded()) {
                                 startActivity(IntentFactory.createTicketingActivity(getContext()));
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
-                            break;
-                        case 11:
+                            break;*/
+                        case 9:
                             if (getActivity() != null && isAdded()) {
                                 startActivity(new Intent(getActivity(), MoreCategory.class));
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
@@ -1412,10 +1410,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         private String[] title = {
                 "Oil",
                 "Rice",
-                "Grains",
+                "Sugar",
                 "Soap",
                 "Masalas",
-                "Perfume"
+                "Wheat"
         };
 
         /*private int[] mTabsIcons = {
@@ -1429,10 +1427,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         private int[] mTabsIcons = {
                 R.drawable.ic_oil,
                 R.drawable.ic_rice,
-                R.drawable.ic_grains,
+                R.drawable.ic_sugar,
                 R.drawable.ic_soap,
                 R.drawable.ic_masalas,
-                R.drawable.ic_perfume,
+                R.drawable.ic_wheat,
         };
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -1470,9 +1468,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     switch (position) {
                         case 0:
                             if (getActivity() != null && isAdded()) {
-                                Intent productIntent = IntentFactory.createDairyProductActivity(getContext());
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Oil");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "3");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
@@ -1480,27 +1479,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                         case 1:
                             if (getActivity() != null && isAdded()) {
-                                Intent productIntent = IntentFactory.createDairyProductActivity(getContext());
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Rice");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "4");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+
                         case 2:
                             if (getActivity() != null && isAdded()) {
-                                Intent productIntent = IntentFactory.createDairyProductActivity(getContext());
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
-                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Grains");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Sugar");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "12");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+
                         case 3:
                             if (getActivity() != null && isAdded()) {
-                                Intent productIntent = IntentFactory.createDairyProductActivity(getContext());
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Soap");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "217");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
@@ -1508,18 +1512,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                         case 4:
                             if (getActivity() != null && isAdded()) {
-                                Intent productIntent = IntentFactory.createDairyProductActivity(getContext());
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Masalas");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "213");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+
                         case 5:
                             if (getActivity() != null && isAdded()) {
-                                Intent productIntent = IntentFactory.createDairyProductActivity(getContext());
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
-                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Perfume");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Wheat");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "13");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }

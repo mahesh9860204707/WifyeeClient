@@ -1108,8 +1108,16 @@ public class MobicashIntentService extends IntentService {
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(NetworkConstant.INSTA_MOJO_PAYMENT_GATEWAY_REQUEST)
                 .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setTag(TAG_PERFORM_INSTA_MOJO_PAYMENT)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1159,6 +1167,12 @@ public class MobicashIntentService extends IntentService {
     //Handle Action Upload medicine
     private void handleActionUploadMedicine(Intent intent)
     {
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         MedicineOrderModel mUploadMedicineRequest = (MedicineOrderModel) intent.getSerializableExtra(PARAM_MEDICINE_ORDER_REQUEST_MODEL);
         AndroidNetworking.upload(NetworkConstant.USER_MEDICINE_UPLOAD_END_POINT)
                 .addMultipartFile("priscriptionDocument", mUploadMedicineRequest.priscriptionDocument)
@@ -1168,7 +1182,7 @@ public class MobicashIntentService extends IntentService {
                 addMultipartParameter("longLoc",mUploadMedicineRequest.getLongLoc())
                 .setTag(TAG_PERFORM_MEDICINE_ORDER)
                 .setPriority(Priority.HIGH)
-                .setOkHttpClient(new OkHttpClient())
+                .setOkHttpClient(okHttpClient)
                 .setExecutor(Executors.newSingleThreadExecutor()) // setting an executor to get response or completion on that executor thread
                 .build()
                 .setUploadProgressListener(new UploadProgressListener() {
@@ -1251,13 +1265,20 @@ public class MobicashIntentService extends IntentService {
         {
             ex.printStackTrace();
         }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.upload(NetworkConstant.ADD_KYC_TO_SERVER)
                 .addMultipartFile(ResponseAttributeConstants.ADD_KYC_IDENTITY_IMAGE, idPath)
                 .addMultipartFile(ResponseAttributeConstants.ADD_KYC_ADDRESS_IMAGE,addressPath)
                 .addMultipartParameter(ResponseAttributeConstants.ADD_KYC_DOCUMENTS,itemSelectedJson.toString())
                 .setTag(TAG_ADD_KYC)
                 .setPriority(Priority.HIGH)
-                .setOkHttpClient(new OkHttpClient())
+                .setOkHttpClient(okHttpClient)
                 .setExecutor(Executors.newSingleThreadExecutor()) // setting an executor to get response or completion on that executor thread
                 .build()
                 .setUploadProgressListener(new UploadProgressListener() {
@@ -1325,8 +1346,16 @@ public class MobicashIntentService extends IntentService {
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_GSTONFOOD_LIST_REQUEST_MODEL)
                 .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setTag(TAG_PERFORM_GSTONFOOD_LIST)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1390,8 +1419,15 @@ public class MobicashIntentService extends IntentService {
             Timber.e("JSONException. message : " + e.getMessage());
         }
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_ALLFOODODER_LIST_REQUEST_MODEL)
                 .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setTag(TAG_PERFORM_ALLFOODORDER_LIST)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1458,8 +1494,15 @@ public class MobicashIntentService extends IntentService {
             Timber.e("JSONException. message : " + e.getMessage());
         }
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_FOODORDER_STATUS_DETAILS_LIST_REQUEST_MODEL)
                 .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setTag(TAG_PERFORM_FOOD_ORDER_STATUS_DETAIL)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1526,8 +1569,15 @@ public class MobicashIntentService extends IntentService {
             Timber.e("JSONException. message : " + e.getMessage());
         }
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_FOODORDER_STATUS_LIST_REQUEST_MODEL)
                 .addJSONObjectBody(jsonObject)
+                .setOkHttpClient(okHttpClient)
                 .setTag(TAG_PERFORM_FOOD_ORDER_STATUS)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1600,6 +1650,7 @@ public class MobicashIntentService extends IntentService {
                     obj.put("item_id",mCartFoodOrderRequest.items.get(i).id);
                     obj.put("quantity",mCartFoodOrderRequest.items.get(i).quantity);
                     obj.put("amount",mCartFoodOrderRequest.items.get(i).amount);
+                    Log.e("(JSON)",obj.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -2158,6 +2209,7 @@ public class MobicashIntentService extends IntentService {
                 });
 
     }
+
     //Handle Mac Address update
     private void handleActionMacAddressUpated(Intent paramData) {
         MacAddressUpdate mMacAddressUpdate = (MacAddressUpdate) paramData.getSerializableExtra(PARAM_MAC_UPDATE_STATUS_REQUEST_MODEL);
@@ -2489,6 +2541,7 @@ public class MobicashIntentService extends IntentService {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.e("WalletJSON",response.toString());
                         Timber.e("called onResponse of Add Money Wallet API.");
                         try {
                             if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
@@ -2894,7 +2947,7 @@ public class MobicashIntentService extends IntentService {
     private void handleActionAirtimeRecharge(Intent paramData) {
         AirtimeRequest mAirtimeRequest = (AirtimeRequest) paramData.getSerializableExtra(PARAM_AIRTIME_REQUEST_MODEL);
         String transactionID=paramData.getStringExtra(TRANSACTION_ID);
-        JSONObject jsonObject = new JSONObject();
+        final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(ResponseAttributeConstants.CLIENT_MOBILE_PARAMETER, mAirtimeRequest.clientmobile);
             jsonObject.put(ResponseAttributeConstants.PIN_CODE, MobicashUtils.md5(mAirtimeRequest.pincode));
@@ -2907,6 +2960,8 @@ public class MobicashIntentService extends IntentService {
                 jsonObject.put(ResponseAttributeConstants.TRANSACTION_ID, transactionID);
             }
             jsonObject.put(ResponseAttributeConstants.HASH, mAirtimeRequest.hash);
+
+            //Log.e("Prepaid",jsonObject.toString());
 
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
@@ -2921,6 +2976,7 @@ public class MobicashIntentService extends IntentService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Timber.e("called onResponse of User Airtime API.");
+                        Log.e("Prepaid",response.toString());
                         try {
                             if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
                                 AirtimeResponse mAirtimeResponse = ModelMapper.transformJSONObjectToAirtimeResponse(response);
@@ -2951,6 +3007,7 @@ public class MobicashIntentService extends IntentService {
                     @Override
                     public void onError(ANError error) {
                         // handle error
+                        //Timber.e("Error Message : " + error.getMessage());
                         Timber.e("called onError of User Airtime API.");
                         Timber.e("Error Message : " + error.getMessage());
                         Timber.e("Error code : " + error.getErrorCode());
@@ -3129,11 +3186,17 @@ public class MobicashIntentService extends IntentService {
             Timber.e("JSONException. message : " + e.getMessage());
         }
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
 
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.USER_CLIENT_PROFILE_UPDATE_END_POINT)
                 .addJSONObjectBody(jsonObject)
                 .setTag(TAG_PERFORM_CLIENT_PROFILE_UPDATE)
                 .setPriority(Priority.HIGH)
+                .setOkHttpClient(okHttpClient)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override

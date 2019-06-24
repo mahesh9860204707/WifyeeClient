@@ -1,49 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="20dp"
         android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#ffffff"
             android:orientation="vertical"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="20dp">
+            android:paddingTop="20dp"
+            android:layout_marginTop="16dp"
+            android:paddingRight="24dp">
 
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/wi_fi_logo_png" />
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/wifyee_new_logo" />
 
-            <TextView
-                android:id="@+id/tv_sign_up"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/color_logo"
-                android:text="@string/text_signup"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
             <TextView
                 android:id="@+id/link_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:gravity="center"
-                android:text="@string/login_title"
-                android:textSize="18sp"
+                android:text="Login"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
 
@@ -99,8 +89,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -136,8 +126,8 @@
                     style="@style/font_family_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
                     android:layout_marginTop="10dp"
+                    android:padding="2dp"
                     android:text="Did You Update Your Device?"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/blue"
@@ -149,20 +139,32 @@
                 android:id="@+id/btn_login"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/button_round_cornor_selector"
                 android:padding="12dp"
-                android:textColor="@color/white"
-                android:text="@string/button_login" />
+                android:text="@string/button_login"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_sign_up"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/text_signup"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/color_logo" />
 
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:id="@+id/otp_layout"
-                android:visibility="visible"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="visible">
 
 
                 <EditText
@@ -170,62 +172,60 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
 
+                    android:layout_margin="10dp"
                     android:layout_marginTop="20dp"
                     android:background="@null"
                     android:drawableLeft="@mipmap/first_name_icon"
                     android:drawablePadding="10dp"
                     android:focusable="true"
                     android:hint="@string/enter_otp_hints"
-                    android:maxLength="6"
                     android:inputType="number"
+                    android:maxLength="6"
                     android:maxLines="1"
                     android:padding="2dp"
-                    android:layout_margin="10dp"
-                    android:textSize="16dp"/>
+                    android:textSize="16dp" />
 
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dip"
-                    android:visibility="visible"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="3dp"
                     android:background="@android:color/darker_gray"
-                    android:padding="2dp" />
+                    android:padding="2dp"
+                    android:visibility="visible" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
+                        android:id="@+id/resend_otp"
                         android:layout_width="wrap_content"
-                        android:text="Resend OTP"
-                        android:textStyle="bold"
-                        android:padding="5dp"
-                        android:textSize="15sp"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/colorPrimaryDark"
                         android:layout_height="wrap_content"
-                        android:id="@+id/resend_otp"/>
+                        android:layout_alignParentRight="true"
+                        android:padding="5dp"
+                        android:text="Resend OTP"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
-
-
 
 
                 <Button
                     android:id="@+id/submit_otp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:textColor="@color/white"
+                    android:layout_margin="10dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/button_round_cornor_selector"
                     android:padding="12dp"
-                    android:layout_margin="10dp"
-                    android:text="@string/submit" />
+                    android:text="@string/submit"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
-          <!--  <LinearLayout
+            <!--  <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"

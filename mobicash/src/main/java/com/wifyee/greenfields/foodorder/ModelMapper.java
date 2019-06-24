@@ -330,6 +330,9 @@ public class ModelMapper {
 
                 if (response.has(ResponseAttributeConstants.LOGO))
                     categoryListItem.logo = response.getString(ResponseAttributeConstants.LOGO);
+
+                if (response.has(ResponseAttributeConstants.CURRENT_STATUS))
+                    categoryListItem.status = response.getString(ResponseAttributeConstants.CURRENT_STATUS);
             }
         } catch (JSONException e) {
             Timber.e("JSONException while transformToRestaurantListItem. Message : " + e.getMessage());

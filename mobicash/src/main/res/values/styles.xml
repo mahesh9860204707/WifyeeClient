@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/secondaryPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
@@ -42,6 +42,14 @@
         <item name="colorPrimaryDark">#7D0A4E</item>
         <item name="colorAccent">#7D0A4E</item>
     </style>
+
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/secondaryPrimary</item>
+        <item name="colorPrimaryDark">@color/secondaryPrimary</item>
+        <item name="colorAccent">@color/secondaryPrimary</item>
+    </style>
+
     <style name="font_family_light">
         <item name="android:fontFamily">@string/font_fontFamily_light</item>
     </style>

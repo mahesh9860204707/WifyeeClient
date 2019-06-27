@@ -2300,6 +2300,7 @@ public class MobicashIntentService extends IntentService {
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.e("AfterReg2",response.toString());
                             Timber.e("called onResponse of wifee User SignUp API.");
                             try {
                                 if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {

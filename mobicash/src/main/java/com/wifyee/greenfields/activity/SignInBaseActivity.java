@@ -14,7 +14,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -31,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +45,8 @@ import com.android.volley.toolbox.Volley;
 //import com.facebook.GraphResponse;
 //import com.facebook.Profile;
 //import com.facebook.login.LoginResult;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.goodiebag.pinview.Pinview;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 
@@ -70,12 +72,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 public class SignInBaseActivity extends BaseActivity implements View.OnClickListener,LocationListener {
@@ -95,6 +97,12 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
 
     @BindView(R.id.tv_send_passcode)
     TextView mSendPassword;
+
+    @BindView(R.id.progressbar)
+    SpinKitView loading;
+
+    @BindView(R.id.main_layout)
+    RelativeLayout mainLayout;
 
     /*@BindView(R.id.tv_otp_verify)
     TextView mOtpVerify;*/
@@ -145,7 +153,8 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
     private OTP_Response mSendOtpData;
     private String mobileNumber="";
     private EditText mobileRecharge;
-
+    SweetAlertDialog pDialog;
+    Dialog layoutOtp;
     /**
      * List of actions supported.
      */
@@ -242,38 +251,12 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.menu1:
-                                final Dialog layout1 = new Dialog(SignInBaseActivity.this);
-                                //layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                layout1.setContentView(R.layout.popup_otp);
-                                /*otpView.setListener(new OtpListener() {
-                                    @Override public void onOtpEntered(String otp) {
-
-                                        // do Stuff
-                                        Log.d("onOtpEntered=>", otp);
-                                    }
-                                });*/
-
-                                layout1.show();
-
+                                popupMobileNo(1);
+                                //popupOtpFullscreen(SignInBaseActivity.this,mobileNumber);
                                 break;
 
                             case R.id.menu2:
-                                final Dialog layout = new Dialog(SignInBaseActivity.this);
-                                //layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                layout.setContentView(R.layout.popup_update_device);
-                                TextView tv = layout.findViewById(R.id.tv);
-                                EditText mobileNo =  layout.findViewById(R.id.tv_phone_number);
-                                TextInputLayout til =  layout.findViewById(R.id.til_mobile);
-                                Button cancel =  layout.findViewById(R.id.cancel_btn);
-                                Button ok =  layout.findViewById(R.id.confirm_btn);
-
-                                tv.setTypeface(Fonts.getRegular(SignInBaseActivity.this));
-                                til.setTypeface(Fonts.getRegular(SignInBaseActivity.this));
-                                mobileNo.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
-                                cancel.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
-                                ok.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
-
-                                layout.show();
+                                popupMobileNo(0);
                                 break;
                         }
                         return false;
@@ -393,6 +376,155 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
         });
     }
 
+    /*private void popupOtpFullscreen(final Activity activity,String mobileNo){
+        //layoutOtp = new Dialog(activity,android.R.style.Theme_Holo_NoActionBar);
+        //layoutOtp = new Dialog(activity,android.R.style.Theme_Holo_NoActionBar_Fullscreen);
+        layoutOtp = new Dialog(activity,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        layoutOtp.setContentView(R.layout.popup_otp);
+        layoutOtp.setCancelable(false);
+        ImageView close = layoutOtp.findViewById(R.id.ib_close);
+        TextView txt = layoutOtp.findViewById(R.id.txt);
+        TextView txtMobileNo = layoutOtp.findViewById(R.id.txt_mobile_no);
+        TextView txtDontReceive = layoutOtp.findViewById(R.id.txt_dont_receive);
+        TextView txtResend = layoutOtp.findViewById(R.id.txt_resend);
+        Button verifyOtp = layoutOtp.findViewById(R.id.verify_otp);
+        final Pinview pin = layoutOtp.findViewById(R.id.pinview);
+
+        txt.setTypeface(Fonts.getRegular(activity));
+        txtMobileNo.setTypeface(Fonts.getSemiBold(activity));
+        txtDontReceive.setTypeface(Fonts.getRegular(activity));
+        txtResend.setTypeface(Fonts.getSemiBold(activity));
+        verifyOtp.setTypeface(Fonts.getSemiBold(activity));
+
+        txtMobileNo.setText("+91-"+mobileNo);
+
+        //pin.getValue();
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutOtp.dismiss();
+            }
+        });
+
+        verifyOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    String otpString = pin.getValue();
+                    if (otpString.equals("") || otpString.length() == 0) {
+                        Toast.makeText(getApplicationContext(), "Please enter OTP", Toast.LENGTH_SHORT).show();
+                    } else if(mSendOtpData!=null) {
+                        showProgressDialog();
+                        OTP_Response mOTOtp_response=new OTP_Response();
+                        mOTOtp_response.timefrom = mSendOtpData.timefrom;
+                        mOTOtp_response.code = otpString;
+                        mOTOtp_response.mobile = mSendOtpData.mobile;
+                        mOTOtp_response.userId = mSendOtpData.userId;
+                        System.out.println("Confirm otp request"+mOTOtp_response);
+                        MobicashIntentService.startActionUserConfirmationOtp(getApplicationContext(),mOTOtp_response);
+                        //callAuthenticationApi(getApplicationContext(),mobile,otpString,timeString);
+                        //   layout.dismiss();
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        layoutOtp.show();
+    }*/
+
+    // 0 for update device , 1 for verify otp
+
+    private void popupMobileNo(final int option){
+        final Dialog layout = new Dialog(SignInBaseActivity.this);
+        layout.setContentView(R.layout.popup_update_device);
+        TextView tv = layout.findViewById(R.id.tv);
+        final EditText mobileNo =  layout.findViewById(R.id.tv_phone_number);
+        TextInputLayout til =  layout.findViewById(R.id.til_mobile);
+        Button cancel =  layout.findViewById(R.id.cancel_btn);
+        Button ok =  layout.findViewById(R.id.confirm_btn);
+
+        tv.setTypeface(Fonts.getRegular(SignInBaseActivity.this));
+        til.setTypeface(Fonts.getRegular(SignInBaseActivity.this));
+        mobileNo.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
+        cancel.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
+        ok.setTypeface(Fonts.getSemiBold(SignInBaseActivity.this));
+
+        mobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mobileNo.getText().toString().length()==10){
+                    mobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    mobileNumber = mobileNo.getText().toString();
+                    if(mobileNo.length()!=10)
+                    {
+                        Toast.makeText(SignInBaseActivity.this, "Please enter valid mobile no.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    //checking condition
+                    if(option==0) {
+                        MacAddressUpdate macAddressUpdate = new MacAddressUpdate();
+                        StringBuilder builder = new StringBuilder(MobicashUtils.getMacAddress(SignInBaseActivity.this));
+                        builder.append(mobileNumber);
+
+                        macAddressUpdate.hash = MobicashUtils.getSha1(builder.toString());
+                        macAddressUpdate.mobileNumbers = mobileNumber;
+
+                        //Call Api for Mac Update
+                        //showProgressDialog();
+                        loading.setVisibility(View.VISIBLE);
+                        mainLayout.setAlpha(0.5f);
+                        MobicashIntentService.startActionMacUpdateRequest(mContext, macAddressUpdate);
+                        layout.dismiss();
+
+                    }else {
+                        //showProgressDialog();
+                        loading.setVisibility(View.VISIBLE);
+                        mainLayout.setAlpha(0.5f);
+                        MobicashIntentService.startActionCallOTPDetails(mContext,mobileNumber);
+                        layout.dismiss();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        layout.show();
+    }
+
     private void showPopup_FOROTP(final Activity activity) {
         final Dialog layout = new Dialog(activity);
         layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -413,7 +545,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 try {
-                    mobileNumber=mobileRecharge.getText().toString();
+                    mobileNumber = mobileRecharge.getText().toString();
                     if(mobileNumber.equals("")||mobileNumber.length()==0)
                     {
                         Toast.makeText(activity, "Fill Mobile Number", Toast.LENGTH_SHORT).show();
@@ -434,6 +566,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     //Call Api Update for Mac Address
   /*  private void callApiForMacUpdate(final Activity context,String mobileNumber, String macAddress)
     {
@@ -519,7 +652,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     if (validateSignInFields()) {
                         if (MobicashUtils.isNetworkAvailable(this)) {
                             Timber.d(" Sending API request...");
-                            showProgressDialog();
+                            //showProgressDialog();
+                            loading.setVisibility(View.VISIBLE);
+                            mainLayout.setAlpha(0.5f);
                             mLoginRequest = new LoginRequest();
                             mLoginRequest.clientmobile = mClientMobileNo.getText().toString();
                             LocalPreferenceUtility.putUserMobileNumber(this,mLoginRequest.clientmobile);
@@ -636,6 +771,14 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
             broadcastManager.registerReceiver(loginStatusReceiver, new IntentFilter(action));
         }
 
+
+
+        /*if (layoutOtp!=null && layoutOtp.isShowing() ){
+            layoutOtp.dismiss();
+        }*/
+
+
+
     }
     /*@Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -649,7 +792,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            cancelProgressDialog();
+            //cancelProgressDialog();
+            loading.setVisibility(View.GONE);
+            mainLayout.setAlpha(1f);
             try {
                 if (action.equals(NetworkConstant.STATUS_USER_LOGIN_SUCCESS)) {
                     LoginResponse mLoginResponse = (LoginResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
@@ -666,17 +811,23 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                         Timber.d("STATUS_USER_SIGNUP_FAIL = > failureResponse  ==>" + new Gson().toJson(failureResponse));
                     }
                     if (failureResponse != null && failureResponse.msg != null) {
-                        showErrorDialog(failureResponse.msg);
+                        //showErrorDialog(failureResponse.msg);
+                        showErrorAlertbox(SignInBaseActivity.this,failureResponse.msg);
                     } else {
                         String errorMessage = getString(R.string.error_message);
-                        showErrorDialog(errorMessage);
+                        showErrorAlertbox(SignInBaseActivity.this,errorMessage);
+                        //showErrorDialog(errorMessage);
                     }
                 }
                 if (action.equals(NetworkConstant.STATUS_MAC_ADDRESS_UPDATE_SUCCESS)) {
                     MacUpdateAddressResponse mMacUpdateAddressResponse = (MacUpdateAddressResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                     if(mMacUpdateAddressResponse!=null)
                     {
-                        showSuccessDialogMsg(SignInBaseActivity.this,mMacUpdateAddressResponse.msg);
+                        //ALertbox here
+                        Log.e("calling","calling1");
+                        Log.e("msg",mMacUpdateAddressResponse.msg);
+                        showSuccessAlertbox(SignInBaseActivity.this,mMacUpdateAddressResponse.msg);
+                        //showSuccessDialogMsg(SignInBaseActivity.this,mMacUpdateAddressResponse.msg);
                     }
                     Timber.d("STATUS_USER_LOGIN_SUCCESS = > LoginResponse  ==>" + new Gson().toJson(mMacUpdateAddressResponse));
 
@@ -686,10 +837,12 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                         Timber.d("STATUS_USER_SIGNUP_FAIL = > failureResponse  ==>" + new Gson().toJson(failureResponse));
                     }
                     if (failureResponse != null && failureResponse.msg != null) {
-                        showErrorDialog(failureResponse.msg);
+                        showErrorAlertbox(SignInBaseActivity.this,failureResponse.msg);
+                        //showErrorDialog(failureResponse.msg);
                     } else {
                         String errorMessage = getString(R.string.error_message);
-                        showErrorDialog(errorMessage);
+                        showErrorAlertbox(SignInBaseActivity.this,errorMessage);
+                        //showErrorDialog(errorMessage);
                     }
                 }
                 if (action.equals(NetworkConstant.STATUS_GET_CLIENT_PROFILE_INFO_SUCCESS)) {
@@ -710,15 +863,23 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                         clientEmail=getProfileInfo.client_email;
                         LocalPreferenceUtility.putUserFirstName(context,clientEmail);
                     }
-                    }if (action.equals(NetworkConstant.STATUS_USER_OTP_SUCCESS)) {
-                    cancelProgressDialog();
-                    mLoginButton.setEnabled(false);
+                    }
+                    if (action.equals(NetworkConstant.STATUS_USER_OTP_SUCCESS)) {
+                    //mLoginButton.setEnabled(false);
                     OTP_Response otp_response = (OTP_Response) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
-                    mSendOtpData=new OTP_Response();
+                    mSendOtpData =new OTP_Response();
                     if(otp_response!=null)
                     {
+                        mSendOtpData = otp_response;
+                        Intent otp = new Intent(SignInBaseActivity.this,OTPVerified.class);
+                        otp.putExtra("mobile_no",mSendOtpData.mobile);
+                        otp.putExtra("timefrom",mSendOtpData.timefrom);
+                        otp.putExtra("userId",mSendOtpData.userId);
+                        startActivity(otp);
+                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
-                        mSendOtpData=otp_response;
+                        //popupOtpFullscreen(SignInBaseActivity.this,mobileNumber);
+
                       /*  String code=otp_response.code;
                         String timeFrom=otp_response.timefrom;
                         String mobile=otp_response.mobile;*/
@@ -736,39 +897,41 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     }
 
                 } else if (action.equals(NetworkConstant.STATUS_USER_OTP_FAIL)){
-                    cancelProgressDialog();
                     FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                     if (failureResponse != null) {
                         Timber.d("STATUS_USER_SIGNUP_FAIL = > failureResponse  ==>" + new Gson().toJson(failureResponse));
                     }
                     if (failureResponse != null && failureResponse.msg != null) {
-                        showErrorDialog(failureResponse.msg);
+                        //showErrorDialog(failureResponse.msg);
+                        showErrorAlertbox(SignInBaseActivity.this,failureResponse.msg);
                     } else {
                         String errorMessage = getString(R.string.error_message);
-                        showErrorDialog(errorMessage);
+                        //showErrorDialog(errorMessage);
+                        showErrorAlertbox(SignInBaseActivity.this,errorMessage);
                     }
                     //  mSignupButton.setEnabled(true);
                     /*Toast.makeText(getApplicationContext(),"Some Error Occured in Otp .Please try after some time",Toast.LENGTH_SHORT).show();
                     otp_layout.setVisibility(View.INVISIBLE);*/
 
                 }
+                //OTP
                 if (action.equals(NetworkConstant.STATUS_USER_CONFIRMATION_OTP_SUCCESS)) {
-                    cancelProgressDialog();
-                    showSuccessDialog(SignInBaseActivity.this);
+
+                    showSuccessAlertbox(SignInBaseActivity.this,"OTP verified successfully.");
+                    //showSuccessDialog(SignInBaseActivity.this);
 
                 } else if (action.equals(NetworkConstant.STATUS_USER_CONFIRMATION_OTP_FAIL)){
-                    cancelProgressDialog();
                     FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                     if (failureResponse != null) {
                         Timber.d("STATUS_USER_SIGNUP_FAIL = > failureResponse  ==>" + new Gson().toJson(failureResponse));
                         System.out.println("failureResponse"+failureResponse);
                     }
                     if (failureResponse != null && failureResponse.msg != null) {
-                        showErrorDialog(failureResponse.msg);
+                        showErrorAlertbox(SignInBaseActivity.this,failureResponse.msg);
                     } else {
                         // String errorMessage = getString(R.string.error_message);
                         String errorMessage ="Check Your Internet Connection.";
-                        showErrorDialog(errorMessage);
+                        showErrorAlertbox(SignInBaseActivity.this,errorMessage);
                     }
                     // Toast.makeText(getApplicationContext(),"Some Error Occured in Confirmation the  Otp .Please try after some time",Toast.LENGTH_SHORT).show();
 
@@ -799,6 +962,32 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     ex.printStackTrace();
                 }
 
+            }
+        });
+    }
+
+    private void showSuccessAlertbox(Activity activity,String msg){
+        pDialog = new SweetAlertDialog(activity, SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.setTitleText("Done");
+        pDialog.setContentText(msg);
+        pDialog.show();
+        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismiss();
+            }
+        });
+    }
+
+    private void showErrorAlertbox(Activity activity,String msg){
+        pDialog = new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE);
+        pDialog.setTitleText("Error");
+        pDialog.setContentText(msg);
+        pDialog.show();
+        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                pDialog.dismiss();
             }
         });
     }
@@ -871,12 +1060,14 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
             public void onResponse(JSONObject response) {
                 Log.e("Getting Response", response.toString());
                 try {
+                    loading.setVisibility(View.GONE);
+                    mainLayout.setAlpha(1f);
                     if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
-                        cancelProgressDialog();
+                        //cancelProgressDialog();
                         Toast.makeText(context, "Successfully Updated Password", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        cancelProgressDialog();
+                        //cancelProgressDialog();
                         Toast.makeText(context, "Issue in Update Password", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -889,7 +1080,8 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
             public void onErrorResponse(VolleyError error) {
                 Log.d("volley_error", String.valueOf(error));
                 Toast.makeText(context,"response Error",Toast.LENGTH_SHORT).show();
-                cancelProgressDialog();
+                loading.setVisibility(View.GONE);
+                mainLayout.setAlpha(1f);
             }
         }) {
             @Override
@@ -935,6 +1127,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onStop() {
         super.onStop();
+        if (pDialog!=null && pDialog.isShowing() ){
+            pDialog.dismiss();
+        }
     }
 
 

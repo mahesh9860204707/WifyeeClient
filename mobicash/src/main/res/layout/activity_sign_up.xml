@@ -23,7 +23,7 @@
             android:background="@mipmap/back_arrow_icon" />-->
 
         <TextView
-            android:id="@+id/user_balance"
+            android:id="@+id/toolbar_title"
             style="@style/font_family_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -221,6 +221,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Female"/>
+
             </RadioGroup>
 
             <!--<Spinner

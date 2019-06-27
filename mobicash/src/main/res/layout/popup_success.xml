@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg">
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/successful_transaction">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:id="@+id/confirm_btn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:textColor="@color/secondaryPrimary"
+            android:background="@android:color/transparent"
+            android:text="OK"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

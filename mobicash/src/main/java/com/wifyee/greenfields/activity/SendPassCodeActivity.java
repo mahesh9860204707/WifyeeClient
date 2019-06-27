@@ -1,5 +1,6 @@
 package com.wifyee.greenfields.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,6 +35,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 public class SendPassCodeActivity extends BaseActivity {
@@ -76,6 +78,7 @@ public class SendPassCodeActivity extends BaseActivity {
 
 
     private Context mContext = null;
+    SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +92,7 @@ public class SendPassCodeActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,6 +141,8 @@ public class SendPassCodeActivity extends BaseActivity {
             public void onClick(View view) {
                 if (validateMobileNo()) {
                     loading.setVisibility(View.VISIBLE);
+                    sendBtn.setEnabled(false);
+                    sendBtn.setAlpha(0.5f);
                     ClientSendPassCodeRequest mClientSendPassCodeRequest = new ClientSendPassCodeRequest();
                     mClientSendPassCodeRequest.clientmobile = mMobileNumber.getText().toString();
                     MobicashIntentService.startActionClientSendPasscode(mContext, mClientSendPassCodeRequest);
@@ -163,6 +168,14 @@ public class SendPassCodeActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (pDialog!=null && pDialog.isShowing()){
+            pDialog.dismiss();
+        }
+    }
+
     /*@OnClick(R.id.send_button)
     void sendPasscode() {
         if (validateMobileNo()) {
@@ -182,6 +195,33 @@ public class SendPassCodeActivity extends BaseActivity {
             return false;
         }
         return true;
+    }
+
+    private void showSuccessAlertbox(Activity activity, String msg){
+        pDialog = new SweetAlertDialog(activity, SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.setTitleText("Done");
+        pDialog.setContentText(msg);
+        pDialog.show();
+        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                finish();
+                onStop();
+            }
+        });
+    }
+
+    private void showErrorAlertbox(Activity activity,String msg){
+        pDialog = new SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE);
+        pDialog.setTitleText("Error");
+        pDialog.setContentText(msg);
+        pDialog.show();
+        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                pDialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -213,15 +253,19 @@ public class SendPassCodeActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             loading.setVisibility(View.INVISIBLE);
+            sendBtn.setEnabled(true);
+            sendBtn.setAlpha(1f);
             if (action.equals(NetworkConstant.STATUS_CLIENT_SEND_PASSCODE_SUCCESS)) {
                 ClientSendPassCodeResponse mClientSendPassCodeResponse = (ClientSendPassCodeResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (mClientSendPassCodeResponse != null && mClientSendPassCodeResponse.sendStatus != null) {
                     Timber.d("STATUS_CLIENT_SEND_PASSCODE_SUCCESS = > ClientSendPassCodeResponse  ==>" + new Gson().toJson(mClientSendPassCodeResponse));
 
                     if (mClientSendPassCodeResponse.sendStatus.equalsIgnoreCase(ResponseAttributeConstants.SUCCESS)) {
-                        showDialog(mSuccessfulTitle, mPasscodeSuccessfullySent, true);
+                        //showDialog(mSuccessfulTitle, mPasscodeSuccessfullySent, true);
+                        showSuccessAlertbox(SendPassCodeActivity.this,mPasscodeSuccessfullySent);
                     } else {
-                        showDialog(mDialogErrorTitle, mSendPasswordFailed, true);
+                        //showDialog(mDialogErrorTitle, mSendPasswordFailed, true);
+                        showErrorAlertbox(SendPassCodeActivity.this,mSendPasswordFailed);
                     }
                 } else {
                     Timber.d("STATUS_CLIENT_SEND_PASSCODE_SUCCESS = > ClientSendPassCodeResponse  is null");
@@ -233,10 +277,11 @@ public class SendPassCodeActivity extends BaseActivity {
 
                 if (failureResponse != null && failureResponse.msg != null) {
                     Timber.d("STATUS_CLIENT_SEND_PASSCODE_FAIL = > failureResponse  ==>" + new Gson().toJson(failureResponse));
-                    showErrorDialog(failureResponse.msg);
+                    //showErrorDialog(failureResponse.msg);
+                    showErrorAlertbox(SendPassCodeActivity.this,failureResponse.msg);
                 } else {
                     String errorMessage = getString(R.string.error_message);
-                    showErrorDialog(errorMessage);
+                    showErrorAlertbox(SendPassCodeActivity.this,errorMessage);
                 }
             }
         }

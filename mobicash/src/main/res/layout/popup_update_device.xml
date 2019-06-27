@@ -3,8 +3,8 @@
     android:id="@+id/relative_layout_top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="20dip"
-    android:layout_marginRight="20dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
     android:background="@drawable/dialog_bg">
 
     <TextView
@@ -57,7 +57,7 @@
             android:id="@+id/cancel_btn"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:textColor="@color/gray_btn_bg_color"
+            android:textColor="@color/gray_btn_bg_pressed_color"
             android:background="@android:color/transparent"
             android:text="Cancel"
             android:textSize="14sp"/>

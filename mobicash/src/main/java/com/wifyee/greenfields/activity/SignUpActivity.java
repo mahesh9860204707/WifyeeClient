@@ -12,13 +12,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +37,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,12 +51,14 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -123,6 +130,7 @@ public class SignUpActivity extends BaseActivity  {
 
     @BindView(R.id.male)
     RadioButton mMale;
+
     @BindView(R.id.female)
     RadioButton mFemale;
 
@@ -137,6 +145,12 @@ public class SignUpActivity extends BaseActivity  {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.progressbar)
+    SpinKitView loading;
+
+    @BindView(R.id.main_layout)
+    RelativeLayout mainLayout;
 
     //@BindView(R.id.toolbar_back)
     //ImageButton back;
@@ -187,12 +201,13 @@ public class SignUpActivity extends BaseActivity  {
             NetworkConstant.STATUS_USER_CONFIRMATION_OTP_FAIL
 
     };
+
     SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.register_new);
         ButterKnife.bind(this);
         mContext = this;
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -201,6 +216,7 @@ public class SignUpActivity extends BaseActivity  {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -217,14 +233,128 @@ public class SignUpActivity extends BaseActivity  {
                 }
             });*/
         }
-     //   mSignupButton.setOnClickListener(this);
+
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+        TextView favName = findViewById(R.id.com_name);
+        TextView txtGender = findViewById(R.id.txt_gender);
+        TextInputLayout tilFname = findViewById(R.id.til_fname);
+        TextInputLayout tilLname = findViewById(R.id.til_lname);
+        TextInputLayout tilMobile = findViewById(R.id.til_mobile);
+        TextInputLayout tilPassword = findViewById(R.id.til_password);
+        TextInputLayout tilZipcode = findViewById(R.id.til_pincode);
+
+        favName.setTypeface(Fonts.getSemiBold(this));
+        txtGender.setTypeface(Fonts.getSemiBold(this));
+        mFirstName.setTypeface(Fonts.getSemiBold(this));
+        mLastName.setTypeface(Fonts.getSemiBold(this));
+        mPhoneNumber.setTypeface(Fonts.getSemiBold(this));
+        mPassword.setTypeface(Fonts.getSemiBold(this));
+        mPincode.setTypeface(Fonts.getSemiBold(this));
+        tilMobile.setTypeface(Fonts.getRegular(this));
+        tilPassword.setTypeface(Fonts.getRegular(this));
+        tilFname.setTypeface(Fonts.getRegular(this));
+        tilLname.setTypeface(Fonts.getRegular(this));
+        tilZipcode.setTypeface(Fonts.getRegular(this));
+        mMale.setTypeface(Fonts.getRegular(this));
+        mFemale.setTypeface(Fonts.getRegular(this));
+        mSignupButton.setTypeface(Fonts.getSemiBold(this));
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+
+        //   mSignupButton.setOnClickListener(this);
+
+        mFirstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mFirstName.getText().toString().length()>1){
+                    mFirstName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mFirstName.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mLastName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mLastName.getText().toString().length()>1){
+                    mLastName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mLastName.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mPhoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mPhoneNumber.getText().toString().length()==10){
+                    mPhoneNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mPhoneNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mPincode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mPincode.getText().toString().length()==6){
+                    mPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mPincode.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validate()) {
                     if (MobicashUtils.isNetworkAvailable(SignUpActivity.this)) {
                         Timber.d(" Sending API request for Signup...");
-                        showProgressDialog();
+                        //showProgressDialog();
+                        loading.setVisibility(View.VISIBLE);
+                        mainLayout.setAlpha(0.5f);
                         SignupRequest mSignupRequest = new SignupRequest();
                         mSignupRequest.clientmobile = mPhoneNumber.getText().toString().trim();
                         mSignupRequest.firstname = mFirstName.getText().toString().trim();
@@ -232,8 +362,8 @@ public class SignUpActivity extends BaseActivity  {
                         mSignupRequest.pincode = mPassword.getText().toString().trim();
                         mSignupRequest.customerTitle=gender;
                         // mSignupRequest.customerDOB=mDateOfBirth.getText().toString().trim();
-                        mSignupRequest.custAddess=mAddress.getText().toString().trim();
-                        mSignupRequest.email =mPhoneNumber.getText().toString().trim()+"@wifyee.com";
+                        mSignupRequest.custAddess = mAddress.getText().toString().trim();
+                        mSignupRequest.email = mPhoneNumber.getText().toString().trim()+"@wifyee.com";
                         try {
                             mSignupRequest.hash = MobicashUtils.getSha1(mPhoneNumber.getText().toString() + mFirstName.getText().toString() + mLastName.getText().toString() + mPassword.getText().toString()+mPhoneNumber.getText().toString().trim()+"@wifyee.com");
                         } catch (NoSuchAlgorithmException e) {
@@ -249,7 +379,7 @@ public class SignUpActivity extends BaseActivity  {
             }
         });
 
-        otp_layout.setVisibility(View.INVISIBLE);
+        otp_layout.setVisibility(View.GONE);
         /*resend_otp.setEnabled(false);
         tv_otp.setEnabled(false);
         btn_otp.setEnabled(false);*/
@@ -260,11 +390,14 @@ public class SignUpActivity extends BaseActivity  {
                 if (clientMobile.length()==0||clientMobile.equals("")) {
                     Toast.makeText(getApplicationContext(),"Mobile Number not found .Please try after some time.",Toast.LENGTH_SHORT).show();
                 } else {
-                    showProgressDialog();
+                    //showProgressDialog();
+                    loading.setVisibility(View.VISIBLE);
+                    mainLayout.setAlpha(0.5f);
                     MobicashIntentService.startActionCallOTPDetails(mContext,clientMobile);
                 }
             }
         });
+
         btn_otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -273,7 +406,9 @@ public class SignUpActivity extends BaseActivity  {
                     if (otpString.equals("") || otpString.length() == 0) {
                         Toast.makeText(getApplicationContext(), "Fill OTP", Toast.LENGTH_SHORT).show();
                     } else if(mSendOtpData!=null) {
-                        showProgressDialog();
+                        //showProgressDialog();
+                        loading.setVisibility(View.VISIBLE);
+                        mainLayout.setAlpha(0.5f);
                         OTP_Response mOTOtp_response=new OTP_Response();
                         mOTOtp_response.timefrom = mSendOtpData.timefrom;
                         mOTOtp_response.code = otpString;
@@ -292,6 +427,7 @@ public class SignUpActivity extends BaseActivity  {
 
             }
         });
+
         mRadio_grp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -661,7 +797,9 @@ public class SignUpActivity extends BaseActivity  {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            cancelProgressDialog();
+            //cancelProgressDialog();
+            loading.setVisibility(View.GONE);
+            mainLayout.setAlpha(1f);
             try {
                 if (action.equals(NetworkConstant.STATUS_USER_SIGNUP_SUCCESS)) {
                    final SignupResponse signupResponse = (SignupResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
@@ -678,7 +816,9 @@ public class SignUpActivity extends BaseActivity  {
                             }
                         }
                     });
-
+                    //showProgressDialog();
+                    loading.setVisibility(View.VISIBLE);
+                    mainLayout.setAlpha(0.5f);
                     startWifyeeRegistrationRequest(signupResponse);
                     startWifyeeRegistration(SignUpActivity.this);
                     MobicashIntentService.startActionCallOTPDetails(mContext,signupResponse.clientMobile);
@@ -691,17 +831,7 @@ public class SignUpActivity extends BaseActivity  {
 
                     saveDataToLocalPreferences(signupResponse);
                     //onSuccess("Msg","Successfuly Register.Please Confirm Your Otp Number.");
-                    pDialog = new SweetAlertDialog(SignUpActivity.this, SweetAlertDialog.SUCCESS_TYPE);
-                    pDialog.setTitleText("Done");
-                    pDialog.setContentText("You are successfully register. Please Confirm Your Otp Number");
-                    pDialog.show();
-                    pDialog.setCancelable(false);
-                    pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            pDialog.dismiss();
-                        }
-                    });
+
                     //saveDataToLocalPreferences(signupResponse);
                     mSignupButton.setEnabled(false);
 
@@ -719,41 +849,80 @@ public class SignUpActivity extends BaseActivity  {
                     mSignupButton.setEnabled(true);
                 }
                 if (action.equals(NetworkConstant.STATUS_USER_OTP_SUCCESS)) {
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
+                    loading.setVisibility(View.GONE);
+                    mainLayout.setAlpha(1f);
                     mSignupButton.setEnabled(false);
                     OTP_Response otp_response = (OTP_Response) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
-                    mSendOtpData=new OTP_Response();
-                    if(otp_response!=null)
-                    {
+                    mSendOtpData = new OTP_Response();
 
-                        mSendOtpData=otp_response;
-                      /*  String code=otp_response.code;
-                        String timeFrom=otp_response.timefrom;
-                        String mobile=otp_response.mobile;*/
-                        otp_layout.setVisibility(View.VISIBLE);
-                        /*resend_otp.setEnabled(true);
-                        tv_otp.setEnabled(true);
-                        btn_otp.setEnabled(true);*/
-                        //showOTPDialog(code,timeFrom,mobile);
+                    mSendOtpData = otp_response;
+                    if(otp_response!=null) {
+                        pDialog = new SweetAlertDialog(SignUpActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                        pDialog.setTitleText("Done");
+                        pDialog.setContentText("You are successfully register. Please Confirm Your Otp Number");
+                        pDialog.show();
+                        pDialog.setCancelable(false);
+                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                pDialog.dismiss();
+                                onStop();
+                                Intent otp = new Intent(SignUpActivity.this, OTPVerified.class);
+                                otp.putExtra("mobile_no", mSendOtpData.mobile);
+                                otp.putExtra("timefrom", mSendOtpData.timefrom);
+                                otp.putExtra("userId", mSendOtpData.userId);
+                                startActivity(otp);
+                                finish();
+                                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                        });
                     }
+                    /*if(otp_response!=null)
+                    {
+//                        mSendOtpData = otp_response;
+//                        Intent otp = new Intent(SignUpActivity.this,OTPVerified.class);
+//                        otp.putExtra("mobile_no",mSendOtpData.mobile);
+//                        otp.putExtra("timefrom",mSendOtpData.timefrom);
+//                        otp.putExtra("userId",mSendOtpData.userId);
+//                        startActivity(otp);
+//                        finish();
+//                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+//                        String code=otp_response.code;
+//                        String timeFrom=otp_response.timefrom;
+//                        String mobile=otp_response.mobile;
+//                       //otp_layout.setVisibility(View.VISIBLE);
+//                        resend_otp.setEnabled(true);
+//                        tv_otp.setEnabled(true);
+//                        btn_otp.setEnabled(true);
+//                        //showOTPDialog(code,timeFrom,mobile);
+                    }*/
                     else{
                         mSignupButton.setEnabled(true);
-                        otp_layout.setVisibility(View.INVISIBLE);
+                        otp_layout.setVisibility(View.GONE);
                     }
 
                 } else if (action.equals(NetworkConstant.STATUS_USER_OTP_FAIL)){
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
+                    loading.setVisibility(View.GONE);
+                    mainLayout.setAlpha(1f);
                     //  mSignupButton.setEnabled(true);
                     Toast.makeText(getApplicationContext(),"Some Error Occured in Otp .Please try after some time",Toast.LENGTH_SHORT).show();
-                    otp_layout.setVisibility(View.INVISIBLE);
+                    otp_layout.setVisibility(View.GONE);
 
                 }
+
+                //otp
                 if (action.equals(NetworkConstant.STATUS_USER_CONFIRMATION_OTP_SUCCESS)) {
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
+                    loading.setVisibility(View.GONE);
+                    mainLayout.setAlpha(1f);
                     showSuccessDialog(SignUpActivity.this);
 
                 } else if (action.equals(NetworkConstant.STATUS_USER_CONFIRMATION_OTP_FAIL)){
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
+                    loading.setVisibility(View.GONE);
+                    mainLayout.setAlpha(1f);
                     FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                     if (failureResponse != null) {
                         Timber.d("STATUS_USER_SIGNUP_FAIL = > failureResponse  ==>" + new Gson().toJson(failureResponse));
@@ -880,6 +1049,10 @@ public class SignUpActivity extends BaseActivity  {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (pDialog!=null && pDialog.isShowing() ){
+            pDialog.dismiss();
+        }
     }
 
     @Override
@@ -958,6 +1131,7 @@ public class SignUpActivity extends BaseActivity  {
                     }
                 });
     }*/
+
     //Register in Wifyee Soft
     private void startWifyeeRegistration(final Context activity) {
         JSONObject jsonObject = new JSONObject();
@@ -977,6 +1151,7 @@ public class SignUpActivity extends BaseActivity  {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         AndroidNetworking.post(NetworkConstant.WIFYEE_HOTSPOT_REGISTRATION)
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
@@ -984,11 +1159,14 @@ public class SignUpActivity extends BaseActivity  {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.e("AfterReg1",response.toString());
                         try {
                             if (response != null) {
                                 Timber.d("Got Success GetRegisterInfoResponse...");
                                 Timber.d("handleActionGetRegisterInfo = > JSONObject response ==>" + new Gson().toJson(response));
-                                cancelProgressDialog();
+                                //cancelProgressDialog();
+                                loading.setVisibility(View.GONE);
+                                mainLayout.setAlpha(1f);
                             } else {
                                 Timber.d("Got failure in GetRegisterInfoResponse...");
                                 FailureResponse mFailureResponse = ModelMapper.transformErrorResponseToFailureResponse(response.toString());
@@ -996,7 +1174,9 @@ public class SignUpActivity extends BaseActivity  {
                             }
                         } catch (Exception e) {
                             Timber.e("JSONException Caught.  Message : " + e.getMessage());
-                            cancelProgressDialog();
+                            //cancelProgressDialog();
+                            loading.setVisibility(View.GONE);
+                            mainLayout.setAlpha(1f);
                         }
                     }
                     @Override
@@ -1007,7 +1187,9 @@ public class SignUpActivity extends BaseActivity  {
                         Timber.e("Error code : " + error.getErrorCode());
                         Timber.e("Error Body : " + error.getErrorBody());
                         Timber.e("Error Detail : " + error.getErrorDetail());
-                        cancelProgressDialog();
+                        //cancelProgressDialog();
+                        loading.setVisibility(View.GONE);
+                        mainLayout.setAlpha(1f);
                         FailureResponse mFailureResponse = ModelMapper.transformErrorResponseToFailureResponse(error.getErrorBody());
                         Timber.w("handleActionGetRegisterInfo = > FailureResponse  ==>" + new Gson().toJson(mFailureResponse));
                     }

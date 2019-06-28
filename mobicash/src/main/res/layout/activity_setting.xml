@@ -10,28 +10,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:elevation="2dp"
+        android:background="@color/white"
+        android:elevation="5dp"
         android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
 
-        <ImageButton
-            android:id="@+id/toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:background="@mipmap/back_arrow_icon" />
-
         <TextView
-            android:id="@+id/user_balance"
-            style="@style/font_family_medium"
+            android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:padding="8dp"
             android:text="@string/menu_settings"
-            android:textColor="@color/color_tab_bg"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
 
     </android.support.v7.widget.Toolbar>
 

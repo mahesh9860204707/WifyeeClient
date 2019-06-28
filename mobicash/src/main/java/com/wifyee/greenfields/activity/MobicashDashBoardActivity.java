@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -32,15 +33,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,6 +83,8 @@ import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.MobicashApplication;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.CircularNetworkImageView;
+import com.wifyee.greenfields.Utils.CustomTypefaceSpan;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -189,6 +195,10 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         LinearLayout llLocation = toolbar.findViewById(R.id.ll_loc);
         location = toolbar.findViewById(R.id.location);
+        TextView txtLocation = toolbar.findViewById(R.id.txt);
+        txtLocation.setTypeface(Fonts.getRegular(this));
+        location.setTypeface(Fonts.getSemiBold(this));
+
         llLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -218,7 +228,25 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
             }
         });
 
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.secondaryPrimary));
+
+
+        //drawer.setBackgroundColor(getResources().getColor(R.color.secondaryPrimary));
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu m = navigationView.getMenu();
+        for (int i=0;i<m.size();i++) {
+            MenuItem mi = m.getItem(i);
+            SubMenu subMenu = mi.getSubMenu();
+            if (subMenu!=null && subMenu.size() >0 ) {
+                for (int j=0; j <subMenu.size();j++) {
+                    MenuItem subMenuItem = subMenu.getItem(j);
+                    applyFontToMenuItem(subMenuItem);
+                }
+            }
+            applyFontToMenuItem(mi);
+        }
+
         navigationView.setNavigationItemSelectedListener(this);
 
         setting = (ImageView) findViewById(R.id.settings);
@@ -635,6 +663,14 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         };
         requestQueue.add(jsonObjectRequest);
         jsonObjectRequest.setShouldCache(false);
+    }
+
+    private void applyFontToMenuItem(MenuItem mi) {
+        Typeface font = Fonts.getSemiBold(MobicashDashBoardActivity.this);
+        SpannableString mNewTitle = new SpannableString(mi.getTitle());
+        mNewTitle.setSpan(new CustomTypefaceSpan("" , font), 0 , mNewTitle.length(),  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        //mNewTitle.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), 0, mNewTitle.length(), 0); //Use this if you want to center the items
+        mi.setTitle(mNewTitle);
     }
 
     @Override

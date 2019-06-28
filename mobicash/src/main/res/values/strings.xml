@@ -363,9 +363,9 @@
 
     <!-- change password -->
     <string name="title_change_password">Change Passcode</string>
-    <string name="tv_setting_existing_pass_code">Existing Passcode</string>
-    <string name="tv_setting_new_pass_code">New Passcode</string>
-    <string name="tv_setting_re_enter_pass_code">Re-Enter Passcode</string>
+    <string name="tv_setting_existing_pass_code">Existing Password</string>
+    <string name="tv_setting_new_pass_code">New Password</string>
+    <string name="tv_setting_re_enter_pass_code">Re-Enter Password</string>
 
     <!-- payment -->
     <string name="title_payment">Payment</string>

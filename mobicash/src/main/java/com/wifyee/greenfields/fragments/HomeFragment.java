@@ -808,7 +808,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         if(v==helpDesk) {
 
-            showPopupHelpDesk(getActivity());
+            showBottomSheetDialogFragment();
+            //showPopupHelpDesk(getActivity());
         }
 
         if(v==connect) {
@@ -1572,5 +1573,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     break;
                 }
         }
+    }
+
+    public void showBottomSheetDialogFragment() {
+        BottomSheetHelpDeskFragment bottomSheetFragment = new BottomSheetHelpDeskFragment();
+        bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }
 }

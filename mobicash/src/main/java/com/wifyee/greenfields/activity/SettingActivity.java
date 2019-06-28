@@ -3,16 +3,22 @@ package com.wifyee.greenfields.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
+
+import java.util.Arrays;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -23,9 +29,6 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.toolbar_back)
-    ImageButton back;
-
     @BindString(R.string.tv_coming_soon)
     String mCommingSoonMessage;
 
@@ -33,6 +36,7 @@ public class SettingActivity extends BaseActivity {
     String mFeatureIsNotAvailableMessage;
 
     private Context mContext = null;
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +46,18 @@ public class SettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         mContext = this;
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 }
@@ -58,18 +65,32 @@ public class SettingActivity extends BaseActivity {
         }
 
         final ListView listView = (ListView) findViewById(R.id.list);
+        final String[] values = new String[]{getString(R.string.list_item_change_password),
+                getString(R.string.list_item_identity),
+                getString(R.string.list_item_authorized_phones_for_this_account),
+                getString(R.string.list_item_supplementary_information),
+                getString(R.string.list_item_notifications),
+                getString(R.string.list_item_payment),
+                getString(R.string.list_item_account)
+        };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_1,
-                new String[]{getString(R.string.list_item_change_password),
-                        getString(R.string.list_item_identity),
-                        getString(R.string.list_item_authorized_phones_for_this_account),
-                        getString(R.string.list_item_supplementary_information),
-                        getString(R.string.list_item_notifications),
-                        getString(R.string.list_item_payment),
-                        getString(R.string.list_item_account)
+        adapter= new ArrayAdapter<String>(this,R.layout.setting_item_layout, values)
+        {
+            @Override
+            public View getView(int pos, View convertView, android.view.ViewGroup parent) {
+                View v = convertView;
+
+                if (v == null) {
+                    LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    v = vi.inflate(R.layout.setting_item_layout, null);
+                    TextView tv1 = v.findViewById(R.id.text_view);
+                    tv1.setText(Arrays.toString(values));
+                    tv1.setTypeface(Fonts.getRegular(SettingActivity.this));
                 }
-        );
+                return super.getView(pos, v, parent);
+            }
+        };
+
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

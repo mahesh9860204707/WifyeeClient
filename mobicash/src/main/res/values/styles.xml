@@ -3,10 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/secondaryPrimary</item>
         <item name="colorPrimaryDark">@color/secondaryPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
 
 
@@ -22,6 +21,14 @@
     <style name="font_family_medium">
         <item name="android:fontFamily">@string/font_fontFamily_medium</item>
     </style>
+
+<!--
+    <style name="DrawerHamburgerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/secondaryPrimary</item>
+    </style>
+-->
+
     <style name="FoodTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>

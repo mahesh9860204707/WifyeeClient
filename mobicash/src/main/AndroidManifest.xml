@@ -45,7 +45,6 @@
         <activity android:name=".activity.DiscountClaim" />
         <activity android:name=".activity.MyCashback" />
         <activity android:name=".activity.AddAddress" />
-        <activity android:name=".activity.Aaa" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

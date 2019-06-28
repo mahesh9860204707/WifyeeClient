@@ -6,15 +6,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -37,9 +44,6 @@ public class ChangePasswordSettingActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
-    @BindView(R.id.toolbar_back)
-    ImageButton back;
 
     @BindView(R.id.edit_text_existing_pass_code)
     EditText mExistingPassCode;
@@ -92,20 +96,100 @@ public class ChangePasswordSettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         mContext = this;
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+        TextInputLayout tilExistPwd   = findViewById(R.id.til_exist_pwd);
+        TextInputLayout til_new_password   = findViewById(R.id.til_new_password);
+        TextInputLayout til_re_enter   = findViewById(R.id.til_re_enter);
+        Button btn_confirm_reset_passcode   = findViewById(R.id.btn_confirm_reset_passcode);
+        tilExistPwd.setTypeface(Fonts.getRegular(this));
+        til_new_password.setTypeface(Fonts.getRegular(this));
+        til_re_enter.setTypeface(Fonts.getRegular(this));
+        mExistingPassCode.setTypeface(Fonts.getSemiBold(this));
+        mNewPassCode.setTypeface(Fonts.getSemiBold(this));
+        mReenterNewPassCode.setTypeface(Fonts.getSemiBold(this));
+        btn_confirm_reset_passcode.setTypeface(Fonts.getSemiBold(this));
+
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     finish();
                     overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 }
             });
         }
+
+        mExistingPassCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mExistingPassCode.getText().toString().length()==4){
+                    mExistingPassCode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mExistingPassCode.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mNewPassCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mNewPassCode.getText().toString().length()==4){
+                    mNewPassCode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mNewPassCode.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mReenterNewPassCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(mReenterNewPassCode.getText().toString().length()==4){
+                    mReenterNewPassCode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mReenterNewPassCode.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
     }
 
 

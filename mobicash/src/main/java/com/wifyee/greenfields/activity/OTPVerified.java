@@ -72,21 +72,22 @@ public class OTPVerified extends AppCompatActivity {
         verifyOtp.setTypeface(Fonts.getSemiBold(this));
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
 
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                    overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                }
-            });
-        }
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+            }
+        });
 
         mobilNo = getIntent().getStringExtra("mobile_no");
         userId = getIntent().getStringExtra("userId");

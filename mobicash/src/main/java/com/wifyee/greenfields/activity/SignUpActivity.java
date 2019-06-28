@@ -355,6 +355,8 @@ public class SignUpActivity extends BaseActivity  {
                         //showProgressDialog();
                         loading.setVisibility(View.VISIBLE);
                         mainLayout.setAlpha(0.5f);
+                        mSignupButton.setEnabled(false);
+                        mSignupButton.setAlpha(0.6f);
                         SignupRequest mSignupRequest = new SignupRequest();
                         mSignupRequest.clientmobile = mPhoneNumber.getText().toString().trim();
                         mSignupRequest.firstname = mFirstName.getText().toString().trim();
@@ -800,6 +802,8 @@ public class SignUpActivity extends BaseActivity  {
             //cancelProgressDialog();
             loading.setVisibility(View.GONE);
             mainLayout.setAlpha(1f);
+            mSignupButton.setEnabled(true);
+            mSignupButton.setAlpha(1f);
             try {
                 if (action.equals(NetworkConstant.STATUS_USER_SIGNUP_SUCCESS)) {
                    final SignupResponse signupResponse = (SignupResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
@@ -819,6 +823,8 @@ public class SignUpActivity extends BaseActivity  {
                     //showProgressDialog();
                     loading.setVisibility(View.VISIBLE);
                     mainLayout.setAlpha(0.5f);
+                    mSignupButton.setEnabled(false);
+                    mSignupButton.setAlpha(0.6f);
                     startWifyeeRegistrationRequest(signupResponse);
                     startWifyeeRegistration(SignUpActivity.this);
                     MobicashIntentService.startActionCallOTPDetails(mContext,signupResponse.clientMobile);
@@ -853,6 +859,7 @@ public class SignUpActivity extends BaseActivity  {
                     loading.setVisibility(View.GONE);
                     mainLayout.setAlpha(1f);
                     mSignupButton.setEnabled(false);
+                    mSignupButton.setAlpha(0.6f);
                     OTP_Response otp_response = (OTP_Response) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                     mSendOtpData = new OTP_Response();
 
@@ -899,6 +906,7 @@ public class SignUpActivity extends BaseActivity  {
                     }*/
                     else{
                         mSignupButton.setEnabled(true);
+                        mSignupButton.setAlpha(1f);
                         otp_layout.setVisibility(View.GONE);
                     }
 
@@ -906,6 +914,8 @@ public class SignUpActivity extends BaseActivity  {
                     //cancelProgressDialog();
                     loading.setVisibility(View.GONE);
                     mainLayout.setAlpha(1f);
+                    mSignupButton.setEnabled(true);
+                    mSignupButton.setAlpha(1f);
                     //  mSignupButton.setEnabled(true);
                     Toast.makeText(getApplicationContext(),"Some Error Occured in Otp .Please try after some time",Toast.LENGTH_SHORT).show();
                     otp_layout.setVisibility(View.GONE);
@@ -917,12 +927,16 @@ public class SignUpActivity extends BaseActivity  {
                     //cancelProgressDialog();
                     loading.setVisibility(View.GONE);
                     mainLayout.setAlpha(1f);
+                    mSignupButton.setEnabled(true);
+                    mSignupButton.setAlpha(1f);
                     showSuccessDialog(SignUpActivity.this);
 
                 } else if (action.equals(NetworkConstant.STATUS_USER_CONFIRMATION_OTP_FAIL)){
                     //cancelProgressDialog();
                     loading.setVisibility(View.GONE);
                     mainLayout.setAlpha(1f);
+                    mSignupButton.setEnabled(true);
+                    mSignupButton.setAlpha(1f);
                     FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                     if (failureResponse != null) {
                         Timber.d("STATUS_USER_SIGNUP_FAIL = > failureResponse  ==>" + new Gson().toJson(failureResponse));

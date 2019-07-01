@@ -243,7 +243,9 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
             e.printStackTrace();
         }
         totalAmount.setText(String.valueOf(amount));
-        totalDiscountAmt.setText("₹"+String.valueOf(discountAmt));
+        double roundOff = Math.round(discountAmt * 100.0) / 100.0;
+        String s = String.format("%.2f", roundOff);
+        totalDiscountAmt.setText("₹"+s);
 
         return object;
     }
@@ -470,6 +472,8 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
             }
         }
         totalAmount.setText(String.valueOf(amount));
-        totalDiscountAmt.setText("₹"+String.valueOf(discountAmt));
+        double roundOff = Math.round(discountAmt * 100.0) / 100.0;
+        String s = String.format("%.2f", roundOff);
+        totalDiscountAmt.setText("₹"+s);
     }
 }

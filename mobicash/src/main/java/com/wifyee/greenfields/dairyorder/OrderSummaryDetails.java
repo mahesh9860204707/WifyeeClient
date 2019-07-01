@@ -1,5 +1,6 @@
 package com.wifyee.greenfields.dairyorder;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -9,27 +10,36 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
+import com.wifyee.greenfields.activity.ApplyCoupons;
 import com.wifyee.greenfields.activity.BaseActivity;
 import com.wifyee.greenfields.activity.MobicashDashBoardActivity;
 import com.wifyee.greenfields.activity.OrderItemDetails;
@@ -80,6 +90,9 @@ public class OrderSummaryDetails extends BaseActivity {
     @BindView(R.id.total_price)
     TextView tvTotal;
 
+    @BindView(R.id.item_total)
+    TextView tvItemTotal;
+
     @BindView(R.id.tv_address_value)
     TextView tvAddressValue;
 
@@ -89,17 +102,54 @@ public class OrderSummaryDetails extends BaseActivity {
     @BindView(R.id.delivery_value)
     TextView tvNoOfDelivery;
 
+    @BindView(R.id.delivery_fee_price)
+    TextView tvDeliveryFee;
+
+    @BindView(R.id.txt_subscribe_here)
+    TextView tvSubscribe_here;
+
+    @BindView(R.id.til_date_from)
+    TextInputLayout tilDateFrom;
+
+    @BindView(R.id.til_date_to)
+    TextInputLayout tilDateTo;
+
+    @BindView(R.id.txt_per_day)
+    TextView tvPerDay;
+
+    @BindView(R.id.txt_note)
+    TextView txtNote;
+
+    @BindView(R.id.txt_apply_coupon)
+    TextView tvApplyCoupon;
+
+    @BindView(R.id.txt_summary)
+    TextView tvSummary;
+
+    @BindView(R.id.txt_delivery)
+    TextView tvDeliver;
+
+    @BindView(R.id.txt_total)
+    TextView txtTotal;
+
+    @BindView(R.id.ic_subscribe_arrow)
+    ImageView icSubscribeArrow;
+
+    @BindView(R.id.card_view_coupon)
+    CardView cardViewCoupon;
+
     private ArrayList<PlaceOrderData> orderItem ;
     private int paymentSelectedIndex;
     private Context mContext = null;
     private String totalAmount,location,latitude,longitude,complete_add,discount_amt;
-    private int totalItem;
+    private int totalItem,deliveryFee;
 
     public static String fullname,mobile_no,alternate_no,city , locality , flat_no, pincode, state;
     public static boolean addressChange = false;
     TextView name,address,mobileNo;
     Button addressBtn;
-    LinearLayout subscribe,ll_subscribe;
+    LinearLayout ll_subscribe;
+    RelativeLayout subscribe;
     private DatePickerDialog mDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private EditText dateFrom,dateTo;
@@ -131,12 +181,17 @@ public class OrderSummaryDetails extends BaseActivity {
         dateTo = findViewById(R.id.date_to);
         perDayLitreSpinner = findViewById(R.id.per_day_litre);
 
+        /*String amount = LocalPreferenceUtility.getWalletBalance(this);
+        Log.e("amt","amt "+amount);*/
+
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(R.string.order_summary);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,34 +205,32 @@ public class OrderSummaryDetails extends BaseActivity {
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int rotationAngle=0;
                 if (ll_subscribe.getVisibility()==View.GONE){
                     ll_subscribe.setVisibility(View.VISIBLE);
+                    rotationAngle = rotationAngle == 0 ? 180 : 0;  //toggle
+                    icSubscribeArrow.animate().rotation(rotationAngle).setDuration(500).start();
                 }else {
                     ll_subscribe.setVisibility(View.GONE);
+                    icSubscribeArrow.animate().rotation(rotationAngle).setDuration(500).start();
                 }
             }
         });
 
-
-        /*perDayLitreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        cardViewCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = adapterView.getItemAtPosition(i).toString();
-                Log.e("item",item);
-                perDay = item.replace(" Litre","");
-                Log.e("itemPerDay",perDay);
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderSummaryDetails.this, ApplyCoupons.class);
+                startActivity(intent);
             }
+        });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });*/
 
         dateFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setDate(dateFrom);
+                dateFrom.setFocusable(true);
             }
         });
 
@@ -185,6 +238,7 @@ public class OrderSummaryDetails extends BaseActivity {
             @Override
             public void onClick(View view) {
                 setDate(dateTo);
+                dateTo.setFocusable(true);
             }
         });
 
@@ -195,6 +249,26 @@ public class OrderSummaryDetails extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        tvSubscribe_here.setTypeface(Fonts.getRegular(this));
+        dateFrom.setTypeface(Fonts.getSemiBold(this));
+        dateTo.setTypeface(Fonts.getSemiBold(this));
+        tilDateFrom.setTypeface(Fonts.getRegular(this));
+        tilDateTo.setTypeface(Fonts.getRegular(this));
+        tvPerDay.setTypeface(Fonts.getRegular(this));
+        txtNote.setTypeface(Fonts.getRegular(this));
+        tvApplyCoupon.setTypeface(Fonts.getSemiBold(this));
+        tvSummary.setTypeface(Fonts.getRegular(this));
+        tvItemTotal.setTypeface(Fonts.getRegular(this));
+        tvSubTotal.setTypeface(Fonts.getRegular(this));
+        tvDeliver.setTypeface(Fonts.getRegular(this));
+        tvDeliveryFee.setTypeface(Fonts.getRegular(this));
+        txtTotal.setTypeface(Fonts.getSemiBold(this));
+        tvTotal.setTypeface(Fonts.getSemiBold(this));
+        paymentCod.setTypeface(Fonts.getRegular(this));
+        paymentWallet.setTypeface(Fonts.getRegular(this));
+        paymentNetBanking.setTypeface(Fonts.getRegular(this));
+        btnPlaceOrder.setTypeface(Fonts.getSemiBold(this));
 
         orderItem = getIntent().getParcelableArrayListExtra("data");
         //Log.e("orderItem",orderItem.toString());
@@ -209,8 +283,36 @@ public class OrderSummaryDetails extends BaseActivity {
         voucherId = getIntent().getStringExtra("voucher_id");
         voucherNo = getIntent().getStringExtra("voucher_no");
 
-        tvSubTotal.setText("Rs"+totalAmount);
-        tvTotal.setText("Rs"+totalAmount);
+        int size = orderItem.size();
+       /*for(int i=0;i<size;i++){
+            totalItem = totalItem +Integer.parseInt(orderItem.get(i).getQuantity());
+        }*/
+
+        tvItemTotal.setText("Item Total ("+size+" Item)");
+        //tvNoOfDelivery.setText(String.valueOf(totalItem));
+
+        float amt = Float.parseFloat(totalAmount);
+        int itemTotalAmount = Math.round(amt);
+        if(itemTotalAmount<200){
+            deliveryFee = 50;
+        }else if(itemTotalAmount<500){
+            deliveryFee = 20;
+        }else {
+            deliveryFee = 0;
+        }
+
+        int total = itemTotalAmount + deliveryFee;
+        totalAmount = String.valueOf(total);
+
+        if(deliveryFee==0){
+            tvDeliveryFee.setText("Free");
+            tvDeliveryFee.setTextColor(getResources().getColor(R.color.secondaryPrimary));
+        }else {
+            tvDeliveryFee.setText("₹"+deliveryFee);
+        }
+        tvTotal.setText("₹"+totalAmount);
+        tvSubTotal.setText("₹"+itemTotalAmount);
+
         paymentGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
@@ -226,11 +328,7 @@ public class OrderSummaryDetails extends BaseActivity {
             }
         });
 
-        int size = orderItem.size();
-        for(int i=0;i<size;i++){
-            totalItem = totalItem +Integer.parseInt(orderItem.get(i).getQuantity());
-        }
-        tvNoOfDelivery.setText(String.valueOf(totalItem));
+
         tvEditCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,8 +356,9 @@ public class OrderSummaryDetails extends BaseActivity {
                 }
 
                 if(paymentSelectedIndex == 1){
-                    Double amount = Double.parseDouble(totalAmount);
-                    int walletAmount = Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this));
+                    double amount = Double.parseDouble(totalAmount);
+                    int walletAmount = !LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this).equals("")?Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this)) : 0;
+                    //int walletAmount = Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this));
                     // if (!LocalPreferenceUtility.getPinCode(OrderSummaryActivity.this).isEmpty()) {
                     if (walletAmount > amount) {
                         showProgressDialog();
@@ -281,9 +380,6 @@ public class OrderSummaryDetails extends BaseActivity {
                         i.putExtra("discount_amt",discount_amt);
                         i.putExtra("date_from",dtFrom);
                         i.putExtra("date_to",dtTo);
-                        i.putExtra("per_day",perDay);
-                        i.putExtra("per_day",perDay);
-                        i.putExtra("per_day",perDay);
                         i.putExtra("per_day",perDay);
                         i.putExtra("claim_type",claimType);
                         i.putExtra("voucher_id",voucherId);

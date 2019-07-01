@@ -39,7 +39,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label,android:icon">
-        <activity android:name=".activity.OTPVerified"></activity>
+        <activity android:name=".activity.ApplyCoupons"></activity>
+        <activity android:name=".activity.OTPVerified" />
         <activity android:name=".activity.SuccessTransaction" />
         <activity android:name=".activity.WebViewPolicy" />
         <activity android:name=".activity.DiscountClaim" />
@@ -114,7 +115,6 @@
             android:name=".google.MapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-
         <activity
             android:name=".activity.SignUpActivity"
             android:screenOrientation="portrait"
@@ -183,7 +183,6 @@
             android:name=".activity.NotificationSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity android:name=".activity.SendPassCodeActivity">
 
             <!--

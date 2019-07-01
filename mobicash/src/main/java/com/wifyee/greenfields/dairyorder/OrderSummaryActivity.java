@@ -193,7 +193,9 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             e.printStackTrace();
         }
         totalAmount.setText(String.valueOf(amount));
-        totalDiscountAmt.setText("₹"+String.valueOf(discountAmt));
+        double roundOff = Math.round(discountAmt * 100.0) / 100.0;
+        String s = String.format("%.2f", roundOff);
+        totalDiscountAmt.setText("₹"+s);
 
         addAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -362,7 +364,6 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                                 flag=0;
                             }
                         }
-
                         if (flag == 1){
                             Intent intent = IntentFactory.createOrderSummaryDetailsActivity(OrderSummaryActivity.this);
                             intent.putParcelableArrayListExtra("data",orderItem);
@@ -435,7 +436,9 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             }
         }
         totalAmount.setText(String.valueOf(amount));
-        totalDiscountAmt.setText("₹"+String.valueOf(discountAmt));
+        double roundOff = Math.round(discountAmt * 100.0) / 100.0;
+        String s = String.format("%.2f", roundOff);
+        totalDiscountAmt.setText("₹"+s);
     }
 }
 

@@ -6,19 +6,27 @@
     android:id="@+id/activity_forgot_password"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quantum_grey200"
     tools:context=".dairyorder.DairyProductActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Order Summary"
-        app:titleTextColor="@color/white"/>
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Order Summary"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+    </android.support.v7.widget.Toolbar>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -99,13 +107,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/subscription_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
                         <TextView
+                            android:id="@+id/txt_subscribe_here"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|left"
@@ -117,7 +127,15 @@
                             android:textSize="18sp"
                             android:textColor="@color/black" />
 
-                    </LinearLayout>
+                        <ImageView
+                            android:id="@+id/ic_subscribe_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:id="@+id/ll_subscribe"
@@ -134,23 +152,41 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp">
 
-                            <EditText
-                                android:id="@+id/date_from"
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/til_date_from"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="From"
+                                android:layout_marginTop="4dp"
                                 android:layout_marginEnd="8dp"
-                                android:focusable="false"/>
+                                android:theme="@style/LoginTextLabel">
 
-                            <EditText
-                                android:id="@+id/date_to"
+                                <EditText
+                                    android:id="@+id/date_from"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="From"
+                                    android:focusable="false"/>
+
+                            </android.support.design.widget.TextInputLayout>
+
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/til_date_to"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="To"
                                 android:layout_marginStart="8dp"
-                                android:focusable="false"/>
+                                android:layout_marginTop="4dp"
+                                android:theme="@style/LoginTextLabel">
+
+                                <EditText
+                                    android:id="@+id/date_to"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="To"
+                                    android:focusable="false"/>
+
+                            </android.support.design.widget.TextInputLayout>
 
                         </LinearLayout>
 
@@ -162,6 +198,7 @@
                             android:layout_margin="10dp">
 
                             <TextView
+                                android:id="@+id/txt_per_day"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.4"
@@ -188,6 +225,7 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/txt_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="*Subcription allowed for Milk only*"
@@ -202,11 +240,57 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/card_view_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardElevation="3dp"
+                android:clickable="true"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/ic_coupon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:tint="@color/secondaryPrimary"
+                        android:src="@drawable/ic_coupon_black"/>
+
+                    <TextView
+                        android:id="@+id/txt_apply_coupon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Apply coupon &#038; promo code"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/secondaryPrimary"
+                        android:layout_toEndOf="@+id/ic_coupon"
+                        android:layout_centerVertical="true"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:id="@+id/ic_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 card_view:cardElevation="4dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -536,6 +620,7 @@
                         android:weightSum="2">
 
                         <TextView
+                            android:id="@+id/txt_summary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
@@ -550,13 +635,6 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@color/gray" />
-
                     <LinearLayout
                         android:id="@+id/sub_total"
                         android:layout_width="match_parent"
@@ -566,6 +644,7 @@
                         android:weightSum="2">
 
                         <TextView
+                            android:id="@+id/item_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
@@ -575,19 +654,62 @@
                             android:layout_marginTop="10dp"
                             android:layout_weight="1.8"
                             android:gravity="left"
-                            android:text="SubTotal" />
+                            android:textColor="@color/black"
+                            android:text="Item Total" />
 
                         <TextView
                             android:id="@+id/sub_total_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
+                            android:textColor="@color/black"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="10dp"
                             android:gravity="right"
-                            android:text="Rs 1000"
+                            android:layout_weight=".2" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/gray" />
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_delivery_fee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/txt_delivery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1.8"
+                            android:gravity="left"
+                            android:text="Delivery Fee" />
+
+                        <TextView
+                            android:id="@+id/delivery_fee_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@color/black"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="right"
                             android:layout_weight=".2" />
 
                     </LinearLayout>
@@ -610,9 +732,10 @@
                         android:weightSum="2">
 
                         <TextView
+                            android:id="@+id/txt_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
+                            android:textColor="@color/black"
                             android:layout_gravity="left"
                             android:layout_marginBottom="5dp"
                             android:layout_marginLeft="10dp"
@@ -625,13 +748,12 @@
                             android:id="@+id/total_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
+                            android:textColor="@color/black"
                             android:layout_gravity="right"
-                            android:layout_marginBottom="5dp"
+                            android:layout_marginBottom="20dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:gravity="right"
-                            android:text="Rs 1000"
                             android:layout_weight="0.2" />
 
                     </LinearLayout>
@@ -691,6 +813,7 @@
                         android:layout_height="wrap_content"
                         android:paddingRight="10dp"
                         android:checked="true"
+                        android:buttonTint="@color/secondaryPrimary"
                         android:text="COD" />
 
                     <RadioButton
@@ -698,14 +821,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingRight="10dp"
-                        android:text="Wallet" />
+                        android:text="Wallet"
+                        android:buttonTint="@color/secondaryPrimary"/>
 
                     <RadioButton
                         android:id="@+id/rb_netbanking"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingRight="10dp"
-                        android:text="Credi/Debit/Internet Banking" />
+                        android:text="Credi/Debit/Internet Banking"
+                        android:buttonTint="@color/secondaryPrimary"/>
                 </RadioGroup>
 
             </LinearLayout>
@@ -717,10 +842,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/green_button_round_corner_shape_normal"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/btn_drawable"
                 android:text="Place Order"
                 android:textColor="@color/white"/>
 

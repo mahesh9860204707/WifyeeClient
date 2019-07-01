@@ -3,12 +3,15 @@ package com.wifyee.greenfields.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +31,7 @@ import com.google.android.libraries.places.compat.Place;
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete;
 import com.google.android.libraries.places.compat.ui.PlaceSelectionListener;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.dairyorder.OrderSummaryActivity;
 import com.wifyee.greenfields.foodorder.AddToCartActivity;
@@ -52,6 +56,7 @@ public class AddAddress extends AppCompatActivity implements PlaceSelectionListe
     String cart="";
     Double lat1,lng1,lat2,lng2;
     GPSTracker gps;
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -62,8 +67,36 @@ public class AddAddress extends AppCompatActivity implements PlaceSelectionListe
         change = findViewById(R.id.change);
         completeAddress = findViewById(R.id.complete_address);
         saveProceed = findViewById(R.id.save_proceed);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+        TextView txtDelivery = findViewById(R.id.txt_delivery);
+        TextInputLayout tilCompleteAddress = findViewById(R.id.til_complete_addr);
 
-        saveProceed.setAlpha(0.2f);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                    overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                }
+            });
+        }
+
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+        txtDelivery.setTypeface(Fonts.getRegular(this));
+        location.setTypeface(Fonts.getSemiBold(this));
+        change.setTypeface(Fonts.getSemiBold(this));
+        saveProceed.setTypeface(Fonts.getSemiBold(this));
+        tilCompleteAddress.setTypeface(Fonts.getRegular(this));
+        completeAddress.setTypeface(Fonts.getSemiBold(this));
+
+        saveProceed.setAlpha(0.5f);
         saveProceed.setEnabled(false);
 
         gps = new GPSTracker(this);
@@ -82,7 +115,7 @@ public class AddAddress extends AppCompatActivity implements PlaceSelectionListe
                     saveProceed.setAlpha(1f);
                     saveProceed.setEnabled(true);
                 }else {
-                    saveProceed.setAlpha(0.2f);
+                    saveProceed.setAlpha(0.5f);
                     saveProceed.setEnabled(false);
                 }
             }
@@ -121,7 +154,14 @@ public class AddAddress extends AppCompatActivity implements PlaceSelectionListe
                 layout.setContentView(R.layout.popup_too_far);
                 layout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 layout.show();
+                TextView tv = layout.findViewById(R.id.tv);
+                TextView txtMessage = layout.findViewById(R.id.message);
                 Button confirm = layout.findViewById(R.id.confirm_btn);
+
+                tv.setTypeface(Fonts.getSemiBold(AddAddress.this));
+                txtMessage.setTypeface(Fonts.getRegular(AddAddress.this));
+                confirm.setTypeface(Fonts.getSemiBold(AddAddress.this));
+
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -104,7 +104,9 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
                     place.setQuantity(myViewHolder.integerNumber.getText().toString());
                     double sum = Double.parseDouble(place.getOrderPrice()) * value;
                     double discount = Double.parseDouble(place.getItemDiscount()) * value;
-                    myViewHolder.discountAmt.setText("Discount ₹"+discount);
+                    double roundOff = Math.round(discount * 100.0) / 100.0;
+                    String s = String.format("%.2f", roundOff);
+                    myViewHolder.discountAmt.setText("Discount ₹"+s);
                     myViewHolder.tvPrice.setText("₹"+sum);
                     updateCart(place.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
@@ -164,10 +166,6 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
 
         }
 
-        /*public void onNothingSelected(AdapterView<?> arg0) {
-
-        }*/
-
     }
 
     private void deleteCart(String id){
@@ -222,7 +220,9 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
                             double sum = Double.parseDouble(place.getOrderPrice()) * quantity;
                             double discount = Double.parseDouble(place.getItemDiscount()) * quantity;
                             viewHolder.tvPrice.setText("₹"+sum);
-                            viewHolder.discountAmt.setText("Discount ₹"+discount);
+                            double roundOff = Math.round(discount * 100.0) / 100.0;
+                            String s = String.format("%.2f", roundOff);
+                            viewHolder.discountAmt.setText("Discount ₹"+s);
                             place.setQuantity(viewHolder.integerNumber.getText().toString());
                             updateCart(itemId,String.valueOf(quantity));
                             fInterface.fragmentBecameVisible();

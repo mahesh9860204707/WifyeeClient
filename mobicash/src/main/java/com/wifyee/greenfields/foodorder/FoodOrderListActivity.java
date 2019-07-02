@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -100,9 +102,11 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -110,6 +114,8 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
                 }
             });
         }
+
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
         /*categorylist.clear();
         categorylist.add("All");
         categorylist.add("non-veg");
@@ -460,11 +466,13 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
             if (fillList() == 0) {
                 if (textCartItemCount.getVisibility() != View.GONE) {
                     textCartItemCount.setVisibility(View.GONE);
+                    btn_addToCart.setVisibility(View.GONE);
                 }
             } else {
                 textCartItemCount.setText(String.valueOf(Math.min(fillList(), 99)));
                 if (textCartItemCount.getVisibility() != View.VISIBLE) {
                     textCartItemCount.setVisibility(View.VISIBLE);
+                    btn_addToCart.setVisibility(View.VISIBLE);
                 }
             }
         }

@@ -7,11 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
+import com.wifyee.greenfields.activity.UploadPrescription;
 import com.wifyee.greenfields.constants.NetworkConstant;
+import com.wifyee.greenfields.dairyorder.DairyNetworkConstant;
 
 
 import java.util.List;
@@ -36,13 +43,13 @@ public class MerchantRestuarantAdapter extends RecyclerView.Adapter<MerchantRest
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView tv_fooddescrp;
         public ImageView imag_foodimage;
-        public LinearLayout ll;
+        public RelativeLayout ll;
 
         public ViewHolder(View v){
             super(v);
-            tv_fooddescrp = (TextView) v.findViewById(R.id.tv_descprition);
-            imag_foodimage = (ImageView)v.findViewById(R.id.imag_food);
-            ll = (LinearLayout) v.findViewById(R.id.ll);
+            tv_fooddescrp =  v.findViewById(R.id.tv_descprition);
+            imag_foodimage = v.findViewById(R.id.imag_food);
+            ll =  v.findViewById(R.id.ll);
         }
     }
     @Override
@@ -53,8 +60,25 @@ public class MerchantRestuarantAdapter extends RecyclerView.Adapter<MerchantRest
     @Override
     public void onBindViewHolder(ViewHolder Vholder, int position){
         final Restaurant FoodOderItem = mFoodOderItemCollection.get(position);
-        Vholder.tv_fooddescrp.setText(FoodOderItem.restaurant_name);
-        Picasso.with(mContext).load(FoodOderItem.logo).into(Vholder.imag_foodimage);
+
+        String upperString = FoodOderItem.restaurant_name.substring(0,1).toUpperCase() + FoodOderItem.restaurant_name.substring(1);
+        Vholder.tv_fooddescrp.setText(upperString);
+
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.food_bg4)
+                .error(R.drawable.food_bg4)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+        Glide.with(mContext).load(FoodOderItem.logo)
+                .apply(options)
+                .into(Vholder.imag_foodimage);
+
+
+        //Picasso.with(mContext).load(FoodOderItem.logo).into(Vholder.imag_foodimage);
+
+        Vholder.tv_fooddescrp.setTypeface(Fonts.getSemiBold(mContext));
+
         if(FoodOderItem.status.equals("0")) {
             Vholder.ll.setAlpha(0.3f);
         }else {

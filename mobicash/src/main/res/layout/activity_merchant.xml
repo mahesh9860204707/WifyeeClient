@@ -8,32 +8,20 @@
     tools:context="com.wifyee.greenfields.foodorder.MerchantActivity">
 
     <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mtoolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#7D0A4E"
-        android:elevation="2dp"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
-
-        <ImageButton
-            android:id="@+id/toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:background="@drawable/ic_keyboard_backspace" />
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5dp">
 
         <TextView
-            android:id="@+id/food_oder"
-            style="@style/font_family_medium"
+            android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textColor="@color/white"
-            android:padding="8dp"
             android:text="Restaurant"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
 
     </android.support.v7.widget.Toolbar>
 
@@ -41,7 +29,7 @@
         android:id="@+id/ic_not_here"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:layout_below="@+id/mtoolbar"
+        android:layout_below="@+id/toolbar"
         android:layout_marginTop="20dp"
         android:src="@drawable/not_here"
         android:visibility="gone" />
@@ -72,7 +60,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/merchant_recyclerview_main"
         android:layout_width="match_parent"
-        android:layout_below="@+id/mtoolbar"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="16dp"
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 

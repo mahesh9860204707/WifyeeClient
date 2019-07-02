@@ -205,7 +205,7 @@ public class OrderSummaryDetails extends BaseActivity {
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int rotationAngle=0;
+                int rotationAngle = 0;
                 if (ll_subscribe.getVisibility()==View.GONE){
                     ll_subscribe.setVisibility(View.VISIBLE);
                     rotationAngle = rotationAngle == 0 ? 180 : 0;  //toggle

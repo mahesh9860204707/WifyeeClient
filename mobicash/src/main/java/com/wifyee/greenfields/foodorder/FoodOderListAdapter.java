@@ -21,9 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.SharedPrefence.SharedPreference;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.dairyorder.DairyProductListItem;
@@ -75,12 +79,31 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
     public void onBindViewHolder(final FoodOderListAdapter.ViewHolder holder, final int position) {
         final FoodOderList object = mFoodOderLists.get(position);
         if (object != null) {
-            holder.tv_foodprice.setText(object.getPrice());
-            holder.tv_foodName.setText(object.getName());
+            holder.tv_foodprice.setText("₹"+object.getPrice());
+            String upperString = object.getName().substring(0,1).toUpperCase() + object.getName().substring(1);
+            holder.tv_foodName.setText(upperString);
             holder.tv_fooddescrp.setText(object.getDescription());
-            holder.sb.setTag(position);
-            holder.sb.setChecked(object.isCheckvalue());
-            Picasso.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage).into( holder.imag_foodimage);
+
+            holder.tv_foodName.setTypeface(Fonts.getSemiBold(context));
+            holder.tv_fooddescrp.setTypeface(Fonts.getRegular(context));
+            holder.tv_foodprice.setTypeface(Fonts.getRegular(context));
+
+            if (object.getDescription().isEmpty()){
+                holder.tv_fooddescrp.setVisibility(View.GONE);
+            }else {
+                holder.tv_fooddescrp.setVisibility(View.VISIBLE);
+            }
+
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.food_bg4)
+                    .error(R.drawable.food_bg4)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage)
+                    .apply(options)
+                    .into(holder.imag_foodimage);
+
+            //Picasso.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage).into( holder.imag_foodimage);
 
             if(checkInCart(object.itemID)!=0){
                 holder.tv_add.setText("IN CART");
@@ -451,27 +474,25 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
 
     public  class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tv_foodName,tv_foodprice,tv_fooddescrp,tv_add,tv_qty;
-        private SwitchButton sb;
+        private TextView tv_foodName,tv_foodprice,tv_fooddescrp,tv_add,tv_qty,txtAdd,txtPlus,increment,decrement,integerNumber;
         private ImageView imag_foodimage;
-        private CheckBox checkBox;
-        private LinearLayout changeLayout,ll;
-        ImageView img_add,img_sub;
+        private LinearLayout ll,llAdd,llIncrDecr;
 
         public ViewHolder(View v) {
             super(v);
-            img_add=(ImageView)v.findViewById(R.id.countadd);
-            img_sub=(ImageView) v.findViewById(R.id.remove);
-            tv_qty=(TextView)v.findViewById(R.id.qty) ;
-            changeLayout=(LinearLayout) v.findViewById(R.id.changelayout);
-            tv_add=(TextView)v.findViewById(R.id.add);
+            tv_add = (TextView)v.findViewById(R.id.add);
             tv_foodName = (TextView) v.findViewById(R.id.tv_foodName);
             tv_foodprice = (TextView) v.findViewById(R.id.tv_price);
             tv_fooddescrp = (TextView) v.findViewById(R.id.tv_descprition);
             imag_foodimage=(ImageView)v.findViewById(R.id.imag_food);
-            checkBox=(CheckBox)v.findViewById(R.id.food_checkbox);
-            sb=(SwitchButton)v.findViewById(R.id.switchbutton);
             ll =(LinearLayout) v.findViewById(R.id.ll);
+            llAdd =(LinearLayout) v.findViewById(R.id.ll_add);
+            llIncrDecr =(LinearLayout) v.findViewById(R.id.ll_incr_decr);
+            txtAdd = v.findViewById(R.id.txt_add);
+            txtPlus = v.findViewById(R.id.txt_plus);
+            increment = v.findViewById(R.id.increase);
+            decrement = v.findViewById(R.id.decrease);
+            integerNumber = v.findViewById(R.id.integer_number);
         }
     }
 

@@ -64,6 +64,7 @@ import com.wifyee.greenfields.activity.RequestBroadbandActivity;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.constants.WifiConstant;
+import com.wifyee.greenfields.dairyorder.DairyProductActivity;
 import com.wifyee.greenfields.mapper.ModelMapper;
 import com.wifyee.greenfields.models.requests.GetClientProfileInfoRequest;
 import com.wifyee.greenfields.models.requests.LoginRequest;
@@ -356,6 +357,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 //                            dataLayout.setVisibility(View.GONE);
  //                       creditLayout.setVisibility(View.GONE);
                         walletBalance.setText(getString(R.string.Rs, getProfileInfo.clientWalletBalance));
+                        LocalPreferenceUtility.saveWalletBalance(mContext,getProfileInfo.clientWalletBalance);
+
                       //  approveCredit.setText(getString(R.string.Rs, getProfileInfo.clientApprovedCreditLimit));
                         walletBalance.setVisibility(View.VISIBLE);
                       //  approveCredit.setVisibility(View.VISIBLE);

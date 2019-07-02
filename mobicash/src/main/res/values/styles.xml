@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/secondaryPrimary</item>
-        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorPrimaryDark">@color/secondaryPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -31,9 +31,9 @@
 
     <style name="FoodTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#7D0A4E</item>
-        <item name="colorAccent">#7D0A4E</item>
+        <item name="colorPrimary">@color/secondaryPrimary</item>
+        <item name="colorPrimaryDark">@color/secondaryPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="LoginTextLabel" parent="TextAppearance.AppCompat">
@@ -45,15 +45,15 @@
 
     <style name="DairyTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#7D0A4E</item>
-        <item name="colorAccent">#7D0A4E</item>
+        <item name="colorPrimary">@color/secondaryPrimary</item>
+        <item name="colorPrimaryDark">@color/secondaryPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/secondaryPrimary</item>
-        <item name="colorPrimaryDark">@color/secondaryPrimary</item>
+        <item name="colorPrimaryDark">@color/secondaryPrimaryDark</item>
         <item name="colorAccent">@color/secondaryPrimary</item>
     </style>
 

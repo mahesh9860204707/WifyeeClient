@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.RecyclerTouchListener;
 
@@ -68,8 +70,8 @@ public class MerchantActivity extends AppCompatActivity {
         txtDetailNotHere = findViewById(R.id.txt_detail_we_are_not);
         // merchant_horiz=(RecyclerView)findViewById(R.id.merchant_recyclerview_horiz);
 
-        mToolbar=(Toolbar)findViewById(R.id.mtoolbar);
-        back=(ImageButton)findViewById(R.id.toolbar_back);
+        mToolbar = findViewById(R.id.toolbar);
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
         mContext = this;
 
         gps = new GPSTracker(mContext);
@@ -77,9 +79,11 @@ public class MerchantActivity extends AppCompatActivity {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -87,6 +91,9 @@ public class MerchantActivity extends AppCompatActivity {
                 }
             });
         }
+
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+
         showProgressDialog();
 
         //MobicashIntentService.startActionFoodMerchantByLocation(this, getLatitudeAndLongitude());
@@ -275,8 +282,8 @@ public class MerchantActivity extends AppCompatActivity {
         cancelProgressDialog();
         merchant_rest.setVisibility(View.VISIBLE);
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(mContext, 2);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false);
-        merchant_rest.setLayoutManager(recyclerViewLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        merchant_rest.setLayoutManager(linearLayoutManager);
        // merchant_horiz.setLayoutManager(linearLayoutManager);
         merchantRestuarantAdapter = new MerchantRestuarantAdapter(mContext, merchant_rest, category_List);
         //merchantRestuarantAdapter = new MerchantRestuarantAdapter(mContext, merchant_horiz, category_List);

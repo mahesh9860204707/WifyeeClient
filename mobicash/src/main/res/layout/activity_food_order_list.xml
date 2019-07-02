@@ -3,38 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-   android:background="#E8E2D0"
     android:layout_height="match_parent"
     tools:context=".foodorder.FoodOrderListActivity">
 
     <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mtoolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#7D0A4E"
-        android:elevation="2dp"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
-
-        <ImageButton
-            android:id="@+id/toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:background="@drawable/ic_keyboard_backspace"/>
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5dp">
 
         <TextView
             android:id="@+id/food_oder"
-            style="@style/font_family_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:padding="8dp"
             android:text="ORDER FOOD"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textAllCaps="true"
-            android:textStyle="bold" />
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
 
     </android.support.v7.widget.Toolbar>
 
@@ -72,7 +59,6 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/spinner_cat"
         android:layout_height="wrap_content"
-        android:background="#CC000000"
         android:visibility="gone"
         android:layout_marginBottom="2dp"
         android:scrollbars="horizontal" />
@@ -117,6 +103,7 @@
         android:layout_above="@+id/add_to_cart"
         android:layout_below="@+id/spinner_cat"
         android:layout_marginBottom="-1dp"
+        android:layout_marginTop="5dp"
         android:scrollbars="vertical" />
 
     <RelativeLayout

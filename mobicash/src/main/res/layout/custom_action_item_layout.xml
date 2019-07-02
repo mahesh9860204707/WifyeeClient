@@ -11,7 +11,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:src="@drawable/cart"/>
+        android:src="@drawable/cart_secondary_color"/>
 
     <TextView
         android:id="@+id/cart_badge"

@@ -8,6 +8,9 @@
     <!--<color name="secondaryPrimary">#008FFF</color>-->
     <!--<color name="secondaryPrimary">#55AA29</color>-->
     <color name="secondaryPrimary">#24A249</color>
+    <color name="secondaryPrimaryDark">#173142</color>
+    <!--<color name="secondaryPrimaryExtremeDark">#1f8d40</color>-->
+    <color name="secondaryPrimaryExtremeDark">#1b7836</color>
     <color name="colorBlack">#51515f</color>
     <color name="color_logo">#FFA500</color>
     <color name="color_tab_bg">#51515f</color>

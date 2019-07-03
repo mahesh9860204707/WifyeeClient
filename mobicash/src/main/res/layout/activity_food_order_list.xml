@@ -111,27 +111,66 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:background="#7D0A4E"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:background="@color/secondaryPrimary"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/item_count_price"
+            android:id="@+id/item_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ITEM"
+            android:textSize="10sp"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
             android:textColor="#ffffff"
-            android:layout_centerVertical="true"
-            android:visibility="gone"/>
+            android:layout_below="@+id/item_count"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/txt_taxes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/total_price"
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/view_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VIEW CART"
-            android:layout_centerInParent="true"
+            android:text="View Cart"
+            android:textSize="16sp"
+            android:layout_marginEnd="5dp"
+            android:layout_toStartOf="@+id/ic_oval"
+            android:layout_centerVertical="true"
             android:textColor="#ffffff"/>
 
+        <ImageView
+            android:id="@+id/ic_oval"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:padding="2dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_arrow_forward_black_24dp"
+            android:background="@drawable/white_oval"/>
+
     </RelativeLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/progressbar"
+        style="@style/SpinKitView.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/secondaryPrimary"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

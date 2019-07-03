@@ -647,8 +647,19 @@ public class ModelMapper {
                     /*foodOderItem.foodImage = response.getString(ResponseAttributeConstants.FOOD_IMAGE);*/
                     foodOderItem.foodImage = response.getString(ResponseAttributeConstants.FOOD_IMAGE);
 
+                if (response.has(ResponseAttributeConstants.FOOD_DISCOUNT_PRICE))
+                    foodOderItem.discountPrice = response.getString(ResponseAttributeConstants.FOOD_DISCOUNT_PRICE);
 
-                FoodModelsList.add(new FoodOderList(response.getString(ResponseAttributeConstants.MERCHANTID),response.getString(ResponseAttributeConstants.FOODNAME),response.getString(ResponseAttributeConstants.FOOD_PRICE),response.getString(ResponseAttributeConstants.FOOD_DESCRIPTION),response.getString(ResponseAttributeConstants.FOOD_QUANTITY),response.getString(ResponseAttributeConstants.FOOD_IMAGE),false));
+
+                FoodModelsList.add(new FoodOderList(
+                        response.getString(ResponseAttributeConstants.MERCHANTID),
+                        response.getString(ResponseAttributeConstants.FOODNAME),
+                        response.getString(ResponseAttributeConstants.FOOD_PRICE),
+                        response.getString(ResponseAttributeConstants.FOOD_DESCRIPTION),
+                        response.getString(ResponseAttributeConstants.FOOD_QUANTITY),
+                        response.getString(ResponseAttributeConstants.FOOD_IMAGE),
+                        response.getString(ResponseAttributeConstants.FOOD_DISCOUNT_PRICE),
+                        false));
             }
         } catch (JSONException e) {
             Timber.e("JSONException while transformToFoodOderItem. Message : " + e.getMessage());

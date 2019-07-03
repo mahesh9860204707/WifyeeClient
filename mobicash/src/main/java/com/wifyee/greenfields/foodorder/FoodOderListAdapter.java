@@ -84,16 +84,6 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
             holder.tv_foodName.setText(upperString);
             holder.tv_fooddescrp.setText(object.getDescription());
 
-            holder.tv_foodName.setTypeface(Fonts.getSemiBold(context));
-            holder.tv_fooddescrp.setTypeface(Fonts.getRegular(context));
-            holder.tv_foodprice.setTypeface(Fonts.getRegular(context));
-
-            if (object.getDescription().isEmpty()){
-                holder.tv_fooddescrp.setVisibility(View.GONE);
-            }else {
-                holder.tv_fooddescrp.setVisibility(View.VISIBLE);
-            }
-
             RequestOptions options = new RequestOptions()
                     .centerCrop()
                     .placeholder(R.drawable.food_bg4)
@@ -103,21 +93,84 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                     .apply(options)
                     .into(holder.imag_foodimage);
 
+            holder.tv_foodName.setTypeface(Fonts.getSemiBold(context));
+            holder.tv_fooddescrp.setTypeface(Fonts.getRegular(context));
+            holder.tv_foodprice.setTypeface(Fonts.getRegular(context));
+            holder.increment.setTypeface(Fonts.getSemiBold(context));
+            holder.decrement.setTypeface(Fonts.getSemiBold(context));
+            holder.integerNumber.setTypeface(Fonts.getSemiBold(context));
+            holder.txtPlus.setTypeface(Fonts.getSemiBold(context));
+            holder.txtAdd.setTypeface(Fonts.getSemiBold(context));
+            holder.tvDiscount.setTypeface(Fonts.getRegular(context));
+
+            if (object.getDescription().isEmpty()){
+                holder.tv_fooddescrp.setVisibility(View.GONE);
+            }else {
+                holder.tv_fooddescrp.setVisibility(View.VISIBLE);
+            }
+
+            if (object.getDiscountPrice().equals("0.00")){
+                holder.icDiscount.setVisibility(View.GONE);
+                holder.tvDiscount.setVisibility(View.GONE);
+            }else {
+                holder.tvDiscount.setText("₹"+object.getDiscountPrice());
+                holder.icDiscount.setVisibility(View.VISIBLE);
+                holder.tvDiscount.setVisibility(View.VISIBLE);
+            }
+
             //Picasso.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage).into( holder.imag_foodimage);
 
-            if(checkInCart(object.itemID)!=0){
-                holder.tv_add.setText("IN CART");
+            if(checkInCart(object.itemID,holder)!=0){
+                //holder.tv_add.setText("IN CART");
+                holder.llAdd.setVisibility(View.GONE);
+                holder.llIncrDecr.setVisibility(View.VISIBLE);
             }else {
-                holder.tv_add.setText("ADD");
+                //holder.tv_add.setText("ADD");
+                holder.llAdd.setVisibility(View.VISIBLE);
+                holder.llIncrDecr.setVisibility(View.GONE);
             }
 
             if(FoodOrderListActivity.currentStatus.equals("0")){
-                holder.tv_add.setEnabled(false);
+                holder.llAdd.setEnabled(false);
                 holder.ll.setAlpha(0.3f);
             }else {
-                holder.tv_add.setEnabled(true);
+                holder.llAdd.setEnabled(true);
                 holder.ll.setAlpha(1f);
             }
+
+            holder.increment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int value = Integer.parseInt(holder.integerNumber.getText().toString()) + 1;
+                    if (value >= 1) {
+                        //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
+                        holder.integerNumber.setText("" + value);
+                        updateCart(object.itemID, String.valueOf(value));
+                        mListener.onBuyCallBack(object, "1",1);
+                    }
+                }
+            });
+
+
+            holder.decrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int value = Integer.parseInt(holder.integerNumber.getText().toString()) - 1;
+                    if (value >= 1) {
+                        //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
+                        holder.integerNumber.setText("" + value);
+                        updateCart(object.itemID, String.valueOf(value));
+                    }else {
+                        deleteCartItem(object.itemID,holder);
+                        holder.llIncrDecr.setVisibility(View.GONE);
+                        holder.llAdd.setVisibility(View.VISIBLE);
+                        mListener.onRemoveCartCallBack(object.itemID,0);
+                    }
+                    mListener.onRemoveCartCallBack("",1);
+                }
+            });
+
+
             /*List<SharedPrefenceList> alreadyAddItems= null;
             try {
                 alreadyAddItems = AllFoodItemFragment.sharedPreference.getFavorites(context);
@@ -218,25 +271,27 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                 }
             });
 */
-        holder.tv_add.setOnClickListener(new View.OnClickListener() {
+        holder.llAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("merIdOfFood",FoodOrderListActivity.merchantId);
                 Log.e("LocalPreferenceUtility",LocalPreferenceUtility.getMerchantId(context));
                 Log.e("MerchantName","merName"+LocalPreferenceUtility.getMerchantName(context));
                 if(FoodOrderListActivity.merchantId.equals(LocalPreferenceUtility.getMerchantId(context)) || LocalPreferenceUtility.getMerchantId(context).equals("")) {
-                    if (holder.tv_add.getText().equals("ADD")) {
-                        mListener.onBuyCallBack(object, "1");
-                        holder.tv_add.setText("IN CART");
-                        LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
-                        LocalPreferenceUtility.putMerchantName(context, FoodOrderListActivity.merchantName);
-                        LocalPreferenceUtility.putLatitudeFood(context,LocalPreferenceUtility.getLatitude(context));
-                        LocalPreferenceUtility.putLongitudeFood(context,LocalPreferenceUtility.getLongitude(context));
+                    //if (holder.tv_add.getText().equals("ADD")) {
+                    holder.llAdd.setVisibility(View.GONE);
+                    holder.llIncrDecr.setVisibility(View.VISIBLE);
+                    mListener.onBuyCallBack(object, "1",0);
+                    //holder.tv_add.setText("IN CART");
+                    LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
+                    LocalPreferenceUtility.putMerchantName(context, FoodOrderListActivity.merchantName);
+                    LocalPreferenceUtility.putLatitudeFood(context,LocalPreferenceUtility.getLatitude(context));
+                    LocalPreferenceUtility.putLongitudeFood(context,LocalPreferenceUtility.getLongitude(context));
 
-                    }else if (holder.tv_add.getText().equals("IN CART")){
+                    /*}else if (holder.tv_add.getText().equals("IN CART")){
                         mListener.onRemoveCartCallBack(object.itemID);
                         holder.tv_add.setText("ADD");
-                    }
+                    }*/
 
                     /*try {
                         LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
@@ -329,14 +384,13 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                     confirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            /*SharedPreference sharedPreference = new SharedPreference();
-                            sharedPreference.clearCache(context);*/
-
                             //clear cart table
                             deleteCart();
                             LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
                             LocalPreferenceUtility.putMerchantName(context, FoodOrderListActivity.merchantName);
-                            mListener.onBuyCallBack(object,"1");
+                            holder.llIncrDecr.setVisibility(View.VISIBLE);
+                            holder.llAdd.setVisibility(View.GONE);
+                            mListener.onBuyCallBack(object,"1",0);
                             /*productItem = new SharedPrefenceList();
                             productItem.setMercantId(object.itemID);
                             productItem.setName(object.name);
@@ -346,8 +400,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                             productItem.setQuantiy("1");
                             Log.w("ITEM--", "ITEM ID " + productItem.getMercantId());
                             AllFoodItemFragment.sharedPrefenceListProduct.add(productItem);*/
-                            holder.tv_add.setText("IN CART");
-
+                            //holder.tv_add.setText("IN CART");
                             layout.dismiss();
                         }
                     });
@@ -474,46 +527,54 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
 
     public  class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tv_foodName,tv_foodprice,tv_fooddescrp,tv_add,tv_qty,txtAdd,txtPlus,increment,decrement,integerNumber;
-        private ImageView imag_foodimage;
+        private TextView tv_foodName,tv_foodprice,tv_fooddescrp,tv_add,tv_qty,txtAdd,txtPlus,increment,decrement,integerNumber,tvDiscount;
+        private ImageView imag_foodimage,icDiscount;
         private LinearLayout ll,llAdd,llIncrDecr;
 
         public ViewHolder(View v) {
             super(v);
-            tv_add = (TextView)v.findViewById(R.id.add);
-            tv_foodName = (TextView) v.findViewById(R.id.tv_foodName);
-            tv_foodprice = (TextView) v.findViewById(R.id.tv_price);
-            tv_fooddescrp = (TextView) v.findViewById(R.id.tv_descprition);
-            imag_foodimage=(ImageView)v.findViewById(R.id.imag_food);
-            ll =(LinearLayout) v.findViewById(R.id.ll);
-            llAdd =(LinearLayout) v.findViewById(R.id.ll_add);
-            llIncrDecr =(LinearLayout) v.findViewById(R.id.ll_incr_decr);
+            tv_add =  v.findViewById(R.id.add);
+            tv_foodName =  v.findViewById(R.id.tv_foodName);
+            tv_foodprice =  v.findViewById(R.id.tv_price);
+            tv_fooddescrp =  v.findViewById(R.id.tv_descprition);
+            imag_foodimage = v.findViewById(R.id.imag_food);
+            icDiscount = v.findViewById(R.id.ic_discount);
+            ll = v.findViewById(R.id.ll);
+            llAdd = v.findViewById(R.id.ll_add);
+            llIncrDecr = v.findViewById(R.id.ll_incr_decr);
             txtAdd = v.findViewById(R.id.txt_add);
             txtPlus = v.findViewById(R.id.txt_plus);
             increment = v.findViewById(R.id.increase);
             decrement = v.findViewById(R.id.decrease);
             integerNumber = v.findViewById(R.id.integer_number);
+            tvDiscount = v.findViewById(R.id.tv_discount);
         }
     }
 
     public interface ItemListener {
-        void onBuyCallBack(FoodOderList item,String quantity);
-        void onRemoveCartCallBack(String id);
+        void onBuyCallBack(FoodOderList item,String quantity,int flag);
+        void onRemoveCartCallBack(String id,int flag);
     }
 
-    public int checkInCart(String itemId) {
+    public int checkInCart(String itemId,ViewHolder holder) {
         int total;
         SQLController controller=new SQLController(context);
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT item_id from food_cart_item where item_id='"+itemId+"'";
+        String query = "SELECT * from food_cart_item where item_id='"+itemId+"'";
 
         Cursor data = controller.retrieve(query);
-
         total = data.getCount();
-        Log.e("itemCount",String.valueOf(total));
+        //Log.e("itemCount",String.valueOf(total));
+        if(data.getCount()>0){
+            data.moveToFirst();
+            do{
+                String quantity = data.getString(data.getColumnIndex("quantity"));
+                holder.integerNumber.setText(quantity);
 
+            }while (data.moveToNext());
+        }
         data.close();
         controller.close();
         return total;
@@ -530,6 +591,42 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
 
         if(result.equals("Done")){
             Log.d("delete","Record All delete");
+        }else {
+            Log.d("result",result);
+        }
+        controller.close();
+    }
+
+    private void deleteCartItem(String id,ViewHolder holder){
+        SQLController controller = new SQLController(context);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+
+        String query = "DELETE from food_cart_item where item_id ='"+id+"'";
+        String result = controller.fireQuery(query);
+
+        if(result.equals("Done")){
+            Log.d("delete","Record delete");
+            holder.llIncrDecr.setVisibility(View.GONE);
+            holder.llAdd.setVisibility(View.VISIBLE);
+        }else {
+            Log.d("result",result);
+        }
+        controller.close();
+    }
+
+    private void updateCart(String id,String quantity){
+        SQLController controller = new SQLController(context);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+
+        String query = "UPDATE food_cart_item set quantity='"+quantity+"' where item_id ='"+id+"'";
+        String result = controller.fireQuery(query);
+
+        if(result.equals("Done")){
+            Log.d("update","Record update");
         }else {
             Log.d("result",result);
         }

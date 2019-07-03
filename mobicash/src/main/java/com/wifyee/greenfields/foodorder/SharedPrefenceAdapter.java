@@ -16,10 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.SharedPrefence.SharedPreference;
 
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.database.DatabaseDB;
 import com.wifyee.greenfields.database.SQLController;
@@ -51,21 +55,21 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv_foodName, tv_foodprice, tv_fooddescrp, tv_foodquanity, tv_quantityNumber, tv_view, tv_remove;
-        ImageView imag_foodimage;
-        ImageView  img_minus, img_plus;
+        public TextView tv_foodName, tv_foodprice, tv_fooddescrp, tv_foodquanity, tv_quantityNumber,tvDiscount;
+        ImageView imag_foodimage,icDiscount;
+        TextView  img_minus, img_plus;
         public ViewHolder(View v) {
             super(v);
-            tv_view = (TextView) v.findViewById(R.id.tv_view);
-            tv_remove = (TextView) v.findViewById(R.id.tv_remove);
-            tv_foodName = (TextView) v.findViewById(R.id.tv_productname);
-            tv_foodprice = (TextView) v.findViewById(R.id.tv_price);
-            tv_fooddescrp = (TextView) v.findViewById(R.id.tv_descprition);
-            tv_foodquanity = (TextView) v.findViewById(R.id.tv_quantity);
-            imag_foodimage = (ImageView) v.findViewById(R.id.imag_food);
-            tv_quantityNumber = (TextView) v.findViewById(R.id.tv_quantityNumber);
-            img_minus = (ImageView) v.findViewById(R.id.minus);
-            img_plus = (ImageView) v.findViewById(R.id.plus);
+            tv_foodName =  v.findViewById(R.id.tv_productname);
+            tv_foodprice =  v.findViewById(R.id.tv_price);
+            tv_fooddescrp =  v.findViewById(R.id.tv_descprition);
+            //tv_foodquanity =  v.findViewById(R.id.tv_quantity);
+            imag_foodimage =  v.findViewById(R.id.imag_food);
+            icDiscount = v.findViewById(R.id.ic_discount);
+            tv_quantityNumber =  v.findViewById(R.id.tv_quantityNumber);
+            img_minus =  v.findViewById(R.id.minus);
+            img_plus =  v.findViewById(R.id.plus);
+            tvDiscount = v.findViewById(R.id.tv_discount);
         }
     }
 
@@ -79,12 +83,36 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
     @Override
     public void onBindViewHolder(final ViewHolder Vholder, final int position) {
         final SharedPrefenceList CartFoodOderItem = mFoodOderItemCollection.get(position);
-        //  holder.mDateValue.setText(logItem.date);
-        Vholder.tv_foodName.setText(CartFoodOderItem.name);
+        String upperString = CartFoodOderItem.name.substring(0,1).toUpperCase() + CartFoodOderItem.name.substring(1);
+        Vholder.tv_foodName.setText(upperString);
         Vholder.tv_fooddescrp.setText(CartFoodOderItem.description);
         Vholder.tv_foodprice.setText("₹"+CartFoodOderItem.getCalculatedAmt());
-        Vholder.tv_foodquanity.setText(CartFoodOderItem.quantiy);
+        //Vholder.tv_foodquanity.setText(CartFoodOderItem.quantiy);
         Vholder.tv_quantityNumber.setText(CartFoodOderItem.quantiy);
+
+        Vholder.tv_foodName.setTypeface(Fonts.getSemiBold(mContext));
+        Vholder.tv_fooddescrp.setTypeface(Fonts.getRegular(mContext));
+        Vholder.tv_foodprice.setTypeface(Fonts.getRegular(mContext));
+        Vholder.img_plus.setTypeface(Fonts.getSemiBold(mContext));
+        Vholder.img_minus.setTypeface(Fonts.getSemiBold(mContext));
+        Vholder.tv_quantityNumber.setTypeface(Fonts.getSemiBold(mContext));
+        Vholder.tvDiscount.setTypeface(Fonts.getRegular(mContext));
+
+        if (CartFoodOderItem.getDescription().isEmpty()){
+            Vholder.tv_fooddescrp.setVisibility(View.GONE);
+        }else {
+            Vholder.tv_fooddescrp.setVisibility(View.VISIBLE);
+        }
+
+        /*if (CartFoodOderItem.getDiscountPrice().equals("0.00")){
+            Vholder.icDiscount.setVisibility(View.GONE);
+            Vholder.tvDiscount.setVisibility(View.GONE);
+        }else {
+            Vholder.tvDiscount.setText("₹"+CartFoodOderItem.getDiscountPrice());
+            Vholder.icDiscount.setVisibility(View.VISIBLE);
+            Vholder.tvDiscount.setVisibility(View.VISIBLE);
+        }*/
+
 
         /*Vholder.tv_view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,34 +128,15 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
             }
         });*/
 
-        Vholder.tv_remove.setOnClickListener(new View.OnClickListener() {
+        /*Vholder.tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Double curent_total = 0.00;
-                //add the item to remove
-                SharedPrefenceList curent_productItem;
-                curent_productItem = new SharedPrefenceList();
-                curent_productItem.setName(mFoodOderItemCollection.get(position).name);
-                curent_productItem.setDescription(mFoodOderItemCollection.get(position).description);
-                curent_productItem.setFoodImage(mFoodOderItemCollection.get(position).foodImage);
-                curent_productItem.setPrice(mFoodOderItemCollection.get(position).price);
-                curent_productItem.setQuantiy(mFoodOderItemCollection.get(position).quantiy);
-                sharedPreference.removeFavoriteItem(mContext, curent_productItem);
-                mFoodOderItemCollection.remove(position);
-                for (int u = 0; u < mFoodOderItemCollection.size(); u++) {
-                    String pricevlaue = mFoodOderItemCollection.get(u).price.trim();
-                    Double current = Double.valueOf(pricevlaue);
-                    curent_total = current + curent_total;
-                }
-                AddToCartActivity.tv_totalamount.setText(String.valueOf(curent_total));
-                notifyDataSetChanged();*/
-
                 mFoodOderItemCollection.remove(position);
                 deleteCart(CartFoodOderItem.getItemId());
                 notifyDataSetChanged();
                 fInterface.fragmentBecameVisible();
             }
-        });
+        });*/
 
         Vholder.img_plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +199,11 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                     Vholder.tv_foodprice.setText("₹"+sum);
                     updateCart(CartFoodOderItem.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
+                }else {
+                    mFoodOderItemCollection.remove(position);
+                    deleteCart(CartFoodOderItem.getItemId());
+                    notifyDataSetChanged();
+                    fInterface.fragmentBecameVisible();
                 }
 
                 /*Chnge_totalamount = 0.00;
@@ -227,14 +241,24 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                 sharedPreference.updateFavoriteItem(mContext, curent_productItem);
                 Vholder.tv_quantityNumber.setText(sharedPrefenceList.getQuantiy());
                 notifyDataSetChanged();*/
-
-
-
             }
         });
+
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.food_bg4)
+                .error(R.drawable.food_bg4)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+        Glide.with(mContext).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+CartFoodOderItem.foodImage)
+                .apply(options)
+                .into(Vholder.imag_foodimage);
+
         // imageLoader.DisplayImage(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+FoodOderItem.foodImage, Vholder.imag_foodimage);
-          Picasso.with(mContext).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+CartFoodOderItem.foodImage).into(Vholder.imag_foodimage);
+        //Picasso.with(mContext).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+CartFoodOderItem.foodImage)
+        // .into(Vholder.imag_foodimage);
       //  Vholder.imag_foodimage.setBackgroundResource(R.drawable.vada_pao);
+
     }
     @Override
     public int getItemCount() {

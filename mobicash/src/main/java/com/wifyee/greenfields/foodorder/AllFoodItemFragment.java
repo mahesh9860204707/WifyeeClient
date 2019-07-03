@@ -405,14 +405,14 @@ public class AllFoodItemFragment extends Fragment implements FoodOderListAdapter
     }
 
     @Override
-    public void onBuyCallBack(FoodOderList item, String quantity) {
+    public void onBuyCallBack(FoodOderList item, String quantity,int flag) {
 
         Log.e("onbuy","calling");
         insert(item.foodImage,item.name,item.itemID,item.description,quantity,item.price);
     }
 
     @Override
-    public void onRemoveCartCallBack(String id) {
+    public void onRemoveCartCallBack(String id,int flag) {
         deleteCart(id);
 
     }

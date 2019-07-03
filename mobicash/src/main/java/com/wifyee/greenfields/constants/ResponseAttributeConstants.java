@@ -95,6 +95,7 @@ public class ResponseAttributeConstants {
     public static final String FOOD_DESCRIPTION = "description";
     public static final String FOOD_QUANTITY = "quantity";
     public static final String FOOD_IMAGE = "image";
+    public static final String FOOD_DISCOUNT_PRICE = "customer_discount";
     public static final String ORDERID = "orderId";
     public static final String ORDER_ID = "order_id";
     public static final String TASK_ID = "task_id";

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -35,6 +36,7 @@ import com.google.android.gms.vision.text.Line;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.SharedPrefence.SharedPreference;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.activity.AddAddress;
@@ -81,7 +83,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     private ImageButton back;
     private SharedPreference sharedPreference;
     private ArrayList<Items> itemsArrayList=new ArrayList<>();
-    private TextView selected_merchant,address,change;
+    private TextView address,change;
     private RecyclerView recyclerView_favorites;
     private Context mcontext;
     private Button btn_continue,addAddress;
@@ -94,7 +96,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     public ProgressDialog progressDialog = null;
     ///  public static List<SharedPrefenceList> DefaultOder_list;
     ArrayList<SharedPrefenceList> Current_favoritesList = new ArrayList<>();
-    public TextView tv_totalamount;
+    public TextView tv_totalamount,toolBarTitle;
     private List<SharedPrefenceList> favorites = new ArrayList<>();
     RelativeLayout rl_address;
     LinearLayout llBottom;
@@ -105,7 +107,9 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_cart);
+
         mToolbar = (Toolbar) findViewById(R.id.mtoolbar);
+        toolBarTitle = mToolbar.findViewById(R.id.food_oder);
         back = (ImageButton) findViewById(R.id.toolbar_back);
         btn_continue = (Button) findViewById(R.id.btn_continue);
         tv_totalamount = (TextView) findViewById(R.id.tv_totalamount);
@@ -116,29 +120,33 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         llBottom = (LinearLayout) findViewById(R.id.ll);
         recyclerView_favorites = (RecyclerView) findViewById(R.id.favroite_recyclerview);
         mcontext = this;
-        selected_merchant=(TextView)findViewById(R.id.merchant_names);
+        //selected_merchant=(TextView)findViewById(R.id.merchant_names);
         sharedPreference = new SharedPreference(mcontext);
         // DefaultOder_list= sharedPreference.getFavorites(mcontext);
         //favorites = sharedPreference.getFavorites(mcontext);
 
-        selected_merchant.setText(LocalPreferenceUtility.getMerchantName(mcontext));
 
         //MobicashIntentService.startActionGstONFoodItem(mcontext);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
                     overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 }
             });
-
         }
+
+        toolBarTitle.setText(LocalPreferenceUtility.getMerchantName(mcontext));
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+        addAddress.setTypeface(Fonts.getSemiBold(this));
 
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,11 +207,6 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         Cursor cursor = controller.retrieve(query);
         if(cursor.getCount()>0){
             Log.e("if","in if");
-            //emptyCartIcon.setVisibility(View.GONE);
-            //emptyCartTxt.setVisibility(View.GONE);
-            //recyclerView.setVisibility(View.VISIBLE);
-            //rl_discount.setVisibility(View.VISIBLE);
-            //rlBottom.setVisibility(View.VISIBLE);
             cursor.moveToFirst();
             do{
                 String image_path =  cursor.getString(cursor.getColumnIndex("image_path"));

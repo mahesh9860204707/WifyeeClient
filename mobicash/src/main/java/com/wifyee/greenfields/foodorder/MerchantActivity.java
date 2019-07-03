@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
@@ -58,6 +59,7 @@ public class MerchantActivity extends AppCompatActivity {
     ImageView icNotHere;
     TextView txtNotHere,txtDetailNotHere;
     TextView textCartItemCount;
+    private SpinKitView progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class MerchantActivity extends AppCompatActivity {
         icNotHere = findViewById(R.id.ic_not_here);
         txtNotHere = findViewById(R.id.txt_we_are_not);
         txtDetailNotHere = findViewById(R.id.txt_detail_we_are_not);
+        progressBar = findViewById(R.id.progressbar);
         // merchant_horiz=(RecyclerView)findViewById(R.id.merchant_recyclerview_horiz);
 
         mToolbar = findViewById(R.id.toolbar);
@@ -94,7 +97,7 @@ public class MerchantActivity extends AppCompatActivity {
 
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
 
-        showProgressDialog();
+        //showProgressDialog();
 
         //MobicashIntentService.startActionFoodMerchantByLocation(this, getLatitudeAndLongitude());
 
@@ -162,7 +165,8 @@ public class MerchantActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        cancelProgressDialog();
+        //cancelProgressDialog();
+        progressBar.setVisibility(View.INVISIBLE);
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(merchantcategoryListReceiver);
     }
     private void cancelProgressDialog() {
@@ -170,6 +174,7 @@ public class MerchantActivity extends AppCompatActivity {
             progressDialog.cancel();
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -180,7 +185,7 @@ public class MerchantActivity extends AppCompatActivity {
         }
 
         //  showProgressDialog();
-
+        progressBar.setVisibility(View.VISIBLE);
         MobicashIntentService.startActionFoodMerchantByLocation(this, getLatitudeAndLongitude());
 
         setupBadge();
@@ -197,11 +202,13 @@ public class MerchantActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent)
         {
             String actionOperatorList = intent.getAction();
-            cancelProgressDialog();
+            //cancelProgressDialog();
+            progressBar.setVisibility(View.INVISIBLE);
             if (actionOperatorList.equals(NetworkConstant.STATUS_FOODODER_BYMERCHANT_LIST_SUCCESS)) {
                 AddressResponse menuByaddressResponse = (AddressResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (menuByaddressResponse != null && menuByaddressResponse.restaurant != null) {
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
+                    progressBar.setVisibility(View.INVISIBLE);
                     category_List = menuByaddressResponse.restaurant;
                     if (category_List.size()>0) {
                         icNotHere.setVisibility(View.GONE);
@@ -225,14 +232,16 @@ public class MerchantActivity extends AppCompatActivity {
 
                     LocalPreferenceUtility.putMerchantId(mContext,"");
                     LocalPreferenceUtility.putMerchantName(mContext,"");
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
             } else if (actionOperatorList.equals(NetworkConstant.STATUS_FOODORDER_BYMERCHANT_LIST_FAIL)) {
                // merchant_horiz.setVisibility(View.GONE);
                 merchant_rest.setVisibility(View.GONE);
                 //emptyView.setVisibility(View.VISIBLE);
-                cancelProgressDialog();
+                //cancelProgressDialog();
+                progressBar.setVisibility(View.INVISIBLE);
                 FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (failureResponse != null && failureResponse.msg != null && !failureResponse.msg.isEmpty()) {
 
@@ -279,7 +288,8 @@ public class MerchantActivity extends AppCompatActivity {
     }
 
     public void setupUI() {
-        cancelProgressDialog();
+        //cancelProgressDialog();
+        progressBar.setVisibility(View.INVISIBLE);
         merchant_rest.setVisibility(View.VISIBLE);
         RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(mContext, 2);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);

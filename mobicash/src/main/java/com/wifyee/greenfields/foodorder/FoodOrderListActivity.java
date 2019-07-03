@@ -33,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
@@ -60,7 +61,6 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
     ArrayList<String> categorylist=new ArrayList<>();
     Spinner spinner_category;
     Toolbar mToolbar;
-    ImageButton back;
     TextView toolBarTitle;
     TextView selected_merchant;
     LinearLayout emptyView;
@@ -74,7 +74,8 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
     private List<FoodOderList> foodOder_List;
     private FoodOderListAdapter foodOderListAdapter;
     FoodOderListAdapter.ItemListener listener;
-    TextView textCartItemCount,viewCart;
+    TextView textCartItemCount,viewCart,itemCount,totalPrice,txtTaxes;
+    private SpinKitView progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,15 +87,17 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         mContext = this;
         listener = this;
 
-        emptyView=(LinearLayout)findViewById(R.id.empty_view_containers);
-        mToolbar=(Toolbar)findViewById(R.id.mtoolbar);
-        back=(ImageButton)findViewById(R.id.toolbar_back);
+        emptyView = findViewById(R.id.empty_view_containers);
+        mToolbar = findViewById(R.id.mtoolbar);
         toolBarTitle = mToolbar.findViewById(R.id.food_oder);
         selected_merchant=(TextView)findViewById(R.id.merchant_names);
-
         foododerRecycler = (RecyclerView) findViewById(R.id.food_recyclerview);
         btn_addToCart=(RelativeLayout) findViewById(R.id.add_to_cart);
         viewCart = (TextView) findViewById(R.id.view_cart);
+        progressBar =  findViewById(R.id.progressbar);
+        itemCount =  findViewById(R.id.item_count);
+        totalPrice =  findViewById(R.id.total_price);
+        txtTaxes =  findViewById(R.id.txt_taxes);
 
         //gps = new GPSTracker(mContext);
         //mAllFoodItemsFragment = new AllFoodItemFragment();
@@ -116,6 +119,10 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         }
 
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+        viewCart.setTypeface(Fonts.getSemiBold(this));
+        totalPrice.setTypeface(Fonts.getSemiBold(this));
+        itemCount.setTypeface(Fonts.getRegular(this));
+        txtTaxes.setTypeface(Fonts.getRegular(this));
         /*categorylist.clear();
         categorylist.add("All");
         categorylist.add("non-veg");
@@ -271,9 +278,10 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         for (String action : broadCastReceiverActionList) {
             broadcastManager.registerReceiver(allfoodOderListReceiver, new IntentFilter(action));
         }
-        showProgressDialog();
+        //showProgressDialog();
+        progressBar.setVisibility(View.VISIBLE);
         MobicashIntentService.startActionAllFoodOrderList(mContext,getMerchantID());
-        setupBadge();
+        //setupBadge();
 
     }
 
@@ -295,24 +303,25 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         public void onReceive(Context context, Intent intent)
         {
             String actionOperatorList = intent.getAction();
+            progressBar.setVisibility(View.INVISIBLE);
             if (actionOperatorList.equals(NetworkConstant.STATUS_ALLFOODODER_LIST_SUCCESS)) {
                 FoodOrderResponse foodOrderResponse = (FoodOrderResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (foodOrderResponse != null && foodOrderResponse.FoodOderList != null) {
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
                     foodOder_List = foodOrderResponse.FoodOderList;
                     setupUI();
                 } else {
                     foododerRecycler.setVisibility(View.INVISIBLE);
                     emptyView.setVisibility(View.VISIBLE);
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
                 }
             } else if (actionOperatorList.equals(NetworkConstant.STATUS_ALLFOODORDER_LIST_FAIL)) {
                 foododerRecycler.setVisibility(View.INVISIBLE);
                 emptyView.setVisibility(View.VISIBLE);
-                cancelProgressDialog();
+                //cancelProgressDialog();
                 FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (failureResponse != null && failureResponse.msg != null && !failureResponse.msg.isEmpty()) {
-                    cancelProgressDialog();
+                    //cancelProgressDialog();
                     showErrorDialog(failureResponse.msg);
                 }
                 else {
@@ -330,6 +339,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         foododerRecycler.setLayoutManager(recyclerViewLayoutManager);
         foodOderListAdapter = new FoodOderListAdapter(mContext, foodOder_List,listener);
         foododerRecycler.setAdapter(foodOderListAdapter);
+        fillListItem();
     }
 
     protected void showProgressDialog() {
@@ -417,7 +427,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         alertDialog.show();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
      getMenuInflater().inflate(R.menu.cart_menu,menu);
      final MenuItem menuItem = menu.findItem(R.id.action_cart);
@@ -438,7 +448,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*int id = item.getItemId();
+        *//*int id = item.getItemId();
         item.setVisible(true);
         if (id == R.id.action_favourte) {
             startActivity(IntentFactory.createFoodStatusActivity(this));
@@ -449,7 +459,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
             return true;
-        }*/
+        }*//*
         switch (item.getItemId()) {
             case R.id.action_cart: {
                 startActivity(IntentFactory.createAddTOCartActivity(this));
@@ -459,7 +469,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     private void setupBadge() {
         if (textCartItemCount != null) {
@@ -501,16 +511,19 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
     }
 
     @Override
-    public void onBuyCallBack(FoodOderList item, String quantity) {
-
-        Log.e("onbuy","calling");
-        insert(item.foodImage,item.name,item.itemID,item.description,quantity,item.price);
+    public void onBuyCallBack(FoodOderList item, String quantity,int flag) {
+        if(flag==0) {
+            insert(item.foodImage, item.name, item.itemID, item.description, quantity, item.price);
+        }
+        fillListItem();
     }
 
     @Override
-    public void onRemoveCartCallBack(String id) {
-        deleteCart(id);
-
+    public void onRemoveCartCallBack(String id,int flag) {
+        if (flag==0) {
+            deleteCart(id);
+        }
+        fillListItem();
     }
 
     private void insert(String image_path,String item_name,String item_id, String item_description,
@@ -529,11 +542,44 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
 
         if(result.equals("Done")){
             Log.e("added","Record Added successfully");
-            setupBadge();
+            //setupBadge();
         }else {
             Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
             Log.e("result",result);
         }
+        controller.close();
+    }
+
+    public void fillListItem() {
+        double calculateAmount=0;
+        int totalItem=0;
+        SQLController controller=new SQLController(getApplicationContext());
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT * from food_cart_item";
+
+        Cursor cursor = controller.retrieve(query);
+        if(cursor.getCount()>0){
+            btn_addToCart.setVisibility(View.VISIBLE);
+            cursor.moveToFirst();
+            do{
+                String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
+                String price = cursor.getString(cursor.getColumnIndex("price"));
+
+                calculateAmount = calculateAmount + Double.parseDouble(price) * Integer.parseInt(quantity);
+                totalItem = totalItem + Integer.parseInt(quantity);
+
+            }while (cursor.moveToNext());
+
+            totalPrice.setText("₹"+calculateAmount);
+            itemCount.setText(""+totalItem+" Items");
+            txtTaxes.setText("plus taxes");
+        }else {
+            btn_addToCart.setVisibility(View.GONE);
+        }
+
+        cursor.close();
         controller.close();
     }
 
@@ -548,7 +594,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
 
         if(result.equals("Done")){
             Log.d("delete","Record delete");
-            setupBadge();
+            //setupBadge();
         }else {
             Log.d("result",result);
         }

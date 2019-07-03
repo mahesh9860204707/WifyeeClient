@@ -3,39 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#E8E2D0"
     android:layout_height="match_parent"
     tools:context="com.wifyee.greenfields.foodorder.AddToCartActivity">
 
     <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mtoolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#7D0A4E"
-        android:elevation="2dp"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
-
-        <ImageButton
-            android:id="@+id/toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:background="@drawable/ic_keyboard_backspace" />
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5dp">
 
         <TextView
             android:id="@+id/food_oder"
-            style="@style/font_family_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:padding="8dp"
-            android:text="ORDER SUMMARY"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:text="ORDER FOOD"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
 
     </android.support.v7.widget.Toolbar>
+
+<!--
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -55,6 +45,7 @@
             android:text="HALDIRAM'S"/>
 
     </RelativeLayout>
+-->
 
     <!--<LinearLayout
         android:layout_width="match_parent"
@@ -66,7 +57,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/favroite_recyclerview"
         android:layout_width="match_parent"
-        android:layout_below="@+id/merchantname"
+        android:layout_below="@+id/mtoolbar"
         android:layout_marginTop="2dp"
         android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
@@ -77,10 +68,12 @@
         android:id="@+id/add_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#7D0A4E"
+        android:background="@color/secondaryPrimaryExtremeDark"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true"
-        android:text="Add Address to proceed"/>
+        android:textAllCaps="false"
+        android:text="Add Address To Proceed"
+        android:textSize="15sp"/>
 
 
     <RelativeLayout
@@ -143,7 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="#7D0A4E"
+        android:background="@color/secondaryPrimaryExtremeDark"
         android:weightSum="2"
         android:visibility="invisible"
         android:layout_alignParentBottom="true">
@@ -153,7 +146,7 @@
             android:layout_width="wrap_content"
             android:text="Proceed to pay"
             android:layout_weight="1.2"
-            android:background="#7D0A4E"
+            android:background="@color/secondaryPrimaryExtremeDark"
             android:textColor="@color/white"
             android:layout_height="match_parent" />
 
@@ -162,7 +155,7 @@
             android:layout_width="wrap_content"
             android:text="Total amount:-"
             android:textSize="20dp"
-            android:background="#60083B"
+            android:background="@color/secondaryPrimaryExtremeDark"
             android:layout_weight="1"
             android:paddingTop="15dp"
             android:textColor="#FFFFFF"

@@ -2,10 +2,8 @@
 <LinearLayout
     android:id="@+id/ll"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -19,10 +17,7 @@
             android:id="@+id/imag_food"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:src="@drawable/food_bg4"
-            android:background="@color/white"/>
+            android:padding="3dp"/>
 
         <TextView
             android:id="@+id/tv_foodName"
@@ -34,7 +29,7 @@
             android:ellipsize="end"
             android:textColor="@color/black"
             android:text="Oder"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_descprition"
@@ -63,7 +58,29 @@
             android:text="Price !"
             android:textSize="14sp" />
 
+        <ImageView
+            android:id="@+id/ic_discount"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_discount"
+            android:layout_alignStart="@+id/tv_foodName"
+            android:layout_toEndOf="@+id/imag_food"
+            android:layout_below="@+id/tv_price"/>
 
+        <TextView
+            android:id="@+id/tv_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_price"
+            android:layout_toEndOf="@+id/ic_discount"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="2dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:text="Price !"
+            android:textSize="12.5sp" />
 
         <LinearLayout
             android:id="@+id/ll_add"
@@ -77,17 +94,18 @@
 
             <TextView
                 android:id="@+id/txt_add"
-                android:layout_width="46dp"
-                android:layout_height="20dp"
+                android:layout_width="54dp"
+                android:layout_height="24dp"
                 android:text="Add"
                 android:gravity="center"
                 android:textColor="@color/secondaryPrimary" />
 
             <TextView
                 android:id="@+id/txt_plus"
-                android:layout_width="24dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="24dp"
                 android:text="+"
+                android:textSize="16sp"
                 android:textColor="@color/secondaryPrimary"
                 android:gravity="center" />
 
@@ -105,28 +123,31 @@
 
             <TextView
                 android:id="@+id/decrease"
-                android:layout_width="24dp"
-                android:layout_height="20dp"
+                android:layout_width="28dp"
+                android:layout_height="24dp"
                 android:text="-"
+                android:textColor="@color/secondaryPrimaryDark"
+                android:textSize="16sp"
                 android:gravity="center"
                 />
 
             <TextView
                 android:id="@+id/integer_number"
-                android:layout_width="22dp"
-                android:layout_height="20dp"
+                android:layout_width="28dp"
+                android:layout_height="24dp"
                 android:text="1"
                 android:background="@color/secondaryPrimaryExtremeDark"
                 android:gravity="center"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textColor="@color/white"/>
 
 
             <TextView
                 android:id="@+id/increase"
-                android:layout_width="24dp"
-                android:layout_height="20dp"
+                android:layout_width="28dp"
+                android:layout_height="24dp"
                 android:text="+"
+                android:textSize="16sp"
                 android:textColor="@color/secondaryPrimaryExtremeDark"
                 android:gravity="center" />
 
@@ -151,7 +172,7 @@
             android:background="@color/divider"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:layout_below="@+id/imag_food"
             android:layout_toEndOf="@+id/imag_food"/>
 

@@ -82,7 +82,8 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
             holder.tv_foodprice.setText("₹"+object.getPrice());
             String upperString = object.getName().substring(0,1).toUpperCase() + object.getName().substring(1);
             holder.tv_foodName.setText(upperString);
-            holder.tv_fooddescrp.setText(object.getDescription());
+            String DescriptionString = object.getDescription().substring(0,1).toUpperCase() + object.getDescription().substring(1);
+            holder.tv_fooddescrp.setText(DescriptionString);
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
@@ -116,6 +117,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                 holder.tvDiscount.setText("₹"+object.getDiscountPrice());
                 holder.icDiscount.setVisibility(View.VISIBLE);
                 holder.tvDiscount.setVisibility(View.VISIBLE);
+                holder.icDiscount.animate().rotation(360).setDuration(2000).start();
             }
 
             //Picasso.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage).into( holder.imag_foodimage);

@@ -85,7 +85,8 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
         final SharedPrefenceList CartFoodOderItem = mFoodOderItemCollection.get(position);
         String upperString = CartFoodOderItem.name.substring(0,1).toUpperCase() + CartFoodOderItem.name.substring(1);
         Vholder.tv_foodName.setText(upperString);
-        Vholder.tv_fooddescrp.setText(CartFoodOderItem.description);
+        String DescriptionString = CartFoodOderItem.getDescription().substring(0,1).toUpperCase() + CartFoodOderItem.getDescription().substring(1);
+        Vholder.tv_fooddescrp.setText(DescriptionString);
         Vholder.tv_foodprice.setText("₹"+CartFoodOderItem.getCalculatedAmt());
         //Vholder.tv_foodquanity.setText(CartFoodOderItem.quantiy);
         Vholder.tv_quantityNumber.setText(CartFoodOderItem.quantiy);

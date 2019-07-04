@@ -8,12 +8,23 @@
     tools:context=".activity.DiscountClaim">
 
     <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mtoolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"/>
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Discount Claim"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+    </android.support.v7.widget.Toolbar>
+
 
     <TextView
         android:id="@+id/txt"
@@ -22,8 +33,7 @@
         android:layout_below="@+id/mtoolbar"
         android:text="To claim discount amount select below option."
         android:textSize="16sp"
-        android:layout_margin="8dp"
-        android:textColor="@color/black"/>
+        android:layout_margin="8dp"/>
 
     <RadioGroup
         android:id="@+id/claim_group"
@@ -32,7 +42,7 @@
         android:layout_below="@id/txt"
         android:orientation="horizontal"
         android:layout_marginStart="8dp"
-        android:gravity="center_horizontal">
+        android:layout_centerHorizontal="true">
 
         <RadioButton
             android:id="@+id/rb_cashback"
@@ -41,6 +51,7 @@
             android:paddingRight="10dp"
             android:layout_weight="1"
             android:checked="true"
+            android:buttonTint="@color/secondaryPrimary"
             android:text="Cashback" />
 
         <RadioButton
@@ -49,28 +60,45 @@
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:layout_weight="1"
+            android:buttonTint="@color/secondaryPrimary"
             android:text="Voucher"
             android:layout_marginStart="50dp"/>
 
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/txt_avail_coupons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/claim_group"
+        android:text="Available Vouchers"
+        android:textSize="13sp"
+        android:layout_marginTop="8dp"
+        android:textAllCaps="true"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"/>
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/claim_group"
-        android:layout_margin="8dp"
+        android:layout_below="@+id/txt_avail_coupons"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_above="@+id/back_to_cart"
         android:visibility="gone"/>
-
 
     <Button
         android:id="@+id/back_to_cart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Back to cart"
+        android:textSize="15sp"
         android:layout_alignParentBottom="true"
         android:textColor="@color/white"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/secondaryPrimary"/>
 
 </RelativeLayout>

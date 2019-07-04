@@ -3,19 +3,6 @@ package com.wifyee.greenfields.database;
 
 public class DatabaseDB {
 
-    /*public String Cart="CREATE TABLE IF NOT EXISTS cart(" +
-            "   id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "   image_path TEXT" +
-            ",  item_name TEXT" +
-            ",  item_type TEXT" +
-            ",  merchant_id TEXT" +
-            ",  item_id TEXT" +
-            ",  quantity TEXT" +
-            ",  unit TEXT" +
-            ",  price TEXT" +
-            ",  discount TEXT" +
-            ",  active_status INTEGER);";*/
-
     public String Address="CREATE TABLE IF NOT EXISTS address(" +
             "   id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "   name TEXT" +
@@ -41,7 +28,7 @@ public class DatabaseDB {
             ",  discount TEXT " +
             ",  active_status INTEGER);";
 
-    public String FoodCartItem="CREATE TABLE IF NOT EXISTS food_cart_item(" +
+    public String FoodCart="CREATE TABLE IF NOT EXISTS food_cart(" +
             "   id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "   image_path TEXT" +
             ",  item_name TEXT " +
@@ -49,9 +36,12 @@ public class DatabaseDB {
             ",  item_description TEXT " +
             ",  quantity TEXT " +
             ",  price TEXT " +
+            ",  discount TEXT " +
+            ",  qty_half_full TEXT " +
+            ",  category TEXT " +
             ",  active_status INTEGER);";
 
-    public String drop_table="DROP TABLE cart";
+    public String drop_table="DROP TABLE food_cart";
 
     public String createTables(SQLController dbController)
     {
@@ -60,7 +50,7 @@ public class DatabaseDB {
         //return_value = dbController.fireQuery(drop_table);
 
         return_value = dbController.fireQuery(Address);
-        return_value = dbController.fireQuery(FoodCartItem);
+        return_value = dbController.fireQuery(FoodCart);
         return_value = dbController.fireQuery(CartItem);
 
         return return_value;

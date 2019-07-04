@@ -500,6 +500,9 @@ public class ModelMapper {
                 if (response.has(ResponseAttributeConstants.FOOD_DISCOUNT_PRICE))
                     foodOderItem.discountPrice = response.getString(ResponseAttributeConstants.FOOD_DISCOUNT_PRICE);
 
+                if (response.has(ResponseAttributeConstants.FOOD_CATEGORY))
+                    foodOderItem.category = response.getString(ResponseAttributeConstants.FOOD_CATEGORY);
+
 
                 FoodModelsList.add(new FoodOderList(
                         response.getString(ResponseAttributeConstants.MERCHANTID),
@@ -509,6 +512,7 @@ public class ModelMapper {
                         response.getString(ResponseAttributeConstants.FOOD_QUANTITY),
                         response.getString(ResponseAttributeConstants.FOOD_IMAGE),
                         response.getString(ResponseAttributeConstants.FOOD_DISCOUNT_PRICE),
+                        response.getString(ResponseAttributeConstants.FOOD_CATEGORY),
                         false));
             }
         } catch (JSONException e) {

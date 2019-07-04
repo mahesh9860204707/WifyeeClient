@@ -16,6 +16,10 @@ public class SharedPrefenceList extends JSONObject implements Serializable {
     public String foodImage;
     public String itemId;
     public String calculatedAmt;
+    public String discountAmt;
+    public String category;
+    public String qty_half_full;
+
 
     public String getMercantId() {
         return mercantId;
@@ -38,6 +42,30 @@ public class SharedPrefenceList extends JSONObject implements Serializable {
     }
 public SharedPrefenceList()
 {}
+
+    public String getQty_half_full() {
+        return qty_half_full;
+    }
+
+    public void setQty_half_full(String qty_half_full) {
+        this.qty_half_full = qty_half_full;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDiscountAmt() {
+        return discountAmt;
+    }
+
+    public void setDiscountAmt(String discountAmt) {
+        this.discountAmt = discountAmt;
+    }
 
     public String getCalculatedAmt() {
         return calculatedAmt;

@@ -1,6 +1,7 @@
 package com.wifyee.greenfields.activity;
 
 import android.app.ProgressDialog;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -21,6 +23,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.adapters.DiscountClaimAdapter;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -53,6 +56,7 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
     RadioButton rbVoucher,rbCashback;
     RecyclerView recyclerView;
     Button backToCart;
+    TextView txtAvailCoupons;
     private String voucherID="",voucherNO="",voucherName="",voucherDiscountAmt="";
 
     private DiscountClaimAdapter adapter;
@@ -73,13 +77,16 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
         rbVoucher = findViewById(R.id.rb_voucher);
         claimGrop = findViewById(R.id.claim_group);
         mToolbar = findViewById(R.id.mtoolbar);
+        txtAvailCoupons = findViewById(R.id.txt_avail_coupons);
+        TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
+        TextView txtClaim = findViewById(R.id.txt);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("Discount Claim");
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,6 +96,13 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
                 }
             });
         }
+
+        txtClaim.setTypeface(Fonts.getRegular(this));
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+        txtAvailCoupons.setTypeface(Fonts.getSemiBold(this));
+        rbCashback.setTypeface(Fonts.getSemiBold(this));
+        rbVoucher.setTypeface(Fonts.getSemiBold(this));
+        backToCart.setTypeface(Fonts.getSemiBold(this));
 
         flag = getIntent().getStringExtra("flag");
         amount = getIntent().getStringExtra("amount");
@@ -141,6 +155,14 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
                             MyCartFragment.voucherDiscAmt = voucherDiscountAmt;
                             MyCartFragment.claimType = "2";
                             finish();
+                        } else if(flag.equalsIgnoreCase("food_cart")){
+                            AddToCartActivity.isVoucherClaim = true;
+                            AddToCartActivity.voucherId = voucherID;
+                            AddToCartActivity.voucherNo = voucherNO;
+                            AddToCartActivity.voucherName = voucherName;
+                            AddToCartActivity.voucherDiscAmt = voucherDiscountAmt;
+                            AddToCartActivity.claimType = "2";
+                            finish();
                         }
                     } else {
                         Toast.makeText(DiscountClaim.this, "Select at least one voucher!", Toast.LENGTH_SHORT).show();
@@ -153,6 +175,10 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
                     }else if (flag.equalsIgnoreCase("cart")) {
                         MyCartFragment.isVoucherClaim = true;
                         MyCartFragment.claimType = "1";
+                        finish();
+                    }else if(flag.equalsIgnoreCase("food_cart")){
+                        AddToCartActivity.isVoucherClaim = true;
+                        AddToCartActivity.claimType = "1";
                         finish();
                     }
                 }

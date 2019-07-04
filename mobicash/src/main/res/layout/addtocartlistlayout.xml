@@ -12,18 +12,33 @@
         android:paddingBottom="5dp"
         android:layout_marginTop="5dp">
 
-        <ImageView
-            android:id="@+id/imag_food"
+        <RelativeLayout
+            android:id="@+id/rl_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:padding="3dp"/>
+            android:layout_margin="5dp">
+
+            <ImageView
+                android:id="@+id/imag_food"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/category_image"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/tv_productname"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/imag_food"
-            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@+id/rl_image"
+            android:layout_toStartOf="@+id/ll_incr_decr"
+            android:layout_marginEnd="3dp"
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="@color/black"
@@ -32,12 +47,14 @@
 
         <TextView
             android:id="@+id/tv_descprition"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/imag_food"
+            android:layout_toEndOf="@+id/rl_image"
             android:layout_below="@+id/tv_productname"
             android:layout_alignStart="@+id/tv_productname"
             android:layout_marginTop="3dp"
+            android:layout_marginEnd="5dp"
+            android:visibility="visible"
             android:maxLines="1"
             android:ellipsize="end"
             android:text="Description!"
@@ -48,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_descprition"
-            android:layout_toEndOf="@+id/imag_food"
+            android:layout_toEndOf="@+id/rl_image"
             android:layout_alignStart="@+id/tv_productname"
             android:layout_marginTop="3dp"
             android:maxLines="1"
@@ -64,7 +81,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_discount"
             android:layout_alignStart="@+id/tv_productname"
-            android:layout_toEndOf="@+id/imag_food"
+            android:layout_toEndOf="@+id/rl_image"
             android:layout_below="@+id/tv_price"/>
 
         <TextView
@@ -79,7 +96,7 @@
             android:ellipsize="end"
             android:textColor="@color/black"
             android:text="Price !"
-            android:textSize="12.5sp" />
+            android:textSize="12sp" />
         
         <LinearLayout
             android:id="@+id/ll_incr_decr"
@@ -93,7 +110,7 @@
 
             <TextView
                 android:id="@+id/minus"
-                android:layout_width="28dp"
+                android:layout_width="25dp"
                 android:layout_height="24dp"
                 android:text="-"
                 android:textColor="@color/secondaryPrimaryDark"
@@ -103,7 +120,7 @@
 
             <TextView
                 android:id="@+id/tv_quantityNumber"
-                android:layout_width="28dp"
+                android:layout_width="25dp"
                 android:layout_height="24dp"
                 android:text="1"
                 android:background="@color/secondaryPrimaryExtremeDark"
@@ -114,7 +131,7 @@
 
             <TextView
                 android:id="@+id/plus"
-                android:layout_width="28dp"
+                android:layout_width="25dp"
                 android:layout_height="24dp"
                 android:text="+"
                 android:textSize="16sp"
@@ -122,6 +139,7 @@
                 android:gravity="center" />
 
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/add"
@@ -142,9 +160,9 @@
             android:background="@color/divider"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="8dp"
-            android:layout_below="@+id/imag_food"
-            android:layout_toEndOf="@+id/imag_food"/>
+            android:layout_marginTop="3dp"
+            android:layout_below="@+id/rl_image"
+            android:layout_toEndOf="@+id/rl_image"/>
 
 
     </RelativeLayout>

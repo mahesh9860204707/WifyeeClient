@@ -87,7 +87,8 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
     RelativeLayout rl_address,rl_discount;
     LinearLayout llBottom;
     public static boolean is_address_set,isVoucherClaim;
-    public static String completeAddress,location,latitude,longitude,voucherId="",voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
+    public static String completeAddress,location,latitude,longitude,
+            voucherId="",voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
     ImageView emptyCartIcon;
 
     @Override

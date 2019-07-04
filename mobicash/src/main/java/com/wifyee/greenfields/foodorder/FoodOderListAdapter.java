@@ -81,9 +81,13 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         if (object != null) {
             holder.tv_foodprice.setText("₹"+object.getPrice());
             String upperString = object.getName().substring(0,1).toUpperCase() + object.getName().substring(1);
-            holder.tv_foodName.setText(upperString);
-            String DescriptionString = object.getDescription().substring(0,1).toUpperCase() + object.getDescription().substring(1);
-            holder.tv_fooddescrp.setText(DescriptionString);
+
+            if(!object.getQuantiy().isEmpty()){
+                String quanityString = object.getQuantiy().substring(0,1).toUpperCase() + object.getQuantiy().substring(1).toLowerCase();
+                holder.tv_foodName.setText(upperString+" ("+quanityString+")");
+            }else {
+                holder.tv_foodName.setText(upperString);
+            }
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
@@ -107,6 +111,8 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
             if (object.getDescription().isEmpty()){
                 holder.tv_fooddescrp.setVisibility(View.GONE);
             }else {
+                String DescriptionString = object.getDescription().substring(0,1).toUpperCase() + object.getDescription().substring(1);
+                holder.tv_fooddescrp.setText(DescriptionString);
                 holder.tv_fooddescrp.setVisibility(View.VISIBLE);
             }
 
@@ -117,19 +123,23 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                 holder.tvDiscount.setText("₹"+object.getDiscountPrice());
                 holder.icDiscount.setVisibility(View.VISIBLE);
                 holder.tvDiscount.setVisibility(View.VISIBLE);
-                holder.icDiscount.animate().rotation(360).setDuration(2000).start();
+                holder.icDiscount.animate().rotation(360).setDuration(1000).start();
+            }
+
+            if(object.getCategory().equals("1")){
+                holder.icCategory.setImageResource(R.drawable.ic_veg);
+            }else {
+                holder.icCategory.setImageResource(R.drawable.ic_non_veg);
             }
 
             //Picasso.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage).into( holder.imag_foodimage);
 
             if(checkInCart(object.itemID,holder)!=0){
-                //holder.tv_add.setText("IN CART");
-                holder.llAdd.setVisibility(View.GONE);
+                holder.llAdd.setVisibility(View.INVISIBLE);
                 holder.llIncrDecr.setVisibility(View.VISIBLE);
             }else {
-                //holder.tv_add.setText("ADD");
                 holder.llAdd.setVisibility(View.VISIBLE);
-                holder.llIncrDecr.setVisibility(View.GONE);
+                holder.llIncrDecr.setVisibility(View.INVISIBLE);
             }
 
             if(FoodOrderListActivity.currentStatus.equals("0")){
@@ -164,7 +174,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                         updateCart(object.itemID, String.valueOf(value));
                     }else {
                         deleteCartItem(object.itemID,holder);
-                        holder.llIncrDecr.setVisibility(View.GONE);
+                        holder.llIncrDecr.setVisibility(View.INVISIBLE);
                         holder.llAdd.setVisibility(View.VISIBLE);
                         mListener.onRemoveCartCallBack(object.itemID,0);
                     }
@@ -281,7 +291,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                 Log.e("MerchantName","merName"+LocalPreferenceUtility.getMerchantName(context));
                 if(FoodOrderListActivity.merchantId.equals(LocalPreferenceUtility.getMerchantId(context)) || LocalPreferenceUtility.getMerchantId(context).equals("")) {
                     //if (holder.tv_add.getText().equals("ADD")) {
-                    holder.llAdd.setVisibility(View.GONE);
+                    holder.llAdd.setVisibility(View.INVISIBLE);
                     holder.llIncrDecr.setVisibility(View.VISIBLE);
                     mListener.onBuyCallBack(object, "1",0);
                     //holder.tv_add.setText("IN CART");
@@ -391,7 +401,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                             LocalPreferenceUtility.putMerchantId(context, FoodOrderListActivity.merchantId);
                             LocalPreferenceUtility.putMerchantName(context, FoodOrderListActivity.merchantName);
                             holder.llIncrDecr.setVisibility(View.VISIBLE);
-                            holder.llAdd.setVisibility(View.GONE);
+                            holder.llAdd.setVisibility(View.INVISIBLE);
                             mListener.onBuyCallBack(object,"1",0);
                             /*productItem = new SharedPrefenceList();
                             productItem.setMercantId(object.itemID);
@@ -530,7 +540,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
     public  class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_foodName,tv_foodprice,tv_fooddescrp,tv_add,tv_qty,txtAdd,txtPlus,increment,decrement,integerNumber,tvDiscount;
-        private ImageView imag_foodimage,icDiscount;
+        private ImageView imag_foodimage,icDiscount,icCategory;
         private LinearLayout ll,llAdd,llIncrDecr;
 
         public ViewHolder(View v) {
@@ -541,6 +551,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
             tv_fooddescrp =  v.findViewById(R.id.tv_descprition);
             imag_foodimage = v.findViewById(R.id.imag_food);
             icDiscount = v.findViewById(R.id.ic_discount);
+            icCategory = v.findViewById(R.id.category_image);
             ll = v.findViewById(R.id.ll);
             llAdd = v.findViewById(R.id.ll_add);
             llIncrDecr = v.findViewById(R.id.ll_incr_decr);
@@ -564,7 +575,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from food_cart_item where item_id='"+itemId+"'";
+        String query = "SELECT * from food_cart where item_id='"+itemId+"'";
 
         Cursor data = controller.retrieve(query);
         total = data.getCount();
@@ -588,7 +599,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from food_cart_item";
+        String query = "DELETE from food_cart";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -605,12 +616,12 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from food_cart_item where item_id ='"+id+"'";
+        String query = "DELETE from food_cart where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
             Log.d("delete","Record delete");
-            holder.llIncrDecr.setVisibility(View.GONE);
+            holder.llIncrDecr.setVisibility(View.INVISIBLE);
             holder.llAdd.setVisibility(View.VISIBLE);
         }else {
             Log.d("result",result);
@@ -624,7 +635,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "UPDATE food_cart_item set quantity='"+quantity+"' where item_id ='"+id+"'";
+        String query = "UPDATE food_cart set quantity='"+quantity+"' where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

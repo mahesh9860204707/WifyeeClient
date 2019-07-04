@@ -354,7 +354,7 @@ public class MerchantActivity extends AppCompatActivity {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT count(*) as total from food_cart_item";
+        String query = "SELECT count(*) as total from food_cart";
 
         Cursor data = controller.retrieve(query);
         if(data.getCount()>0){

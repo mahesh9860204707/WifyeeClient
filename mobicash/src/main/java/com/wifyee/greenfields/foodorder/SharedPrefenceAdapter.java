@@ -55,8 +55,8 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv_foodName, tv_foodprice, tv_fooddescrp, tv_foodquanity, tv_quantityNumber,tvDiscount;
-        ImageView imag_foodimage,icDiscount;
+        public TextView tv_foodName, tv_foodprice, tv_fooddescrp, tv_quantityNumber,tvDiscount;
+        ImageView imag_foodimage,icDiscount,icCategory;
         TextView  img_minus, img_plus;
         public ViewHolder(View v) {
             super(v);
@@ -66,6 +66,7 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
             //tv_foodquanity =  v.findViewById(R.id.tv_quantity);
             imag_foodimage =  v.findViewById(R.id.imag_food);
             icDiscount = v.findViewById(R.id.ic_discount);
+            icCategory = v.findViewById(R.id.category_image);
             tv_quantityNumber =  v.findViewById(R.id.tv_quantityNumber);
             img_minus =  v.findViewById(R.id.minus);
             img_plus =  v.findViewById(R.id.plus);
@@ -84,12 +85,17 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
     public void onBindViewHolder(final ViewHolder Vholder, final int position) {
         final SharedPrefenceList CartFoodOderItem = mFoodOderItemCollection.get(position);
         String upperString = CartFoodOderItem.name.substring(0,1).toUpperCase() + CartFoodOderItem.name.substring(1);
-        Vholder.tv_foodName.setText(upperString);
-        String DescriptionString = CartFoodOderItem.getDescription().substring(0,1).toUpperCase() + CartFoodOderItem.getDescription().substring(1);
-        Vholder.tv_fooddescrp.setText(DescriptionString);
+
+        if(!CartFoodOderItem.getQty_half_full().isEmpty()){
+            String quanityString = CartFoodOderItem.getQty_half_full().substring(0,1).toUpperCase() + CartFoodOderItem.getQty_half_full().substring(1).toLowerCase();
+            Vholder.tv_foodName.setText(upperString+" ("+quanityString+")");
+        }else {
+            Vholder.tv_foodName.setText(upperString);
+        }
+
         Vholder.tv_foodprice.setText("₹"+CartFoodOderItem.getCalculatedAmt());
-        //Vholder.tv_foodquanity.setText(CartFoodOderItem.quantiy);
         Vholder.tv_quantityNumber.setText(CartFoodOderItem.quantiy);
+
 
         Vholder.tv_foodName.setTypeface(Fonts.getSemiBold(mContext));
         Vholder.tv_fooddescrp.setTypeface(Fonts.getRegular(mContext));
@@ -103,16 +109,26 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
             Vholder.tv_fooddescrp.setVisibility(View.GONE);
         }else {
             Vholder.tv_fooddescrp.setVisibility(View.VISIBLE);
+            String DescriptionString = CartFoodOderItem.getDescription().substring(0,1).toUpperCase() + CartFoodOderItem.getDescription().substring(1);
+            Vholder.tv_fooddescrp.setText(DescriptionString);
         }
 
-        /*if (CartFoodOderItem.getDiscountPrice().equals("0.00")){
+        if (CartFoodOderItem.getDiscountAmt().equals("0.00") ||
+                CartFoodOderItem.getDiscountAmt().equals("0.0") || CartFoodOderItem.getDiscountAmt().equals("0")){
             Vholder.icDiscount.setVisibility(View.GONE);
             Vholder.tvDiscount.setVisibility(View.GONE);
         }else {
-            Vholder.tvDiscount.setText("₹"+CartFoodOderItem.getDiscountPrice());
+            Vholder.tvDiscount.setText("₹"+CartFoodOderItem.getDiscountAmt());
             Vholder.icDiscount.setVisibility(View.VISIBLE);
             Vholder.tvDiscount.setVisibility(View.VISIBLE);
-        }*/
+            Vholder.icDiscount.animate().rotation(360).setDuration(1000).start();
+        }
+
+        if(CartFoodOderItem.getCategory().equals("1")){
+            Vholder.icCategory.setImageResource(R.drawable.ic_veg);
+        }else {
+            Vholder.icCategory.setImageResource(R.drawable.ic_non_veg);
+        }
 
 
         /*Vholder.tv_view.setOnClickListener(new View.OnClickListener() {
@@ -147,8 +163,12 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                     //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
                     Vholder.tv_quantityNumber.setText("" + value);
                     CartFoodOderItem.setQuantiy(Vholder.tv_quantityNumber.getText().toString());
-                    double sum = Double.parseDouble(CartFoodOderItem.getPrice()) * value;
-                    Vholder.tv_foodprice.setText("₹"+sum);
+                    double sumPrice = Double.parseDouble(CartFoodOderItem.getPrice()) * value;
+                    Vholder.tv_foodprice.setText("₹"+sumPrice);
+                    double discount = Double.parseDouble(CartFoodOderItem.getDiscountAmt()) * value;
+                    double roundOff = Math.round(discount * 100.0) / 100.0;
+                    String sumDis = String.format("%.2f", roundOff);
+                    Vholder.tvDiscount.setText("₹"+sumDis);
                     updateCart(CartFoodOderItem.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
                 }
@@ -198,6 +218,10 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                     CartFoodOderItem.setQuantiy(Vholder.tv_quantityNumber.getText().toString());
                     double sum = Double.parseDouble(CartFoodOderItem.getPrice()) * value;
                     Vholder.tv_foodprice.setText("₹"+sum);
+                    double discount = Double.parseDouble(CartFoodOderItem.getDiscountAmt()) * value;
+                    double roundOff = Math.round(discount * 100.0) / 100.0;
+                    String sumDis = String.format("%.2f", roundOff);
+                    Vholder.tvDiscount.setText("₹"+sumDis);
                     updateCart(CartFoodOderItem.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
                 }else {
@@ -273,7 +297,7 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from food_cart_item where item_id ='"+id+"'";
+        String query = "DELETE from food_cart where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -290,7 +314,7 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "UPDATE food_cart_item set quantity='"+quantity+"' where item_id ='"+id+"'";
+        String query = "UPDATE food_cart set quantity='"+quantity+"' where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

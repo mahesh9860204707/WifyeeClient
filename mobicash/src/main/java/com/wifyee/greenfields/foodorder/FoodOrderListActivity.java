@@ -494,7 +494,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT count(*) as total from food_cart_item";
+        String query = "SELECT count(*) as total from food_cart";
 
         Cursor data = controller.retrieve(query);
         if(data.getCount()>0){
@@ -513,7 +513,8 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
     @Override
     public void onBuyCallBack(FoodOderList item, String quantity,int flag) {
         if(flag==0) {
-            insert(item.foodImage, item.name, item.itemID, item.description, quantity, item.price);
+            insert(item.foodImage, item.name, item.itemID, item.description,
+                    quantity, item.price,item.getDiscountPrice(),item.getQuantiy(),item.getCategory());
         }
         fillListItem();
     }
@@ -527,16 +528,14 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
     }
 
     private void insert(String image_path,String item_name,String item_id, String item_description,
-                        String quantity,String price){
+                        String quantity,String price,String discount, String qty_half_full, String category){
         SQLController controller = new SQLController(mContext);
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "Insert into food_cart_item(image_path,item_name,item_id,item_description,quantity,price) values " +
-                "('"+image_path+"','"+item_name+"','"+item_id+"','"+item_description+"','"+quantity+"','"+price+"');";
-
-        //Log.e("query",query);
+        String query = "Insert into food_cart(image_path,item_name,item_id,item_description,quantity,price,discount,qty_half_full,category) values " +
+                "('"+image_path+"','"+item_name+"','"+item_id+"','"+item_description+"','"+quantity+"','"+price+"','"+discount+"','"+qty_half_full+"','"+category+"');";
 
         String result = controller.fireQuery(query);
 
@@ -557,7 +556,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from food_cart_item";
+        String query = "SELECT * from food_cart";
 
         Cursor cursor = controller.retrieve(query);
         if(cursor.getCount()>0){
@@ -589,7 +588,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from food_cart_item where item_id ='"+id+"'";
+        String query = "DELETE from food_cart where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

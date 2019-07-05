@@ -11,29 +11,18 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
-
-
-
-        <!--<ImageButton
-            android:id="@+id/toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:background="@mipmap/back_arrow_icon" />
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5dp">
 
         <TextView
-            android:id="@+id/user_balance"
-            style="@style/font_family_medium"
+            android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:padding="8dp"
-            android:text="Upload Medicine"
-            android:textColor="@color/color_tab_bg"
-            android:textSize="18sp"
-            android:textStyle="bold" />-->
+            android:text="Upload Prescription"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
 
     </android.support.v7.widget.Toolbar>
 
@@ -92,8 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UPLOAD"
-                android:textSize="13sp"
-                android:textStyle="bold"
+                android:textSize="14sp"
                 />
             <TextView
                 android:id="@+id/txt_please"
@@ -136,6 +124,7 @@
 
 
                     <TextView
+                        android:id="@+id/txt_camera"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Camera"
@@ -167,6 +156,7 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/txt_gallery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gallery"
@@ -256,11 +246,11 @@
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/txt_medical_partner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Our Medical Partner"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            android:textSize="14sp"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -299,7 +289,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="16sp"
                     android:layout_toEndOf="@+id/rl_cirlce"
                     android:layout_alignTop="@+id/rl_cirlce"
@@ -340,7 +329,6 @@
         <!-- save button -->
         <Button
             android:id="@+id/upload_medicine"
-            style="@style/font_family_medium"
             android:layout_width="fill_parent"
             android:layout_margin="20dp"
             android:layout_height="wrap_content"
@@ -355,7 +343,6 @@
 
     <Button
         android:id="@+id/submit_medicine"
-        style="@style/font_family_medium"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

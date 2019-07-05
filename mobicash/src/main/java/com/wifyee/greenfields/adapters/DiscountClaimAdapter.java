@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.activity.DiscountClaim;
 import com.wifyee.greenfields.interfaces.OnClickListener;
 import com.wifyee.greenfields.models.DiscountClaimModel;
@@ -32,7 +33,7 @@ public class DiscountClaimAdapter extends RecyclerView.Adapter<RecyclerView.View
     private double amount;
 
     public class CityViewHolder extends RecyclerView.ViewHolder {
-        private TextView voucherName, voucherDetails, discountAmount, voucherAmount;
+        private TextView voucherName, voucherDetails, discountAmount, voucherAmount,txtVoucherAmt;
         private CheckBox payCheckBox;
 
         public CityViewHolder(View itemView) {
@@ -42,6 +43,7 @@ public class DiscountClaimAdapter extends RecyclerView.Adapter<RecyclerView.View
             discountAmount =  itemView.findViewById(R.id.discount_amount);
             voucherAmount =  itemView.findViewById(R.id.voucher_amount);
             payCheckBox =  itemView.findViewById(R.id.payuMoney);
+            txtVoucherAmt =  itemView.findViewById(R.id.txt_voucher_amt);
         }
     }
 
@@ -75,10 +77,6 @@ public class DiscountClaimAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         ((CityViewHolder) holder).payCheckBox.setChecked(selectedPosition == position);
 
-        /*if(selectedPosition == -1 && position ==0){
-            selectedPosition = position;
-            ((CityViewHolder) holder).payCheckBox.setChecked(true);
-        }*/
 
         ((CityViewHolder) holder).payCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,26 +107,11 @@ public class DiscountClaimAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((CityViewHolder) holder).voucherAmount.setText(" ₹"+object.getVoucherAmount()+" ");
             ((CityViewHolder) holder).voucherAmount.setPaintFlags(((CityViewHolder) holder).voucherAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-
-            /*((CityViewHolder) holder).payCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    if (buttonView.isChecked()) {
-                        if (ClickListener != null) {
-                            Log.e("planId",mList.get(position).getPlanId());
-                            Log.e("getPlanCost",mList.get(position).getPlanCost());
-                            Log.e("getPlanTrafficTotal",mList.get(position).getPlanTrafficTotal());
-                            Log.e("getPlanName",mList.get(position).getPlanName());
-                            ClickListener.seClickListener(String.valueOf(mList.get(position).getPlanId()), mList.get(position).getPlanCost(), mList.get(position).getPlanTrafficTotal(), mList.get(position).getPlanName());
-                            selectedPosition = position;
-                            notifyDataSetChanged();
-                        }
-                    } else {
-                      //  Toast.makeText(context, "Unselected", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });*/
+            ((CityViewHolder) holder).voucherName.setTypeface(Fonts.getSemiBold(context));
+            ((CityViewHolder) holder).voucherDetails.setTypeface(Fonts.getRegular(context));
+            ((CityViewHolder) holder).discountAmount.setTypeface(Fonts.getRegular(context));
+            ((CityViewHolder) holder).voucherAmount.setTypeface(Fonts.getRegular(context));
+            ((CityViewHolder) holder).txtVoucherAmt.setTypeface(Fonts.getRegular(context));
         }
     }
 

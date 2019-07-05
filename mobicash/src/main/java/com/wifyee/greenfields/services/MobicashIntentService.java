@@ -414,6 +414,10 @@ public class MobicashIntentService extends IntentService {
     private static final String EXTRA_PARAM6 = "com.wifyee.greenfields.dairyorder.extra.PARAM6";
     private static final String EXTRA_PARAM7 = "com.wifyee.greenfields.dairyorder.extra.PARAM7";
     private static final String EXTRA_PARAM8 = "com.wifyee.greenfields.dairyorder.extra.PARAM8";
+    private static final String EXTRA_PARAM9 = "com.wifyee.greenfields.dairyorder.extra.PARAM9";
+    private static final String EXTRA_PARAM10 = "com.wifyee.greenfields.dairyorder.extra.PARAM10";
+    private static final String EXTRA_PARAM11 = "com.wifyee.greenfields.dairyorder.extra.PARAM11";
+    private static final String EXTRA_PARAM12 = "com.wifyee.greenfields.dairyorder.extra.PARAM12";
     /**h
      * SubMit all Food Request
      */
@@ -470,7 +474,8 @@ public class MobicashIntentService extends IntentService {
     public static void startActionSendFoodRequest(Context context,
                                                   CartFoodOderRequest cartFoodOderRequest,
                                                   String location,String latitude,String longitude,
-                                                  String complete_add) {
+                                                  String complete_add,String discount_amt, String claimType,
+                                                  String voucherId, String voucherNo) {
         Intent intent = new Intent(context, MobicashIntentService.class);
         intent.setAction(ACTION_PERFORM_FOODORDER_SUBMIT);
         intent.putExtra(PARAM_CLIENT_FOODORDER_SUBMIT_REQUEST_MODEL, cartFoodOderRequest);
@@ -478,6 +483,10 @@ public class MobicashIntentService extends IntentService {
         intent.putExtra(EXTRA_PARAM6, latitude);
         intent.putExtra(EXTRA_PARAM7, longitude);
         intent.putExtra(EXTRA_PARAM8, complete_add);
+        intent.putExtra(EXTRA_PARAM9, discount_amt);
+        intent.putExtra(EXTRA_PARAM10, claimType);
+        intent.putExtra(EXTRA_PARAM11, voucherId);
+        intent.putExtra(EXTRA_PARAM12, voucherNo);
         context.startService(intent);
     }
     public static void startActionFoodOrderList(Context context, FoodOrderRequest foodOrderRequest) {
@@ -1637,7 +1646,12 @@ public class MobicashIntentService extends IntentService {
         String location = paramData.getStringExtra(EXTRA_PARAM5);
         String lat = paramData.getStringExtra(EXTRA_PARAM6);
         String lng = paramData.getStringExtra(EXTRA_PARAM7);
-        String complete_add = paramData  .getStringExtra(EXTRA_PARAM8);
+        String complete_add = paramData.getStringExtra(EXTRA_PARAM8);
+        String discountAmt = paramData.getStringExtra(EXTRA_PARAM9);
+        String claimType = paramData.getStringExtra(EXTRA_PARAM10);
+        String voucherId = paramData.getStringExtra(EXTRA_PARAM11);
+        String voucherNo = paramData.getStringExtra(EXTRA_PARAM12);
+
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(ResponseAttributeConstants.ORDERID, mCartFoodOrderRequest.orderId);
@@ -1667,6 +1681,10 @@ public class MobicashIntentService extends IntentService {
             jsonObject.put(ResponseAttributeConstants.LAT,lat);
             jsonObject.put(ResponseAttributeConstants.LNG,lng);
             jsonObject.put(ResponseAttributeConstants.COMPLETE_ADD,complete_add);
+            jsonObject.put(ResponseAttributeConstants.DISCOUNT_AMT,discountAmt);
+            jsonObject.put(ResponseAttributeConstants.CLAIM_TYPE,claimType);
+            jsonObject.put(ResponseAttributeConstants.VOUCHER_ID,voucherId);
+            jsonObject.put(ResponseAttributeConstants.VOUCHER_NO,voucherNo);
 
             Log.e("order param",jsonObject.toString());
         } catch (JSONException e) {

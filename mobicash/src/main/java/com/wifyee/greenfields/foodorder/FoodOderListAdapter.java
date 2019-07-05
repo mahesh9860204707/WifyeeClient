@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -382,9 +383,17 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
                     Button cancel = layout.findViewById(R.id.cancel_btn);
                     Button confirm = layout.findViewById(R.id.confirm_btn);
                     TextView message = layout.findViewById(R.id.message);
-                    message.setText("Your cart contains dishes from "+LocalPreferenceUtility.getMerchantName(context)
-                            +". Do you want to discard the selection and add dishes from "+FoodOrderListActivity.merchantName+"?");
+                    TextView txt = layout.findViewById(R.id.tv);
+                    String first = "<font color='#000000'>"+LocalPreferenceUtility.getMerchantName(context)+"</font>";
+                    String second = "<font color='#000000'>"+FoodOrderListActivity.merchantName+"</font>";
+                    message.setText(Html.fromHtml("Your cart contains dishes from "+first+
+                            ". Do you want to discard the selection and add dishes from "+second+"?"));
                     layout.show();
+
+                    txt.setTypeface(Fonts.getSemiBold(context));
+                    message.setTypeface(Fonts.getRegular(context));
+                    confirm.setTypeface(Fonts.getSemiBold(context));
+                    cancel.setTypeface(Fonts.getSemiBold(context));
 
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override

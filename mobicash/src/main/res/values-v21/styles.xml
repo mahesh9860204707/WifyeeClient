@@ -19,7 +19,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/secondaryPrimary</item>
         <item name="colorPrimaryDark">@color/secondaryPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/secondaryPrimary</item>
 
     </style>
 </resources>

@@ -14,6 +14,10 @@ public class ResponseAttributeConstants {
     public static final String LAT = "usa_lat";
     public static final String LNG = "usa_long";
     public static final String COMPLETE_ADD = "usa_complete_address";
+    public static final String DISCOUNT_AMT = "discount_amt";
+    public static final String CLAIM_TYPE = "claim_type";
+    public static final String VOUCHER_ID = "voucher_id";
+    public static final String VOUCHER_NO = "voucher_no";
     public static final String CLIENT_STATUS = "clientStatus";
     public static final String CLIENT_BALANCE = "clientBalance";
     public static final String LOGIN_DATE = "loginDate";

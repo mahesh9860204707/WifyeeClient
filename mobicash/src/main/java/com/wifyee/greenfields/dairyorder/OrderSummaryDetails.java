@@ -309,6 +309,7 @@ public class OrderSummaryDetails extends BaseActivity {
             tvDeliveryFee.setTextColor(getResources().getColor(R.color.secondaryPrimary));
         }else {
             tvDeliveryFee.setText("₹"+deliveryFee);
+            tvDeliveryFee.setTextColor(getResources().getColor(R.color.black));
         }
         tvTotal.setText("₹"+totalAmount);
         tvSubTotal.setText("₹"+itemTotalAmount);

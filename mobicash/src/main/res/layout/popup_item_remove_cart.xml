@@ -3,8 +3,8 @@
     android:id="@+id/relative_layout_top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="25dip"
-    android:layout_marginRight="25dip"
+    android:layout_marginLeft="15dip"
+    android:layout_marginRight="15dip"
     android:background="@drawable/dialog_bg">
 
     <TextView
@@ -36,27 +36,27 @@
         android:layout_below="@+id/message"
         android:gravity="end"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="6dp"
         android:layout_marginBottom="6dp">
 
         <Button
             android:id="@+id/cancel_btn"
-            android:layout_width="40dp"
+            android:layout_width="60dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/gray_btn_bg_pressed_color"
             android:text="NO"
-            android:textSize="12sp"/>
+            android:layout_marginEnd="3dp"
+            android:textSize="14sp"/>
 
         <Button
             android:id="@+id/confirm_btn"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/secondaryPrimary"
             android:background="@android:color/transparent"
             android:text="YES"
-            android:textSize="12sp"/>
-
-
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

@@ -126,13 +126,14 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
                 if(checkedId == R.id.rb_cashback) {
                     claimSelectedIndex = 0;
                     recyclerView.setVisibility(View.GONE);
+                    txtAvailCoupons.setVisibility(View.GONE);
                 } else {
                     claimSelectedIndex = 1;
                     recyclerView.setVisibility(View.VISIBLE);
+                    txtAvailCoupons.setVisibility(View.VISIBLE);
                 }
             }
         });
-
 
         backToCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,14 +172,17 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
                     if (flag.equalsIgnoreCase("order_summary")) {
                         OrderSummaryActivity.isVoucherClaim = true;
                         OrderSummaryActivity.claimType = "1";
+                        OrderSummaryActivity.voucherDiscAmt = amount.replace("₹","");
                         finish();
                     }else if (flag.equalsIgnoreCase("cart")) {
                         MyCartFragment.isVoucherClaim = true;
                         MyCartFragment.claimType = "1";
+                        MyCartFragment.voucherDiscAmt = amount.replace("₹","");
                         finish();
                     }else if(flag.equalsIgnoreCase("food_cart")){
                         AddToCartActivity.isVoucherClaim = true;
                         AddToCartActivity.claimType = "1";
+                        AddToCartActivity.voucherDiscAmt = amount.replace("₹","");
                         finish();
                     }
                 }
@@ -271,8 +275,8 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
 
     @Override
     public void seClickListener(String voucherId, String voucherNo, String voucherName, String voucherDiscountAmt) {
-        voucherID = voucherId;
-        voucherNO = voucherNo;
+        this.voucherID = voucherId;
+        this.voucherNO = voucherNo;
         this.voucherName = voucherName;
         this.voucherDiscountAmt = voucherDiscountAmt;
     }

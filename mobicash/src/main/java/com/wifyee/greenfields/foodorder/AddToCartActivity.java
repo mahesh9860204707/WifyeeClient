@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -93,7 +94,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     private RecyclerView recyclerView_favorites;
     private Context mcontext;
     private Button btn_continue,addAddress;
-    private Double gst = 0.00, total_amount = 0.00;
+    private Double gst = 0.00;
     private SharedPrefenceAdapter favoritesAdapter;
     private List<Items> shred_list = new ArrayList<>();
     private Items itemValue ;
@@ -112,8 +113,9 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     public static String completeAddress,location,latitude,longitude,voucherId="",
             voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
     private RadioButton paymentCod,paymentWallet,paymentNetBanking;
-    private CardView cardViewCoupon;
-
+    private CardView cardViewCoupon,cardViewDiscount,cardViewBillDetails,cardViewPayment;
+    private RadioGroup paymentGroup;
+    private int total_amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         txtClaimText = findViewById(R.id.txt);
         txtTotalDiscountAmt = findViewById(R.id.txt_total_discount_amt);
         txtApplyCoupon = findViewById(R.id.txt_apply_coupon);
+        cardViewDiscount = findViewById(R.id.card_view_discount);
         cardViewCoupon = findViewById(R.id.card_view_coupon);
         txtSummary = findViewById(R.id.txt_summary);
         txtItemTotal = findViewById(R.id.txt_item_total);
@@ -149,6 +152,9 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         paymentCod = findViewById(R.id.rb_cod);
         paymentWallet = findViewById(R.id.rb_wallet);
         paymentNetBanking = findViewById(R.id.rb_netbanking);
+        cardViewBillDetails = findViewById(R.id.card_view_bill_details);
+        cardViewPayment = findViewById(R.id.card_view_payment);
+        paymentGroup = findViewById(R.id.payment_group);
 
         mcontext = this;
         sharedPreference = new SharedPreference(mcontext);
@@ -175,6 +181,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         toolBarTitle.setText(LocalPreferenceUtility.getMerchantName(mcontext));
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
         addAddress.setTypeface(Fonts.getSemiBold(this));
+        btn_continue.setTypeface(Fonts.getSemiBold(this));
         txtTotalDiscountAmt.setTypeface(Fonts.getRegular(this));
         totalDiscountAmt.setTypeface(Fonts.getSemiBold(this));
         txtClaimText.setTypeface(Fonts.getRegular(this));
@@ -194,7 +201,22 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //appy gst on price
+                //Toast.makeText(getApplicationContext(),""+total_amount,Toast.LENGTH_SHORT).show();
+                if(favorites.size()!= 0) {
+                    if(cardViewDiscount.getVisibility() == View.VISIBLE && isVoucherClaim){
+                       placeOrder();
+                       //Snackbar.make(view,"All set",Snackbar.LENGTH_LONG).show();
+                    }else if(cardViewDiscount.getVisibility() == View.GONE){
+                        placeOrder();
+                        //Snackbar.make(view,"without voucher",Snackbar.LENGTH_LONG).show();
+                    }else {
+                        Snackbar.make(view,"Please claim the discount amount first.",Snackbar.LENGTH_LONG).show();
+                    }
+                }else {
+                    Snackbar.make(view,"Look like your cart is empty",Snackbar.LENGTH_LONG).show();
+                }
+
+                /*//appy gst on price
                 if (shred_list.size()!=0) {
                     shred_list.clear();
                 }
@@ -207,7 +229,9 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Amount should be Greater Than 0.", Toast.LENGTH_SHORT).show();
-                }
+                }*/
+
+
             }
         });
 
@@ -253,22 +277,56 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         favoritesAdapter = new SharedPrefenceAdapter(mcontext, recyclerView_favorites, favorites,this);
         recyclerView_favorites.setAdapter(favoritesAdapter);
 
+        paymentGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rb_cod) {
+                    paymentSelectedIndex = 0;
+                } else if(checkedId == R.id.rb_wallet) {
+                    paymentSelectedIndex = 1;
+                } else {
+                    paymentSelectedIndex = 2;
+                }
+            }
+        });
+
     }
 
+    private void placeOrder(){
+        if (paymentSelectedIndex == 0) {
+            showProgressDialog();
+            MobicashIntentService.startActionSendFoodRequest(mcontext,
+                    getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,
+                    completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo);
+        } else if ((paymentSelectedIndex == 1)) {
+            showProgressDialog();
+            MobicashIntentService.startActionDeductMoneyWallet(mcontext, getpaymetbywallet(String.valueOf(total_amount)));
+        }
+        else if ((paymentSelectedIndex == 2)) {
+            Intent paymentIntent = IntentFactory.createPayuBaseActivity(mcontext);
+            paymentIntent.putExtra(PaymentConstants.STRING_EXTRA, String.valueOf(total_amount));
+            paymentIntent.putExtra("foodCart", "foodamount");
+            paymentIntent.putExtra(PaymentConstants.FOODORDER_EXTRA, getaddToCartRequest(String.valueOf(total_amount)));
+            startActivity(paymentIntent);
+        }
+    }
+
+
     public void fillList() {
-        SQLController controller=new SQLController(getApplicationContext());
+        SQLController controller = new SQLController(getApplicationContext());
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
         String query = "SELECT * from food_cart order by id asc";
 
         Cursor cursor = controller.retrieve(query);
-        if(cursor.getCount()>0){
-            Log.e("if","in if");
+        if (cursor.getCount() > 0) {
+            //Log.e("if", "in if");
             cursor.moveToFirst();
-            do{
-                String image_path =  cursor.getString(cursor.getColumnIndex("image_path"));
-                String item_name =  cursor.getString(cursor.getColumnIndex("item_name"));
+            do {
+                String image_path = cursor.getString(cursor.getColumnIndex("image_path"));
+                String item_name = cursor.getString(cursor.getColumnIndex("item_name"));
                 String item_id = cursor.getString(cursor.getColumnIndex("item_id"));
                 String item_description = cursor.getString(cursor.getColumnIndex("item_description"));
                 String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
@@ -293,10 +351,10 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 data.setCategory(category);
 
                 favorites.add(data);
-                Log.w("data ","Data Fetched");
+                Log.w("data ", "Data Fetched");
 
-            }while (cursor.moveToNext());
-        }else {
+            } while (cursor.moveToNext());
+        } else {
             //Log.e("else","in else");
             //recyclerView.setVisibility(View.GONE);
             //rl_discount.setVisibility(View.GONE);
@@ -311,49 +369,67 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
 
         double totalamount = 0.00;
         double discountAmt = 0.0;
+        int totalItem = 0;
 
-        for (int k = 0; k < favorites.size(); k++) {
-            try {
-                String pricevlaue = favorites.get(k).calculatedAmt.trim();
-                Double current = Double.valueOf(pricevlaue);
-                totalamount = current + totalamount;
-                //Log.e("amount",String.valueOf(totalamount));
+        if (favorites.size() > 0){
+            for (int k = 0; k < favorites.size(); k++) {
+                try {
+                    String pricevlaue = favorites.get(k).calculatedAmt.trim();
+                    String qty = favorites.get(k).quantiy.trim();
+                    Double current = Double.valueOf(pricevlaue);
+                    totalamount = current + totalamount;
+                    //Log.e("amount",String.valueOf(totalamount));
 
-                double quantityDiscountAmt = Double.parseDouble(favorites.get(k).getDiscountAmt());
-                discountAmt = discountAmt + quantityDiscountAmt;
+                    double quantityDiscountAmt = Double.parseDouble(favorites.get(k).getDiscountAmt());
+                    discountAmt = discountAmt + quantityDiscountAmt;
 
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
+                    totalItem = totalItem + Integer.parseInt(qty);
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             }
+
+            txtItemTotal.setText("Item Total ("+totalItem+" Item)");
+            tv_totalamount.setText(String.valueOf(totalamount));
+            double roundOff = Math.round(discountAmt * 100.0) / 100.0;
+            String sumDiscount = String.format("%.2f", roundOff);
+            totalDiscountAmt.setText("₹"+sumDiscount);
+
+            if(sumDiscount.equals("0.00") || sumDiscount.equals("0.0") || sumDiscount.equals("0")){
+                cardViewDiscount.setVisibility(View.GONE);
+            }else {
+                cardViewDiscount.setVisibility(View.VISIBLE);
+            }
+
+            float amt = (float) totalamount;
+            int itemTotalAmount = Math.round(amt);
+            if(itemTotalAmount<200){
+                deliveryFee = 50;
+            }else if(itemTotalAmount<500){
+                deliveryFee = 20;
+            }else {
+                deliveryFee = 0;
+            }
+
+            int total = itemTotalAmount + deliveryFee;
+            //totalAmount = String.valueOf(total);
+            if(deliveryFee==0){
+                deliveryFeePrice.setText("Free");
+                deliveryFeePrice.setTextColor(getResources().getColor(R.color.secondaryPrimary));
+            }else {
+                deliveryFeePrice.setText("₹"+deliveryFee);
+            }
+            totalPrice.setText("₹"+total);
+            total_amount =  total;
+            subTotalPrice.setText("₹"+itemTotalAmount);
+
+        } else {
+            cardViewDiscount.setVisibility(View.GONE);
+            cardViewCoupon.setVisibility(View.GONE);
+            cardViewBillDetails.setVisibility(View.GONE);
+            cardViewPayment.setVisibility(View.GONE);
         }
-
-        tv_totalamount.setText(String.valueOf(totalamount));
-        double roundOff = Math.round(discountAmt * 100.0) / 100.0;
-        String s = String.format("%.2f", roundOff);
-        totalDiscountAmt.setText("₹"+s);
-
-        float amt = (float) totalamount;
-        int itemTotalAmount = Math.round(amt);
-        if(itemTotalAmount<200){
-            deliveryFee = 50;
-        }else if(itemTotalAmount<500){
-            deliveryFee = 20;
-        }else {
-            deliveryFee = 0;
-        }
-
-        int total = itemTotalAmount + deliveryFee;
-        //totalAmount = String.valueOf(total);
-
-        if(deliveryFee==0){
-            deliveryFeePrice.setText("Free");
-            deliveryFeePrice.setTextColor(getResources().getColor(R.color.secondaryPrimary));
-        }else {
-            deliveryFeePrice.setText("₹"+deliveryFee);
-        }
-        totalPrice.setText("₹"+total);
-        subTotalPrice.setText("₹"+itemTotalAmount);
-
     }
 
     private void setDialog() {
@@ -401,7 +477,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                     total_amount = Double.parseDouble(FoodPrice.getText().toString()) + h;*/
                 //    Toast.makeText(getApplicationConftext(), String.valueOf(total_amount), Toast.LENGTH_SHORT).show();
                 if (paymentSelectedIndex == 0) {
-                      showProgressDialog();
+                    showProgressDialog();
                     MobicashIntentService.startActionDeductMoneyWallet(mcontext, getpaymetbywallet(String.valueOf(total_amount)));
                 } else if ((paymentSelectedIndex == 1)) {
                     Intent paymentIntent = IntentFactory.createPayuBaseActivity(mcontext);
@@ -413,7 +489,8 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 else if ((paymentSelectedIndex == 2)) {
                     showProgressDialog();
                     MobicashIntentService.startActionSendFoodRequest(mcontext,
-                            getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,completeAddress);
+                            getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,completeAddress,
+                            voucherDiscAmt,claimType,voucherId,voucherNo);
                 }
                 dialog.dismiss();
             }
@@ -505,12 +582,12 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         if(isVoucherClaim){
             if (claimType.equals("1")){
                 txtClaimText.setText("Cashback amount will be added in your wallet within 24 hours");
-            }else {
+            }else if (claimType.equals("2")){
                 String second = "<font color='#1b7836'>"+voucherName+"</font>";
                 String fourth = "<font color='#1b7836'>₹"+voucherDiscAmt+"</font>";
                 txtClaimText.setText(Html.fromHtml("You have selected "+second+" voucher of "+fourth+""));
             }
-            isVoucherClaim = false;
+            //isVoucherClaim = false;
         }
 
         //sharedPreference=new SharedPreference(mcontext);
@@ -701,7 +778,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 public void onClick(View v) {
                     showProgressDialog();
                     MobicashIntentService.startActionSendFoodRequest(mcontext, getaddToCartRequest(String.valueOf(total_amount)),
-                            location,latitude,longitude,completeAddress);
+                            location,latitude,longitude,completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo);
                     dialog.dismiss();
 
                 }
@@ -744,7 +821,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                     showProgressDialog();
                     MobicashIntentService.startActionSendFoodRequest(mcontext,
                             getaddToCartRequest(String.valueOf(total_amount)),
-                            location,latitude,longitude,completeAddress);
+                            location,latitude,longitude,completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo);
 
 
                     dialog.dismiss();
@@ -780,7 +857,14 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     public void fragmentBecameVisible() {
         double amount = 0.0;
         double discountAmt = 0.0;
+        int totalItem = 0;
+
         if(favorites.size()>0){
+            cardViewDiscount.setVisibility(View.VISIBLE);
+            cardViewCoupon.setVisibility(View.VISIBLE);
+            cardViewBillDetails.setVisibility(View.VISIBLE);
+            cardViewPayment.setVisibility(View.VISIBLE);
+
             for(int i= 0;i<favorites.size();i++){
                 int quantityValue = Integer.parseInt(favorites.get(i).getQuantiy());
                 double quantityAmount = (quantityValue * Double.parseDouble(favorites.get(i).getPrice()));
@@ -788,35 +872,55 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
 
                 double quantityDiscountAmt = (quantityValue * Double.parseDouble(favorites.get(i).getDiscountAmt()));
                 discountAmt = discountAmt + quantityDiscountAmt;
+
+                totalItem = totalItem + quantityValue;
+
             }
-        }
-        tv_totalamount.setText(String.valueOf(amount));
-        double roundOff = Math.round(discountAmt * 100.0) / 100.0;
-        String s = String.format("%.2f", roundOff);
-        totalDiscountAmt.setText("₹"+s);
 
-        float amt = (float) amount;
-        int itemTotalAmount = Math.round(amt);
-        if(itemTotalAmount<200){
-            deliveryFee = 50;
-        }else if(itemTotalAmount<500){
-            deliveryFee = 20;
+            txtItemTotal.setText("Item Total ("+totalItem+" Item)");
+            tv_totalamount.setText(String.valueOf(amount));
+            double roundOff = Math.round(discountAmt * 100.0) / 100.0;
+            String sumDiscount = String.format("%.2f", roundOff);
+            totalDiscountAmt.setText("₹"+sumDiscount);
+
+            if(sumDiscount.equals("0.00") || sumDiscount.equals("0.0") || sumDiscount.equals("0")){
+                cardViewDiscount.setVisibility(View.GONE);
+            }else {
+                cardViewDiscount.setVisibility(View.VISIBLE);
+            }
+
+            float amt = (float) amount;
+            int itemTotalAmount = Math.round(amt);
+            if(itemTotalAmount<200){
+                deliveryFee = 50;
+            }else if(itemTotalAmount<500){
+                deliveryFee = 20;
+            }else {
+                deliveryFee = 0;
+            }
+
+            int total = itemTotalAmount + deliveryFee;
+            //totalAmount = String.valueOf(total);
+
+            if(deliveryFee==0){
+                deliveryFeePrice.setText("Free");
+                deliveryFeePrice.setTextColor(getResources().getColor(R.color.secondaryPrimary));
+            }else {
+                deliveryFeePrice.setText("₹"+deliveryFee);
+                deliveryFeePrice.setTextColor(getResources().getColor(R.color.black));
+            }
+            totalPrice.setText("₹"+total);
+            total_amount = total;
+            subTotalPrice.setText("₹"+itemTotalAmount);
+
         }else {
-            deliveryFee = 0;
+            cardViewDiscount.setVisibility(View.GONE);
+            cardViewCoupon.setVisibility(View.GONE);
+            cardViewBillDetails.setVisibility(View.GONE);
+            cardViewPayment.setVisibility(View.GONE);
+            LocalPreferenceUtility.putMerchantId(mcontext, "");
+            LocalPreferenceUtility.putMerchantName(mcontext, "Food Cart");
         }
-
-        int total = itemTotalAmount + deliveryFee;
-        //totalAmount = String.valueOf(total);
-
-        if(deliveryFee==0){
-            deliveryFeePrice.setText("Free");
-            deliveryFeePrice.setTextColor(getResources().getColor(R.color.secondaryPrimary));
-        }else {
-            deliveryFeePrice.setText("₹"+deliveryFee);
-            deliveryFeePrice.setTextColor(getResources().getColor(R.color.black));
-        }
-        totalPrice.setText("₹"+total);
-        subTotalPrice.setText("₹"+itemTotalAmount);
     }
 
     private void deleteCart(){
@@ -832,6 +936,12 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             Log.w("result",result);
         }
         controller.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isVoucherClaim = false;
     }
 
     /*@Override

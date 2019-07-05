@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -49,6 +50,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.PhotoPopupWindow;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -89,7 +91,7 @@ public class UploadPrescription extends AppCompatActivity {
     private SweetAlertDialog pDialog;
     private Toolbar mToolbar;
     private CardView cardView;
-    private TextView txtNotHere,txtDetailNotHere,medicalName,medicalAddress;
+    private TextView txtNotHere,txtDetailNotHere,medicalName,medicalAddress,txt_prescription_upload;
     private LinearLayout llPartner;
     private CircleImageView medicalImage;
     private String currentStatus;
@@ -115,18 +117,27 @@ public class UploadPrescription extends AppCompatActivity {
         rl_upload_prescription = findViewById(R.id.rl_upload_prescription);
         llPartner = findViewById(R.id.ll_partner);
         medicalImage = findViewById(R.id.medical_image);
+        TextView txtUpload = findViewById(R.id.txt_upload);
+        TextView txtPlease = findViewById(R.id.txt_please);
+        TextView txtCamera = findViewById(R.id.txt_camera);
+        TextView txtGallery = findViewById(R.id.txt_gallery);
+        TextView txtRemove = findViewById(R.id.title);
+        txt_prescription_upload = findViewById(R.id.txt_prescription_upload);
+        TextView txtMedicalPartner = findViewById(R.id.txt_medical_partner);
 
         userID= LocalPreferenceUtility.getUserCode(UploadPrescription.this);
         latitude = LocalPreferenceUtility.getLatitude(UploadPrescription.this);
         longitude = LocalPreferenceUtility.getLongitude(UploadPrescription.this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView toolbarTitle = mToolbar.findViewById(R.id.toolbar_title);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("Attach Prescription");
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,6 +146,20 @@ public class UploadPrescription extends AppCompatActivity {
                 }
             });
         }
+
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
+        txtNotHere.setTypeface(Fonts.getSemiBold(this));
+        txtDetailNotHere.setTypeface(Fonts.getRegular(this));
+        txtUpload.setTypeface(Fonts.getSemiBold(this));
+        txtPlease.setTypeface(Fonts.getRegular(this));
+        txtCamera.setTypeface(Fonts.getRegular(this));
+        txtGallery.setTypeface(Fonts.getRegular(this));
+        txtRemove.setTypeface(Fonts.getRegular(this));
+        txt_prescription_upload.setTypeface(Fonts.getRegular(this));
+        txtMedicalPartner.setTypeface(Fonts.getSemiBold(this));
+        medicalName.setTypeface(Fonts.getSemiBold(this));
+        medicalAddress.setTypeface(Fonts.getRegular(this));
+        submit.setTypeface(Fonts.getSemiBold(this));
 
         rl_camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -407,7 +432,7 @@ public class UploadPrescription extends AppCompatActivity {
                 bitmap = (Bitmap) data.getExtras().get("data");
                 img.setImageBitmap(bitmap);
                 rl_upload_prescription.setVisibility(View.VISIBLE);
-                submit.setBackgroundColor(getResources().getColor(R.color.prescription_color));
+                submit.setBackgroundColor(getResources().getColor(R.color.secondaryPrimary));
             }
             else if(requestCode == SELECT_FILE && data != null && data.getData() != null){
                 Uri imageUri = data.getData();
@@ -415,7 +440,7 @@ public class UploadPrescription extends AppCompatActivity {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                     img.setImageBitmap(bitmap);
                     rl_upload_prescription.setVisibility(View.VISIBLE);
-                    submit.setBackgroundColor(getResources().getColor(R.color.prescription_color));
+                    submit.setBackgroundColor(getResources().getColor(R.color.secondaryPrimary));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

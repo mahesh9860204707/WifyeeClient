@@ -1,271 +1,433 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="3dp"
-        card_view:cardElevation="4dp"
-        android:layout_marginBottom="3dp"
-        card_view:contentPadding="5dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginTop="5dp">
 
         <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:id="@+id/rl_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp">
 
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:civ_border_color="@color/gray_1"
-                app:civ_border_width="2dp" />
-
-            <TextView
-                android:id="@+id/textViewType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/imageView"
-                android:layout_toLeftOf="@+id/distcount_amt"
-                android:gravity="left"
-                android:text="Item Milk"
-                android:textColor="@color/dk_gray"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/exceed"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_toRightOf="@+id/textViewQuality"
-                android:layout_below="@+id/textViewType"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/tracking_oval_yellow"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/textViewQuality"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewType"
-                android:layout_toStartOf="@+id/distcount_amt"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/imageView"
-                android:gravity="left"
-                android:text="Item Milk"
-                android:textColor="@color/gray_1"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/distcount_amt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/textViewPrice"
-                android:layout_alignParentRight="true"
-                android:gravity="left"
-                android:text="Discount: ₹ "
-                android:textColor="@color/white"
-                android:paddingTop="1dp"
-                android:paddingBottom="1dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:textSize="12sp"
-                android:background="@color/blue_highlightener_color"/>
-
-            <TextView
-                android:id="@+id/textViewPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:gravity="right"
-                android:text="Rs 100"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <RelativeLayout
-                android:id="@+id/item_count_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:background="@drawable/incr_decr_bg"
-                android:layout_alignStart="@+id/textViewType"
-                android:layout_below="@+id/textViewQuality"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:gravity="end">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_margin="2dp">
-
-
-                    <ImageView
-                        android:id="@+id/decrease"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:tint="@color/colorPrimaryDark"
-                        android:padding="1dp"
-                        android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_minus_100"
-                        android:layout_gravity="center_vertical"
-                        />
-
-                    <TextView
-                        android:id="@+id/integer_number"
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-                        android:gravity="center"
-                        android:textSize="18sp"
-                        android:textColor="@color/black"/>
-
-
-                    <ImageView
-                        android:id="@+id/increase"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:tint="@color/colorPrimaryDark"
-                        android:padding="1dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_add"
-                        android:layout_gravity="center_vertical" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-
-            <!--<LinearLayout
-                android:id="@+id/item_count_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/textViewType"
-                android:layout_below="@+id/textViewQuality"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/decrease"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/round"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_minus_48" />
-
-                <TextView
-                    android:id="@+id/integer_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="1"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/increase"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/round"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_plus" />
-
-            </LinearLayout>-->
-
-            <TextView
-                android:id="@+id/total_quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/textViewType"
-                android:layout_below="@+id/textViewQuality"
-                android:gravity="left"
-                android:layout_marginTop="10dp"
-                android:text="10"
-                android:textColor="@color/green_shade"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/quantity_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="8dp"
-                android:text="ltr"
-                android:layout_toEndOf="@+id/item_count_layout"
-                android:layout_marginStart="6dp"
-                android:layout_below="@+id/textViewQuality"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp"/>
-
-            <RelativeLayout
-                android:id="@+id/rl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewQuality"
-                android:layout_alignBottom="@+id/total_quantity"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp">
-
-                <ImageView
-                    android:id="@+id/img_remove"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/trash"
-                    android:layout_marginTop="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Remove"
-                    android:layout_toRightOf="@+id/img_remove"
-                    android:layout_marginTop="12dp"
-                    android:textColor="#000"
-                    android:textSize="12sp"/>
-
-            </RelativeLayout>
+                android:layout_height="match_parent"/>
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
 
-    <View
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@+id/ratingBar"
-        android:layout_marginTop="10dp"
-        android:background="@color/lt_gray"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/textViewType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/rl_image"
+            android:layout_toStartOf="@+id/ll_incr_decr"
+            android:layout_marginEnd="3dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:text="Oder"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/quantity_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:text="ltr"
+            android:visibility="invisible"
+            android:layout_marginStart="6dp"
+            android:layout_below="@+id/textViewQuality"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"/>
 
 
+        <TextView
+            android:id="@+id/textViewQuality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/rl_image"
+            android:layout_below="@+id/textViewType"
+            android:layout_alignStart="@+id/textViewType"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="5dp"
+            android:visibility="visible"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Description!"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textViewPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewQuality"
+            android:layout_toEndOf="@+id/rl_image"
+            android:layout_alignStart="@+id/textViewType"
+            android:layout_marginTop="3dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:text="Price !"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/ic_discount"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_discount"
+            android:layout_alignStart="@+id/textViewType"
+            android:layout_toEndOf="@+id/rl_image"
+            android:layout_below="@+id/textViewPrice"/>
+
+        <TextView
+            android:id="@+id/distcount_amt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewPrice"
+            android:layout_toEndOf="@+id/ic_discount"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="2dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:text="Price !"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_incr_decr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/food_dark_add_background"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:layout_marginEnd="5dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/decrease"
+                android:layout_width="25dp"
+                android:layout_height="24dp"
+                android:text="-"
+                android:textColor="@color/secondaryPrimaryDark"
+                android:textSize="16sp"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/integer_number"
+                android:layout_width="25dp"
+                android:layout_height="24dp"
+                android:text="1"
+                android:background="@color/secondaryPrimaryExtremeDark"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+
+
+            <TextView
+                android:id="@+id/increase"
+                android:layout_width="25dp"
+                android:layout_height="24dp"
+                android:text="+"
+                android:textSize="16sp"
+                android:textColor="@color/secondaryPrimaryExtremeDark"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="12dp"
+            android:text="ADD"
+            android:background="#7D0A4E"
+            android:visibility="gone"
+            android:textColor="#FFFFFF"
+            android:gravity="center_vertical"
+            android:textAlignment="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.7dp"
+            android:background="@color/divider"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_below="@+id/rl_image"
+            android:layout_toEndOf="@+id/rl_image"/>
+
+    </RelativeLayout>
+
+<!--
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="3dp"
+            card_view:cardElevation="4dp"
+            android:layout_marginBottom="3dp"
+            card_view:contentPadding="5dp">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:civ_border_color="@color/gray_1"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/textViewType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toRightOf="@+id/imageView"
+                    android:layout_toLeftOf="@+id/distcount_amt"
+                    android:gravity="left"
+                    android:text="Item Milk"
+                    android:textColor="@color/dk_gray"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/exceed"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_toRightOf="@+id/textViewQuality"
+                    android:layout_below="@+id/textViewType"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/tracking_oval_yellow"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/textViewQuality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewType"
+                    android:layout_toStartOf="@+id/distcount_amt"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/imageView"
+                    android:gravity="left"
+                    android:text="Item Milk"
+                    android:textColor="@color/gray_1"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/distcount_amt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/textViewPrice"
+                    android:layout_alignParentRight="true"
+                    android:gravity="left"
+                    android:text="Discount: ₹ "
+                    android:textColor="@color/white"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:textSize="12sp"
+                    android:background="@color/blue_highlightener_color"/>
+
+                <TextView
+                    android:id="@+id/textViewPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="right"
+                    android:text="Rs 100"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/item_count_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/incr_decr_bg"
+                    android:layout_alignStart="@+id/textViewType"
+                    android:layout_below="@+id/textViewQuality"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    android:gravity="end">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="2dp">
+
+
+                        <ImageView
+                            android:id="@+id/decrease"
+                            android:layout_width="39dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp"
+                            android:padding="1dp"
+                            android:src="@drawable/ic_minus_100"
+                            android:tint="@color/colorPrimaryDark" />
+
+                        <TextView
+                            android:id="@+id/integer_number"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:gravity="center"
+                            android:textSize="18sp"
+                            android:textColor="@color/black"/>
+
+
+                        <ImageView
+                            android:id="@+id/increase"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:tint="@color/colorPrimaryDark"
+                            android:padding="1dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_add"
+                            android:layout_gravity="center_vertical" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+                &lt;!&ndash;<LinearLayout
+                    android:id="@+id/item_count_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textViewType"
+                    android:layout_below="@+id/textViewQuality"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/decrease"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/round"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_minus_48" />
+
+                    <TextView
+                        android:id="@+id/integer_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/increase"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/round"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_plus" />
+
+                </LinearLayout>&ndash;&gt;
+
+                <TextView
+                    android:id="@+id/total_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textViewType"
+                    android:layout_below="@+id/textViewQuality"
+                    android:gravity="left"
+                    android:layout_marginTop="10dp"
+                    android:text="10"
+                    android:textColor="@color/green_shade"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/quantity_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="8dp"
+                    android:text="ltr"
+                    android:layout_toEndOf="@+id/item_count_layout"
+                    android:layout_marginStart="6dp"
+                    android:layout_below="@+id/textViewQuality"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewQuality"
+                    android:layout_alignBottom="@+id/total_quantity"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/img_remove"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/trash"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Remove"
+                        android:layout_toRightOf="@+id/img_remove"
+                        android:layout_marginTop="12dp"
+                        android:textColor="#000"
+                        android:textSize="12sp"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+-->
 
 </LinearLayout>

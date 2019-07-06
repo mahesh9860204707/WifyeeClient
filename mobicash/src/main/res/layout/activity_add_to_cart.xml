@@ -99,6 +99,7 @@
                         android:text="Claim Here"
                         android:paddingTop="16dp"
                         android:paddingBottom="16dp"
+                        android:layout_centerVertical="true"
                         android:textAllCaps="true"
                         android:textColor="@color/secondaryPrimary"
                         android:layout_marginEnd="2dp"

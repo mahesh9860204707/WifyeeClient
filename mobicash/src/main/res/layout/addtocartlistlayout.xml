@@ -16,7 +16,9 @@
             android:id="@+id/rl_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_margin="5dp">
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp">
 
             <ImageView
                 android:id="@+id/imag_food"

@@ -31,11 +31,15 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.AddAddress;
+import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.database.DatabaseDB;
 import com.wifyee.greenfields.database.SQLController;
@@ -53,9 +57,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
 
     List mValues;
     Context mContext;
-    protected DairyListItemAdapter.ItemListener mListener;
-    ArrayAdapter<String> dataAdapter;
-    public ProgressDialog progressDialog;
+    private DairyListItemAdapter.ItemListener mListener;
 
     public DairyListItemAdapter(Context context, List values, DairyListItemAdapter.ItemListener itemListener) {
 
@@ -136,9 +138,20 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
             tvQuality.setText(item.getItemQuality());
             unit.setText(item.getItemUnit());
             discountAmt.setText("₹"+item.getItemDiscount());
-            Picasso.with(mContext)
+
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.food_bg4)
+                    .error(R.drawable.food_bg4)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+            Glide.with(mContext).load(item.getItemImagePath())
+                    .apply(options)
+                    .into(imageView);
+
+            /*Picasso.with(mContext)
                     .load(item.getItemImagePath())
-                    .noFade().into(imageView);
+                    .noFade().into(imageView);*/
         }
 
         @Override
@@ -256,14 +269,13 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
                 if (value >= 1) {
                     //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
                     myViewHolder.integerNumber.setText("" + value);
-                    //updateCart(object.itemID, String.valueOf(value));
+                    updateCart(((DairyProductListItem) mValues.get(position)).getItemId(), String.valueOf(value),myViewHolder);
                 }else {
                     deleteCartItem(((DairyProductListItem) mValues.get(position)).getItemId(),myViewHolder);
                     myViewHolder.llIncrDecr.setVisibility(View.INVISIBLE);
                     myViewHolder.llAdd.setVisibility(View.VISIBLE);
                     mListener.onRemoveCartCallBack(((DairyProductListItem) mValues.get(position)).getItemId(),0);
                 }
-                mListener.onRemoveCartCallBack("",1);
             }
         });
 
@@ -302,13 +314,15 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
     }
 
     private void checkItemQuantity(final ViewHolder viewHolder, final String itemId, final int quantity,final View view){
-        showProgressDialog();
+        DairyItemListActivity.progressBar.setVisibility(View.VISIBLE);
+        DairyItemListActivity.recyclerView.setAlpha(0.5f);
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         StringRequest request = new StringRequest(Request.Method.POST, DairyNetworkConstant.BASE_URL_DAIRY
                 + DairyNetworkConstant.CHECK_ITEM_INDIDUALY+itemId, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                cancelProgressDialog();
+                DairyItemListActivity.progressBar.setVisibility(View.GONE);
+                DairyItemListActivity.recyclerView.setAlpha(1f);
                 Log.w("checkItem",response);
                 try {
                     JSONObject object = new JSONObject(response);
@@ -324,7 +338,9 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    cancelProgressDialog();
+                    //Snackbar.make(view,e.toString(),Snackbar.LENGTH_LONG).show();
+                    DairyItemListActivity.progressBar.setVisibility(View.GONE);
+                    DairyItemListActivity.recyclerView.setAlpha(1f);
                 }
 
             }
@@ -332,7 +348,9 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("checkItem_error", String.valueOf(error));
-                cancelProgressDialog();
+                Snackbar.make(view,"Something went wrong. Plz try again",Snackbar.LENGTH_LONG).show();
+                DairyItemListActivity.progressBar.setVisibility(View.GONE);
+                DairyItemListActivity.recyclerView.setAlpha(1f);
             }
         });
         int socketTimeout = 30000;
@@ -341,20 +359,6 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
         requestQueue.add(request);
-    }
-
-    protected void showProgressDialog() {
-        progressDialog = new ProgressDialog(mContext, ProgressDialog.THEME_DEVICE_DEFAULT_LIGHT);
-        progressDialog.setMessage("Please wait...");
-        progressDialog.setIcon(0);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
-
-    protected void cancelProgressDialog() {
-        if (progressDialog != null) {
-            progressDialog.cancel();
-        }
     }
 
     public int checkInCart(String itemId,ViewHolder holder) {

@@ -96,6 +96,15 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
         Vholder.tv_foodprice.setText("₹"+CartFoodOderItem.getCalculatedAmt());
         Vholder.tv_quantityNumber.setText(CartFoodOderItem.quantiy);
 
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.food_bg4)
+                .error(R.drawable.food_bg4)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+        Glide.with(mContext).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+CartFoodOderItem.foodImage)
+                .apply(options)
+                .into(Vholder.imag_foodimage);
 
         Vholder.tv_foodName.setTypeface(Fonts.getSemiBold(mContext));
         Vholder.tv_fooddescrp.setTypeface(Fonts.getRegular(mContext));
@@ -269,15 +278,6 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
             }
         });
 
-        RequestOptions options = new RequestOptions()
-                .centerCrop()
-                .placeholder(R.drawable.food_bg4)
-                .error(R.drawable.food_bg4)
-                .diskCacheStrategy(DiskCacheStrategy.ALL);
-
-        Glide.with(mContext).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+CartFoodOderItem.foodImage)
-                .apply(options)
-                .into(Vholder.imag_foodimage);
 
         // imageLoader.DisplayImage(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+FoodOderItem.foodImage, Vholder.imag_foodimage);
         //Picasso.with(mContext).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+CartFoodOderItem.foodImage)

@@ -44,6 +44,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.AddAddress;
 import com.wifyee.greenfields.activity.BaseActivity;
@@ -79,9 +80,9 @@ import timber.log.Timber;
 public class MyCartFragment extends Fragment implements FragmentInterface {
 
     private RecyclerView recyclerView;
-    private Button btn_continue,addAddress;
+    private Button addAddress;
     private Context mContext = null;
-    private TextView totalAmount,tvExceed,address,change,totalDiscountAmt,claimHere,txtClaimText,emptyCartTxt;
+    private TextView totalAmount,tvExceed,address,change,totalDiscountAmt,claimHere,txtClaimText,emptyCartTxt,itemCount,txtTaxes;
     private ArrayList<PlaceOrderData> orderItem = new ArrayList<>() ;
     PlaceOrderAdapter adapter;
     FragmentInterface fInterface;
@@ -90,8 +91,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
     public ProgressDialog progressDialog;
     JSONObject object;
     ArrayList<Integer> exceed = new ArrayList<>();
-    RelativeLayout rl_address,rl_discount;
-    LinearLayout llBottom;
+    RelativeLayout rl_address,rl_discount,btn_continue;
     public static boolean is_address_set,isVoucherClaim;
     public static String completeAddress,location,latitude,longitude,voucherId="",voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
     ImageView emptyCartIcon;
@@ -119,14 +119,32 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
         address = (TextView) view.findViewById(R.id.address);
         change = (TextView) view.findViewById(R.id.change);
         totalDiscountAmt = (TextView) view.findViewById(R.id.total_discount_amt);
-        llBottom = (LinearLayout) view.findViewById(R.id.ll);
         recyclerView = (RecyclerView) view.findViewById(R.id.order_recyclerview);
         claimHere = (TextView) view.findViewById(R.id.claim_here);
         txtClaimText = (TextView) view.findViewById(R.id.txt);
         emptyCartIcon = view.findViewById(R.id.empty_cart_icon);
         emptyCartTxt = view.findViewById(R.id.empty_txt);
+        btn_continue =  view.findViewById(R.id.rl_proceedt_payment);
+        TextView txtTotalDiscountAmt = view.findViewById(R.id.txt_total_discount_amt);
+        TextView txtDeliverTo = view.findViewById(R.id.txt_deliver_to);
+        itemCount =  view.findViewById(R.id.item_count);
+        txtTaxes =  view.findViewById(R.id.txt_taxes);
+        TextView txtProceedToPayment =  view.findViewById(R.id.txt_proceed_to_payment);
 
-
+        addAddress.setTypeface(Fonts.getSemiBold(getContext()));
+        emptyCartTxt.setTypeface(Fonts.getSemiBold(getContext()));
+        txtTotalDiscountAmt.setTypeface(Fonts.getRegular(getContext()));
+        txtTotalDiscountAmt.setTypeface(Fonts.getRegular(getContext()));
+        totalDiscountAmt.setTypeface(Fonts.getSemiBold(getContext()));
+        txtClaimText.setTypeface(Fonts.getRegular(getContext()));
+        claimHere.setTypeface(Fonts.getSemiBold(getContext()));
+        txtDeliverTo.setTypeface(Fonts.getRegular(getContext()));
+        change.setTypeface(Fonts.getSemiBold(getContext()));
+        address.setTypeface(Fonts.getRegular(getContext()));
+        totalAmount.setTypeface(Fonts.getSemiBold(getContext()));
+        itemCount.setTypeface(Fonts.getRegular(getContext()));
+        txtTaxes.setTypeface(Fonts.getRegular(getContext()));
+        txtProceedToPayment.setTypeface(Fonts.getSemiBold(getContext()));
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -136,7 +154,6 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
         recyclerView.setAdapter(adapter);
         fillList();
 
-        btn_continue = (Button) view.findViewById(R.id.btn_continue);
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,7 +213,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
     public void onResume() {
         if (is_address_set){
             rl_address.setVisibility(View.VISIBLE);
-            llBottom.setVisibility(View.VISIBLE);
+            btn_continue.setVisibility(View.VISIBLE);
             addAddress.setVisibility(View.INVISIBLE);
             addAddress.setClickable(false);
             address.setText(completeAddress);
@@ -208,7 +225,8 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
             }else {
                 txtClaimText.setText(Html.fromHtml("You have selected <b>"+voucherName+"</b> voucher of <b>₹"+voucherDiscAmt+"</b>"));
             }
-            //isVoucherClaim = false;
+        }else {
+            txtClaimText.setText("");
         }
         super.onResume();
     }
@@ -216,6 +234,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
     private JSONObject setItem(){
         double amount = 0.0;
         double discountAmt = 0.0;
+        int totalItem = 0;
         object = new JSONObject();
         JSONArray jsonArr = new JSONArray();
         try {
@@ -233,6 +252,8 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
                     double quantityDiscountAmt = (quantityValue * Double.parseDouble(orderItem.get(i).getItemDiscount()));
                     discountAmt = discountAmt + quantityDiscountAmt;
 
+                    totalItem = totalItem + quantityValue;
+
                 }
                 object.put(ResponseAttributeConstants.ITEM, jsonArr);
 
@@ -242,6 +263,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        itemCount.setText(""+totalItem+" Items");
         totalAmount.setText(String.valueOf(amount));
         double roundOff = Math.round(discountAmt * 100.0) / 100.0;
         String s = String.format("%.2f", roundOff);
@@ -294,6 +316,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
                 String discount = cursor.getString(cursor.getColumnIndex("discount"));
 
                 double calculateAmount = Double.parseDouble(price) * Integer.parseInt(quantity);
+                double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
 
                 PlaceOrderData data = new PlaceOrderData();
                 data.setItemImagePath(image_path);
@@ -305,7 +328,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
                 data.setQuantityUnit(unit);
                 data.setOrderPrice(price);
                 data.setCalculatedAmt(String.valueOf(calculateAmount));
-                data.setItemDiscount(discount);
+                data.setItemDiscount(String.valueOf(calculateDiscount));
                 orderItem.add(data);
 
             }while (cursor.moveToNext());
@@ -460,7 +483,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
     public void fragmentBecameVisible() {
         double amount = 0.0;
         double discountAmt = 0.0;
-
+        int totalItem = 0;
         if(orderItem.size()>0){
             for(int i= 0;i<orderItem.size();i++){
                 int quantityValue = Integer.parseInt(orderItem.get(i).getQuantity());
@@ -469,8 +492,11 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
 
                 double quantityDiscountAmt = (quantityValue * Double.parseDouble(orderItem.get(i).getItemDiscount()));
                 discountAmt = discountAmt + quantityDiscountAmt;
+
+                totalItem = totalItem + quantityValue;
             }
         }
+        itemCount.setText(""+totalItem+" Items");
         totalAmount.setText(String.valueOf(amount));
         double roundOff = Math.round(discountAmt * 100.0) / 100.0;
         String s = String.format("%.2f", roundOff);

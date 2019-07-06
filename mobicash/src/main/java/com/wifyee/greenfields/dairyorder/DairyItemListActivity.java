@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
@@ -45,7 +47,7 @@ import timber.log.Timber;
 
 import static com.wifyee.greenfields.dairyorder.CounterCart.setBadgeCount;
 
-public class DairyItemListActivity extends BaseActivity implements DairyListItemAdapter.ItemListener,View.OnClickListener{
+public class DairyItemListActivity extends AppCompatActivity implements DairyListItemAdapter.ItemListener,View.OnClickListener{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -55,7 +57,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
     private Context mContext = null;
     private int totalCartCount;
     private LinearLayout emptyListView;
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private RelativeLayout btnPlaceOrder;
     private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="";
 
@@ -72,6 +74,8 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
 
     ImageView icNotHere;
     TextView textCartItemCount,txtNotHere,txtDetailNotHere,viewCart,itemCount,totalPrice,txtTaxes;
+    public static SpinKitView progressBar;
+    public RelativeLayout llParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +94,6 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
-
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -107,10 +110,11 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         txtNotHere = findViewById(R.id.txt_we_are_not);
         txtDetailNotHere = findViewById(R.id.txt_detail_we_are_not);
         viewCart =  findViewById(R.id.view_cart);
-        //progressBar =  findViewById(R.id.progressbar);
+        progressBar =  findViewById(R.id.progressbar);
         itemCount =  findViewById(R.id.item_count);
         totalPrice =  findViewById(R.id.total_price);
         txtTaxes =  findViewById(R.id.txt_taxes);
+        llParent = findViewById(R.id.ll);
 
         toolbarTitle.setTypeface(Fonts.getSemiBold(this));
         txtNotHere.setTypeface(Fonts.getSemiBold(this));
@@ -139,21 +143,19 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case  R.id.btn_place_order:
-                if(countCart()!=0) {
-                    Intent intent = new Intent(this, OrderSummaryActivity.class);
-                    Bundle data = new Bundle();
-                    //data.putParcelableArrayList("data", orderItem);
-                    //intent.putExtra("main_data", data);
-                    startActivity(intent);
-                    selectedItem = new ArrayList<>();;
-                    orderItem = new ArrayList<>();
-                    //finish();
-                }else{
-                    showErrorDialog("Please add item to cart before place order");
-                }
-                break;
+        if (v.getId() == R.id.btn_place_order) {
+            if (countCart() != 0) {
+                Intent intent = new Intent(this, OrderSummaryActivity.class);
+                Bundle data = new Bundle();
+                //data.putParcelableArrayList("data", orderItem);
+                //intent.putExtra("main_data", data);
+                startActivity(intent);
+                selectedItem = new ArrayList<>();
+                ;
+                orderItem = new ArrayList<>();
+            } else {
+                Snackbar.make(v, "Please add item to cart before place order", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -226,10 +228,11 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         for (String action : broadCastReceiverActionList) {
             broadcastManager.registerReceiver(getMerchantListDairyItemReceiver, new IntentFilter(action));
         }
-        showProgressDialog();
+        //showProgressDialog();
+        progressBar.setVisibility(View.VISIBLE);
         DairyProductIntentService.startActionListDairyItem(this,itemId,categoryId,merchantType,latitude,longitude);
 
-        setupBadge();
+        //setupBadge();
     }
 
     /**
@@ -241,6 +244,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             //cancelProgressDialog();
+            progressBar.setVisibility(View.GONE);
             try {
                 if (action.equals(DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_SUCCESS)) {
                     ArrayList<DairyProductListItem> item = intent.getParcelableArrayListExtra(NetworkConstant.EXTRA_DATA);
@@ -251,11 +255,9 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
                         recyclerView.setVisibility(View.VISIBLE);
                         btnPlaceOrder.setVisibility(View.VISIBLE);
                         DairyListItemAdapter adapter = new DairyListItemAdapter(DairyItemListActivity.this, item, listener);
-                        cancelProgressDialog();
                         recyclerView.setAdapter(adapter);
                         fillListItem();
                     }else {
-                        cancelProgressDialog();
                         icNotHere.setVisibility(View.VISIBLE);
                         txtNotHere.setVisibility(View.VISIBLE);
                         txtDetailNotHere.setVisibility(View.VISIBLE);
@@ -263,7 +265,6 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
                         btnPlaceOrder.setVisibility(View.GONE);
                     }
                 }else if(action.equals(DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_FAILURE)){
-                    cancelProgressDialog();
                     Toast.makeText(mContext,"Something went wrong! Please try again",Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
@@ -272,36 +273,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         }
     };
 
-
     /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dairy_menu_cart, menu);
-        MenuItem itemCart  =  menu.findItem(R.id.action_add_to_cart);
-        icon = (LayerDrawable) itemCart.getIcon();
-        setBadgeCount(this, icon, "0");
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.action_add_to_cart){
-            //if(totalCartCount !=0) {
-                Intent intent = new Intent(this, OrderSummaryActivity.class);
-                Bundle data = new Bundle();
-                data.putParcelableArrayList("data", orderItem);
-                intent.putExtra("main_data", data);
-                startActivity(intent);
-                selectedItem = new ArrayList<>();;
-                orderItem = new ArrayList<>();
-            //}
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.cart_menu,menu);
@@ -338,7 +310,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             }
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
 
@@ -402,7 +374,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         }
     }
 
-    public void addToCart() {
+    /*public void addToCart() {
         if(totalCartCount>=0) {
             totalCartCount++;
             setBadgeCount(getApplicationContext(), icon, String.valueOf(totalCartCount));
@@ -414,7 +386,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             totalCartCount--;
             setBadgeCount(getApplicationContext(), icon, String.valueOf(totalCartCount));
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -476,7 +448,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
 
         if(result.equals("Done")){
             Log.e("added","Record Added successfully");
-            setupBadge();
+            //setupBadge();
         }else {
             Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
             Log.e("result",result);
@@ -495,7 +467,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
 
         if(result.equals("Done")){
             Log.d("delete","Record delete");
-            setupBadge();
+            //setupBadge();
         }else {
             Log.d("result",result);
         }

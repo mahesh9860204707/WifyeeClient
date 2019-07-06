@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PorterDuff;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +17,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
@@ -31,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class DairyProductActivity extends BaseActivity implements DairyMainListAdapter.ItemListener {
+public class DairyProductActivity extends AppCompatActivity implements DairyMainListAdapter.ItemListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
@@ -43,6 +47,7 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
     GPSTracker gps;
     ImageView icNotHere;
     TextView txtNotHere,txtDetailNotHere;
+    SpinKitView progressBar;
     /**
      * List of actions supported.
      */
@@ -67,6 +72,8 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
         icNotHere = findViewById(R.id.ic_not_here);
         txtNotHere = findViewById(R.id.txt_we_are_not);
         txtDetailNotHere = findViewById(R.id.txt_detail_we_are_not);
+        progressBar = findViewById(R.id.progressbar);
+
         String title = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA1);
         productId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA);
         TextView toolbarTitle = mToolBar.findViewById(R.id.toolbar_title);
@@ -112,7 +119,7 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
         for (String action : broadCastReceiverActionList) {
             broadcastManager.registerReceiver(getMerchantListDairyReceiver, new IntentFilter(action));
         }
-        showProgressDialog();
+        progressBar.setVisibility(View.VISIBLE);
 
         DairyProductIntentService.startActionGetMerchantList(this,getLatitudeAndLongitude());
 
@@ -149,7 +156,7 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            cancelProgressDialog();
+            progressBar.setVisibility(View.GONE);
 
             try {
                 if (action.equals(DairyNetworkConstant.DAIRY_MERCHANT_LIST_STATUS_SUCCESS)) {
@@ -170,7 +177,9 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
 
 
                 }else if(action.equals(DairyNetworkConstant.DAIRY_MERCHANT_LIST_STATUS_FAILURE)){
-                    showErrorDialog("Something went wrong!");
+
+                    Toast.makeText(mContext,"Something went wrong!",Snackbar.LENGTH_LONG).show();
+
                 }else if(action.equals(DairyNetworkConstant.DAIRY_WALLET_BALANCE_STATUS_SUCCESS)){
                     LocalPreferenceUtility.saveWalletBalance(DairyProductActivity.this,intent.getStringExtra(NetworkConstant.EXTRA_DATA));
                 }

@@ -27,8 +27,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.database.DatabaseDB;
 import com.wifyee.greenfields.database.SQLController;
@@ -74,15 +78,14 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
 
         myViewHolder.setData(placeOrderData.get(position));
 
-        myViewHolder.rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                placeOrderData.remove(position);
-                deleteCart(place.getItemId());
-                notifyDataSetChanged();
-                fInterface.fragmentBecameVisible();
-            }
-        });
+        myViewHolder.textViewType.setTypeface(Fonts.getSemiBold(mContext));
+        myViewHolder.tvQuality.setTypeface(Fonts.getRegular(mContext));
+        myViewHolder.tvPrice.setTypeface(Fonts.getRegular(mContext));
+        myViewHolder.increase.setTypeface(Fonts.getSemiBold(mContext));
+        myViewHolder.decrease.setTypeface(Fonts.getSemiBold(mContext));
+        myViewHolder.integerNumber.setTypeface(Fonts.getSemiBold(mContext));
+        myViewHolder.discountAmt.setTypeface(Fonts.getRegular(mContext));
+
 
         myViewHolder.increase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +113,11 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
                     myViewHolder.tvPrice.setText("₹"+sum);
                     updateCart(place.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
+                }else {
+                    placeOrderData.remove(position);
+                    deleteCart(place.getItemId());
+                    notifyDataSetChanged();
+                    fInterface.fragmentBecameVisible();
                 }
             }
         });
@@ -124,46 +132,49 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textViewType;
-        public CircleImageView imageView;
-        public TextView tvQuality,discountAmt;
-        public TextView tvPrice;
-        public TextView tvItemUnit;
-        public TextView tvQuantity,integerNumber;
-        public RelativeLayout rl;
-        public ImageView decrease,increase;
+        public TextView textViewType,decrease,increase,integerNumber,tvQuality,discountAmt,tvPrice,tvItemUnit;
+        public ImageView imageView;
         public View exceed;
 
         public ViewHolder(View v) {
             super(v);
-            textViewType = (TextView) v.findViewById(R.id.textViewType);
-            imageView = (CircleImageView) v.findViewById(R.id.imageView);
-            tvQuality = (TextView) v.findViewById(R.id.textViewQuality);
-            tvPrice = (TextView) v.findViewById(R.id.textViewPrice);
-            tvQuantity = (TextView) v.findViewById(R.id.total_quantity);
-            tvItemUnit = (TextView) v.findViewById(R.id.quantity_unit);
-            rl = (RelativeLayout) v.findViewById(R.id.rl);
-            increase = (ImageView) v.findViewById(R.id.increase);
-            decrease = (ImageView) v.findViewById(R.id.decrease);
-            integerNumber = (TextView) v.findViewById(R.id.integer_number);
-            exceed = (View) v.findViewById(R.id.exceed);
-            discountAmt = (TextView) v.findViewById(R.id.distcount_amt);
+            textViewType =  v.findViewById(R.id.textViewType);
+            imageView =  v.findViewById(R.id.imageView);
+            tvQuality =  v.findViewById(R.id.textViewQuality);
+            tvPrice =  v.findViewById(R.id.textViewPrice);
+            tvItemUnit =  v.findViewById(R.id.quantity_unit);
+            increase =  v.findViewById(R.id.increase);
+            decrease =  v.findViewById(R.id.decrease);
+            integerNumber =  v.findViewById(R.id.integer_number);
+            //exceed =  v.findViewById(R.id.exceed);
+            discountAmt =  v.findViewById(R.id.distcount_amt);
         }
 
         public void setData(PlaceOrderData item) {
             //this.item = item;
-            textViewType.setText(item.getItemName());
+            String upperString = item.getItemName().substring(0,1).toUpperCase() + item.getItemName().substring(1).toLowerCase();
+            textViewType.setText(upperString);
             tvPrice.setText("₹" + item.getCalculatedAmt());
-            tvQuantity.setText("Total item:"+item.getQuantity());
+            //tvQuantity.setText("Total item:"+item.getQuantity());
             integerNumber.setText(item.getQuantity());
             tvQuality.setText(item.getItemType());
             //tvItemUnit.setText("Unit:"+item.getQuantityUnit());
             tvItemUnit.setText(item.getQuantityUnit());
-            Picasso.with(mContext)
-                    .load(item.getItemImagePath())
-                    .noFade().into(imageView);
-            discountAmt.setText("Discount: ₹"+item.getItemDiscount());
+            discountAmt.setText("₹"+item.getItemDiscount());
 
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.food_bg4)
+                    .error(R.drawable.food_bg4)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+            Glide.with(mContext).load(item.getItemImagePath())
+                    .apply(options)
+                    .into(imageView);
+
+            /*Picasso.with(mContext)
+                    .load(item.getItemImagePath())
+                    .noFade().into(imageView);*/
         }
 
     }

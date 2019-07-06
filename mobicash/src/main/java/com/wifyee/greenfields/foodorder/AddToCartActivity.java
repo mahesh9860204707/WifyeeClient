@@ -155,6 +155,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         cardViewBillDetails = findViewById(R.id.card_view_bill_details);
         cardViewPayment = findViewById(R.id.card_view_payment);
         paymentGroup = findViewById(R.id.payment_group);
+        TextView txtDeliverTo = findViewById(R.id.txt_deliver_to);
 
         mcontext = this;
         sharedPreference = new SharedPreference(mcontext);
@@ -197,6 +198,9 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         paymentCod.setTypeface(Fonts.getRegular(this));
         paymentWallet.setTypeface(Fonts.getRegular(this));
         paymentNetBanking.setTypeface(Fonts.getRegular(this));
+        txtDeliverTo.setTypeface(Fonts.getRegular(this));
+        change.setTypeface(Fonts.getSemiBold(this));
+        address.setTypeface(Fonts.getRegular(this));
 
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -587,7 +591,8 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 String fourth = "<font color='#1b7836'>₹"+voucherDiscAmt+"</font>";
                 txtClaimText.setText(Html.fromHtml("You have selected "+second+" voucher of "+fourth+""));
             }
-            //isVoucherClaim = false;
+        }else {
+            txtClaimText.setText("");
         }
 
         //sharedPreference=new SharedPreference(mcontext);

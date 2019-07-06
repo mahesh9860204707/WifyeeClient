@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -24,10 +25,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.BaseActivity;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -53,7 +56,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
     private int totalCartCount;
     private LinearLayout emptyListView;
     private RecyclerView recyclerView;
-    private Button btnPlaceOrder;
+    private RelativeLayout btnPlaceOrder;
     private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="";
 
     DairyListItemAdapter.ItemListener listener ;
@@ -67,10 +70,8 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_FAILURE,
     };
 
-    TextView textCartItemCount;
     ImageView icNotHere;
-    TextView txtNotHere,txtDetailNotHere;
-
+    TextView textCartItemCount,txtNotHere,txtDetailNotHere,viewCart,itemCount,totalPrice,txtTaxes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +80,16 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         ButterKnife.bind(this);
         mContext = this;
         listener = this;
+
+        TextView toolbarTitle = mToolbar.findViewById(R.id.toolbar_title);
+
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(R.string.item_title);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
 
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,12 +100,25 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             });
         }
 
-        btnPlaceOrder = (Button)findViewById(R.id.btn_place_order);
+        btnPlaceOrder = findViewById(R.id.btn_place_order);
         //emptyListView = (LinearLayout) findViewById(R.id.empty_list);
-        recyclerView = (RecyclerView) findViewById(R.id.dairy_list_item);
+        recyclerView =  findViewById(R.id.dairy_list_item);
         icNotHere = findViewById(R.id.ic_not_here);
         txtNotHere = findViewById(R.id.txt_we_are_not);
         txtDetailNotHere = findViewById(R.id.txt_detail_we_are_not);
+        viewCart =  findViewById(R.id.view_cart);
+        //progressBar =  findViewById(R.id.progressbar);
+        itemCount =  findViewById(R.id.item_count);
+        totalPrice =  findViewById(R.id.total_price);
+        txtTaxes =  findViewById(R.id.txt_taxes);
+
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
+        txtNotHere.setTypeface(Fonts.getSemiBold(this));
+        txtDetailNotHere.setTypeface(Fonts.getRegular(this));
+        viewCart.setTypeface(Fonts.getSemiBold(this));
+        totalPrice.setTypeface(Fonts.getSemiBold(this));
+        itemCount.setTypeface(Fonts.getRegular(this));
+        txtTaxes.setTypeface(Fonts.getRegular(this));
 
         itemId = getIntent().getStringExtra("data");
         categoryId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID);
@@ -137,6 +155,39 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
                 }
                 break;
         }
+    }
+
+    public void fillListItem() {
+        Log.e("Method","Function Calling");
+        double calculateAmount=0;
+        int totalItem=0;
+        SQLController controller=new SQLController(getApplicationContext());
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT * from cart_item";
+
+        Cursor cursor = controller.retrieve(query);
+        if(cursor.getCount()>0){
+            btnPlaceOrder.setVisibility(View.VISIBLE);
+            cursor.moveToFirst();
+            do{
+                String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
+                String price = cursor.getString(cursor.getColumnIndex("price"));
+
+                calculateAmount = calculateAmount + Double.parseDouble(price) * Integer.parseInt(quantity);
+                totalItem = totalItem + Integer.parseInt(quantity);
+
+            }while (cursor.moveToNext());
+
+            totalPrice.setText("₹"+calculateAmount);
+            itemCount.setText(""+totalItem+" Items");
+            txtTaxes.setText("plus taxes");
+        }else {
+            btnPlaceOrder.setVisibility(View.GONE);
+        }
+        cursor.close();
+        controller.close();
     }
 
     public int countCart() {
@@ -189,7 +240,7 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            cancelProgressDialog();
+            //cancelProgressDialog();
             try {
                 if (action.equals(DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_SUCCESS)) {
                     ArrayList<DairyProductListItem> item = intent.getParcelableArrayListExtra(NetworkConstant.EXTRA_DATA);
@@ -200,8 +251,11 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
                         recyclerView.setVisibility(View.VISIBLE);
                         btnPlaceOrder.setVisibility(View.VISIBLE);
                         DairyListItemAdapter adapter = new DairyListItemAdapter(DairyItemListActivity.this, item, listener);
+                        cancelProgressDialog();
                         recyclerView.setAdapter(adapter);
+                        fillListItem();
                     }else {
+                        cancelProgressDialog();
                         icNotHere.setVisibility(View.VISIBLE);
                         txtNotHere.setVisibility(View.VISIBLE);
                         txtDetailNotHere.setVisibility(View.VISIBLE);
@@ -209,7 +263,8 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
                         btnPlaceOrder.setVisibility(View.GONE);
                     }
                 }else if(action.equals(DairyNetworkConstant.DAIRY_LIST_ITEM_STATUS_FAILURE)){
-
+                    cancelProgressDialog();
+                    Toast.makeText(mContext,"Something went wrong! Please try again",Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 Timber.e("Exception caught in getMerchantListDairyReceiver " + e.getMessage());
@@ -293,9 +348,9 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
     }
 
     @Override
-    public void onBuyCallBack(final DairyProductListItem item,final String itemId,final String quantity,final String quantityUnit) {
-            //addToCart();
-           // selectedItem.add(item);
+    public void onBuyCallBack(final DairyProductListItem item,final String itemId,
+                              final String quantity,final String quantityUnit,int flag) {
+        if(flag == 0) {
             PlaceOrderData data = new PlaceOrderData();
             data.setItemImagePath(item.getItemImagePath());
             data.setItemName(item.getItemName());
@@ -308,15 +363,21 @@ public class DairyItemListActivity extends BaseActivity implements DairyListItem
             orderItem.add(data);
 
             insert(item.getItemImagePath(), item.getItemName(), item.getItemQuality(), item.getMerchantId(), itemId,
-                    quantity, quantityUnit, item.getItemPrice(),item.getItemDiscount());
+                    quantity, quantityUnit, item.getItemPrice(), item.getItemDiscount());
+        }
+
+        fillListItem();
     }
 
     @Override
-    public void onRemoveCartCallBack(final String topicId) {
+    public void onRemoveCartCallBack(final String topicId,int flag) {
             //removeFromCart();
+        if (flag==0) {
             deleteCart(topicId);
             removeDataFromOrderItem(topicId);
             removeSelectedItem(topicId);
+        }
+        fillListItem();
     }
 
     private void removeDataFromOrderItem(String topicId){

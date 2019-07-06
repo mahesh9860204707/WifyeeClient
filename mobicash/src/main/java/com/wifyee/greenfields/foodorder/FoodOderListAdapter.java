@@ -287,9 +287,9 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         holder.llAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("merIdOfFood",FoodOrderListActivity.merchantId);
-                Log.e("LocalPreferenceUtility",LocalPreferenceUtility.getMerchantId(context));
-                Log.e("MerchantName","merName"+LocalPreferenceUtility.getMerchantName(context));
+                //Log.e("merIdOfFood",FoodOrderListActivity.merchantId);
+                //Log.e("LocalPreferenceUtility",LocalPreferenceUtility.getMerchantId(context));
+                //Log.e("MerchantName","merName"+LocalPreferenceUtility.getMerchantName(context));
                 if(FoodOrderListActivity.merchantId.equals(LocalPreferenceUtility.getMerchantId(context)) || LocalPreferenceUtility.getMerchantId(context).equals("")) {
                     //if (holder.tv_add.getText().equals("ADD")) {
                     holder.llAdd.setVisibility(View.INVISIBLE);

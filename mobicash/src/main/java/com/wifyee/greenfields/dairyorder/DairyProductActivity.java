@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.BaseActivity;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -67,13 +69,15 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
         txtDetailNotHere = findViewById(R.id.txt_detail_we_are_not);
         String title = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA1);
         productId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA);
+        TextView toolbarTitle = mToolBar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(title);
 
         if (mToolBar != null) {
             setSupportActionBar(mToolBar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(title);
+            mToolBar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
             mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,8 +87,13 @@ public class DairyProductActivity extends BaseActivity implements DairyMainListA
                 }
             });
         }
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
+        txtNotHere.setTypeface(Fonts.getSemiBold(this));
+        txtDetailNotHere.setTypeface(Fonts.getRegular(this));
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        LinearLayoutManager horizontalLayoutManagaer =  new GridLayoutManager(mContext, 2);
+        LinearLayoutManager horizontalLayoutManagaer =  new LinearLayoutManager(mContext);
+        //LinearLayoutManager horizontalLayoutManagaer =  new GridLayoutManager(mContext, 2);
         //AutoFitGridLayoutManager layoutManager = new AutoFitGridLayoutManager(this, 500);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
     }

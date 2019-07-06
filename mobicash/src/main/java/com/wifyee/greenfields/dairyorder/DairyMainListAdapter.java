@@ -5,11 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 
 import java.util.List;
 
@@ -32,7 +37,7 @@ public class DairyMainListAdapter extends RecyclerView.Adapter  {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView textView;
-        public CircleImageView imageView;
+        public ImageView imageView;
         public RelativeLayout relativeLayout;
         DairyMerchantListModel item;
 
@@ -41,18 +46,31 @@ public class DairyMainListAdapter extends RecyclerView.Adapter  {
             super(v);
 
             v.setOnClickListener(this);
-            textView = (TextView) v.findViewById(R.id.textView);
-            imageView = (CircleImageView ) v.findViewById(R.id.imageView);
-            relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
+            textView =  v.findViewById(R.id.textView);
+            imageView =   v.findViewById(R.id.imageView);
+            relativeLayout =  v.findViewById(R.id.relativeLayout);
 
         }
 
         public void setData(DairyMerchantListModel item) {
             this.item = item;
-            textView.setText(item.getCompany());
-            Picasso.with(mContext)
+            String upperString = item.getCompany().substring(0,1).toUpperCase() + item.getCompany().substring(1);
+            textView.setText(upperString);
+
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.food_bg4)
+                    .error(R.drawable.food_bg4)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+            Glide.with(mContext)
                     .load(item.getImage())
-                    .noFade().into(imageView);
+                    .apply(options)
+                    .into(imageView);
+
+            textView.setTypeface(Fonts.getSemiBold(mContext));
+
+            /*Picasso.with(mContext).load(item.getImage()).noFade().into(imageView);*/
 
             if(item.getCurrentStatus().equals("0")) {
                 relativeLayout.setAlpha(0.3f);

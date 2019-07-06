@@ -349,7 +349,6 @@
         android:background="@color/log_gray_text_color"
         android:foreground="?android:attr/selectableItemBackground"
         android:text="Submit"
-        android:textStyle="bold"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true"/>

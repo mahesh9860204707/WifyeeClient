@@ -5,17 +5,25 @@
     android:id="@+id/activity_forgot_password"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".dairyorder.DairyProductActivity"
-    android:background="#F6F6F6">
+    tools:context=".dairyorder.DairyProductActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
+
+    </android.support.v7.widget.Toolbar>
 
     <ImageView
         android:id="@+id/ic_not_here"
@@ -36,7 +44,6 @@
         android:textSize="18sp"
         android:layout_marginTop="-25dp"
         android:textColor="@color/black"
-        android:textStyle="bold"
         android:visibility="gone"/>
 
     <TextView

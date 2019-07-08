@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.models.OrderItemModel;
 
 import java.util.List;
@@ -23,13 +24,14 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView orderName,orderAmount,orderQuantity;
+        public TextView orderName,orderAmount,orderQuantity,txt_x;
 
         public MyViewHolder(View view) {
             super(view);
-            orderName = (TextView) view.findViewById(R.id.text_order_number);
-            orderAmount = (TextView) view.findViewById(R.id.amount);
-            orderQuantity = (TextView) view.findViewById(R.id.quantity);
+            orderName =  view.findViewById(R.id.text_order_number);
+            orderAmount =  view.findViewById(R.id.amount);
+            orderQuantity =  view.findViewById(R.id.quantity);
+            txt_x =  view.findViewById(R.id.txt_x);
 
             context = view.getContext();
 
@@ -54,8 +56,16 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
     {
        final OrderItemModel order = orderItemModels.get(position);
         holder.orderName.setText(order.getItemName());
-        holder.orderAmount.setText("₹"+order.getItemPrice());
         holder.orderQuantity.setText(order.getItemQuantity());
+
+        int value = Integer.parseInt(order.getItemQuantity());
+        double amount = Double.parseDouble(order.getItemPrice()) * value;
+        holder.orderAmount.setText("₹"+ amount);
+
+        holder.orderName.setTypeface(Fonts.getRegular(context));
+        holder.orderAmount.setTypeface(Fonts.getRegular(context));
+        holder.orderQuantity.setTypeface(Fonts.getRegular(context));
+        holder.txt_x.setTypeface(Fonts.getRegular(context));
     }
     @Override
     public int getItemCount() {

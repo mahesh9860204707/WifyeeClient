@@ -415,7 +415,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
 
         if(result.equals("Done")){
             Log.d("update","Record update");
-            mListener.onBuyCallBack(((DairyProductListItem) mValues.get(1)), "", "", "",1);
+            mListener.onBuyCallBack(((DairyProductListItem) mValues.get(0)), "", "", "",1);
         }else {
             Log.d("result",result);
         }

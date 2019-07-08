@@ -55,6 +55,7 @@
     <color name="green_shade2">#8fd16b</color>
     <color name="green_shade3">#00FFCC</color>
     <color name="black">#000</color>
+    <color name="text_color">#808080</color>
     <color name="headings">#3797CF</color>
     <color name="gradEnd">#67EFC8</color>
     <color name="gradStart">#63C9FF</color>

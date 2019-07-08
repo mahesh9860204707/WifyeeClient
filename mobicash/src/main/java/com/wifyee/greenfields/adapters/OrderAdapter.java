@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.DateConvert;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.activity.OrderItemDetails;
 import com.wifyee.greenfields.interfaces.ItemClickListener;
 import com.wifyee.greenfields.models.OrderModel;
@@ -30,7 +32,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView orderid,orderAmount,orderTimeStamp;
+        public TextView orderid,orderAmount,orderTimeStamp,txtAmount,txtDate;
         public CardView cardView;
         public Button serial_number;
         private ItemClickListener clickListener;
@@ -40,6 +42,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             orderid = (TextView) view.findViewById(R.id.text_order_number);
             orderAmount = (TextView) view.findViewById(R.id.amount);
             orderTimeStamp = (TextView) view.findViewById(R.id.on_date);
+            txtAmount =  view.findViewById(R.id.txt_amount);
+            txtDate =  view.findViewById(R.id.txt_date);
             cardView = (CardView) view.findViewById(R.id.card_view);
             serial_number= (Button) view.findViewById(R.id.text_order_serial_number);
 
@@ -81,11 +85,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
        final OrderModel order = orderModels.get(position);
         holder.orderid.setText(order.getOrderId());
         holder.orderAmount.setText("₹"+order.getOrderAmount());
-        holder.orderTimeStamp.setText(order.getOrderDate());
-        holder.serial_number.setText("#"+ String.valueOf(position+1));
+        holder.orderTimeStamp.setText(DateConvert.getDate(order.getOrderDate()));
+        holder.serial_number.setText("#");
 
-        GradientDrawable drawable = (GradientDrawable)holder.serial_number.getBackground();
-        drawable.setColor(getRandomColor());
+        holder.orderid.setTypeface(Fonts.getSemiBold(context));
+        holder.orderAmount.setTypeface(Fonts.getRegular(context));
+        holder.orderTimeStamp.setTypeface(Fonts.getRegular(context));
+        holder.txtAmount.setTypeface(Fonts.getRegular(context));
+        holder.txtDate.setTypeface(Fonts.getRegular(context));
+
+
+        //GradientDrawable drawable = (GradientDrawable)holder.serial_number.getBackground();
+        //drawable.setColor(getRandomColor());
 
         holder.setClickListener(new ItemClickListener() {
             @Override

@@ -325,6 +325,7 @@ public class NetworkConstant {
     public static final String REFUND_CANCELLATION ="http://wifyee.com/refund-cancellation.html";
     public static final String PRIVACY_POLICY ="http://wifyee.com/privacy.html";
     public static final String TOKEN_UPDATE ="http://wifyeepay.com/api/commonApi.php?request=updateToken";
+    public static final String MEDICINE_UPDATE ="/api/usermedicineapi.php?request=updateMedicineOrder";
 
     //ORDER_ITEM API
     public static final String FOOD_ORDER_ITEM ="/api/food_order.php?request=getfoodorderdetails";

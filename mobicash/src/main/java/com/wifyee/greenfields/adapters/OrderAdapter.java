@@ -107,6 +107,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                     intent.putExtra("merchantId",order.getMerchantId());
                     intent.putExtra("taskId",order.getTaskId());
                     intent.putExtra("merchantType",order.getMerchantType());
+                    intent.putExtra("order_on",order.getOrderDate());
 
                     /*Log.e("orderid",order.getOrderId());
                     Log.e("merchantId",order.getMerchantId());

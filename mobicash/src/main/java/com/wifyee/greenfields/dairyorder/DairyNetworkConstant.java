@@ -122,7 +122,12 @@ public class DairyNetworkConstant {
     public static final String ORDER_ITEM_ID ="item_id";
     public static final String ORDER_QUANTITY = "quantity";
     public static final String ORDER_AMOUNT = "amount";
+    public static final String ORD_ORDER_AMT = "order_amount";
     public static final String ORDER_USER_ID = "userId";
+    public static final String ORDER_GST_AMT = "gst_amount";
+    public static final String ORDER_DELIVERY_AMT = "delivery_amount";
+    public static final String ORDER_CLAIM_TYPE = "claim_type";
+    public static final String ORDER_ON = "order_on";
     public static final String ORDER_USER_TYPE = "userType";
     public static final String ORDER_PRICE ="orderPrice";
     public static final String ORDER_DATE_TIME = "orderDateTime";
@@ -134,6 +139,7 @@ public class DairyNetworkConstant {
     public static final String ORDER_PAYMENT_MODE ="payment_mode";
     public static final String ORDER_MERCHANT_ID = "merchantId";
     public static final String ORDER_MOB_NUMBER = "moblile";
+    public static final String ORDER_MOBILE_NUMBER = "mobile";
     public static final String ORDER_DESCRIPTION = "description";
     public static final String ORDER_PIN = "pincode";
     public static final String SUBSCRIPTION_FROM_DATE = "subscription_from_date";

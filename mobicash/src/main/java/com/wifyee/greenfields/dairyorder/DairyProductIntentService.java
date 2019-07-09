@@ -387,7 +387,7 @@ public class DairyProductIntentService extends IntentService {
      * parameters.
      */
     private void handleActionAddOrder(Intent intent) {
-        JSONObject obj = null;
+        JSONObject obj;
         String paymentMode = intent.getStringExtra(EXTRA_PARAM3);
         String pinCode = intent.getStringExtra(EXTRA_PARAM4);
         String location = intent.getStringExtra(EXTRA_PARAM5);

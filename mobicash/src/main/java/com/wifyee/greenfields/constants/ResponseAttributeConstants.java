@@ -106,12 +106,15 @@ public class ResponseAttributeConstants {
     public static final String TASK_ID = "task_id";
     public static final String ORDER_AMOUNT = "order_amount";
     public static final String ORDER_STATUS = "order_status";
+    public static final String PAYMENT_STATUS = "payment_status";
+    public static final String DISC_AMT = "disc_amt";
     public static final String UPDATED_ON = "updated_on";
     public static final String ORDER_ON = "order_on";
     public static final String ORDERS = "orders";
     public static final String ITEMNAME = "item_name";
     public static final String ITEMQUANTITY = "item_quantity";
     public static final String ITEMAMOUNT = "item_amount";
+    public static final String DELIVERY_AMT = "delivery_amount";
     public static final String ORDERPRICE = "orderPrice";
     public static final String CODE ="code" ;
     public static final String TIMEFROM ="timeFrom" ;

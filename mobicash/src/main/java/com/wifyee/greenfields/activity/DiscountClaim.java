@@ -164,6 +164,14 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
                             AddToCartActivity.voucherDiscAmt = voucherDiscountAmt;
                             AddToCartActivity.claimType = "2";
                             finish();
+                        }else if(flag.equalsIgnoreCase("order_item")){
+                            OrderItemDetails.isVoucherClaim = true;
+                            OrderItemDetails.voucherId = voucherID;
+                            OrderItemDetails.voucherNo = voucherNO;
+                            OrderItemDetails.voucherName = voucherName;
+                            OrderItemDetails.voucherDiscAmt = voucherDiscountAmt;
+                            OrderItemDetails.claimType = "2";
+                            finish();
                         }
                     } else {
                         Toast.makeText(DiscountClaim.this, "Select at least one voucher!", Toast.LENGTH_SHORT).show();
@@ -183,6 +191,11 @@ public class DiscountClaim extends AppCompatActivity implements OnClickListener 
                         AddToCartActivity.isVoucherClaim = true;
                         AddToCartActivity.claimType = "1";
                         AddToCartActivity.voucherDiscAmt = amount.replace("₹","");
+                        finish();
+                    }else if(flag.equalsIgnoreCase("order_item")){
+                        OrderItemDetails.isVoucherClaim = true;
+                        OrderItemDetails.claimType = "1";
+                        OrderItemDetails.voucherDiscAmt = amount.replace("₹","");
                         finish();
                     }
                 }

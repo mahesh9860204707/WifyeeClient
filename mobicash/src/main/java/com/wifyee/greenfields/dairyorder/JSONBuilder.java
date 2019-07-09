@@ -69,6 +69,37 @@ public class JSONBuilder {
         return addOrderJson;
     }
 
+    public static JSONObject getPostAddOrderJson(Context context,String order_id,String gstAmount,String deliveryAmt,String discountAmt,
+                                                 String orderAmount,String claimType,String voucherId,String voucherNo,String orderOn,
+                                                 String paymentMode,String refId){
+        JSONObject json = new JSONObject();
+        try {
+            json.put(DairyNetworkConstant.ORDER_ID, order_id);
+            json.put(DairyNetworkConstant.ORDER_USER_ID, LocalPreferenceUtility.getUserCode(context));
+            json.put(DairyNetworkConstant.ORDER_GST_AMT,gstAmount);
+            json.put(DairyNetworkConstant.ORDER_DELIVERY_AMT,deliveryAmt);
+            json.put(DairyNetworkConstant.ORDER_DISCOUNT_AMT,discountAmt);
+            json.put(DairyNetworkConstant.ORD_ORDER_AMT,orderAmount);
+            json.put(DairyNetworkConstant.CLAIM_TYPE,claimType);
+            json.put(DairyNetworkConstant.VOUCHER_ID,voucherId);
+            json.put(DairyNetworkConstant.VOUCHER_NO,voucherNo);
+            json.put(DairyNetworkConstant.ORDER_ON,orderOn);
+            json.put(DairyNetworkConstant.ORDER_PAYMENT_MODE,paymentMode);
+            if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_WALLET)){
+                json.put(DairyNetworkConstant.ORDER_PIN,MobicashUtils.md5(LocalPreferenceUtility.getUserPassCode(context)));
+                json.put(DairyNetworkConstant.ORDER_MOBILE_NUMBER,LocalPreferenceUtility.getUserMobileNumber(context));
+                json.put(DairyNetworkConstant.ORDER_DESCRIPTION,"OrderItemTest");
+            }
+            if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO)){
+                json.put(DairyNetworkConstant.ORDER_REF_ID,refId);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return json;
+    }
+
     private static String getLogitude(GPSTracker gps) {
         String longitude="";
         if (gps.canGetLocation()) {

@@ -134,7 +134,6 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
         addAddress.setTypeface(Fonts.getSemiBold(getContext()));
         emptyCartTxt.setTypeface(Fonts.getSemiBold(getContext()));
         txtTotalDiscountAmt.setTypeface(Fonts.getRegular(getContext()));
-        txtTotalDiscountAmt.setTypeface(Fonts.getRegular(getContext()));
         totalDiscountAmt.setTypeface(Fonts.getSemiBold(getContext()));
         txtClaimText.setTypeface(Fonts.getRegular(getContext()));
         claimHere.setTypeface(Fonts.getSemiBold(getContext()));
@@ -222,8 +221,10 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
         if(isVoucherClaim){
             if (claimType.equals("1")){
                 txtClaimText.setText("Cashback amount will be added in your wallet within 24 hours");
-            }else {
-                txtClaimText.setText(Html.fromHtml("You have selected <b>"+voucherName+"</b> voucher of <b>₹"+voucherDiscAmt+"</b>"));
+            }else if (claimType.equals("2")){
+                String second = "<font color='#1b7836'>"+voucherName+"</font>";
+                String fourth = "<font color='#1b7836'>₹"+voucherDiscAmt+"</font>";
+                txtClaimText.setText(Html.fromHtml("You have selected "+second+" voucher of "+fourth+""));
             }
         }else {
             txtClaimText.setText("");

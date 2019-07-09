@@ -1,7 +1,15 @@
 package com.wifyee.greenfields.activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PorterDuff;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -9,10 +17,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,23 +33,43 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.DateConvert;
 import com.wifyee.greenfields.Utils.Fonts;
+import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
+import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.adapters.OrderItemAdapter;
 import com.wifyee.greenfields.constants.NetworkConstant;
+import com.wifyee.greenfields.constants.PaymentConstants;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
+import com.wifyee.greenfields.dairyorder.DairyNetworkConstant;
+import com.wifyee.greenfields.dairyorder.JSONBuilder;
+import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
+import com.wifyee.greenfields.foodorder.AddToCartActivity;
+import com.wifyee.greenfields.foodorder.CartFoodOrderResponse;
+import com.wifyee.greenfields.foodorder.DeductMoneyWalletResponse;
+import com.wifyee.greenfields.foodorder.GstOnFoodItemResponse;
 import com.wifyee.greenfields.mapper.ModelMapper;
 import com.wifyee.greenfields.models.OrderItemModel;
+import com.wifyee.greenfields.models.requests.DeductMoneyWallet;
 import com.wifyee.greenfields.models.response.FailureResponse;
+import com.wifyee.greenfields.models.response.PayUPaymentGatewayResponse;
+import com.wifyee.greenfields.services.MobicashIntentService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.OkHttpClient;
 import timber.log.Timber;
+
+import static com.wifyee.greenfields.activity.WebViewActivity.ACTION_STATUS_VALUE;
 
 public class OrderItemDetails extends AppCompatActivity {
 
@@ -48,14 +79,20 @@ public class OrderItemDetails extends AppCompatActivity {
     OrderItemModel[] order;
     private ProgressDialog progressDialog;
     Toolbar mToolbar;
-    String orderId,merchantId,taskId,merchantType;
+    String orderId,merchantId,taskId,merchantType,paymentMode,orderOn;
     ImageView img1,img2,img3,img4,img5;
-    TextView txt1,txt2,txt3,txt4,txt5,paid,subTotal,deliveryFee,total,itemCount,totalamount;
+    TextView txt1,txt2,txt3,txt4,txt5,paid,subTotal,deliveryFee,total,itemCount,totalamount,totalDiscountAmt,txtClaimText;
     View view1,view2,view3,view4;
     ImageView imageView;
     private LinearLayout llPaymentDetails;
     private RelativeLayout rlPlaceOrder;
-    private CardView cardViewDiscount,cardViewCoupon;
+    private CardView cardViewDiscount,cardViewCoupon,cardViewPayment;
+    public static boolean isVoucherClaim;
+    public static String voucherId="",voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
+    private int paymentSelectedIndex = 0;
+    private RadioGroup paymentGroup;
+    private Context mcontext;
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +129,28 @@ public class OrderItemDetails extends AppCompatActivity {
         llPaymentDetails = findViewById(R.id.payment_ll);
         cardViewDiscount = findViewById(R.id.card_view_discount);
         cardViewCoupon = findViewById(R.id.card_view_coupon);
+        cardViewPayment = findViewById(R.id.card_view_payment);
         itemCount = findViewById(R.id.item_count);
         totalamount = findViewById(R.id.tv_totalamount);
         rlPlaceOrder = findViewById(R.id.rl_place_order);
         TextView txtPlaceOrder = findViewById(R.id.txt_place_order);
+        TextView txtTotalDiscountAmt = findViewById(R.id.txt_total_discount_amt);
+        totalDiscountAmt = findViewById(R.id.total_discount_amt);
+        txtClaimText = findViewById(R.id.txt);
+        TextView claimHere = findViewById(R.id.claim_here);
+        TextView txtPayment = findViewById(R.id.txt_payment);
+        final RadioButton paymentCod = findViewById(R.id.rb_cod);
+        RadioButton paymentWallet = findViewById(R.id.rb_wallet);
+        RadioButton paymentNetBanking = findViewById(R.id.rb_netbanking);
+        paymentGroup = findViewById(R.id.payment_group);
+
+        mcontext = this;
 
         orderId = getIntent().getStringExtra("order_id");
         merchantId = getIntent().getStringExtra("merchantId");
         taskId = getIntent().getStringExtra("taskId");
         merchantType = getIntent().getStringExtra("merchantType");
+        orderOn = getIntent().getStringExtra("order_on");
 
         title.setTypeface(Fonts.getSemiBold(this));
         title.setText(orderId);
@@ -117,11 +167,18 @@ public class OrderItemDetails extends AppCompatActivity {
         paid.setTypeface(Fonts.getRegular(this));
         subTotal.setTypeface(Fonts.getRegular(this));
         deliveryFee.setTypeface(Fonts.getRegular(this));
+        txtTotalDiscountAmt.setTypeface(Fonts.getRegular(this));
+        totalDiscountAmt.setTypeface(Fonts.getSemiBold(this));
+        txtClaimText.setTypeface(Fonts.getRegular(this));
+        claimHere.setTypeface(Fonts.getSemiBold(this));
         txt_taxes.setTypeface(Fonts.getRegular(this));
         total.setTypeface(Fonts.getBold(this));
         totalamount.setTypeface(Fonts.getBold(this));
         itemCount.setTypeface(Fonts.getRegular(this));
         txtPlaceOrder.setTypeface(Fonts.getSemiBold(this));
+        txtPayment.setTypeface(Fonts.getRegular(this));
+        paymentWallet.setTypeface(Fonts.getRegular(this));
+        paymentNetBanking.setTypeface(Fonts.getRegular(this));
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
@@ -138,6 +195,9 @@ public class OrderItemDetails extends AppCompatActivity {
                 }
             });
         }
+        int walletAmount = !LocalPreferenceUtility.getWalletBalance(mcontext).equals("")
+                ?Integer.parseInt(LocalPreferenceUtility.getWalletBalance(mcontext)) : 0;
+        paymentWallet.setText("Wallet (₹"+walletAmount+")");
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -146,6 +206,64 @@ public class OrderItemDetails extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         dataLoad();
 
+        claimHere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderItemDetails.this, DiscountClaim.class);
+                intent.putExtra("flag","order_item");
+                intent.putExtra("amount",totalDiscountAmt.getText().toString());
+                startActivity(intent);
+            }
+        });
+
+        paymentGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rb_cod) {
+                    paymentSelectedIndex = 0;
+                } else if(checkedId == R.id.rb_wallet) {
+                    paymentSelectedIndex = 1;
+                } else {
+                    paymentSelectedIndex = 2;
+                }
+            }
+        });
+
+        rlPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(),""+total_amount,Toast.LENGTH_SHORT).show();
+                if(!total.getText().toString().replace("₹","").equals("0")) {
+                    if(cardViewDiscount.getVisibility() == View.VISIBLE && isVoucherClaim){
+                        placeOrder(view);
+                    }else if(cardViewDiscount.getVisibility() == View.GONE){
+                        placeOrder(view);
+                    }else {
+                        Snackbar.make(view,"Please claim the discount amount first.",Snackbar.LENGTH_LONG).show();
+                    }
+                }else {
+                    //Snackbar.make(view,"Look like your cart is empty",Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        if(isVoucherClaim){
+            if (claimType.equals("1")){
+                txtClaimText.setText("Cashback amount will be added in your wallet within 24 hours");
+            }else if (claimType.equals("2")){
+                String second = "<font color='#1b7836'>"+voucherName+"</font>";
+                String fourth = "<font color='#1b7836'>₹"+voucherDiscAmt+"</font>";
+                txtClaimText.setText(Html.fromHtml("You have selected "+second+" voucher of "+fourth+""));
+            }
+        }else {
+            txtClaimText.setText("");
+        }
+        super.onResume();
     }
 
     private void dataLoad(){
@@ -173,6 +291,8 @@ public class OrderItemDetails extends AppCompatActivity {
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
+        //Log.e("ORD_details",jsonObject.toString());
+        //Log.e("url",url);
         AndroidNetworking.post(url)
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
@@ -196,6 +316,37 @@ public class OrderItemDetails extends AppCompatActivity {
                                             .load(jsonObject1.getString(ResponseAttributeConstants.PRESCRIPTION_IMAGE))
                                             .into(imageView);
                                 }*/
+                                if(jsonObject1.has(ResponseAttributeConstants.DELIVERY_AMT)){
+                                    deliveryFee.setText("₹"+jsonObject1.getString(ResponseAttributeConstants.DELIVERY_AMT));
+                                }/*else {
+                                    deliveryFee.setText("₹0");
+                                }*/
+
+                                //if (jsonObject1.has(ResponseAttributeConstants.ORDER_STATUS)) {
+                                    String orderStatus = jsonObject1.getString(ResponseAttributeConstants.ORDER_STATUS);
+                                    String paymentStatus = jsonObject1.getString(ResponseAttributeConstants.PAYMENT_STATUS);
+                                    if((orderStatus.equals("1") || orderStatus.equals("2") || orderStatus.equals("3") ||
+                                            orderStatus.equals("4")) && paymentStatus.equalsIgnoreCase("Pending")){
+                                        if(merchantType.equals("7")){
+                                            cardViewCoupon.setVisibility(View.VISIBLE);
+                                            cardViewDiscount.setVisibility(View.VISIBLE);
+                                            cardViewPayment.setVisibility(View.VISIBLE);
+                                            rlPlaceOrder.setVisibility(View.VISIBLE);
+                                            String disc_amt = jsonObject1.getString(ResponseAttributeConstants.DISC_AMT);
+                                            if(!disc_amt.equals("0.00")){
+                                                totalDiscountAmt.setText("₹"+disc_amt);
+                                            }else {
+                                                cardViewDiscount.setVisibility(View.GONE);
+                                            }
+                                        }else {
+                                            //cardViewCoupon.setVisibility(View.GONE);
+                                            //cardViewDiscount.setVisibility(View.GONE);
+                                        }
+                                        //cardViewPayment.setVisibility(View.VISIBLE);
+                                        //rlPlaceOrder.setVisibility(View.VISIBLE);
+                                    }
+                                //}
+
                                 if(jsonObject1.has(ResponseAttributeConstants.ITEM)) {
                                     recyclerView.setVisibility(View.VISIBLE);
                                     imageView.setVisibility(View.GONE);
@@ -219,18 +370,22 @@ public class OrderItemDetails extends AppCompatActivity {
 
                                     recyclerView.getRecycledViewPool().clear();
                                     adapter.notifyDataSetChanged();
-                                    double deliveryAmt = Double.parseDouble(orderAmt) - subTotalAmount;
+
                                     subTotal.setText("₹"+subTotalAmount);
-                                    //deliveryFee.setText("₹"+deliveryAmt);
                                     itemCount.setText(""+items+" Items");
                                     totalamount.setText("₹"+orderAmt);
                                     total.setText("₹"+orderAmt);
-                                   // String paymentMode = jsonObject1.getString(ResponseAttributeConstants.PAY_MODE);
-                                    /*if (paymentMode.equalsIgnoreCase("cod")){
-                                        paid.setText("Paid Via Cash");
-                                    }else {
-                                        paid.setText("Paid Via "+paymentMode.substring(0,1).toUpperCase()+paymentMode.substring(1));
-                                    }*/
+                                    String paymentMode = jsonObject1.getString(ResponseAttributeConstants.PAY_MODE);
+                                    if (!merchantType.equals("7")) {
+                                        if (paymentMode.equalsIgnoreCase("cod")) {
+                                            paid.setText("Paid Via Cash");
+                                        } else {
+                                            paid.setText("Paid Via " + paymentMode.substring(0, 1).toUpperCase() + paymentMode.substring(1));
+                                        }
+                                    }else if (merchantType.equals("7") &&
+                                            jsonObject1.getString(ResponseAttributeConstants.PAYMENT_STATUS).equalsIgnoreCase("Complete")){
+                                        paid.setText("Paid Via " + paymentMode.substring(0, 1).toUpperCase() + paymentMode.substring(1));
+                                    }
                                 }
 
                                 JSONArray array = object.getJSONArray(ResponseAttributeConstants.ORDER_STATUS);
@@ -383,6 +538,113 @@ public class OrderItemDetails extends AppCompatActivity {
                 });
     }
 
+    private void placeOrder(View view){
+        String total_amount = total.getText().toString().replace("₹","");
+        if (paymentSelectedIndex == 0) {
+            paymentMode = "cod";
+            actionAddPostOrder();
+        } else if ((paymentSelectedIndex == 1)) {
+            paymentMode = "wallet";
+            double amount = Double.parseDouble(total_amount);
+            int walletAmount = !LocalPreferenceUtility.getWalletBalance(mcontext).equals("")
+                    ?Integer.parseInt(LocalPreferenceUtility.getWalletBalance(mcontext)) : 0;
+            if(walletAmount >= amount){
+                actionAddPostOrder();
+            }else {
+                Snackbar.make(view,"Amount is exceeding to the wallet amount",Snackbar.LENGTH_LONG).show();
+            }
+        }
+        else if ((paymentSelectedIndex == 2)) {
+            paymentMode = "instamojo";
+        }
+    }
+
+    private void actionAddPostOrder(){
+        pDialog = new SweetAlertDialog(mcontext, SweetAlertDialog.PROGRESS_TYPE)
+                .setTitleText("Please wait...");
+        pDialog.show();
+        pDialog.setCancelable(false);
+
+        JSONObject json = new JSONObject();
+        String deliverAmt = deliveryFee.getText().toString().replace("₹","");
+        String total_amount = total.getText().toString().replace("₹","");
+
+        try {
+            json = JSONBuilder.getPostAddOrderJson(mcontext, orderId, "", deliverAmt, voucherDiscAmt,
+                    total_amount, claimType, voucherId, voucherNo, orderOn, paymentMode, "");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.e("POST_ORDER_JSON",json.toString());
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                . writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
+        AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING+NetworkConstant.MEDICINE_UPDATE)
+                .addJSONObjectBody(json)
+                .setOkHttpClient(okHttpClient)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Timber.e("called post add order");
+                        Log.e("responsePostAddOrd",response.toString());
+                        try {
+                            if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
+                                pDialog.setTitleText("Success!")
+                                        .setContentText(response.getString(ResponseAttributeConstants.MSG))
+                                        .setConfirmText("OK")
+                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        onPause();
+                                        finish();
+                                    }
+                                });
+//
+                            } else {
+                                pDialog.setTitleText("Failed! Please Try Again.")
+                                        .setContentText(response.getString(ResponseAttributeConstants.MSG))
+                                        .setConfirmText("OK")
+                                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                            }
+                        } catch (JSONException e) {
+                            Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        cancelProgressDialog();
+                        Log.e("ErrorAddOrder",error.toString());
+                        Timber.e("called onError of User dairy order API.");
+                        Timber.e("Error Message : " + error.getMessage());
+                        Timber.e("Error code : " + error.getErrorCode());
+                        Timber.e("Error Body : " + error.getErrorBody());
+                        Timber.e("Error Detail : " + error.getErrorDetail());
+
+                        pDialog.setTitleText("Error!")
+                                .setContentText(error.toString())
+                                .setConfirmText("OK")
+                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    }
+                });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (pDialog!=null && pDialog.isShowing() ){
+            pDialog.dismiss();
+        }
+    }
+
     private void showProgressDialog() {
         progressDialog = new ProgressDialog(this, ProgressDialog.THEME_DEVICE_DEFAULT_LIGHT);
         progressDialog.setMessage("Please wait...");
@@ -395,5 +657,11 @@ public class OrderItemDetails extends AppCompatActivity {
         if (progressDialog != null) {
             progressDialog.cancel();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isVoucherClaim = false;
     }
 }

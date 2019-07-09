@@ -196,6 +196,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         txtTotal.setTypeface(Fonts.getSemiBold(this));
         totalPrice.setTypeface(Fonts.getSemiBold(this));
         paymentCod.setTypeface(Fonts.getRegular(this));
+        txtPayment.setTypeface(Fonts.getRegular(this));
         paymentWallet.setTypeface(Fonts.getRegular(this));
         paymentNetBanking.setTypeface(Fonts.getRegular(this));
         txtDeliverTo.setTypeface(Fonts.getRegular(this));
@@ -524,10 +525,10 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         foodOrderRequest =new CartFoodOderRequest();
         itemsArrayList.clear();
         Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss", Locale.US);
-        SimpleDateFormat format=new SimpleDateFormat("yyyymmddhhmmss",Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.US);
+        SimpleDateFormat format=new SimpleDateFormat("yyyymmddHHmmss",Locale.US);
         String datetime = formatter.format(today);
-        String code_format=format.format(today);
+        String code_format = format.format(today);
         foodOrderRequest.orderId ="C_"+LocalPreferenceUtility.getMerchantId(mcontext)+code_format;
 
         for (int y = 0; y < favorites.size(); y++) {
@@ -536,12 +537,12 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         }
 
         if (paymentSelectedIndex==0) {
-            foodOrderRequest.payment_mode="wallet";
+            foodOrderRequest.payment_mode="cod";
         } else if (paymentSelectedIndex==1)  {
-            foodOrderRequest.payment_mode="payu";
+            foodOrderRequest.payment_mode="wallet";
         }
         else if (paymentSelectedIndex==2) {
-            foodOrderRequest.payment_mode="cod";
+            foodOrderRequest.payment_mode="payu";
         }
         foodOrderRequest.userId = LocalPreferenceUtility.getUserCode(mcontext);
         foodOrderRequest.merchantId = LocalPreferenceUtility.getMerchantId(mcontext);

@@ -207,6 +207,7 @@ public class UploadPrescription extends AppCompatActivity {
                             .setTitleText("Please wait...");
                     pDialog.show();
                     pDialog.setCancelable(false);
+                    Log.e("URL",NetworkConstant.USER_MEDICINE_UPLOAD_END_POINT);
 
                     VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST,
                             NetworkConstant.USER_MEDICINE_UPLOAD_END_POINT,
@@ -262,16 +263,15 @@ public class UploadPrescription extends AppCompatActivity {
                             params.put("userType", "client");
                             params.put("lotLoc", latitude);
                             params.put("longLoc", longitude);
+
                             return params;
                         }
 
                         @Override
                         protected Map<String, DataPart> getByteData() {
                             Map<String, DataPart> params = new HashMap<>();
-                            //if (bitmap != null) {
-                                params.put("priscriptionDocument", new DataPart(String.valueOf(System.currentTimeMillis()) + ".jpeg",
+                            params.put("priscriptionDocument", new DataPart(String.valueOf(System.currentTimeMillis()) + ".jpeg",
                                         getFileDataFromDrawable(bitmap)));
-                            //}
                             return params;
                         }
                         @Override

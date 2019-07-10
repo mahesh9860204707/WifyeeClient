@@ -11,6 +11,9 @@
             android:id="@+id/my_cashback"
             android:title="My Cashback" />
         <item
+            android:id="@+id/my_credit"
+            android:title="My Credit" />
+        <item
             android:id="@+id/beneficiary"
             android:title="Beneficiary"
             android:visible="false"/>

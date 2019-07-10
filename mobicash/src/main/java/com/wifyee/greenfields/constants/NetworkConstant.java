@@ -258,6 +258,7 @@ public class NetworkConstant {
     public static final String WIFYEE_HOTSPOT_VERFIFY_MOBILE_USER ="http://wifyee.wifi-soft.com/wifilan/api/app2.6/user";
     public static final String PARAM_MY_CASHBACK = "/api/clientcashbackapi.php?request=CashbackList&client_id=";
     public static final String PARAM_GET_VOUCHERS = "/api/voucherapi.php?request=getVochers";
+    public static final String PARAM_MERCHANT_CREDIT_CLIENT = "/api/merchantCreditsClientApi.php?request=getCreditedMerchants";
 
     // API end point
     public static final String USER_REQUEST_MERCHANT_CREDIT="http://wifyeepay.com/api/RequestMoneyApi.php?request=requestMoney";

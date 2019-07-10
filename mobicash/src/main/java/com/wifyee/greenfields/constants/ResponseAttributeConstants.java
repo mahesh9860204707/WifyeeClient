@@ -9,6 +9,12 @@ public class ResponseAttributeConstants {
     public static final String NEW_PIN_CODE = "newpincode";
     public static final String ENROLLED_DATE = "enrolledDate";
     public static final String MSG = "msg";
+    public static final String DEV_RESPONSE = "devResponse";
+    public static final String MER_ID = "mer_id";
+    public static final String MER_COMPANY = "mer_company";
+    public static final String TOTAL_AMOUNT = "total_amount";
+    public static final String MER_TYPE_ID = "mer_type_id";
+    public static final String MER_TYPE_NAME = "mer_type_name";
     public static final String PAY_MODE = "payment_mode";
     public static final String LOCATION = "usa_geo_address";
     public static final String LAT = "usa_lat";

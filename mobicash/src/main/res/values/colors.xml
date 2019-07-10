@@ -77,9 +77,30 @@
     <color name="orange_shade2">#fac34d</color>
     <color name="bk_transfer_type_color">#717171</color>
     <color name="product_border">#e5e5e5</color>
-
-
     <color name="log_gray_text_color">#a3737373</color>
+    <color name="color1">#1ABC9C</color>
+    <color name="color2">#E74C3C</color>
+    <color name="color3">#F1C40F</color>
+    <color name="color4">#3498DB</color>
+    <color name="color5">#9B59B6</color>
+    <color name="color6">#2ECC71</color>
+    <color name="color7">#77A959</color>
+    <color name="color8">#6A61b5</color>
+    <color name="color9">#00A9A7</color>
+    <color name="color10">#61B6DD</color>
+
+    <integer-array name="credit_color">
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+        <item>@color/color7</item>
+        <item>@color/color8</item>
+        <item>@color/color9</item>
+        <item>@color/color10</item>
+    </integer-array>
 
 
     <!--   <color name="colorPrimary">#3F51B5</color>

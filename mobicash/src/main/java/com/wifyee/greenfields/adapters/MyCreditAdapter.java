@@ -3,8 +3,12 @@ package com.wifyee.greenfields.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +18,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.DateConvert;
 import com.wifyee.greenfields.Utils.Fonts;
+import com.wifyee.greenfields.activity.CreditMerchantWise;
 import com.wifyee.greenfields.activity.OrderItemDetails;
 import com.wifyee.greenfields.interfaces.ItemClickListener;
 import com.wifyee.greenfields.models.MyCreditModel;
 import com.wifyee.greenfields.models.OrderModel;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Random;
 
@@ -81,7 +88,8 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder,final int position)
     {
        final MyCreditModel credit = creditModels.get(position);
-        holder.merName.setText(credit.getMerCompany());
+        String upperString = credit.getMerCompany().substring(0,1).toUpperCase() + credit.getMerCompany().substring(1).toLowerCase();
+        holder.merName.setText(upperString);
         holder.totalAmount.setText("₹"+credit.getTotalAmount());
         holder.merTypeName.setText("("+credit.getMerTypeName()+")");
 
@@ -110,14 +118,17 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
         holder.horizView.setBackgroundColor(randomAndroidColor);
         holder.imageView.setColorFilter(randomAndroidColor);
 
-        //GradientDrawable drawable = (GradientDrawable)holder.serial_number.getBackground();
-        //drawable.setColor(getRandomColor());
+        Drawable myDrawable = holder.imageView.getDrawable();
+        final Bitmap bitmap = ((BitmapDrawable)myDrawable).getBitmap();
 
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 if(!isLongClick){
-                    Intent intent = new Intent(context, OrderItemDetails.class);
+                    Intent intent = new Intent(context, CreditMerchantWise.class);
+                    intent.putExtra("mer_id",credit.getMerId());
+                    intent.putExtra("mer_name",credit.getMerCompany());
+                    intent.putExtra("bitmap", bitmap);
                     context.startActivity(intent);
                 }
             }

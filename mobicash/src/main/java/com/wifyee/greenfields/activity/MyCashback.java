@@ -213,8 +213,9 @@ public class MyCashback extends AppCompatActivity {
                                         amount = amount + quantityAmount;
                                     }
                                 }
-
-                                totalAmount.setText(String.valueOf(amount));
+                                double roundOff = Math.round(amount * 100.0) / 100.0;
+                                String roundAmount = String.format("%.2f", roundOff);
+                                totalAmount.setText(String.valueOf(roundAmount));
                             } else {
                                 Toast.makeText(MyCashback.this,
                                         "Something went wrong. PLease try again", Toast.LENGTH_SHORT).show();

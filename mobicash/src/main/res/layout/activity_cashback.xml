@@ -61,7 +61,7 @@
                         android:text=""
                         android:textColor="@android:color/white"
                         android:layout_marginStart="5dp"
-                        android:textSize="45sp" />
+                        android:textSize="42sp" />
 
                 </LinearLayout>
             </RelativeLayout>

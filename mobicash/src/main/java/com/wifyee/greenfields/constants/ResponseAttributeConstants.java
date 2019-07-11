@@ -10,7 +10,13 @@ public class ResponseAttributeConstants {
     public static final String ENROLLED_DATE = "enrolledDate";
     public static final String MSG = "msg";
     public static final String DEV_RESPONSE = "devResponse";
+    public static final String TOTAL_CREDIT_DUE = "total_credit_due";
     public static final String MER_ID = "mer_id";
+    public static final String MCD_ID = "mcd_id";
+    public static final String MER_CREDIT_ID = "merchant_credits_id";
+    public static final String RECEIVED_CREDIT = "received_credit";
+    public static final String PARTIAL_PAID_CREDIT = "partial_paid_credit";
+    public static final String DESCRIPTION = "description";
     public static final String MER_COMPANY = "mer_company";
     public static final String TOTAL_AMOUNT = "total_amount";
     public static final String MER_TYPE_ID = "mer_type_id";

@@ -259,6 +259,7 @@ public class NetworkConstant {
     public static final String PARAM_MY_CASHBACK = "/api/clientcashbackapi.php?request=CashbackList&client_id=";
     public static final String PARAM_GET_VOUCHERS = "/api/voucherapi.php?request=getVochers";
     public static final String PARAM_MERCHANT_CREDIT_CLIENT = "/api/merchantCreditsClientApi.php?request=getCreditedMerchants";
+    public static final String PARAM_CLIENT_CREDIT_BY_MERCHANT_ID= "/api/merchantCreditsClientApi.php?request=getClientsCreditByMerchantId";
 
     // API end point
     public static final String USER_REQUEST_MERCHANT_CREDIT="http://wifyeepay.com/api/RequestMoneyApi.php?request=requestMoney";

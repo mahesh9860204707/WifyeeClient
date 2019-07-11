@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardElevation="4dp"
-        android:layout_margin="4dp">
+        android:layout_margin="6dp">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -32,11 +32,11 @@
                 android:layout_marginBottom="12dp"/>
 
             <TextView
-                android:id="@+id/mer_company"
+                android:id="@+id/amount"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Sahara Hotel"
-                android:textSize="18sp"
+                android:text="$200"
+                android:textSize="16sp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/black"
@@ -46,38 +46,25 @@
                 android:layout_marginBottom="4dp"
                 />
 
-            <TextView
-                android:id="@+id/mer_type_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(Restuarant)"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="14sp"
-                android:layout_below="@+id/mer_company"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
-                />
-
-            <TextView
-                android:id="@+id/total_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Oriz"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:layout_below="@+id/mer_type_name"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="4dp"
+            <Button
+                android:id="@+id/pay"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/amount"
+                android:text="Pay"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_credit_drawable"
                 android:layout_marginBottom="10dp"
-                />
+                android:layout_marginTop="2dp"/>
 
             <View
                 android:id="@+id/horizview"
                 android:layout_width="24dp"
                 android:layout_height="5dp"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                />
 
         </RelativeLayout>
 

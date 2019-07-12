@@ -274,12 +274,12 @@ public class UploadPrescription extends AppCompatActivity {
                                         getFileDataFromDrawable(bitmap)));
                             return params;
                         }
-                        @Override
+                        /*@Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             HashMap<String, String> headers = new HashMap<String, String>();
                             headers.put("Content-Type", "charset=utf-8");
                             return headers;
-                        }
+                        }*/
                     };
 
                     Volley.newRequestQueue(getApplicationContext()).add(volleyMultipartRequest);

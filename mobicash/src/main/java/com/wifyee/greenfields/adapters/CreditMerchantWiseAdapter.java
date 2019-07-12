@@ -2,6 +2,7 @@
 package com.wifyee.greenfields.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
+import com.wifyee.greenfields.activity.PayCredit;
 import com.wifyee.greenfields.interfaces.ItemClickListener;
 import com.wifyee.greenfields.models.CreditMerchantWiseModel;
 import com.wifyee.greenfields.models.MyCreditModel;
@@ -29,7 +31,7 @@ public class CreditMerchantWiseAdapter extends RecyclerView.Adapter<CreditMercha
     private Bitmap bitmap;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView totalAmount;
+        public TextView totalAmount,paid;
         public Button pay;
         public ImageView imageView;
         public View horizView;
@@ -39,6 +41,7 @@ public class CreditMerchantWiseAdapter extends RecyclerView.Adapter<CreditMercha
             super(view);
             totalAmount =  view.findViewById(R.id.amount);
             pay =  view.findViewById(R.id.pay);
+            paid =  view.findViewById(R.id.paid);
             imageView =  view.findViewById(R.id.imageView);
             horizView =  view.findViewById(R.id.horizview);
 
@@ -79,10 +82,12 @@ public class CreditMerchantWiseAdapter extends RecyclerView.Adapter<CreditMercha
     {
        final CreditMerchantWiseModel credit = creditModels.get(position);
         holder.totalAmount.setText("₹"+credit.getReceivedCredit());
+        holder.paid.setText("Paid : ₹"+credit.getPartialPaidCredit());
         holder.imageView.setImageBitmap(bitmap);
 
         holder.totalAmount.setTypeface(Fonts.getSemiBold(context));
         holder.pay.setTypeface(Fonts.getSemiBold(context));
+        holder.paid.setTypeface(Fonts.getRegular(context));
 
         int[] androidColors = context.getResources().getIntArray(R.array.credit_color);
         int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
@@ -91,6 +96,16 @@ public class CreditMerchantWiseAdapter extends RecyclerView.Adapter<CreditMercha
 
         GradientDrawable drawable = (GradientDrawable)holder.pay.getBackground();
         drawable.setColor(randomAndroidColor);
+
+        holder.pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PayCredit.class);
+                intent.putExtra("total_amt",credit.getReceivedCredit());
+                intent.putExtra("paid_amt",credit.getPartialPaidCredit());
+                context.startActivity(intent);
+            }
+        });
 
         holder.setClickListener(new ItemClickListener() {
             @Override

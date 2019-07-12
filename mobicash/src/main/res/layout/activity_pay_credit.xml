@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PayCredit">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mtoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pay Credit"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="20sp"
+            android:layout_marginEnd="5dp"
+            />
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mtoolbar"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp">
+
+        <TextView
+            android:id="@+id/txt_total_credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Credit : "
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/total_credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/txt_total_credit"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/txt_paid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paid : "
+            android:layout_toStartOf="@+id/paid"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/paid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="14sp"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_amount"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/pay_edit_background"
+            android:layout_below="@+id/txt_total_credit"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/sign_rupee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="26sp"/>
+
+            <EditText
+                android:id="@+id/amount"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_toEndOf="@+id/sign_rupee"
+                android:background="@null"
+                android:hint="Enter Amount"
+                android:layout_centerVertical="true"
+                android:inputType="numberDecimal"
+                android:textSize="26sp"
+                android:layout_marginEnd="4dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txt_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Payment"
+            android:layout_below="@id/rl_amount"
+            android:layout_marginTop="20dp"/>
+
+        <RadioGroup
+            android:id="@+id/payment_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/txt_payment"
+            android:layout_marginTop="10dp">
+
+            <RadioButton
+                android:id="@+id/rb_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wallet"
+                android:checked="true"
+                android:buttonTint="@color/secondaryPrimary"/>
+
+            <RadioButton
+                android:id="@+id/rb_netbanking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Online Payment"
+                android:layout_marginTop="5dp"
+                android:buttonTint="@color/secondaryPrimary"/>
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pay"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:background="@color/secondaryPrimary"/>
+
+</RelativeLayout>

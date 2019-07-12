@@ -75,6 +75,8 @@ public class MyCreditActivity extends AppCompatActivity {
         }
 
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
+        //Toast.makeText(this,LocalPreferenceUtility.getUserFirstsName(this),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,LocalPreferenceUtility.getUserLastName(this),Toast.LENGTH_SHORT).show();
 
         recyclerView = findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -96,12 +98,12 @@ public class MyCreditActivity extends AppCompatActivity {
         showProgressDialog();
         JSONObject json = new JSONObject();
         try {
-            json.put("clientId","3496");
-            //json.put("clientId",LocalPreferenceUtility.getUserCode(MyCreditActivity.this));
+            //json.put("clientId","3496");
+            json.put("clientId",LocalPreferenceUtility.getUserCode(MyCreditActivity.this));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("json",json.toString());
+        //Log.e("json",json.toString());
 
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(5, TimeUnit.MINUTES)

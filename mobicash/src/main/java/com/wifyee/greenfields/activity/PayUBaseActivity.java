@@ -808,7 +808,7 @@ public class PayUBaseActivity extends FragmentActivity implements View.OnClickLi
                     mPayUPaymentGatewayRequestCCDC.email = clientEmail;
                     mPayUPaymentGatewayRequestCCDC.phone = LocalPreferenceUtility.getUserMobileNumber(getApplicationContext());
                     mPayUPaymentGatewayRequestCCDC.userId = LocalPreferenceUtility.getUserCode(getApplicationContext());
-                    if (mPayUPaymentGatewayRequestCCDC.planId!= null) {
+                    if(mPayUPaymentGatewayRequestCCDC.planId!= null) {
                         mPayUPaymentGatewayRequestCCDC.planId = planId;
                         mPayUPaymentGatewayRequestCCDC.planName = planName;
                         mPayUPaymentGatewayRequestCCDC.planData = plandata;

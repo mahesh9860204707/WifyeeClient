@@ -88,7 +88,7 @@ public class JSONBuilder {
             if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_WALLET)){
                 json.put(DairyNetworkConstant.ORDER_PIN,MobicashUtils.md5(LocalPreferenceUtility.getUserPassCode(context)));
                 json.put(DairyNetworkConstant.ORDER_MOBILE_NUMBER,LocalPreferenceUtility.getUserMobileNumber(context));
-                json.put(DairyNetworkConstant.ORDER_DESCRIPTION,"OrderItemTest");
+                json.put(DairyNetworkConstant.ORDER_DESCRIPTION,"Medicine");
             }
             if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO)){
                 json.put(DairyNetworkConstant.ORDER_REF_ID,refId);

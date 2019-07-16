@@ -52,6 +52,8 @@ public class DairyNetworkConstant {
      * payment response URL
      */
     public static final String PAYMENT_RESPONSE_URL = " http://wifyeepay.com/payments/app_response.php";
+    public static final String MEDICINE_PAYMENT_RESPONSE_URL = "http://wifyeepay.com/payments/common/instamojoAppResponse.php";
+    public static final String WEBHOOK = "http://wifyeepay.com/payments/instamojo_webhooks/online_transaction_wk.php";
 
     /**
      * get merchant list
@@ -68,6 +70,7 @@ public class DairyNetworkConstant {
      */
 
     public static final String PAYMENT_URL = "http://www.wifyeepay.com/payments/rest/WifyeePayments.php?request=payment_request";
+    public static final String MEDICINE_PAYMENT_URL = "http://wifyeepay.com/payments/rest/instaMojoWifyeePayment.php?request=payment_request";
 
     public static final String DATA = "data";
     public static final String MER_ID = "mer_id";

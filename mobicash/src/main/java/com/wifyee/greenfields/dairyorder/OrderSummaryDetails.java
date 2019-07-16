@@ -158,6 +158,7 @@ public class OrderSummaryDetails extends BaseActivity {
     /**
      * List of actions supported.
      */
+
     private String[] broadCastReceiverActionList = {
             DairyNetworkConstant.DAIRY_ADD_ORDER_STATUS_FAILURE,
             DairyNetworkConstant.DAIRY_ADD_ORDER_STATUS_SUCCESS,

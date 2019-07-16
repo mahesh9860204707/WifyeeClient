@@ -169,6 +169,7 @@ public class MerchantActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(merchantcategoryListReceiver);
     }
+
     private void cancelProgressDialog() {
         if (progressDialog != null) {
             progressDialog.cancel();

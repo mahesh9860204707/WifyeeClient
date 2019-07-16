@@ -130,7 +130,7 @@ public class WebViewActivity extends BaseActivity {
         planID = intent.getStringExtra("planId");
         instaMojoString = intent.getStringExtra("InstaMojo");
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
         String format = simpleDateFormat.format(new Date());
         todayString = format;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -356,6 +356,7 @@ public class WebViewActivity extends BaseActivity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, NetworkConstant.USER_VIEW_DATA_USAGE, jsonObject, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -540,6 +541,7 @@ public class WebViewActivity extends BaseActivity {
         @JavascriptInterface
         public void processContent(String aContent) {
             final String content = aContent;
+            Log.e("content",content);
             if (content.toLowerCase().contains("status")) {
                 webVieww.post(new Runnable() {
                     @Override

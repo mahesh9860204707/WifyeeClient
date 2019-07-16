@@ -119,6 +119,7 @@ public class ResponseAttributeConstants {
     public static final String ORDER_AMOUNT = "order_amount";
     public static final String ORDER_STATUS = "order_status";
     public static final String PAYMENT_STATUS = "payment_status";
+    public static final String PAYMENT_REQ_ID = "payment_request_id";
     public static final String DISC_AMT = "disc_amt";
     public static final String UPDATED_ON = "updated_on";
     public static final String ORDER_ON = "order_on";

@@ -151,6 +151,7 @@ public class DairyProductActivity extends AppCompatActivity implements DairyMain
     /**
      * Handling broadcast event for user Signup .
      */
+
     private BroadcastReceiver getMerchantListDairyReceiver = new BroadcastReceiver() {
 
         @Override

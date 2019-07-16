@@ -29,6 +29,7 @@ public class CreditMerchantWiseAdapter extends RecyclerView.Adapter<CreditMercha
     private List<CreditMerchantWiseModel> creditModels;
     private Context context;
     private Bitmap bitmap;
+    private String merId;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView totalAmount,paid;
@@ -63,10 +64,11 @@ public class CreditMerchantWiseAdapter extends RecyclerView.Adapter<CreditMercha
         }
 
     }
-    public CreditMerchantWiseAdapter(Context ctx, List<CreditMerchantWiseModel> creditModels, Bitmap bitmap) {
+    public CreditMerchantWiseAdapter(Context ctx, List<CreditMerchantWiseModel> creditModels, Bitmap bitmap,String merId) {
         this.creditModels = creditModels;
         this.context = ctx;
         this.bitmap = bitmap;
+        this.merId = merId;
     }
 
     @Override
@@ -103,6 +105,8 @@ public class CreditMerchantWiseAdapter extends RecyclerView.Adapter<CreditMercha
                 Intent intent = new Intent(context, PayCredit.class);
                 intent.putExtra("total_amt",credit.getReceivedCredit());
                 intent.putExtra("paid_amt",credit.getPartialPaidCredit());
+                intent.putExtra("mcId",credit.getMcdId());
+                intent.putExtra("merId",merId);
                 context.startActivity(intent);
             }
         });

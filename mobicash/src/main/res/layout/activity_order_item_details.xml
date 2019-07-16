@@ -507,7 +507,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingRight="10dp"
-                                android:text="Credi/Debit/Internet Banking"/>
+                                android:text="Online Payment"/>
 
                         </RadioGroup>
 

@@ -328,11 +328,13 @@ public class NetworkConstant {
     public static final String PRIVACY_POLICY ="http://wifyee.com/privacy.html";
     public static final String TOKEN_UPDATE ="http://wifyeepay.com/api/commonApi.php?request=updateToken";
     public static final String MEDICINE_UPDATE ="/api/usermedicineapi.php?request=updateMedicineOrder";
+    public static final String CREDIT_WALLET_PAYMENT ="/api/merchantCreditsClientApi.php?request=creditPayment";
 
     //ORDER_ITEM API
     public static final String FOOD_ORDER_ITEM ="/api/food_order.php?request=getfoodorderdetails";
     public static final String OTHER_ORDER_ITEM ="/api/food_order.php?request=getotherorderdetails";
     public static final String MEDICINE_ORDER_ITEM ="/api/food_order.php?request=getmedicineorderdetails";
+    public static final String CREDIT_PAY_ONLINE ="/api/merchantCreditsClientApi.php?request=creditPayment";
 
 
     // parameters

@@ -44,6 +44,7 @@ import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.PaymentConstants;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.dairyorder.DairyNetworkConstant;
+import com.wifyee.greenfields.dairyorder.DairyOrderSummaryWebViewActivity;
 import com.wifyee.greenfields.dairyorder.JSONBuilder;
 import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
 import com.wifyee.greenfields.foodorder.AddToCartActivity;
@@ -540,6 +541,7 @@ public class OrderItemDetails extends AppCompatActivity {
 
     private void placeOrder(View view){
         String total_amount = total.getText().toString().replace("₹","");
+        String deliverAmt = deliveryFee.getText().toString().replace("₹","");
         if (paymentSelectedIndex == 0) {
             paymentMode = "cod";
             actionAddPostOrder();
@@ -555,7 +557,22 @@ public class OrderItemDetails extends AppCompatActivity {
             }
         }
         else if ((paymentSelectedIndex == 2)) {
-            paymentMode = "instamojo";
+            //paymentMode = "instamojo";
+            //if (!LocalPreferenceUtility.getPinCode(OrderItemDetails.this).isEmpty()) {
+                Intent i = new Intent(OrderItemDetails.this, MedicineWebViewActivity.class);
+                i.putExtra("amount", total_amount);
+                i.putExtra("deliverAmt", deliverAmt);
+                i.putExtra("discount_amt",voucherDiscAmt);
+                i.putExtra("claim_type",claimType);
+                i.putExtra("voucher_id",voucherId);
+                i.putExtra("voucher_no",voucherNo);
+                i.putExtra("order_id",orderId);
+                i.putExtra("order_on",orderOn);
+                startActivity(i);
+                finish();
+            /*}else{
+                Snackbar.make(view,"Please update your profile before proceed!",Snackbar.LENGTH_LONG).show();
+            }*/
         }
     }
 

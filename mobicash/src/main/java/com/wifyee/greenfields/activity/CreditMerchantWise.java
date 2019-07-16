@@ -100,8 +100,15 @@ public class CreditMerchantWise extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new CreditMerchantWiseAdapter(this, creditModels,bitmap);
+        adapter = new CreditMerchantWiseAdapter(this, creditModels,bitmap,merchantId);
         recyclerView.setAdapter(adapter);
+
+        //dataLoad();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         dataLoad();
     }

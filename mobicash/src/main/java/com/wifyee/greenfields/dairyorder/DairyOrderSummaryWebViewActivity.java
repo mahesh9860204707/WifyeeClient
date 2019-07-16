@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
@@ -21,8 +22,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.BaseActivity;
 import com.wifyee.greenfields.database.DatabaseDB;
@@ -31,6 +34,7 @@ import com.wifyee.greenfields.database.SQLController;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -86,13 +90,16 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
         webView.getSettings().setBuiltInZoomControls(true);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView toolBarTitle = toolbar.findViewById(R.id.toolbar_title);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.payment_process_title));
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
         }
+
+        toolBarTitle.setTypeface(Fonts.getSemiBold(this));
 
         //get data from intent
         orderData = getIntent().getParcelableArrayListExtra("data");

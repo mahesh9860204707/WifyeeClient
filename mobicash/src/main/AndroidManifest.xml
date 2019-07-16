@@ -39,7 +39,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label,android:icon">
-        <activity android:name=".activity.PayCredit"></activity>
+        <activity android:name=".activity.PayCreditWebViewActivity"></activity>
+        <activity android:name=".activity.MedicineWebViewActivity" />
+        <activity android:name=".activity.PayCredit" />
         <activity android:name=".activity.CreditMerchantWise" />
         <activity android:name=".activity.MyCreditActivity" />
         <activity android:name=".activity.ApplyCoupons" />

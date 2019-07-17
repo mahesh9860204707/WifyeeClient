@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,11 +19,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -53,11 +57,8 @@ public class LandlineRechargeActivity extends BaseActivity implements View.OnCli
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.toolbar_back)
-    ImageButton back;
-
     @BindView(R.id.button_operator)
-    Button buttonOperator;
+    EditText buttonOperator;
 
     @BindView(R.id.top_up)
     Button buttonSubmit;
@@ -67,6 +68,24 @@ public class LandlineRechargeActivity extends BaseActivity implements View.OnCli
 
     @BindView(R.id.edit_text_amount)
     EditText rechargeAmount;
+
+    @BindView(R.id.til_operator)
+    TextInputLayout tilOperator;
+
+    @BindView(R.id.til_mobile_no)
+    TextInputLayout tilMobileNo;
+
+    @BindView(R.id.til_amount)
+    TextInputLayout tilAmount;
+
+    @BindView(R.id.txt_payment)
+    TextView txtPayment;
+
+    @BindView(R.id.radio_button_wallet)
+    RadioButton wallet;
+
+    @BindView(R.id.radio_button_payu)
+    RadioButton online;
 
 
 
@@ -104,13 +123,15 @@ public class LandlineRechargeActivity extends BaseActivity implements View.OnCli
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         buttonOperator.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
+        TextView toolbarTitle = mToolbar.findViewById(R.id.toolbar_title);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -118,6 +139,18 @@ public class LandlineRechargeActivity extends BaseActivity implements View.OnCli
                 }
             });
         }
+
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
+        buttonSubmit.setTypeface(Fonts.getSemiBold(this));
+        buttonOperator.setTypeface(Fonts.getSemiBold(this));
+        phoneNumberEditText.setTypeface(Fonts.getSemiBold(this));
+        rechargeAmount.setTypeface(Fonts.getSemiBold(this));
+        tilOperator.setTypeface(Fonts.getRegular(this));
+        tilMobileNo.setTypeface(Fonts.getRegular(this));
+        tilAmount.setTypeface(Fonts.getRegular(this));
+        txtPayment.setTypeface(Fonts.getSemiBold(this));
+        wallet.setTypeface(Fonts.getRegular(this));
+        online.setTypeface(Fonts.getRegular(this));
     }
 
     /**

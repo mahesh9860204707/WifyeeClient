@@ -239,7 +239,7 @@
     <string name="save_changes_button">Save Changes</string>
     <string name="add_button">Add</string>
     <string name="tv_operator">Operator</string>
-    <string name="select">--Select--</string>
+    <string name="select"> Select</string>
     <string name="tv_mobile_number">Mobile Number</string>
     <string name="tv_amount">Amount</string>
     <string name="tv_view_fees_charges">View Fees/Charges</string>
@@ -261,7 +261,7 @@
     <string name="beneficiary_delete_success">Delete Beneficiary Successfully Done</string>
     <!-- landline -->
     <string name="title_land_line">LandLine</string>
-    <string name="tv_number_customer">Landline Number/Customer Account Number</string>
+    <string name="tv_number_customer">Landline Number / Customer Account Number</string>
     <string name="amount">Amount</string>
 
     <!-- dth -->

@@ -8,20 +8,27 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Text;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -45,7 +52,7 @@ import timber.log.Timber;
 public class PrePaidRechargeActivity extends BaseActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener {
 
     private final int MINIMUM_PHONE_NUMBER_LENGHT = 4;
-    private final int MAXIMUM_PHONE_NUMBER_LENGHT = 19;
+    private final int MAXIMUM_PHONE_NUMBER_LENGHT = 10;
     private final int MINIMUM_BALANCE = 10;
     private String staticOperatorCode="";
 
@@ -56,7 +63,7 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
     //ImageButton back;
 
     @BindView(R.id.button_operator)
-    Button buttonOperator;
+    EditText buttonOperator;
 
     @BindView(R.id.top_up)
     Button buttonSubmit;
@@ -69,6 +76,24 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
 
     @BindView(R.id.radio_group_payment_type)
     RadioGroup typeGroup;
+
+    @BindView(R.id.til_operator)
+    TextInputLayout tilOperator;
+
+    @BindView(R.id.til_mobile_no)
+    TextInputLayout tilMobileNo;
+
+    @BindView(R.id.til_amount)
+    TextInputLayout tilAmount;
+
+    @BindView(R.id.txt_payment)
+    TextView txtPayment;
+
+    @BindView(R.id.radio_button_wallet)
+    RadioButton wallet;
+
+    @BindView(R.id.radio_button_payu)
+    RadioButton online;
 
     private Context mContext = null;
     private int selectedIndex = 0;
@@ -98,11 +123,14 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
         buttonOperator.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
         typeGroup.setOnCheckedChangeListener(this);
+        TextView toolbarTitle = mToolbar.findViewById(R.id.toolbar_title);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -111,6 +139,45 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
                 }
             });
         }
+
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
+        buttonSubmit.setTypeface(Fonts.getSemiBold(this));
+        buttonOperator.setTypeface(Fonts.getSemiBold(this));
+        phoneNumberEditText.setTypeface(Fonts.getSemiBold(this));
+        rechargeAmount.setTypeface(Fonts.getSemiBold(this));
+        tilOperator.setTypeface(Fonts.getRegular(this));
+        tilMobileNo.setTypeface(Fonts.getRegular(this));
+        tilAmount.setTypeface(Fonts.getRegular(this));
+        txtPayment.setTypeface(Fonts.getSemiBold(this));
+        wallet.setTypeface(Fonts.getRegular(this));
+        online.setTypeface(Fonts.getRegular(this));
+
+        int walletAmount = !LocalPreferenceUtility.getWalletBalance(this).equals("")
+                ?Integer.parseInt(LocalPreferenceUtility.getWalletBalance(this)) : 0;
+        //wallet.setText("Wallet ( ₹"+walletAmount+" )");
+        wallet.setText("Wallet");
+
+        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(phoneNumberEditText.getText().toString().length()==10){
+                    phoneNumberEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    phoneNumberEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
     }
     /**
      * operator list action
@@ -445,11 +512,7 @@ public class PrePaidRechargeActivity extends BaseActivity implements View.OnClic
 
     public Dialog onCreateDialogForOperatorSelection() {
         AlertDialog.Builder alertDialogBuilder = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            alertDialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-        } else {
-            alertDialogBuilder = new AlertDialog.Builder(this);
-        }
+        alertDialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
 
         alertDialogBuilder.setTitle(getString(R.string.operator_title))
                 .setSingleChoiceItems(operatorListArray, -1, new DialogInterface.OnClickListener() {

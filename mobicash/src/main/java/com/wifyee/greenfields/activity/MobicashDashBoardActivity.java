@@ -48,6 +48,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
@@ -191,6 +192,7 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final RelativeLayout content =  findViewById(R.id.content);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         LinearLayout llLocation = toolbar.findViewById(R.id.ll_loc);
@@ -217,10 +219,33 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                float slideX = drawerView.getWidth() * slideOffset;
+                content.setTranslationX(slideX);
+                //content.setScaleX(slideOffset);
+                //content.setScaleY(slideOffset);
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(true);
+
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -230,10 +255,9 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
 
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.secondaryPrimary));
 
-
         //drawer.setBackgroundColor(getResources().getColor(R.color.secondaryPrimary));
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         Menu m = navigationView.getMenu();
         for (int i=0;i<m.size();i++) {
             MenuItem mi = m.getItem(i);
@@ -301,6 +325,7 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
             }
             mTabLayout.getTabAt(0).getCustomView().setSelected(true);
         }
+
         System.gc();
 
         gps = new GPSTracker(MobicashDashBoardActivity.this);

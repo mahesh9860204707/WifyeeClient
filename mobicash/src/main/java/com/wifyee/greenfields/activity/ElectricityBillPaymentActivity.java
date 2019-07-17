@@ -12,8 +12,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.annotation.SuppressLint;
@@ -27,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,6 +43,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.adapters.SpinerAdapterBankList;
@@ -89,15 +93,11 @@ public class ElectricityBillPaymentActivity extends BaseActivity implements View
     static final int ZOOM = 2;
     int mode = NONE;
 
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.toolbar_back)
-    ImageButton back;
-
     @BindView(R.id.button_operator)
-    Button buttonOperator;
+    EditText buttonOperator;
 
     @BindView(R.id.top_up)
     Button buttonSubmit;
@@ -110,6 +110,27 @@ public class ElectricityBillPaymentActivity extends BaseActivity implements View
 
     @BindView(R.id.edit_text_bill_amount)
     EditText rechargeAmount;
+
+    @BindView(R.id.til_operator)
+    TextInputLayout tilOperator;
+
+    @BindView(R.id.til_mobile_no)
+    TextInputLayout tilMobileNo;
+
+    @BindView(R.id.til_amount)
+    TextInputLayout tilAmount;
+
+    @BindView(R.id.txt_payment)
+    TextView txtPayment;
+
+    @BindView(R.id.tv_note)
+    TextView txtNote;
+
+    @BindView(R.id.radio_button_wallet)
+    RadioButton wallet;
+
+    @BindView(R.id.radio_button_payu)
+    RadioButton online;
 
     private int selectedIndex = 0;
     private ProgressDialog progressDialog = null;
@@ -161,12 +182,15 @@ public class ElectricityBillPaymentActivity extends BaseActivity implements View
         buttonOperator.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
         viewPdf.setOnClickListener(this);
+        TextView toolbarTitle = mToolbar.findViewById(R.id.toolbar_title);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            back.setOnClickListener(new View.OnClickListener() {
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -174,6 +198,20 @@ public class ElectricityBillPaymentActivity extends BaseActivity implements View
                 }
             });
         }
+
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
+        buttonSubmit.setTypeface(Fonts.getSemiBold(this));
+        buttonOperator.setTypeface(Fonts.getSemiBold(this));
+        phoneNumberEditText.setTypeface(Fonts.getSemiBold(this));
+        rechargeAmount.setTypeface(Fonts.getSemiBold(this));
+        tilOperator.setTypeface(Fonts.getRegular(this));
+        tilMobileNo.setTypeface(Fonts.getRegular(this));
+        tilAmount.setTypeface(Fonts.getRegular(this));
+        txtPayment.setTypeface(Fonts.getSemiBold(this));
+        wallet.setTypeface(Fonts.getRegular(this));
+        online.setTypeface(Fonts.getRegular(this));
+        txtNote.setTypeface(Fonts.getRegular(this));
+
         //call Api For getting city list
         callApiCity(ElectricityBillPaymentActivity.this);
     }
@@ -417,7 +455,7 @@ public class ElectricityBillPaymentActivity extends BaseActivity implements View
         // Set dialog title
         layout.setTitle("Duplicate Bill");
 
-        Button yes = (Button) layout.findViewById(R.id.yes);
+        ImageButton yes = (ImageButton) layout.findViewById(R.id.yes);
         ImageView imageDetail = (ImageView) layout.findViewById(R.id.image);
 
         layout.show();
@@ -433,6 +471,7 @@ public class ElectricityBillPaymentActivity extends BaseActivity implements View
 
             }
         });
+
         imageDetail.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

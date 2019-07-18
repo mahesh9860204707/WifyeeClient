@@ -1,4 +1,4 @@
-package com.wifyee.greenfields.activity;
+package com.wifyee.greenfields.foodorder;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -21,33 +21,26 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
+import com.wifyee.greenfields.activity.MedicineWebViewActivity;
+import com.wifyee.greenfields.activity.MobicashDashBoardActivity;
 import com.wifyee.greenfields.constants.NetworkConstant;
+import com.wifyee.greenfields.constants.PaymentConstants;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.dairyorder.DairyNetworkConstant;
-import com.wifyee.greenfields.dairyorder.DairyOrderSummaryWebViewActivity;
-import com.wifyee.greenfields.dairyorder.DairyProductIntentService;
-import com.wifyee.greenfields.dairyorder.JSONBuilder;
 import com.wifyee.greenfields.database.DatabaseDB;
 import com.wifyee.greenfields.database.SQLController;
+import com.wifyee.greenfields.models.response.FailureResponse;
+import com.wifyee.greenfields.services.MobicashIntentService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.TimeUnit;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-import okhttp3.OkHttpClient;
-import timber.log.Timber;
-
-public class MedicineWebViewActivity extends AppCompatActivity {
+public class FoodWebViewActivity extends AppCompatActivity {
 
     private WebView webView;
     LinearLayout webLoading = null;
@@ -61,16 +54,19 @@ public class MedicineWebViewActivity extends AppCompatActivity {
 
     private String[] broadCastReceiverActionList = {
             ACTION_STATUS,
-            ACTION_STATUS_FAIL
+            ACTION_STATUS_FAIL,
+            NetworkConstant.STATUS_FOODODER_BYMERCHANT_LIST_SUCCESS,
+            NetworkConstant.STATUS_FOODORDER_BYMERCHANT_LIST_FAIL,
     };
 
-    String amount,discount_amt,claimType,voucherId,voucherNo,orderId,deliverAmt,orderOn;
-    private SweetAlertDialog pDialog;
+    String amount,voucherDiscAmt,claimType,voucherId,voucherNo,orderId,location,latitude,longitude,completeAddress;
+    private CartFoodOderRequest cartFoodOderRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_medicine_payment_web);
+        setContentView(R.layout.activity_food_web_view);
+
         webView = (WebView) findViewById(R.id.webView1);
 
         WebSettings webSettings = webView.getSettings();
@@ -92,17 +88,18 @@ public class MedicineWebViewActivity extends AppCompatActivity {
         }
 
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
-
-        //get data from intent
         Intent intent = getIntent();
         amount = intent.getStringExtra("amount");
         orderId = intent.getStringExtra("order_id");
-        discount_amt = intent.getStringExtra("discount_amt");
+        voucherDiscAmt = intent.getStringExtra("voucherDiscAmt");
         claimType = intent.getStringExtra("claim_type");
         voucherId = intent.getStringExtra("voucher_id");
         voucherNo = intent.getStringExtra("voucher_no");
-        deliverAmt = intent.getStringExtra("deliverAmt");
-        orderOn = intent.getStringExtra("order_on");
+        location = intent.getStringExtra("location");
+        completeAddress = intent.getStringExtra("completeAddress");
+        latitude = intent.getStringExtra("latitude");
+        longitude = intent.getStringExtra("longitude");
+        cartFoodOderRequest = (CartFoodOderRequest) getIntent().getSerializableExtra(PaymentConstants.FOODORDER_EXTRA);
 
         mcontext = this;
 
@@ -115,7 +112,7 @@ public class MedicineWebViewActivity extends AppCompatActivity {
             }
         });
 
-        webView.addJavascriptInterface(new MedicineWebViewActivity.MyJavaScriptInterface(webView,webLoading), "INTERFACE");
+        webView.addJavascriptInterface(new MyJavaScriptInterface(webView,webLoading), "INTERFACE");
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -142,30 +139,25 @@ public class MedicineWebViewActivity extends AppCompatActivity {
             }
         });
 
-        //if(intent!=null) {
-            JSONObject data = new JSONObject();
-            try {
-                data.put("amount",amount);
-                data.put("loginType", "Client");
-                data.put("purpose", "Medicine Payment");
-                data.put("ref_no", orderId);
-                data.put("clientId", LocalPreferenceUtility.getUserCode(MedicineWebViewActivity.this));
-                data.put("phone",LocalPreferenceUtility.getUserMobileNumber(MedicineWebViewActivity.this));
-                data.put("email","");
-                data.put("responseUrl", DairyNetworkConstant.MEDICINE_PAYMENT_RESPONSE_URL);
-                data.put("webhook", DairyNetworkConstant.WEBHOOK);
-                data.put("buyer_name",LocalPreferenceUtility.getUserLastName(MedicineWebViewActivity.this)+" "+LocalPreferenceUtility.getUserFirstsName(MedicineWebViewActivity.this));
-                //Log.e("data",data.toString());
-                //Log.e("url",DairyNetworkConstant.MEDICINE_PAYMENT_URL);
-                //Show the web page
-                webView.postUrl(DairyNetworkConstant.MEDICINE_PAYMENT_URL, ("" + data.toString()).getBytes());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        //}
+        JSONObject data = new JSONObject();
+        try {
+            data.put("amount",amount);
+            data.put("loginType", "Client");
+            data.put("purpose", "Food Order Payment");
+            data.put("ref_no", orderId);
+            data.put("clientId", LocalPreferenceUtility.getUserCode(mcontext));
+            data.put("phone",LocalPreferenceUtility.getUserMobileNumber(mcontext));
+            data.put("email","");
+            data.put("responseUrl", DairyNetworkConstant.MEDICINE_PAYMENT_RESPONSE_URL);
+            data.put("webhook", DairyNetworkConstant.WEBHOOK);
+            data.put("buyer_name",LocalPreferenceUtility.getUserLastName(mcontext) + " "
+                    +LocalPreferenceUtility.getUserFirstsName(mcontext));
+            //Show the web page
+            webView.postUrl(DairyNetworkConstant.MEDICINE_PAYMENT_URL, ("" + data.toString()).getBytes());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
-
-    /* An instance of this class will be registered as a JavaScript interface */
     class MyJavaScriptInterface {
 
         private WebView webVieww;
@@ -210,9 +202,7 @@ public class MedicineWebViewActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(transactionHistoryReceiver);
-        if ( pDialog!=null && pDialog.isShowing() ){
-            pDialog.dismiss();
-        }
+
     }
 
     @Override
@@ -224,10 +214,6 @@ public class MedicineWebViewActivity extends AppCompatActivity {
             broadcastManager.registerReceiver(transactionHistoryReceiver, new IntentFilter(action));
         }
     }
-
-    /**
-     * Handling broadcast event for payment status
-     */
     private BroadcastReceiver transactionHistoryReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -238,126 +224,93 @@ public class MedicineWebViewActivity extends AppCompatActivity {
                 try {
                     JSONObject object = new JSONObject(content);
                     String refId = object.getString(ResponseAttributeConstants.PAYMENT_REQ_ID);
-                    actionAddPostOrder(refId);
+                    webLoading.setVisibility(View.VISIBLE);
+                    MobicashIntentService.startActionSendFoodRequest(mcontext,cartFoodOderRequest,location,latitude,longitude,
+                            completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,refId);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }if (actionTransactionHistory.equals(NetworkConstant.STATUS_FOODODER_BYMERCHANT_LIST_SUCCESS)) {
+                CartFoodOrderResponse gstOnFoodItemResponse = (CartFoodOrderResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
+                if (gstOnFoodItemResponse != null && gstOnFoodItemResponse.status != null) {
+                    webLoading.setVisibility(View.INVISIBLE);
+                    AddToCartActivity.isVoucherClaim = false;
+                    AddToCartActivity.voucherDiscAmt="";
+                    AddToCartActivity.voucherName="";
+                    AddToCartActivity.voucherNo="";
+                    AddToCartActivity.voucherId="";
+                    showSuccessDialog("Success");
+                }
+            } else if (actionTransactionHistory.equals(NetworkConstant.STATUS_FOODORDER_BYMERCHANT_LIST_FAIL)) {
+                webLoading.setVisibility(View.INVISIBLE);
+                FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
+                if (failureResponse != null && failureResponse.msg != null && !failureResponse.msg.isEmpty()) {
+                    webLoading.setVisibility(View.INVISIBLE);
+                    AddToCartActivity.isVoucherClaim = false;
+                    AddToCartActivity.voucherDiscAmt="";
+                    AddToCartActivity.voucherName="";
+                    AddToCartActivity.voucherNo="";
+                    AddToCartActivity.voucherId="";
+                    showErrorDialog(failureResponse.msg);
+                }
+                showErrorDialog(String.valueOf(R.string.error_message));
             }
         }
     };
 
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-    }
-
-
-    private void showSuccessDialog(final String msg){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                this);
+    private void showSuccessDialog(final String msg) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mcontext);
         alertDialogBuilder
                 .setTitle("Success")
                 .setMessage(msg)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        finish();
+                        deleteCart();
+                        startActivity(new Intent(mcontext, MobicashDashBoardActivity.class));
                         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-
+                        finish();
                     }
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
-    private void actionAddPostOrder(String refId){
-        webLoading.setVisibility(View.VISIBLE);
+    public void showErrorDialog(String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mcontext);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                arg0.dismiss();
+            }
+        });
 
-        JSONObject json = new JSONObject();
-
-        try {
-            json = JSONBuilder.getPostAddOrderJson(mcontext, orderId, "", deliverAmt, discount_amt,
-                    amount, claimType, voucherId, voucherNo, orderOn, DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO,refId);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        //Log.e("POST_ORDER_JSON",json.toString());
-
-        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(5, TimeUnit.MINUTES)
-                .readTimeout(5, TimeUnit.MINUTES)
-                . writeTimeout(5, TimeUnit.MINUTES)
-                .build();
-
-        pDialog = new SweetAlertDialog(mcontext, SweetAlertDialog.PROGRESS_TYPE)
-                .setTitleText("Please wait...");
-        pDialog.setCancelable(false);
-
-        AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING+NetworkConstant.MEDICINE_UPDATE)
-                .addJSONObjectBody(json)
-                .setOkHttpClient(okHttpClient)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Timber.e("called post add order");
-                        Log.e("responsePostAddOrd",response.toString());
-                        webLoading.setVisibility(View.GONE);
-                        try {
-                            if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
-                                pDialog.setTitleText("Success!")
-                                        .setContentText(response.getString(ResponseAttributeConstants.MSG))
-                                        .setConfirmText("OK")
-                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        onPause();
-                                        finish();
-                                    }
-                                });
-                                pDialog.show();
-
-//
-                            } else {
-                                pDialog.setTitleText("Failed! Please Try Again.")
-                                        .setContentText(response.getString(ResponseAttributeConstants.MSG))
-                                        .setConfirmText("OK")
-                                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        onPause();
-                                        finish();
-                                    }
-                                });
-                                pDialog.show();
-
-                            }
-                        } catch (JSONException e) {
-                            Timber.e("JSONException Caught.  Message : " + e.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                        Log.e("ErrorAddOrder",error.toString());
-                        Timber.e("called onError of User dairy order API.");
-                        Timber.e("Error Message : " + error.getMessage());
-                        Timber.e("Error code : " + error.getErrorCode());
-                        Timber.e("Error Body : " + error.getErrorBody());
-                        Timber.e("Error Detail : " + error.getErrorDetail());
-
-                        pDialog.setTitleText("Error!")
-                                .setContentText(error.toString())
-                                .setConfirmText("OK")
-                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                        pDialog.show();
-                    }
-                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.show();
     }
 
+    private void deleteCart(){
+        SQLController controller=new SQLController(mcontext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "DELETE from food_cart";
+        String result = controller.fireQuery(query);
+        if(result.equals("Done")){
+            Log.w("delete","Delete all successfully");
+        }else {
+            Log.w("result",result);
+        }
+        controller.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AddToCartActivity.isVoucherClaim = false;
+    }
 }

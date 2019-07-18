@@ -202,14 +202,12 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
         }
 
         ImageView icSetting = findViewById(R.id.ic_setting);
-        TextView favName = findViewById(R.id.com_name);
         TextView txtNewUser = findViewById(R.id.txt_new_user);
         TextView txtSignUp = findViewById(R.id.txt_signup);
         tilMobile   = findViewById(R.id.til_mobile);
         tilPassword = findViewById(R.id.til_password);
         TextView txtLogin = findViewById(R.id.txt_login);
 
-        favName.setTypeface(Fonts.getSemiBold(this));
         mClientMobileNo.setTypeface(Fonts.getSemiBold(this));
         mClientPasscode.setTypeface(Fonts.getSemiBold(this));
         txtLogin.setTypeface(Fonts.getSemiBold(this));

@@ -182,7 +182,7 @@ public class SingleFoodItemActivity extends AppCompatActivity {
 
                 }   else if ((paymentSelectedIndex == 2)) {
                     MobicashIntentService.startActionSendFoodRequest(mContext, getaddToCartRequest(String.valueOf(total_amount)),
-                            "","","","","","","","");
+                            "","","","","","","","","");
                 }
                 dialog.dismiss();
 
@@ -391,7 +391,7 @@ public class SingleFoodItemActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     showProgressDialog();
                     MobicashIntentService.startActionSendFoodRequest(mContext, getaddToCartRequest(String.valueOf(total_amount)),
-                            "","","","","","","","");
+                            "","","","","","","","","");
 
 
                     dialog.dismiss();

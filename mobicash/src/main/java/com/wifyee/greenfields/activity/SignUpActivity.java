@@ -225,6 +225,7 @@ public class SignUpActivity extends BaseActivity  {
                     overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 }
             });
+
             /*back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -235,7 +236,6 @@ public class SignUpActivity extends BaseActivity  {
         }
 
         TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
-        TextView favName = findViewById(R.id.com_name);
         TextView txtGender = findViewById(R.id.txt_gender);
         TextInputLayout tilFname = findViewById(R.id.til_fname);
         TextInputLayout tilLname = findViewById(R.id.til_lname);
@@ -243,7 +243,6 @@ public class SignUpActivity extends BaseActivity  {
         TextInputLayout tilPassword = findViewById(R.id.til_password);
         TextInputLayout tilZipcode = findViewById(R.id.til_pincode);
 
-        favName.setTypeface(Fonts.getSemiBold(this));
         txtGender.setTypeface(Fonts.getSemiBold(this));
         mFirstName.setTypeface(Fonts.getSemiBold(this));
         mLastName.setTypeface(Fonts.getSemiBold(this));

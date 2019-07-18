@@ -33,13 +33,15 @@
     <application
         android:name=".MobicashApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_oriz"
+        android:roundIcon="@mipmap/ic_oriz_round"
         android:label="@string/app_name_"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label,android:icon">
-        <activity android:name=".activity.PayCreditWebViewActivity"></activity>
+        <activity android:name=".foodorder.FoodWebViewActivity"/>
+        <activity android:name=".activity.PayCreditWebViewActivity" />
         <activity android:name=".activity.MedicineWebViewActivity" />
         <activity android:name=".activity.PayCredit" />
         <activity android:name=".activity.CreditMerchantWise" />

@@ -28,7 +28,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginTop="8dp"
-        android:text="This location is too far away from the merchant for Wifyee to deliver. Please Pick a location near to the merchant."/>
+        android:text="@string/too_far_msg"/>
 
     <LinearLayout
         android:layout_width="match_parent"

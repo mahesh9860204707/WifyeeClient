@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:horizontalSpacing="0dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_oriz_icon"
             android:stretchMode="columnWidth"
             android:verticalSpacing="0dp" />
 

@@ -46,11 +46,11 @@
 
                 <ImageView
                     android:id="@+id/fav_name"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/fav_icon"/>
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/oriz_icon"/>
 
+<!--
                 <TextView
                     android:id="@+id/com_name"
                     android:layout_width="wrap_content"
@@ -61,6 +61,7 @@
                     android:layout_toEndOf="@+id/fav_name"
                     android:layout_centerVertical="true"
                     android:textSize="25sp"/>
+-->
 
                 <View
                     android:id="@+id/mini_circle"

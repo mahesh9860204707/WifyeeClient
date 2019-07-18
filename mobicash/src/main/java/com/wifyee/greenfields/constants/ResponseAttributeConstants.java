@@ -231,6 +231,7 @@ public class ResponseAttributeConstants {
     public static final String RET_CODE = "ret_code";
     public static final String RET_MESSAGE = "ret_message";
     public static final String REF_ID = "RefId";
+    public static final String RefId = "ref_id";
     public static final String CLI_IDT_ID = "userId";
     public static final String MER_IDT_ID = "merIdtId";
     public static final String TRANX_ID = "txnid";

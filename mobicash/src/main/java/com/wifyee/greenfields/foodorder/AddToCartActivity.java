@@ -122,7 +122,6 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_cart);
 
-
         mToolbar = (Toolbar) findViewById(R.id.mtoolbar);
         toolBarTitle = mToolbar.findViewById(R.id.food_oder);
         back = (ImageButton) findViewById(R.id.toolbar_back);
@@ -303,17 +302,35 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             showProgressDialog();
             MobicashIntentService.startActionSendFoodRequest(mcontext,
                     getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,
-                    completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo);
+                    completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
         } else if ((paymentSelectedIndex == 1)) {
             showProgressDialog();
-            MobicashIntentService.startActionDeductMoneyWallet(mcontext, getpaymetbywallet(String.valueOf(total_amount)));
+            MobicashIntentService.startActionSendFoodRequest(mcontext,
+                    getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,
+                    completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
+            //MobicashIntentService.startActionDeductMoneyWallet(mcontext, getpaymetbywallet(String.valueOf(total_amount)));
         }
         else if ((paymentSelectedIndex == 2)) {
-            Intent paymentIntent = IntentFactory.createPayuBaseActivity(mcontext);
+            foodOrderRequest = new CartFoodOderRequest();
+            Intent i = new Intent(mcontext,FoodWebViewActivity.class);
+            i.putExtra("amount",String.valueOf(total_amount));
+            i.putExtra(PaymentConstants.FOODORDER_EXTRA, getaddToCartRequest(String.valueOf(total_amount)));
+            i.putExtra("order_id",foodOrderRequest.orderId);
+            i.putExtra("location",location);
+            i.putExtra("latitude",latitude);
+            i.putExtra("longitude",longitude);
+            i.putExtra("completeAddress",completeAddress);
+            i.putExtra("voucherDiscAmt",voucherDiscAmt);
+            i.putExtra("claimType",claimType);
+            i.putExtra("voucherId",voucherId);
+            i.putExtra("voucherNo",voucherNo);
+            startActivity(i);
+
+            /*Intent paymentIntent = IntentFactory.createPayuBaseActivity(mcontext);
             paymentIntent.putExtra(PaymentConstants.STRING_EXTRA, String.valueOf(total_amount));
             paymentIntent.putExtra("foodCart", "foodamount");
             paymentIntent.putExtra(PaymentConstants.FOODORDER_EXTRA, getaddToCartRequest(String.valueOf(total_amount)));
-            startActivity(paymentIntent);
+            startActivity(paymentIntent);*/
         }
     }
 
@@ -495,7 +512,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                     showProgressDialog();
                     MobicashIntentService.startActionSendFoodRequest(mcontext,
                             getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,completeAddress,
-                            voucherDiscAmt,claimType,voucherId,voucherNo);
+                            voucherDiscAmt,claimType,voucherId,voucherNo,"");
                 }
                 dialog.dismiss();
             }
@@ -542,7 +559,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             foodOrderRequest.payment_mode="wallet";
         }
         else if (paymentSelectedIndex==2) {
-            foodOrderRequest.payment_mode="payu";
+            foodOrderRequest.payment_mode="online";
         }
         foodOrderRequest.userId = LocalPreferenceUtility.getUserCode(mcontext);
         foodOrderRequest.merchantId = LocalPreferenceUtility.getMerchantId(mcontext);
@@ -696,6 +713,11 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 CartFoodOrderResponse gstOnFoodItemResponse = (CartFoodOrderResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (gstOnFoodItemResponse != null && gstOnFoodItemResponse.status != null) {
                     cancelProgressDialog();
+                    isVoucherClaim = false;
+                    voucherDiscAmt="";
+                    voucherName="";
+                    voucherNo="";
+                    voucherId="";
                     showSuccessDialog("Success");
                 }
             } else if (actionOperatorList.equals(NetworkConstant.STATUS_FOODORDER_BYMERCHANT_LIST_FAIL)) {
@@ -703,6 +725,11 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
                 if (failureResponse != null && failureResponse.msg != null && !failureResponse.msg.isEmpty()) {
                     cancelProgressDialog();
+                    isVoucherClaim = false;
+                    voucherDiscAmt="";
+                    voucherName="";
+                    voucherNo="";
+                    voucherId="";
                     showErrorDialog(failureResponse.msg);
                 }
                 showErrorDialog(String.valueOf(R.string.error_message));
@@ -784,7 +811,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 public void onClick(View v) {
                     showProgressDialog();
                     MobicashIntentService.startActionSendFoodRequest(mcontext, getaddToCartRequest(String.valueOf(total_amount)),
-                            location,latitude,longitude,completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo);
+                            location,latitude,longitude,completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
                     dialog.dismiss();
 
                 }
@@ -827,7 +854,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                     showProgressDialog();
                     MobicashIntentService.startActionSendFoodRequest(mcontext,
                             getaddToCartRequest(String.valueOf(total_amount)),
-                            location,latitude,longitude,completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo);
+                            location,latitude,longitude,completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
 
 
                     dialog.dismiss();

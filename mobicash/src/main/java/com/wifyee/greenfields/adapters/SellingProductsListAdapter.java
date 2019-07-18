@@ -104,7 +104,7 @@ public class SellingProductsListAdapter extends RecyclerView.Adapter<RecyclerVie
                         // Picasso.with(context).load(sellProducts.getImageObj().get(0).getImagePath()).into(memberViewHolder.productImage);
                     }
                 } else {
-                    memberViewHolder.productImage.setImageResource(R.mipmap.ic_launcher);
+                    memberViewHolder.productImage.setImageResource(R.mipmap.ic_oriz);
                 }
                 memberViewHolder.itemName.setText(sellProducts.getItemName());
                 memberViewHolder.itemPrice.setText(sellProducts.getItemPrice());

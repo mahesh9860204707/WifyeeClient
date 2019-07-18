@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="app_name_">Wifyee</string>
+    <string name="app_name_">Oriz</string>
+    <string name="too_far_msg">This location is too far away from the merchant for Oriz to deliver. Please Pick a location near to the merchant.</string>
     <string name="login_title">Login to Wifyee</string>
     <string name="phone_number">Phone No</string>
     <string name="customer_dob">DOB</string>

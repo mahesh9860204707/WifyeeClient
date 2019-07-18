@@ -181,7 +181,7 @@ public class MyFirebaseInstanceIdService extends FirebaseMessagingService {
 
         Uri defaulSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_oriz)
                 .setContentTitle(Config.title)
                 .setContentText(Config.message)
                 .setAutoCancel(true)
@@ -201,7 +201,7 @@ public class MyFirebaseInstanceIdService extends FirebaseMessagingService {
 
         Uri defaulSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext())
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_oriz)
                 .setContentTitle(Config.title)
                 .setContentText(Config.message)
                 .setAutoCancel(true)
@@ -228,10 +228,10 @@ public class MyFirebaseInstanceIdService extends FirebaseMessagingService {
         notification.setContentTitle(title);
         notification.setContentText(messageBody);
         notification.setAutoCancel(true);
-        notification.setSmallIcon(R.mipmap.ic_launcher);
+        notification.setSmallIcon(R.mipmap.ic_oriz);
         notification.setContentIntent(pendingIntent);
         notification.setSound(soundUri);
-        notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_launcher));
+        notification.setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_oriz));
         notification.setStyle(new Notification.BigPictureStyle()
                 .bigPicture(image));
 

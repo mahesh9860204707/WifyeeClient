@@ -19,6 +19,7 @@ import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.constants.WifiConstant;
+import com.wifyee.greenfields.dairyorder.DairyNetworkConstant;
 import com.wifyee.greenfields.foodorder.AddressRequest;
 import com.wifyee.greenfields.foodorder.AddressResponse;
 import com.wifyee.greenfields.foodorder.CartFoodOderRequest;
@@ -418,6 +419,7 @@ public class MobicashIntentService extends IntentService {
     private static final String EXTRA_PARAM10 = "com.wifyee.greenfields.dairyorder.extra.PARAM10";
     private static final String EXTRA_PARAM11 = "com.wifyee.greenfields.dairyorder.extra.PARAM11";
     private static final String EXTRA_PARAM12 = "com.wifyee.greenfields.dairyorder.extra.PARAM12";
+    private static final String EXTRA_PARAM13 = "com.wifyee.greenfields.dairyorder.extra.PARAM13";
     /**h
      * SubMit all Food Request
      */
@@ -428,6 +430,8 @@ public class MobicashIntentService extends IntentService {
     private static final String TAG_PERFORM_NERAR_OFFERBY_SUBMIT = "com.mobicashindia.mobicash.services.tag.NERAR_OFFERBY";
     private static final String ACTION_PERFORM_NERAR_OFFERBY_SUBMIT = "com.mobicashindia.mobicash.services.action.NERAR_OFFERBY";
     private static final String PARAM_CLIENT_NERAR_OFFERBY_SUBMIT_REQUEST_MODEL = "mobicash.services.extra.NERAR_OFFERBY.request.model";
+
+    private static Context ctx = null;
 
     public MobicashIntentService() {
         super("MobicashIntentService");
@@ -475,7 +479,8 @@ public class MobicashIntentService extends IntentService {
                                                   CartFoodOderRequest cartFoodOderRequest,
                                                   String location,String latitude,String longitude,
                                                   String complete_add,String discount_amt, String claimType,
-                                                  String voucherId, String voucherNo) {
+                                                  String voucherId, String voucherNo,String refNo) {
+        ctx = context;
         Intent intent = new Intent(context, MobicashIntentService.class);
         intent.setAction(ACTION_PERFORM_FOODORDER_SUBMIT);
         intent.putExtra(PARAM_CLIENT_FOODORDER_SUBMIT_REQUEST_MODEL, cartFoodOderRequest);
@@ -487,6 +492,7 @@ public class MobicashIntentService extends IntentService {
         intent.putExtra(EXTRA_PARAM10, claimType);
         intent.putExtra(EXTRA_PARAM11, voucherId);
         intent.putExtra(EXTRA_PARAM12, voucherNo);
+        intent.putExtra(EXTRA_PARAM13, refNo);
         context.startService(intent);
     }
     public static void startActionFoodOrderList(Context context, FoodOrderRequest foodOrderRequest) {
@@ -1651,6 +1657,7 @@ public class MobicashIntentService extends IntentService {
         String claimType = paramData.getStringExtra(EXTRA_PARAM10);
         String voucherId = paramData.getStringExtra(EXTRA_PARAM11);
         String voucherNo = paramData.getStringExtra(EXTRA_PARAM12);
+        String ref_no = paramData.getStringExtra(EXTRA_PARAM13);
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -1685,6 +1692,14 @@ public class MobicashIntentService extends IntentService {
             jsonObject.put(ResponseAttributeConstants.CLAIM_TYPE,claimType);
             jsonObject.put(ResponseAttributeConstants.VOUCHER_ID,voucherId);
             jsonObject.put(ResponseAttributeConstants.VOUCHER_NO,voucherNo);
+            if(mCartFoodOrderRequest.payment_mode.equalsIgnoreCase("wallet")){
+                jsonObject.put(ResponseAttributeConstants.MOBILE_NUMBER,LocalPreferenceUtility.getUserMobileNumber(ctx));
+                jsonObject.put(ResponseAttributeConstants.PIN_CODE,MobicashUtils.md5(LocalPreferenceUtility.getUserPassCode(ctx)));
+                jsonObject.put(ResponseAttributeConstants.DESCRIPTION,"food_order");
+            }if(mCartFoodOrderRequest.payment_mode.equalsIgnoreCase("online")){
+                jsonObject.put(ResponseAttributeConstants.RefId,ref_no);
+            }
+
 
             Log.e("order param",jsonObject.toString());
         } catch (JSONException e) {
@@ -1707,6 +1722,7 @@ public class MobicashIntentService extends IntentService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Timber.e("called onResponse of User FoodOder By Location List API.");
+                        Log.e("food_res",response.toString());
                         try {
                             if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
                                 CartFoodOrderResponse mAddressResponse = ModelMapper.transformJSONObjectToSubmitFoodorderResponse(response);

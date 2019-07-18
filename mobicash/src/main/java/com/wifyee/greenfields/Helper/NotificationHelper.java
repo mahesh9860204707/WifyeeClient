@@ -62,7 +62,7 @@ public class NotificationHelper extends ContextWrapper {
         Uri defaulSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         return new Notification.Builder(getApplicationContext(),CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_oriz)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)

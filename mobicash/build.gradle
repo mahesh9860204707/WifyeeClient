@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     buildToolsVersion '28.0.3'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.wifyee.greenfields"
         minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 88
-        versionName "1.44"
+        targetSdkVersion 28
+        versionCode 94
+        versionName "1.50"
         multiDexEnabled true
         //vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -20,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     /* packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'
@@ -52,10 +53,10 @@ dependencies {
     // compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     //implementation project(':sociallogin')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:support-compat:26.1.0'
-    implementation 'com.android.support:animated-vector-drawable:26.1.0'
-    implementation 'com.android.support:mediarouter-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:support-compat:28.0.0'
+    implementation 'com.android.support:animated-vector-drawable:28.0.0'
+    implementation 'com.android.support:mediarouter-v7:28.0.0'
     implementation 'com.amitshekhar.android:android-networking:0.3.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
@@ -65,10 +66,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     //implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'com.android.support:cardview-v7:26.1.0'
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
     //implementation 'com.google.firebase:firebase-core:16.0.8'
     //implementation 'com.google.firebase:firebase-crash:16.2.1'
     //implementation 'com.google.android.gms:play-services-auth:16.0.0'

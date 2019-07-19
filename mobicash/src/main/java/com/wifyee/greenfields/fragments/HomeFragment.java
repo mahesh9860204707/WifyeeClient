@@ -166,9 +166,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
         GetDataConnectionAPI(getActivity());
-        turn3GOff();
-        requestData(getActivity());
-        connectWifiOpenHomeScreen("Wifyee",getActivity());
+        //turn3GOff();
+        //requestData(getActivity());
+        //connectWifiOpenHomeScreen("Wifyee",getActivity());
         mLoginRequest = new LoginRequest();
         mLoginRequest.clientmobile=LocalPreferenceUtility.getUserMobileNumber(getActivity());
         mLoginRequest.pincode=LocalPreferenceUtility.getUserPassCode(getActivity());

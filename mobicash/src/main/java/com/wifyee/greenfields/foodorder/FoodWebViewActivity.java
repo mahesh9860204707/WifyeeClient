@@ -92,9 +92,9 @@ public class FoodWebViewActivity extends AppCompatActivity {
         amount = intent.getStringExtra("amount");
         orderId = intent.getStringExtra("order_id");
         voucherDiscAmt = intent.getStringExtra("voucherDiscAmt");
-        claimType = intent.getStringExtra("claim_type");
-        voucherId = intent.getStringExtra("voucher_id");
-        voucherNo = intent.getStringExtra("voucher_no");
+        claimType = intent.getStringExtra("claimType");
+        voucherId = intent.getStringExtra("voucherId");
+        voucherNo = intent.getStringExtra("voucherNo");
         location = intent.getStringExtra("location");
         completeAddress = intent.getStringExtra("completeAddress");
         latitude = intent.getStringExtra("latitude");

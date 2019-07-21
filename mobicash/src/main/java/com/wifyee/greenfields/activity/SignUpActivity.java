@@ -1046,6 +1046,7 @@ public class SignUpActivity extends BaseActivity  {
         LocalPreferenceUtility.putUserLastName(getApplicationContext(),mLastName.getText().toString().trim());
         LocalPreferenceUtility.putUserPassCode(getApplicationContext(),mPassword.getText().toString().trim());
         LocalPreferenceUtility.putUserCode(getApplicationContext(),signupResponse.clientId);
+        LocalPreferenceUtility.putPinCode(getApplicationContext(),mPincode.getText().toString());
         Log.e("client id","client Id "+signupResponse.clientId);
     }
 

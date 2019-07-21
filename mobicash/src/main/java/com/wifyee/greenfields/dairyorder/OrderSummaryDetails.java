@@ -349,7 +349,6 @@ public class OrderSummaryDetails extends BaseActivity {
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 dtFrom = dateFrom.getText().toString();
                 dtTo = dateTo.getText().toString();
                 perDay = perDayLitreSpinner.getSelectedItem().toString().replace(" Litre","");

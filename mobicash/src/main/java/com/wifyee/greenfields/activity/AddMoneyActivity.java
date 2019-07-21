@@ -1,16 +1,23 @@
 package com.wifyee.greenfields.activity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -22,7 +29,7 @@ import java.security.NoSuchAlgorithmException;
 public class AddMoneyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText et_add_money;
-    private Button btncontinue;
+    private RelativeLayout btncontinue;
     private String money="";
     private String clientReciever="";
     private String pincode="";
@@ -38,15 +45,16 @@ public class AddMoneyActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_add_money);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        back= (ImageButton) findViewById(R.id.toolbar_back);
+        TextView toolbarTitle = mToolbar.findViewById(R.id.toolbar_title);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            back.setOnClickListener(new View.OnClickListener()
-            {
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
+
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -57,12 +65,22 @@ public class AddMoneyActivity extends AppCompatActivity implements View.OnClickL
 
         bindView();
         setTitle("Add Money");
+
+        TextInputLayout til_mobile_no = findViewById(R.id.til_mobile_no);
+        TextView txtContinue = findViewById(R.id.txt_continue);
+
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
+        et_add_money.setTypeface(Fonts.getSemiBold(this));
+        txtContinue.setTypeface(Fonts.getSemiBold(this));
+        til_mobile_no.setTypeface(Fonts.getRegular(this));
+
     }
 
     private void bindView() {
         et_add_money=(EditText)findViewById(R.id.et_add_money);
-        btncontinue=(Button) findViewById(R.id.continue_btn);
+        btncontinue=(RelativeLayout) findViewById(R.id.continue_btn);
         btncontinue.setOnClickListener(this);
+
     }
 
     @Override

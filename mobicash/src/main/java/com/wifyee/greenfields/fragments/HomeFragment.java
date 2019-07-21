@@ -2,10 +2,12 @@ package com.wifyee.greenfields.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -17,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
@@ -54,18 +57,26 @@ import com.wifyee.greenfields.Utils.CircularNetworkImageView;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 
+import com.wifyee.greenfields.activity.BaseActivity;
 import com.wifyee.greenfields.activity.BookExperinceActivity;
 import com.wifyee.greenfields.activity.FollowBrandsActivity;
 import com.wifyee.greenfields.activity.MerchantCategoryListActivity;
 import com.wifyee.greenfields.activity.MobicashDashBoardActivity;
 import com.wifyee.greenfields.activity.MoreCategory;
+import com.wifyee.greenfields.activity.MyCreditActivity;
 import com.wifyee.greenfields.activity.ProductsSellActivity;
 import com.wifyee.greenfields.activity.RequestBroadbandActivity;
+import com.wifyee.greenfields.activity.SignUpOTPActivity;
+import com.wifyee.greenfields.activity.VoucherList;
+import com.wifyee.greenfields.adapters.VoucherListAdapter;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.constants.WifiConstant;
 import com.wifyee.greenfields.dairyorder.DairyProductActivity;
+import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
 import com.wifyee.greenfields.mapper.ModelMapper;
+import com.wifyee.greenfields.models.MyCreditModel;
+import com.wifyee.greenfields.models.VoucherModel;
 import com.wifyee.greenfields.models.requests.GetClientProfileInfoRequest;
 import com.wifyee.greenfields.models.requests.LoginRequest;
 import com.wifyee.greenfields.models.response.FailureResponse;
@@ -77,6 +88,7 @@ import com.wifyee.greenfields.slider.SliderIndicator;
 import com.wifyee.greenfields.slider.SliderPagerAdapter;
 import com.wifyee.greenfields.slider.SliderView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -85,18 +97,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import android.telephony.TelephonyManager;
-
-/**
- * Created by sumanta on 12/16/16.
- */
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
 
@@ -104,8 +114,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public ProgressDialog progressDialog = null;
     private Context mContext = null;
     private LoginRequest mLoginRequest;
-    private RecyclerView recycleView,recyclerViewGrocery;
-    private RecyclerView recycleViewNested,recyclerViewOrders;
+    private RecyclerView recycleView,recyclerViewGrocery,recyclerViewVouchers,recycleViewNested,recyclerViewOrders;
     private TextView walletBalance,approveCredit,textConnectWifi,helpDesk;
     private Button planWifi;
     private ImageView connectWifi,connect;
@@ -114,6 +123,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private RecycleViewPagerAdapter recycleViewPagerAdapter;
     private RecycleViewOrdersPagerAdapter recycleViewOrdersPagerAdapter;
     private RecycleViewNestedPagerAdapter recycleViewNestedPagerAdapter;
+    private VoucherListAdapter voucherAdapter;
     private RecycleViewGroceryAdapter recycleViewGroceryAdapter;
     private WifiManager mainWifi;
     private int flag;
@@ -132,6 +142,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private Object ITelephonyStub;
     private Class ITelephonyClass;
     private boolean switchOn;
+    private List<VoucherModel> list = new ArrayList<>();
+    private VoucherModel[] voucher;
     /**
      * List of actions supported.
      */
@@ -160,6 +172,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         mContext = getActivity();
         System.gc();
     }
+
+    TextView view_more_voucher,txt_vouchers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -425,6 +439,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         shoppingLayout=(LinearLayout) view.findViewById(R.id.shopping_mall);
         shoppingLayout.setOnClickListener(this);
         helpDesk= (TextView) view.findViewById(R.id.help_desk);
+        txt_vouchers= (TextView) view.findViewById(R.id.txt_vouchers);
+        view_more_voucher = view.findViewById(R.id.view_more_voucher);
         helpDesk.setOnClickListener(this);
         connect = view.findViewById(R.id.connect);
         connect.setOnClickListener(this);
@@ -436,6 +452,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recyclerViewGrocery = (RecyclerView) view.findViewById(R.id.recycler_grocery);
         recycleViewNested = (RecyclerView) view.findViewById(R.id.horizontal_recycler_item_view);
         recyclerViewOrders= (RecyclerView) view.findViewById(R.id.horizontal_recycler_item);
+        recyclerViewVouchers= (RecyclerView) view.findViewById(R.id.recycler_view_vouchers);
 
         recycleViewPagerAdapter = new RecycleViewPagerAdapter();
         //recycleView.addItemDecoration(new DividerItemDecoration(mContext,
@@ -470,6 +487,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recyclerViewGrocery.setHasFixedSize(true);
         recyclerViewGrocery.setAdapter(recycleViewGroceryAdapter);
 
+        LinearLayoutManager horizonatlVoucher = new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewVouchers.setLayoutManager(horizonatlVoucher);
+        voucherAdapter = new VoucherListAdapter(mContext,list,0);
+        recyclerViewVouchers.setAdapter(voucherAdapter);
+        voucherAdapter.notifyDataSetChanged();
+
+        callVoucherList();
+
+        view_more_voucher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, VoucherList.class);
+                startActivity(i);
+                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+            }
+        });
+
         //nested view
         /*recycleViewNestedPagerAdapter = new RecycleViewNestedPagerAdapter();
         LinearLayoutManager horizontalLayoutManagaerr
@@ -480,27 +514,118 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     }
 
-   /* private boolean getMobileDataEnabled() {
-        try {
-            Method method = connectivityManager.getClass().getMethod("getMobileDataEnabled");
-            return (Boolean)method.invoke(connectivityManager);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    private void callVoucherList() {
+        if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
+
+            if (list != null) { list.clear(); }
+
+            JSONObject json = new JSONObject();
+            try {
+                json.put("pincode", LocalPreferenceUtility.getPinCode(mContext));
+                json.put("limit", "4");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //Log.e("json",json.toString());
+
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                    .connectTimeout(5, TimeUnit.MINUTES)
+                    .readTimeout(5, TimeUnit.MINUTES)
+                    .writeTimeout(5, TimeUnit.MINUTES)
+                    .build();
+
+            AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING +
+                    NetworkConstant.PARAM_VOUCHER_LIST_BY_PINCODE)
+                    .addJSONObjectBody(json)
+                    .setOkHttpClient(okHttpClient)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            Log.e("--RESPONSE--", object.toString());
+                            cancelProgressDialog();
+                            try {
+                                if (object.getInt(ResponseAttributeConstants.STATUS) != 0) {
+                                    JSONArray jsonArray = object.getJSONArray(ResponseAttributeConstants.OFFERS_DATA);
+                                    if (jsonArray.length()>0) {
+                                        view_more_voucher.setVisibility(View.VISIBLE);
+                                        txt_vouchers.setVisibility(View.VISIBLE);
+                                        recyclerViewVouchers.setVisibility(View.VISIBLE);
+
+                                        voucher = new VoucherModel[jsonArray.length()];
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            voucher[i] = new VoucherModel(
+                                                    jsonObject.getString("id"),
+                                                    jsonObject.getString("voucher_no"),
+                                                    jsonObject.getString("voucher_name"),
+                                                    jsonObject.getString("voucher_details"),
+                                                    jsonObject.getString("voucher_amount"),
+                                                    jsonObject.getString("discount_amount"),
+                                                    jsonObject.getString("valid_from"),
+                                                    jsonObject.getString("valid_upto"),
+                                                    jsonObject.getString("image_path")
+                                            );
+                                            list.add(voucher[i]);
+                                        }
+                                        recyclerViewVouchers.getRecycledViewPool().clear();
+                                        voucherAdapter.notifyDataSetChanged();
+                                    }else {
+                                        view_more_voucher.setVisibility(View.GONE);
+                                        txt_vouchers.setVisibility(View.GONE);
+                                        recyclerViewVouchers.setVisibility(View.GONE);
+                                    }
+                                } else {
+                                    String msg = object.getString(ResponseAttributeConstants.MSG);
+                                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                cancelProgressDialog();
+                                Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            cancelProgressDialog();
+                            // handle error
+                            Timber.e("called onError of User Invoice API.");
+                            Timber.e("Error Message : " + error.getMessage());
+                            Timber.e("Error code : " + error.getErrorCode());
+                            Timber.e("Error Body : " + error.getErrorBody());
+                            Timber.e("Error Detail : " + error.getErrorDetail());
+                        }
+                    });
+        }else {
+            view_more_voucher.setVisibility(View.GONE);
+            txt_vouchers.setVisibility(View.GONE);
+            recyclerViewVouchers.setVisibility(View.GONE);
+            showErrorDialog("Please update your profile to get voucher list");
         }
     }
-    private void setMobileDataEnabled(boolean on) {
-        try {
-            Method method = connectivityManager.getClass().getMethod("setMobileDataEnabled",
-                    boolean.class);
-            method.invoke(connectivityManager, on);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
+
+    /* private boolean getMobileDataEnabled() {
+         try {
+             Method method = connectivityManager.getClass().getMethod("getMobileDataEnabled");
+             return (Boolean)method.invoke(connectivityManager);
+         } catch (Exception e) {
+             e.printStackTrace();
+             return false;
+         }
+     }
+     private void setMobileDataEnabled(boolean on) {
+         try {
+             Method method = connectivityManager.getClass().getMethod("setMobileDataEnabled",
+                     boolean.class);
+             method.invoke(connectivityManager, on);
+         } catch (NoSuchMethodException e) {
+             e.printStackTrace();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+     }
+ */
     //Connect Wi Fi
     private void connectWifiOpenHomeScreen(String s,final Activity activity) {
         WifiConfiguration wc = new WifiConfiguration();
@@ -1438,9 +1563,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         };
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView txtView;
+            TextView txtView;
             public ImageView icon;
-            public RelativeLayout itemHolder;
+            RelativeLayout itemHolder;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -1576,6 +1701,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     break;
                 }
         }
+    }
+
+    public void showErrorDialog(final String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1)
+            {
+                arg0.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setCancelable(true);
+        alertDialog.show();
     }
 
     public void showBottomSheetDialogFragment() {

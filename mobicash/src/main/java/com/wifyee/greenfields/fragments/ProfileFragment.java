@@ -652,6 +652,7 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
 
                             if (mGetProfile.clientZipcode != null) {
                                 mPostalCodeEditTextView.setText(mGetProfile.clientZipcode);
+                                LocalPreferenceUtility.putPinCode(mContext,mGetProfile.clientZipcode);
                             } else {
                                 mPostalCodeEditTextView.setText("");
                             }

@@ -34,6 +34,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mList = list;
         this.context=ctx;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view;

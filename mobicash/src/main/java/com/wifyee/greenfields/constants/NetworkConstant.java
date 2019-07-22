@@ -330,6 +330,7 @@ public class NetworkConstant {
     public static final String TOKEN_UPDATE ="http://wifyeepay.com/api/commonApi.php?request=updateToken";
     public static final String MEDICINE_UPDATE ="/api/usermedicineapi.php?request=updateMedicineOrder";
     public static final String CREDIT_WALLET_PAYMENT ="/api/merchantCreditsClientApi.php?request=creditPayment";
+    public static final String PURCHASE_VOUCHER_WALLET_PAYMENT ="/api/voucherapi.php?request=purchaseVoucher";
 
     //ORDER_ITEM API
     public static final String FOOD_ORDER_ITEM ="/api/food_order.php?request=getfoodorderdetails";

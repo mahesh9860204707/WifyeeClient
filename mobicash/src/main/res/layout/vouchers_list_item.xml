@@ -79,6 +79,15 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="9dp"
+                android:background="@drawable/circle_dotted"
+                android:layout_marginTop="-4dp"
+                android:layerType="software"
+                android:layout_below="@+id/rl_bg"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/ll_validity"
                 android:layout_width="match_parent"

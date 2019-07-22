@@ -170,7 +170,7 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                 int value = Integer.parseInt(Vholder.tv_quantityNumber.getText().toString()) + 1;
                 if (value >= 1) {
                     //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
-                    Vholder.tv_quantityNumber.setText("" + value);
+                    Vholder.tv_quantityNumber.setText(String.valueOf(value));
                     CartFoodOderItem.setQuantiy(Vholder.tv_quantityNumber.getText().toString());
                     double sumPrice = Double.parseDouble(CartFoodOderItem.getPrice()) * value;
                     Vholder.tv_foodprice.setText("₹"+sumPrice);
@@ -223,7 +223,7 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                 int value = Integer.parseInt(Vholder.tv_quantityNumber.getText().toString()) - 1;
                 if (value >= 1) {
                     //checkItemQuantity(myViewHolder,place,place.getItemId(),value);
-                    Vholder.tv_quantityNumber.setText("" + value);
+                    Vholder.tv_quantityNumber.setText(String.valueOf(value));
                     CartFoodOderItem.setQuantiy(Vholder.tv_quantityNumber.getText().toString());
                     double sum = Double.parseDouble(CartFoodOderItem.getPrice()) * value;
                     Vholder.tv_foodprice.setText("₹"+sum);

@@ -51,10 +51,10 @@ public class PayCredit extends AppCompatActivity {
     private RadioGroup paymentGroup;
     private SweetAlertDialog pDialog;
 
-    private String[] broadCastReceiverActionList = {
+    /*private String[] broadCastReceiverActionList = {
             DairyNetworkConstant.DAIRY_WALLET_BALANCE_STATUS_SUCCESS,
             DairyNetworkConstant.DAIRY_WALLET_BALANCE_STATUS_FAILURE
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,26 +148,27 @@ public class PayCredit extends AppCompatActivity {
         });
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(getWalletReceiver);
-    }
+    }*/
 
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+
+        /*LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         for (String action : broadCastReceiverActionList) {
             broadcastManager.registerReceiver(getWalletReceiver, new IntentFilter(action));
-        }
+        }*/
 
         if (pDialog!=null && pDialog.isShowing() ){
             pDialog.dismiss();
         }
     }
 
-    private BroadcastReceiver getWalletReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver getWalletReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -180,7 +181,7 @@ public class PayCredit extends AppCompatActivity {
             }
         }
     };
-
+*/
     private void payWallet(String amount){
         pDialog = new SweetAlertDialog(PayCredit.this, SweetAlertDialog.PROGRESS_TYPE)
                 .setTitleText("Please wait...");
@@ -218,9 +219,11 @@ public class PayCredit extends AppCompatActivity {
                         Timber.e("called credit wallet payment");
                         Log.e("creditWalletRes",response.toString());
                         try {
-                            DairyProductIntentService.startActionGetWalletBalance(PayCredit.this,
-                                    LocalPreferenceUtility.getUserMobileNumber(PayCredit.this));
-
+                            /*DairyProductIntentService.startActionGetWalletBalance(PayCredit.this,
+                                    LocalPreferenceUtility.getUserMobileNumber(PayCredit.this));*/
+                            JSONObject devResObj = response.getJSONObject(ResponseAttributeConstants.DEV_RESPONSE);
+                            LocalPreferenceUtility.saveWalletBalance(PayCredit.this,
+                                    String.valueOf(devResObj.getInt(ResponseAttributeConstants.CLIENT_NEW_BALANCE)));
                             if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
                                 pDialog.setTitleText("Success!")
                                         .setContentText(response.getString(ResponseAttributeConstants.MSG))

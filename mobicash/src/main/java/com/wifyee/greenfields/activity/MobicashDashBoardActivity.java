@@ -715,6 +715,11 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
             startActivity(intent);
              //new BankTransferFragment();
 
+        } else if (id == R.id.my_vouchers) {
+            Intent intent = new Intent(MobicashDashBoardActivity.this,MyVoucherList.class);
+            startActivity(intent);
+             //new BankTransferFragment();
+
         } else if (id == R.id.beneficiary) {
             //new ManageBeneficiaryFragment();
 

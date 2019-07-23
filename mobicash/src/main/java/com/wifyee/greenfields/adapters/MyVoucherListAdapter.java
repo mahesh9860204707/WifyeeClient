@@ -4,17 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,7 +23,7 @@ import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.activity.VoucherDetails;
 import com.wifyee.greenfields.interfaces.ItemClickListener;
 import com.wifyee.greenfields.interfaces.OnClickListener;
-import com.wifyee.greenfields.models.DiscountClaimModel;
+import com.wifyee.greenfields.models.MyVoucherModel;
 import com.wifyee.greenfields.models.VoucherModel;
 
 import java.text.ParseException;
@@ -35,30 +34,31 @@ import java.util.Locale;
 import java.util.Random;
 
 
-public class VoucherListAdapter extends RecyclerView.Adapter<VoucherListAdapter.MyViewHolder> {
+public class MyVoucherListAdapter extends RecyclerView.Adapter<MyVoucherListAdapter.MyViewHolder> {
 
-    private List<VoucherModel> voucherModels;
+    private List<MyVoucherModel> voucherModels;
     public OnClickListener ClickListener;
     private Context context;
-    int flag;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView voucherName, voucherDetails, discountAmount, voucherAmount,txtVoucherAmt,payNow,txtValidity;
+        private TextView voucherName, voucherDetails, voucherAmount,txtVoucherAmt,payNow,txtValidity,quantity;
         private ImageView imageView;
         private RelativeLayout rlBg;
+        private LinearLayout ll;
         private ItemClickListener clickListener;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             voucherName =  itemView.findViewById(R.id.voucher_name);
             voucherDetails =  itemView.findViewById(R.id.voucher_details);
-            discountAmount =  itemView.findViewById(R.id.discount_amount);
             voucherAmount =  itemView.findViewById(R.id.voucher_amount);
+            quantity =  itemView.findViewById(R.id.qty);
             payNow =  itemView.findViewById(R.id.pay_now);
             txtVoucherAmt =  itemView.findViewById(R.id.txt_voucher_amt);
             txtValidity =  itemView.findViewById(R.id.txt_validity);
             imageView =  itemView.findViewById(R.id.imageView);
             rlBg =  itemView.findViewById(R.id.rl_bg);
+            ll =  itemView.findViewById(R.id.ll);
 
             context = itemView.getContext();
             itemView.setTag(itemView);
@@ -77,40 +77,31 @@ public class VoucherListAdapter extends RecyclerView.Adapter<VoucherListAdapter.
 
     }
 
-    public VoucherListAdapter(Context ctx,List<VoucherModel> voucherModels,int flag) {
+    public MyVoucherListAdapter(Context ctx, List<MyVoucherModel> voucherModels) {
         this.voucherModels = voucherModels;
         this.context = ctx;
-        this.flag = flag;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = null;
-        if (flag==0) {
-            itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.vouchers_item, parent, false);
-        }else {
-            itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.vouchers_list_item, parent, false);
-        }
+        View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.my_vouchers_list_item, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        final VoucherModel voucher = voucherModels.get(position);
+        final MyVoucherModel voucher = voucherModels.get(position);
 
         holder.voucherName.setText(voucher.getVoucherName());
         holder.voucherDetails.setText(voucher.getVoucherDetails());
-        holder.discountAmount.setText("₹".concat(voucher.getDiscountAmount()));
-        holder.voucherAmount.setText(" ₹".concat(voucher.getVoucherAmount()+" "));
-        holder.voucherAmount.setPaintFlags(holder.voucherAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.txtValidity.setText(getDate(voucher.getValidFrom()).concat(" to ").concat(getDate(voucher.getValidUpto())));
+        holder.quantity.setText(voucher.getQuantity());
+        holder.voucherAmount.setText("Bal : ₹".concat(voucher.getBalanceAmount()+" "));
 
         holder.voucherName.setTypeface(Fonts.getSemiBold(context));
         holder.voucherDetails.setTypeface(Fonts.getRegular(context));
-        holder.discountAmount.setTypeface(Fonts.getRegular(context));
+        holder.quantity.setTypeface(Fonts.getSemiBold(context));
         holder.voucherAmount.setTypeface(Fonts.getRegular(context));
         holder.txtVoucherAmt.setTypeface(Fonts.getRegular(context));
         holder.payNow.setTypeface(Fonts.getSemiBold(context));
@@ -129,19 +120,23 @@ public class VoucherListAdapter extends RecyclerView.Adapter<VoucherListAdapter.
         int[] androidColors = context.getResources().getIntArray(R.array.credit_color);
         int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
         holder.rlBg.setBackgroundColor(randomAndroidColor);
+        GradientDrawable drawable = (GradientDrawable)holder.quantity.getBackground();
+        drawable.setColor(randomAndroidColor);
+
+        if(voucher.getIsVoucherExpired().equalsIgnoreCase("Y")){
+            holder.txtValidity.setText("Expired : ".concat(getDate(voucher.getValidUpto())));
+        }else {
+            holder.txtValidity.setText("Expires : ".concat(getDate(voucher.getValidUpto())));
+        }
 
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                Intent i = new Intent(context, VoucherDetails.class);
-                i.putExtra("v_name",voucher.getVoucherName());
-                i.putExtra("v_amt",voucher.getDiscountAmount());
-                i.putExtra("v_url",voucher.getImageUrl());
-                i.putExtra("v_validity",holder.txtValidity.getText().toString());
-                i.putExtra("v_details",voucher.getVoucherDetails());
-                i.putExtra("v_id",voucher.getId());
-                i.putExtra("v_no",voucher.getVoucherNo());
-                context.startActivity(i);
+                if(voucher.getIsVoucherExpired().equalsIgnoreCase("n")){
+
+                }else {
+                    Snackbar.make(view,voucher.getVoucherName().concat(" Voucher expired"),Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -160,7 +155,7 @@ public class VoucherListAdapter extends RecyclerView.Adapter<VoucherListAdapter.
     public String getDate(String date){
         String finalDate;
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd-MM-yyyy", Locale.US);
+                "yyyy-MM-dd", Locale.US);
 
         Date myDate = null;
         try {
@@ -170,7 +165,7 @@ public class VoucherListAdapter extends RecyclerView.Adapter<VoucherListAdapter.
             e.printStackTrace();
         }
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("MMM dd yyyy",Locale.US);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("dd MMM yyyy",Locale.US);
         finalDate = timeFormat.format(myDate);
 
         return finalDate;

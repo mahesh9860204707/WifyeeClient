@@ -1,6 +1,7 @@
 package com.wifyee.greenfields.activity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.fragments.HomeFragment;
 
 public class MoreCategory extends AppCompatActivity {
@@ -33,12 +35,14 @@ public class MoreCategory extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.horizontal_recycler_view);
+        TextView toolbarTitle = mToolbar.findViewById(R.id.toolbar_title);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.secondaryPrimary), PorterDuff.Mode.SRC_ATOP);
 
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -48,6 +52,8 @@ public class MoreCategory extends AppCompatActivity {
                 }
             });
         }
+
+        toolbarTitle.setTypeface(Fonts.getSemiBold(this));
 
         recycleViewPagerAdapter = new RecycleViewPagerAdapter();
         LinearLayoutManager horizontalLayoutManagaer =  new GridLayoutManager(this, 4);
@@ -81,24 +87,24 @@ public class MoreCategory extends AppCompatActivity {
         };
 
         private int[] mTabsIcons = {
+                R.drawable.ic_prepaid,
+                R.drawable.ic_postpaid,
+                R.drawable.ic_landline,
+                R.drawable.ic_dth,
+                R.drawable.ic_gas,
+                R.drawable.ic_broadband,
+                R.drawable.ic_electricity,
                 R.mipmap.prepaid_icon,
-                R.mipmap.postpaid_icon,
-                R.mipmap.landline_icon,
-                R.mipmap.d_t_h_icon,
-                R.mipmap.gas_icon,
-                R.drawable.broadband,
-                R.mipmap.electricity_icon,
-                R.mipmap.prepaid_icon,
-                R.drawable.ic_transaction,
-                R.mipmap.split_money,
-                R.mipmap.request_money_icon,
-                R.mipmap.send_money_icon,
-                R.mipmap.pay_merchant,
-                R.drawable.ic_payment,
+                R.drawable.ic_transact,
+                R.drawable.ic_split_money,
+                R.drawable.ic_request_money,
+                R.drawable.ic_send_money,
+                R.drawable.ic_pay,
+                R.drawable.ic_add_money,
                // R.drawable.ic_request_credit,
                // R.mipmap.ticketing,
                 //R.drawable. book_flight,
-                R.drawable.ic_internet
+                R.drawable.ic_broadband
         };
         
         public class MyViewHolder extends RecyclerView.ViewHolder {

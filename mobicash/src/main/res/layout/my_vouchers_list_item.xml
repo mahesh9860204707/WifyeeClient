@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.androi d.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardElevation="6dp"
+        app:cardCornerRadius="6dp"
+        android:layout_margin="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rl2"
+            android:background="?android:attr/selectableItemBackground">
+
+            <RelativeLayout
+                android:id="@+id/rl_bg"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/voucher_bg_drawable">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:civ_border_color="@color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    app:civ_border_width="1dp"
+                    android:src="@drawable/oriz_icon"/>
+
+
+                <TextView
+                    android:id="@+id/voucher_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="150"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="24sp"/>
+
+                <TextView
+                    android:id="@+id/voucher_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Voucher Name"
+                    android:textAlignment="textEnd"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/imageView"
+                    android:layout_below="@+id/voucher_amount"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="9dp"
+                android:background="@drawable/circle_dotted"
+                android:layout_marginTop="-4dp"
+                android:layerType="software"
+                android:layout_below="@+id/rl_bg"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/ll_validity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/rl_bg"
+                android:layout_marginStart="20dp">
+
+                <ImageView
+                    android:id="@+id/ic_watch"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/ic_watch_later_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/txt_validity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="May 24 to July 24"
+                    android:layout_marginTop="12dp"
+                    android:layout_toEndOf="@+id/ic_watch"
+                    android:layout_toStartOf="@+id/qty"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/my_voucher_qty_drawable"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_dscription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/ll_validity"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:paddingTop="12dp">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_info_outline_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/voucher_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem porem"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="14sp"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/pay_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buy Now"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginEnd="5dp"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/btn_drawable"
+                android:textAllCaps="false"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/txt_voucher_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amount : "
+                android:layout_centerVertical="true"
+                android:textSize="13sp"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

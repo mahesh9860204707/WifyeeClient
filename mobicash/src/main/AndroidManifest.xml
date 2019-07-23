@@ -42,7 +42,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label,android:icon">
-        <activity android:name=".activity.VoucherPurchaseWebViewActivity"></activity>
+        <activity android:name=".activity.MyVoucherList"></activity>
+        <activity android:name=".activity.VoucherPurchaseWebViewActivity" />
         <activity android:name=".activity.VoucherDetails" />
         <activity android:name=".activity.VoucherList" />
         <activity android:name=".foodorder.FoodWebViewActivity" />

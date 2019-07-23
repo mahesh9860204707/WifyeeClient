@@ -13,6 +13,10 @@
         <item
             android:id="@+id/my_credit"
             android:title="My Credit" />
+
+        <item
+            android:id="@+id/my_vouchers"
+            android:title="My Vouchers" />
         <item
             android:id="@+id/beneficiary"
             android:title="Beneficiary"

@@ -1024,64 +1024,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 "More"
         };
 
-        /*private String[] title = {
-                getString(R.string.menu_prepaid),
-                getString(R.string.menu_postpaid),
-                getString(R.string.menu_landline),
-                getString(R.string.menu_dth),
-                getString(R.string.menu_gas),
-                getString(R.string.menu_broadband),
-                getString(R.string.menu_electricity),
-                "Wifyee",
-                "Transaction",
-                "Split Money",
-                "Request Money",
-                "Send Money",
-                "Pay Merchant",
-                "Add Money",
-                "Request Credit",
-                "Ticketing",
-                "Book Explore",
-                "Order Broadband"
-        };*/
-
         private int[] mTabsIcons = {
-                R.mipmap.prepaid_icon,
-                R.mipmap.postpaid_icon,
-                R.mipmap.landline_icon,
-                R.mipmap.electricity_icon,
-                R.drawable.ic_payment,
+                R.drawable.ic_prepaid,
+                R.drawable.ic_postpaid,
+                R.drawable.ic_landline,
+                R.drawable.ic_electricity,
+                R.drawable.ic_add_money,
                 //R.drawable.ic_request_credit,
-                R.mipmap.send_money_icon,
-                R.mipmap.pay_merchant,
-                R.mipmap.request_money_icon,
-                R.drawable.ic_internet,
+                R.drawable.ic_send_money,
+                R.drawable.ic_pay,
+                R.drawable.ic_request_money,
+                R.drawable.ic_broadband,
                 //R.mipmap.ticketing,
                 R.drawable.ic_more
 
         };
 
-        /*private int[] mTabsIcons = {
-                R.mipmap.prepaid_icon,
-                R.mipmap.postpaid_icon,
-                R.mipmap.landline_icon,
-                R.mipmap.d_t_h_icon,
-                R.mipmap.gas_icon,
-                R.drawable.broadband,
-                R.mipmap.electricity_icon,
-                R.mipmap.prepaid_icon,
-                R.mipmap.postpaid_icon,
-                R.mipmap.landline_icon,
-                R.mipmap.d_t_h_icon,
-                R.mipmap.gas_icon,
-                R.drawable.broadband,
-                R.mipmap.electricity_icon,
-                R.mipmap.gas_icon,
-                R.drawable.broadband,
-                R.mipmap.electricity_icon,
-                R.mipmap.electricity_icon
-        };
-*/
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             public TextView txtView;
@@ -1390,9 +1348,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         private int[] mTabsIcons = {
                 R.drawable.ic_food_d,
                 R.drawable.ic_medicine_d,
-                R.drawable.ic_dairy_d,
-                R.drawable.ic_fruits_d,
-                R.drawable.ic_vegetables_d,
+                //R.drawable.ic_dairy_d,
+                R.drawable.ic_dairy_real,
+                //R.drawable.ic_fruits_d,
+                R.drawable.ic_fruits_real,
+                //R.drawable.ic_vegetables_d,
+                R.drawable.ic_vegetables_real,
                 R.drawable.ic_meat_d,
         };
 

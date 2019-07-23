@@ -149,6 +149,7 @@ public class ResponseAttributeConstants {
     public static final String RESPONSE_CODE = "responseCode";
     public static final String RESPONSE_BENEFICIARY_ID ="ben_id";
     public static final String CLIENT_ID = "clientId";
+    public static final String CLIENTID = "client_id";
     public static final String PLANS_CATEGORY = "plan_category";
     public static final String CATEGORY = "category";
     public static final String LATITUDE="latitude";

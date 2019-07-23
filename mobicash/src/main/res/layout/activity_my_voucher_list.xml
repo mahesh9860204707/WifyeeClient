@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.VoucherList">
+    tools:context=".activity.MyVoucherList">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,15 +18,23 @@
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Buy Voucher"
+            android:text="My Voucher"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/txt_no_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No voucher found"
+        android:textSize="24sp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_vouchers"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"

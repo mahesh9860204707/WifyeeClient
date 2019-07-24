@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView.OnQRCodeReadListener;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.activity.ClientToMerchantPaymnetActivity;
 
 public class DecoderActivity extends AppCompatActivity
@@ -119,6 +120,9 @@ public class DecoderActivity extends AppCompatActivity
     flashlightCheckBox = (CheckBox) content.findViewById(R.id.flashlight_checkbox);
     enableDecodingCheckBox = (CheckBox) content.findViewById(R.id.enable_decoding_checkbox);
     pointsOverlayView = (PointsOverlayView) content.findViewById(R.id.points_overlay_view);
+
+    flashlightCheckBox.setTypeface(Fonts.getRegular(DecoderActivity.this));
+    enableDecodingCheckBox.setTypeface(Fonts.getRegular(DecoderActivity.this));
 
     qrCodeReaderView.setAutofocusInterval(2000L);
     qrCodeReaderView.setOnQRCodeReadListener(this);

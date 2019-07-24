@@ -6,72 +6,106 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.wifyee.greenfields.activity.AddMoneyActivity">
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:elevation="2dp"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark">
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="5dp">
 
-        <ImageButton
-            android:id="@+id/toolbar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:background="@mipmap/back_arrow_icon" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/user_balance"
-            style="@style/font_family_medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:padding="8dp"
-            android:text="@string/pay_merchant"
-            android:textColor="@color/color_tab_bg"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pay_merchant"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/qr_code"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:tint="@color/secondaryPrimaryDark"
+                android:src="@drawable/ic_qr_code"
+                android:layout_marginEnd="12dp"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
 
     </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:padding="10dp"
         android:layout_height="match_parent">
+
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_mobile_no"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:theme="@style/LoginTextLabel">
 
             <EditText
-                style="@style/edit_text_style"
-                android:layout_gravity="center"
-                android:inputType="number"
-                android:maxLength="10"
-                android:drawablePadding="5dp"
-                android:hint="@string/tv_mobile_number"
                 android:id="@+id/et_mobile_number"
-                android:drawableLeft="@drawable/ic_call"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:hint="Mobile No"
+                android:focusable="true"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:textSize="15sp" />
+
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/qr_code"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/ic_mobi_qr_code"
-            android:background="@drawable/button_round_cornor_selector"
-            android:textColor="@color/white"
-            android:text="@string/button_qr_code" />
-        <Button
+        <RelativeLayout
             android:id="@+id/continue_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_round_cornor_selector"
-            android:padding="12dp"
-            android:textColor="@color/white"
-            android:text="@string/button_continue" />
+            android:layout_width="125dp"
+            android:layout_height="46dp"
+            android:background="@drawable/btn_drawable"
+            android:layout_gravity="center_horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/txt_continue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:textSize="16sp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/ic_oval"
+                android:layout_centerVertical="true"
+                android:textColor="#ffffff"/>
+
+            <ImageView
+                android:id="@+id/ic_oval"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:padding="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_arrow_forward_black_24dp"
+                android:background="@drawable/white_oval"/>
+
+        </RelativeLayout>
+
     </LinearLayout>
+
 </LinearLayout>

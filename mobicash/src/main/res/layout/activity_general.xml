@@ -1,72 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.wifyee.greenfields.activity.AddMoneyActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray"
+        android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:elevation="5dp">
+
 
         <TextView
-            android:layout_width="match_parent"
-            android:text="Pay To Merchant"
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_merchant"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_height="wrap_content" />
+            android:textSize="20sp" />
 
     </android.support.v7.widget.Toolbar>
+
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_height="match_parent">
-        <TextView
+        android:padding="16dp"
+        android:visibility="visible"
+        android:layout_below="@+id/toolbar">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="match_parent"
-            android:textStyle="bold"
-            android:id="@+id/merchant_name"
-            android:padding="5dp"
-            android:layout_marginTop="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_height="wrap_content" />
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
 
-            <EditText
-                style="@style/edit_text_style"
-                android:layout_gravity="center"
-                android:inputType="number"
-                android:drawablePadding="5dp"
-                android:hint="@string/money"
-                android:id="@+id/et_add_money"
-                android:drawableLeft="@drawable/ic_account_balance_wallet"
-                />
-        </android.support.design.widget.TextInputLayout>
+            <Button
+                android:id="@+id/btn_oval"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/oval_order"
+                android:textSize="22sp"
+                android:textColor="#ffffff"/>
 
-        <Button
-            android:id="@+id/continue_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_round_cornor_selector"
-            android:padding="12dp"
-            android:text="@string/button_continue" />
+            <TextView
+                android:id="@+id/merchant_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/btn_oval"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_amount"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/pay_edit_background"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:id="@+id/sign_rupee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="26sp"/>
+
+            <EditText
+                android:id="@+id/et_add_money"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_toEndOf="@+id/sign_rupee"
+                android:background="@null"
+                android:hint="Enter Amount"
+                android:layout_centerVertical="true"
+                android:inputType="number"
+                android:textSize="26sp"
+                android:layout_marginEnd="4dp"/>
+
+        </RelativeLayout>
+
     </LinearLayout>
-</LinearLayout>
+
+    <Button
+        android:id="@+id/continue_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/secondaryPrimary"
+        android:text="PAY"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

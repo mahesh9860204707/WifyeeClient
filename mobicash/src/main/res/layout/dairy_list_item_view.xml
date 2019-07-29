@@ -95,6 +95,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:src="@drawable/ic_discount"
             android:layout_alignStart="@+id/textViewType"
             android:layout_toEndOf="@+id/rl_image"
@@ -213,8 +214,7 @@
             android:background="@color/divider"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="3dp"
-            android:layout_below="@+id/rl_image"
+            android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/rl_image"/>
 
     </RelativeLayout>

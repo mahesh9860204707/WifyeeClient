@@ -12,5 +12,7 @@ public class FoodOrderRequest extends JSONObject implements Serializable {
 
     public String FoodType;
     public String MerchantId;
+    public String flag;
+    public String voucherId;
 
 }

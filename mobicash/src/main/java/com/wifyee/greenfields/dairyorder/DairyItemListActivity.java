@@ -52,14 +52,12 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private LayerDrawable icon;
-    private AlertDialog searchDialog;
     private Context mContext = null;
     private int totalCartCount;
     private LinearLayout emptyListView;
     public static RecyclerView recyclerView;
     private RelativeLayout btnPlaceOrder;
-    private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="";
+    private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="",flag="",voucherId="",tuvId="",totalBal="";
 
     DairyListItemAdapter.ItemListener listener ;
     ArrayList<DairyProductListItem> selectedItem = new ArrayList<>();
@@ -124,6 +122,10 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         itemCount.setTypeface(Fonts.getRegular(this));
         txtTaxes.setTypeface(Fonts.getRegular(this));
 
+        flag = getIntent().getStringExtra("flag");
+        voucherId = getIntent().getStringExtra("v_id");
+        totalBal = getIntent().getStringExtra("total_bal");
+        tuvId = getIntent().getStringExtra("tuv_id");
         itemId = getIntent().getStringExtra("data");
         categoryId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID);
         merchantType = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA);
@@ -131,6 +133,12 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         longitude = LocalPreferenceUtility.getLongitude(DairyItemListActivity.this);
 
         merId = itemId;
+
+        if (flag!=null){
+            if (flag.equals("voucher")){
+                deleteAllItemCartWhenVoucher();
+            }
+        }
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -151,7 +159,6 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
                 //intent.putExtra("main_data", data);
                 startActivity(intent);
                 selectedItem = new ArrayList<>();
-                ;
                 orderItem = new ArrayList<>();
             } else {
                 Snackbar.make(v, "Please add item to cart before place order", Snackbar.LENGTH_LONG).show();
@@ -230,7 +237,8 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         }
         //showProgressDialog();
         progressBar.setVisibility(View.VISIBLE);
-        DairyProductIntentService.startActionListDairyItem(this,itemId,categoryId,merchantType,latitude,longitude);
+        DairyProductIntentService.startActionListDairyItem(this,itemId,categoryId,merchantType,
+                latitude,longitude,voucherId,flag);
 
         //setupBadge();
     }
@@ -470,6 +478,21 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
             //setupBadge();
         }else {
             Log.d("result",result);
+        }
+        controller.close();
+    }
+
+    private void deleteAllItemCartWhenVoucher(){
+        SQLController controller=new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "DELETE from cart_item";
+        String result = controller.fireQuery(query);
+        if(result.equals("Done")){
+            Log.w("delete","Delete all successfully");
+        }else {
+            Log.w("result",result);
         }
         controller.close();
     }

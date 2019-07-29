@@ -109,7 +109,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
                     double discount = Double.parseDouble(place.getItemDiscount()) * value;
                     double roundOff = Math.round(discount * 100.0) / 100.0;
                     String s = String.format("%.2f", roundOff);
-                    myViewHolder.discountAmt.setText("Discount ₹"+s);
+                    myViewHolder.discountAmt.setText("₹"+s);
                     myViewHolder.tvPrice.setText("₹"+sum);
                     updateCart(place.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
@@ -233,7 +233,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
                             viewHolder.tvPrice.setText("₹"+sum);
                             double roundOff = Math.round(discount * 100.0) / 100.0;
                             String s = String.format("%.2f", roundOff);
-                            viewHolder.discountAmt.setText("Discount ₹"+s);
+                            viewHolder.discountAmt.setText("₹"+s);
                             place.setQuantity(viewHolder.integerNumber.getText().toString());
                             updateCart(itemId,String.valueOf(quantity));
                             fInterface.fragmentBecameVisible();

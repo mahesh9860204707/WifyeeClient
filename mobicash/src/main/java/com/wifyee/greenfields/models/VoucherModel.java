@@ -1,7 +1,8 @@
 package com.wifyee.greenfields.models;
 
 public class VoucherModel {
-    private String Id,VoucherNo,VoucherName,VoucherDetails,VoucherAmount,DiscountAmount,ValidFrom,ValidUpto,ImageUrl;
+    private String Id,VoucherNo,VoucherName,VoucherDetails,VoucherAmount,DiscountAmount,ValidFrom,
+            ValidUpto,ImageUrl;
 
     public VoucherModel(String id, String voucherNo, String voucherName, String voucherDetails, String voucherAmount,
                         String discountAmount, String validFrom, String validUpto, String imageUrl) {
@@ -51,4 +52,5 @@ public class VoucherModel {
     public String getImageUrl() {
         return ImageUrl;
     }
+
 }

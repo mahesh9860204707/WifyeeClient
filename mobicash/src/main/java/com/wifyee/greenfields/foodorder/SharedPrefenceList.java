@@ -16,7 +16,7 @@ public class SharedPrefenceList extends JSONObject implements Serializable {
     public String foodImage;
     public String itemId;
     public String calculatedAmt;
-    public String discountAmt;
+    private String discountAmt;
     public String category;
     public String qty_half_full;
 

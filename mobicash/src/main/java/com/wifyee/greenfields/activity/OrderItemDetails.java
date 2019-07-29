@@ -379,7 +379,7 @@ public class OrderItemDetails extends AppCompatActivity {
                                     String paymentMode = jsonObject1.getString(ResponseAttributeConstants.PAY_MODE);
                                     if (!merchantType.equals("7")) {
                                         if (paymentMode.equalsIgnoreCase("cod")) {
-                                            paid.setText("Paid Via Cash");
+                                            paid.setText("Payment Mode Cash");
                                         } else {
                                             paid.setText("Paid Via " + paymentMode.substring(0, 1).toUpperCase() + paymentMode.substring(1));
                                         }

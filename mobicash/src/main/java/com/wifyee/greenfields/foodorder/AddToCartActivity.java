@@ -116,6 +116,8 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     private CardView cardViewCoupon,cardViewDiscount,cardViewBillDetails,cardViewPayment;
     private RadioGroup paymentGroup;
     private int total_amount;
+    private double totalBalanceVoucher;
+    private String flag,tuvId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +161,6 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         mcontext = this;
         sharedPreference = new SharedPreference(mcontext);
 
-
         //MobicashIntentService.startActionGstONFoodItem(mcontext);
 
         if (mToolbar != null) {
@@ -202,25 +203,53 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         change.setTypeface(Fonts.getSemiBold(this));
         address.setTypeface(Fonts.getRegular(this));
 
+        flag = getIntent().getStringExtra("flag");
+        String totalBal = getIntent().getStringExtra("total_bal");
+        tuvId = getIntent().getStringExtra("tuv_id");
+
+        if (totalBal!=null){
+            totalBalanceVoucher = Double.parseDouble(totalBal);
+        }
+
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getApplicationContext(),""+total_amount,Toast.LENGTH_SHORT).show();
-                if(favorites.size()!= 0) {
-                    if(cardViewDiscount.getVisibility() == View.VISIBLE && isVoucherClaim){
-                       placeOrder();
-                       //Snackbar.make(view,"All set",Snackbar.LENGTH_LONG).show();
-                    }else if(cardViewDiscount.getVisibility() == View.GONE){
-                        placeOrder();
-                        //Snackbar.make(view,"without voucher",Snackbar.LENGTH_LONG).show();
-                    }else {
-                        Snackbar.make(view,"Please claim the discount amount first.",Snackbar.LENGTH_LONG).show();
+                if (favorites.size() != 0) {
+                    if (cardViewDiscount.getVisibility() == View.VISIBLE && isVoucherClaim) {
+                        if(flag.equalsIgnoreCase("voucher")){
+                            if(total_amount <= totalBalanceVoucher){
+                                showProgressDialog();
+                                MobicashIntentService.startActionSendFoodRequest(mcontext,
+                                        getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,
+                                        completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
+                            }else {
+                                Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            placeOrder();
+                        }
+                    } else if (cardViewDiscount.getVisibility() == View.GONE) {
+                        if(flag.equalsIgnoreCase("voucher")){
+                            if(total_amount <= totalBalanceVoucher){
+                                showProgressDialog();
+                                MobicashIntentService.startActionSendFoodRequest(mcontext,
+                                        getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,
+                                        completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
+                            }else {
+                                Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            placeOrder();
+                        }
+                    } else {
+                        Snackbar.make(view, "Please claim the discount amount first.", Snackbar.LENGTH_LONG).show();
                     }
-                }else {
-                    Snackbar.make(view,"Look like your cart is empty",Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(view, "Look like your cart is empty", Snackbar.LENGTH_LONG).show();
                 }
 
-                /*//appy gst on price
+
+                /*//appy gst on priceSS
                 if (shred_list.size()!=0) {
                     shred_list.clear();
                 }
@@ -452,6 +481,10 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             cardViewBillDetails.setVisibility(View.GONE);
             cardViewPayment.setVisibility(View.GONE);
         }
+
+        if (flag.equalsIgnoreCase("voucher")) {
+            cardViewPayment.setVisibility(View.GONE);
+        }
     }
 
     private void setDialog() {
@@ -561,6 +594,13 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         else if (paymentSelectedIndex==2) {
             foodOrderRequest.payment_mode="online";
         }
+
+        if(flag.equals("voucher")){
+            foodOrderRequest.payment_mode="voucher";
+            foodOrderRequest.tuvId = tuvId;
+        }
+
+
         foodOrderRequest.userId = LocalPreferenceUtility.getUserCode(mcontext);
         foodOrderRequest.merchantId = LocalPreferenceUtility.getMerchantId(mcontext);
         foodOrderRequest.orderDateTime = datetime;
@@ -893,10 +933,14 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         int totalItem = 0;
 
         if(favorites.size()>0){
+            if (flag.equalsIgnoreCase("voucher")) {
+                cardViewPayment.setVisibility(View.GONE);
+            } else {
+                cardViewPayment.setVisibility(View.VISIBLE);
+            }
             cardViewDiscount.setVisibility(View.VISIBLE);
             cardViewCoupon.setVisibility(View.VISIBLE);
             cardViewBillDetails.setVisibility(View.VISIBLE);
-            cardViewPayment.setVisibility(View.VISIBLE);
 
             for(int i= 0;i<favorites.size();i++){
                 int quantityValue = Integer.parseInt(favorites.get(i).getQuantiy());

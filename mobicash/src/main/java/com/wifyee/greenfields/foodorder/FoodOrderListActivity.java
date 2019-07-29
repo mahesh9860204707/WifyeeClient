@@ -76,6 +76,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
     FoodOderListAdapter.ItemListener listener;
     TextView textCartItemCount,viewCart,itemCount,totalPrice,txtTaxes;
     private SpinKitView progressBar;
+    private String flag,voucherId,totalBal,tuvId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,14 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         merchantId = getIntent().getStringExtra("merchantid");
         merchantName = getIntent().getStringExtra("merchantName");
         currentStatus = getIntent().getStringExtra("current_status");
+        flag = getIntent().getStringExtra("flag");
+        voucherId = getIntent().getStringExtra("v_id");
+        totalBal = getIntent().getStringExtra("total_bal");
+        tuvId = getIntent().getStringExtra("tuv_id");
+
+        if (flag.equals("voucher")){
+            deleteAllItemFromCart();
+        }
 
         /*final ArrayAdapter<String> servicedataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categorylist);
         servicedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -154,9 +163,13 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         btn_addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if(fillList()!=0) {
-                    startActivity(IntentFactory.createAddTOCartActivity(FoodOrderListActivity.this));
-                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                //startActivity(IntentFactory.createAddTOCartActivity(FoodOrderListActivity.this));
+                Intent intent = new Intent(FoodOrderListActivity.this, AddToCartActivity.class);
+                intent.putExtra("flag",flag);
+                intent.putExtra("total_bal",totalBal);
+                intent.putExtra("tuv_id",tuvId);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     //finish();
 
                 //}else{
@@ -164,105 +177,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
                 //}
             }
         });
-
-
-        //selectFrag("All");
-
-        //    getLatitudeAndLongitude();
-       // MobicashIntentService.startActionFoodOrderList(this, );
-
-        /*spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                  selectFrag(spinner_category.getSelectedItem().toString());
-        //        MobicashIntentService.startActionFoodOrderListByParentSlug(mContext, getFoodCategoryRequest(spinner_category.getSelectedItem().toString()));
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });*/
-
-        /*categoryList_recyclerView.addOnItemTouchListener(new RecyclerTouchListener(mContext,
-                categoryList_recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, final int position) {
-                String title1 = ((TextView) categoryList_recyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.tv_categoryName)).getText().toString();
-            //    Toast.makeText(mContext, "Parent Slug :"+title1,Toast.LENGTH_LONG).show();
-                for(int i=0; i<category_List.size();i++)
-                {
-                    if(category_List.get(i).categoryName.toString().equalsIgnoreCase(title1))
-                    {
-                        parentSlugFragment(category_List.get(i).categorySlug.toString());
-                        Toast.makeText(mContext, "Parent Slug :"+category_List.get(i).categorySlug.toString(),Toast.LENGTH_LONG).show();
-                        break;
-                    }
-                }
-           }
-            @Override
-            public void onLongClick(View view, int position) {
-            }
-        }));*/
     }
-
-    /*private AddressRequest getLatitudeAndLongitude() {
-        AddressRequest addressRequest = new AddressRequest();
-        if (gps.canGetLocation()) {
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-            addressRequest.latitude = String.valueOf(latitude);
-            addressRequest.longitude = String.valueOf(longitude);
-            Toast.makeText(mContext,latitude+"-"+longitude,Toast.LENGTH_SHORT).show();
-        } else {
-            addressRequest.latitude = "";
-            addressRequest.longitude = "";
-        }
-        return addressRequest;
-    }*/
-
-    public void parentSlugFragment(String parentCategory) {
-        Fragment foodSlugFragment = null;
-        Bundle bundle =new Bundle();
-        bundle.putString("message", parentCategory);
-        bundle.putString("merchantid", LocalPreferenceUtility.getMerchantId(mContext));
-        foodSlugFragment = new AllNonVegFoodItemFragment();
-        foodSlugFragment.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, foodSlugFragment);
-        transaction.commit();
-    }
-
-/*
-    public void selectFrag(String view) {
-        Fragment foodFragment = null;
-        if(view.equalsIgnoreCase("All")) {
-            Bundle bundle =new Bundle();
-            bundle.putString("message", "all");
-            bundle.putString("merchantid",merchantId);
-            foodFragment = new AllFoodItemFragment();
-            foodFragment.setArguments(bundle);
-        }
-        else if(view.equalsIgnoreCase("veg")) {
-            Bundle bundle =new Bundle();
-            bundle.putString("message", "veg");
-            bundle.putString("merchantid",merchantId);
-            foodFragment = new AllNonVegFoodItemFragment();
-            foodFragment.setArguments(bundle);
-        }
-        else if(view.equalsIgnoreCase("Non-veg")){
-            Bundle bundle =new Bundle();
-            bundle.putString("message", "Non-veg");
-            //bundle.putString("merchantid", LocalPreferenceUtility.getMerchantId(mContext));
-            bundle.putString("merchantid", merchantId);
-            foodFragment = new AllNonVegFoodItemFragment();
-            foodFragment.setArguments(bundle);
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, foodFragment);
-        transaction.commit();
-    }
-*/
 
     private void cancelProgressDialog() {
         if (progressDialog != null) {
@@ -294,6 +209,9 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         FoodOrderRequest foodOrderRequest=new FoodOrderRequest();
         //foodOrderRequest.FoodType= LocalPreferenceUtility.getMerchantId(mContext);
         foodOrderRequest.FoodType= merchantId;
+        foodOrderRequest.flag = flag;
+        foodOrderRequest.voucherId = voucherId;
+
         return foodOrderRequest;
     }
 
@@ -596,6 +514,21 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
             //setupBadge();
         }else {
             Log.d("result",result);
+        }
+        controller.close();
+    }
+
+    private void deleteAllItemFromCart(){
+        SQLController controller=new SQLController(mContext);
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "DELETE from food_cart";
+        String result = controller.fireQuery(query);
+        if(result.equals("Done")){
+            Log.w("delete","Delete all successfully");
+        }else {
+            Log.w("result",result);
         }
         controller.close();
     }

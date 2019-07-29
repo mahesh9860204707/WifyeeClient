@@ -21,6 +21,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.activity.VoucherDetails;
+import com.wifyee.greenfields.dairyorder.DairyItemListActivity;
+import com.wifyee.greenfields.foodorder.FoodOrderListActivity;
+import com.wifyee.greenfields.foodorder.MerchantActivity;
 import com.wifyee.greenfields.interfaces.ItemClickListener;
 import com.wifyee.greenfields.interfaces.OnClickListener;
 import com.wifyee.greenfields.models.MyVoucherModel;
@@ -133,7 +136,27 @@ public class MyVoucherListAdapter extends RecyclerView.Adapter<MyVoucherListAdap
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 if(voucher.getIsVoucherExpired().equalsIgnoreCase("n")){
-
+                    if(voucher.getMerType().equals("6")){
+                        Intent intent = new Intent(context, FoodOrderListActivity.class);
+                        intent.putExtra("merchantid",voucher.getMerId());
+                        intent.putExtra("merchantName",voucher.getMerName());
+                        intent.putExtra("current_status",voucher.getMerCurrentStatus());
+                        intent.putExtra("flag","voucher");
+                        intent.putExtra("v_id",voucher.getVoucherId());
+                        intent.putExtra("total_bal",voucher.getBalanceAmount());
+                        intent.putExtra("tuv_id",voucher.getId());
+                        context.startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(context, DairyItemListActivity.class);
+                        intent.putExtra("merchantid",voucher.getMerId());
+                        intent.putExtra("merchantName",voucher.getMerName());
+                        intent.putExtra("current_status",voucher.getMerCurrentStatus());
+                        intent.putExtra("flag","voucher");
+                        intent.putExtra("v_id",voucher.getVoucherId());
+                        intent.putExtra("total_bal",voucher.getBalanceAmount());
+                        intent.putExtra("tuv_id",voucher.getId());
+                        context.startActivity(intent);
+                    }
                 }else {
                     Snackbar.make(view,voucher.getVoucherName().concat(" Voucher expired"),Snackbar.LENGTH_LONG).show();
                 }

@@ -141,8 +141,8 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
-                    .placeholder(R.drawable.food_bg4)
-                    .error(R.drawable.food_bg4)
+                    .placeholder(R.drawable.oriz_icon)
+                    .error(R.drawable.oriz_icon)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
 
             Glide.with(mContext).load(item.getItemImagePath())

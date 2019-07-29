@@ -1427,9 +1427,16 @@ public class MobicashIntentService extends IntentService {
     }
     private void handleActionAllFoodorderList(Intent paramData) {
         FoodOrderRequest mFoodOrderListRequest = (FoodOrderRequest) paramData.getSerializableExtra(PARAM_AllFOODORDER_LIST_REQUEST_MODEL);
+        String url = "";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(ResponseAttributeConstants.MERCHANTID, mFoodOrderListRequest.FoodType);
+            if (mFoodOrderListRequest.flag.equalsIgnoreCase("voucher")){
+                url = NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_GET_FOOD_ITEM_BY_VOUCHER_ID;
+                jsonObject.put(ResponseAttributeConstants.VOUCHER_ID, mFoodOrderListRequest.voucherId);
+            }else {
+                url = NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_ALLFOODODER_LIST_REQUEST_MODEL;
+                jsonObject.put(ResponseAttributeConstants.MERCHANTID, mFoodOrderListRequest.FoodType);
+            }
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
@@ -1437,10 +1444,10 @@ public class MobicashIntentService extends IntentService {
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES)
-                . writeTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES)
                 .build();
 
-        AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_ALLFOODODER_LIST_REQUEST_MODEL)
+        AndroidNetworking.post(url)
                 .addJSONObjectBody(jsonObject)
                 .setOkHttpClient(okHttpClient)
                 .setTag(TAG_PERFORM_ALLFOODORDER_LIST)
@@ -1684,6 +1691,7 @@ public class MobicashIntentService extends IntentService {
             jsonObject.put(ResponseAttributeConstants.ORDERPRICE,mCartFoodOrderRequest.orderPrice);
             jsonObject.put(ResponseAttributeConstants.ORDER_DATE_TIME,mCartFoodOrderRequest.orderDateTime);
             jsonObject.put(ResponseAttributeConstants.PAY_MODE,mCartFoodOrderRequest.payment_mode);
+            jsonObject.put(ResponseAttributeConstants.TUV_ID,mCartFoodOrderRequest.tuvId);
             jsonObject.put(ResponseAttributeConstants.LOCATION,location);
             jsonObject.put(ResponseAttributeConstants.LAT,lat);
             jsonObject.put(ResponseAttributeConstants.LNG,lng);

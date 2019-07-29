@@ -113,6 +113,7 @@ public class MerchantActivity extends AppCompatActivity {
                 intent.putExtra("merchantid",category_List.get(position).getMerchant_id());
                 intent.putExtra("merchantName",dataModel.restaurant_name);
                 intent.putExtra("current_status",dataModel.getStatus());
+                intent.putExtra("flag","normal");
                 startActivity(intent);
 
                 //startActivity(IntentFactory.createAddOderByMerchantFoodActivity(getApplicationContext()));
@@ -325,7 +326,10 @@ public class MerchantActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_cart: {
-                startActivity(IntentFactory.createAddTOCartActivity(this));
+                //startActivity(IntentFactory.createAddTOCartActivity(this));
+                Intent intent = new Intent(MerchantActivity.this, AddToCartActivity.class);
+                intent.putExtra("flag","normal");
+                startActivity(intent);
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 return true;
             }

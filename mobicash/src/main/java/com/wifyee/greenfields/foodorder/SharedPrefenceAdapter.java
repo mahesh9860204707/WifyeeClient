@@ -39,8 +39,6 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
     private RecyclerView mRecyclerView;
     private final LayoutInflater mLayoutInflater;
     Integer totalquanty = 0;
-    Double actual_foodAmount = 0.00;
-    Double Chnge_totalamount = 0.00;
     SharedPreference sharedPreference;
     FragmentInterface fInterface;
 
@@ -181,38 +179,6 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
                     updateCart(CartFoodOderItem.getItemId(),String.valueOf(value));
                     fInterface.fragmentBecameVisible();
                 }
-
-                /*Chnge_totalamount = 0.00;
-                SharedPrefenceList sharedPrefenceList = mFoodOderItemCollection.get(position);
-                int curent_quty = Integer.parseInt(sharedPrefenceList.getQuantiy()) + 1;
-                sharedPrefenceList.setQuantiy(String.valueOf(curent_quty));
-                Vholder.tv_quantityNumber.setText(sharedPrefenceList.getQuantiy());
-                for (int k = 0; k < AllFoodItemFragment.fix_Vale_shred_list.size(); k++) {
-                    if (AllFoodItemFragment.fix_Vale_shred_list.get(k).name.toString().equalsIgnoreCase(sharedPrefenceList.name)) {
-                        actual_foodAmount = 0.00;
-                        actual_foodAmount = Double.valueOf(AllFoodItemFragment.fix_Vale_shred_list.get(k).price.toString());
-                        break;
-                    }
-                }
-                Double curent_amount = actual_foodAmount * curent_quty;
-                //   Double curent_amount=Double.valueOf(sharedPrefenceList.getPrice())*curent_quty;
-                sharedPrefenceList.setPrice(String.valueOf(curent_amount));
-                for (int j = 0; j < mFoodOderItemCollection.size(); j++) {
-                    String currentTotalpricevlaue = mFoodOderItemCollection.get(j).getPrice();
-                    Double current = Double.valueOf(currentTotalpricevlaue);
-                    Chnge_totalamount = current + Chnge_totalamount;
-                }
-                AddToCartActivity.tv_totalamount.setText(String.valueOf(Chnge_totalamount));
-                SharedPrefenceList curent_productItem;
-                curent_productItem = new SharedPrefenceList();
-                curent_productItem.setName(mFoodOderItemCollection.get(position).name);
-                curent_productItem.setDescription(mFoodOderItemCollection.get(position).description);
-                curent_productItem.setFoodImage(mFoodOderItemCollection.get(position).foodImage);
-                curent_productItem.setPrice(mFoodOderItemCollection.get(position).price);
-                curent_productItem.setQuantiy(mFoodOderItemCollection.get(position).quantiy);
-                sharedPreference.updateFavoriteItem(mContext, curent_productItem);
-                Vholder.tv_quantityNumber.setText(sharedPrefenceList.getQuantiy());
-                notifyDataSetChanged();*/
 
             }
         });

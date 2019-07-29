@@ -139,7 +139,11 @@ public class MyVoucherList extends AppCompatActivity {
                                                 jsonObject.getString("valid_from"),
                                                 jsonObject.getString("valid_upto"),
                                                 jsonObject.getString("image_path"),
-                                                jsonObject.getString("voucher_expired")
+                                                jsonObject.getString("voucher_expired"),
+                                                jsonObject.getString("mer_id"),
+                                                jsonObject.getString("mer_company"),
+                                                jsonObject.getString("merchant_type_id"),
+                                                jsonObject.getString("mer_current_status")
                                         );
                                         list.add(voucher[i]);
                                     }

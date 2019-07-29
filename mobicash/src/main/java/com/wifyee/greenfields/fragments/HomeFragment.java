@@ -54,6 +54,7 @@ import com.google.gson.Gson;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.CircularNetworkImageView;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 
@@ -1066,6 +1067,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.txtView.setText(title[position]);
             holder.icon.setImageResource(mTabsIcons[position]);
+            holder.txtView.setTypeface(Fonts.getRegular(mContext));
             holder.itemHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1346,15 +1348,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
               };*/
 
         private int[] mTabsIcons = {
-                R.drawable.ic_food_d,
-                R.drawable.ic_medicine_d,
+                R.drawable.ic_food_new,
+                R.drawable.ic_medicine_new,
                 //R.drawable.ic_dairy_d,
-                R.drawable.ic_dairy_real,
+                R.drawable.ic_dairy_new,
                 //R.drawable.ic_fruits_d,
-                R.drawable.ic_fruits_real,
+                R.drawable.ic_fruits_new,
                 //R.drawable.ic_vegetables_d,
-                R.drawable.ic_vegetables_real,
-                R.drawable.ic_meat_d,
+                R.drawable.ic_vegetables_new,
+                R.drawable.ic_meat_new,
         };
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -1387,6 +1389,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.txtView.setText(title[position]);
             holder.icon.setImageResource(mTabsIcons[position]);
+            holder.txtView.setTypeface(Fonts.getRegular(mContext));
             //holder.itemHolder.setBackgroundResource(colors[position]);
 
             holder.itemHolder.setOnClickListener(new View.OnClickListener() {
@@ -1551,6 +1554,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.txtView.setText(title[position]);
             holder.icon.setImageResource(mTabsIcons[position]);
+            holder.txtView.setTypeface(Fonts.getRegular(mContext));
 
             holder.itemHolder.setOnClickListener(new View.OnClickListener() {
                 @Override

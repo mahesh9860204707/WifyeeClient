@@ -91,7 +91,9 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
             Vholder.tv_foodName.setText(upperString);
         }
 
-        Vholder.tv_foodprice.setText("₹"+CartFoodOderItem.getCalculatedAmt());
+       // double calculateAmount = Double.parseDouble(CartFoodOderItem.getPrice()) * Integer.parseInt(Vholder.tv_quantityNumber.getText().toString());
+
+        Vholder.tv_foodprice.setText("₹".concat(CartFoodOderItem.getCalculatedAmt()));
         Vholder.tv_quantityNumber.setText(CartFoodOderItem.quantiy);
 
         RequestOptions options = new RequestOptions()
@@ -125,16 +127,17 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
             Vholder.icDiscount.setVisibility(View.GONE);
             Vholder.tvDiscount.setVisibility(View.GONE);
         }else {
-            Vholder.tvDiscount.setText("₹"+CartFoodOderItem.getDiscountAmt());
+            double discount = Double.parseDouble(CartFoodOderItem.getDiscountAmt()) * Integer.parseInt(Vholder.tv_quantityNumber.getText().toString());
+            Vholder.tvDiscount.setText("₹"+discount);
             Vholder.icDiscount.setVisibility(View.VISIBLE);
             Vholder.tvDiscount.setVisibility(View.VISIBLE);
             Vholder.icDiscount.animate().rotation(360).setDuration(1000).start();
         }
 
         if(CartFoodOderItem.getCategory().equals("1")){
-            Vholder.icCategory.setImageResource(R.drawable.ic_veg);
+            Vholder.icCategory.setImageResource(R.drawable.ic_veg1);
         }else {
-            Vholder.icCategory.setImageResource(R.drawable.ic_non_veg);
+            Vholder.icCategory.setImageResource(R.drawable.ic_non_veg1);
         }
 
 

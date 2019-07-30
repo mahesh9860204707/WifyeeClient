@@ -317,7 +317,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
                 String discount = cursor.getString(cursor.getColumnIndex("discount"));
 
                 double calculateAmount = Double.parseDouble(price) * Integer.parseInt(quantity);
-                double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
+                //double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
 
                 PlaceOrderData data = new PlaceOrderData();
                 data.setItemImagePath(image_path);
@@ -329,7 +329,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
                 data.setQuantityUnit(unit);
                 data.setOrderPrice(price);
                 data.setCalculatedAmt(String.valueOf(calculateAmount));
-                data.setItemDiscount(String.valueOf(calculateDiscount));
+                data.setItemDiscount(discount);
                 orderItem.add(data);
 
             }while (cursor.moveToNext());

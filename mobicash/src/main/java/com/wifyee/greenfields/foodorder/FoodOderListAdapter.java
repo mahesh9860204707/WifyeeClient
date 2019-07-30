@@ -128,9 +128,9 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
             }
 
             if(object.getCategory().equals("1")){
-                holder.icCategory.setImageResource(R.drawable.ic_veg);
+                holder.icCategory.setImageResource(R.drawable.ic_veg1);
             }else {
-                holder.icCategory.setImageResource(R.drawable.ic_non_veg);
+                holder.icCategory.setImageResource(R.drawable.ic_non_veg1);
             }
 
             //Picasso.with(context).load(NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/food/"+object.foodImage).into( holder.imag_foodimage);

@@ -387,7 +387,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 String category = cursor.getString(cursor.getColumnIndex("category"));
 
                 double calculateAmount = Double.parseDouble(price) * Integer.parseInt(quantity);
-                double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
+                //double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
 
                 SharedPrefenceList data = new SharedPrefenceList();
                 data.setFoodImage(image_path);
@@ -397,7 +397,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 data.setQuantiy(quantity);
                 data.setPrice(price);
                 data.setCalculatedAmt(String.valueOf(calculateAmount));
-                data.setDiscountAmt(String.valueOf(calculateDiscount));
+                data.setDiscountAmt(discount);
                 data.setQty_half_full(qty_half_full);
                 data.setCategory(category);
 
@@ -431,7 +431,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                     totalamount = current + totalamount;
                     //Log.e("amount",String.valueOf(totalamount));
 
-                    double quantityDiscountAmt = Double.parseDouble(favorites.get(k).getDiscountAmt());
+                    double quantityDiscountAmt = Double.parseDouble(favorites.get(k).getDiscountAmt()) * Integer.parseInt(qty);
                     discountAmt = discountAmt + quantityDiscountAmt;
 
                     totalItem = totalItem + Integer.parseInt(qty);
@@ -978,6 +978,8 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
 
             int total = itemTotalAmount + deliveryFee;
             //totalAmount = String.valueOf(total);
+
+
 
             if(deliveryFee==0){
                 deliveryFeePrice.setText("Free");

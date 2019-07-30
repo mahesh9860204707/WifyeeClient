@@ -300,7 +300,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                 String discount = cursor.getString(cursor.getColumnIndex("discount"));
 
                 double calculateAmount = Double.parseDouble(price) * Integer.parseInt(quantity);
-                double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
+               // double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
 
                 PlaceOrderData data = new PlaceOrderData();
                 data.setItemImagePath(image_path);
@@ -312,7 +312,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                 data.setQuantityUnit(unit);
                 data.setOrderPrice(price);
                 data.setCalculatedAmt(String.valueOf(calculateAmount));
-                data.setItemDiscount(String.valueOf(calculateDiscount));
+                data.setItemDiscount(discount);
                 orderItem.add(data);
                 Log.w("data ","Data Fetched");
 

@@ -160,7 +160,8 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
             tvQuality.setText(item.getItemType());
             //tvItemUnit.setText("Unit:"+item.getQuantityUnit());
             tvItemUnit.setText(item.getQuantityUnit());
-            discountAmt.setText("₹"+item.getItemDiscount());
+            double discount = Double.parseDouble(item.getItemDiscount()) * Integer.parseInt(integerNumber.getText().toString());
+            discountAmt.setText("₹"+discount);
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()

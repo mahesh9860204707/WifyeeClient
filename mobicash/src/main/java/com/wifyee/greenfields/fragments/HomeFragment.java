@@ -1492,21 +1492,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     //RecyclerView Grocery
     private class RecycleViewGroceryAdapter extends RecyclerView.Adapter<RecycleViewGroceryAdapter.MyViewHolder> {
 
-       /* private String[] title = {
-                getString(R.string.order_food),
-                getString(R.string.menu_medicine),
-                getString(R.string.menu_product),
-                getString(R.string.connect),
-                getString(R.string.buy_plans)
-               };*/
-
         private String[] title = {
                 "Oil",
                 "Rice",
                 "Sugar",
                 "Soap",
                 "Masalas",
-                "Wheat"
+                "Wheat",
+                "Atta | Rice",
+                "Dal | Pulses",
+                "Dry Fruits",
+                "Healthy Oils",
+                "Namkeens",
+                "Noodles | Pasta",
+                "Health Drinks",
+                "Tea | Coffee"
         };
 
         /*private int[] mTabsIcons = {
@@ -1524,6 +1524,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 R.drawable.ic_soap,
                 R.drawable.ic_masalas,
                 R.drawable.ic_wheat,
+                R.drawable.ic_atta_rice,
+                R.drawable.ic_dal_pulses,
+                R.drawable.ic_dry_fruits,
+                R.drawable.ic_healthy,
+                R.drawable.ic_namkeens,
+                R.drawable.ic_noodles_pasta,
+                R.drawable.ic_health_drinks,
+                R.drawable.ic_tea_coffee
         };
 
         public class MyViewHolder extends RecyclerView.ViewHolder {

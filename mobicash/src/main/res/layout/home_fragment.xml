@@ -176,9 +176,9 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:src="@drawable/bg_2"
-                    android:scaleType="fitXY"
-                    android:layout_marginTop="10dp"/>
+                    android:src="@drawable/ic_banner_meat_fish"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitXY"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -198,11 +198,10 @@
                     android:layout_marginTop="4dp"
                     android:visibility="gone"/>
 
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_grocery"
                     android:layout_width="match_parent"
-                    android:layout_height="302dp"/>
+                    android:layout_height="755dp"/>
 
 
                 <ImageView

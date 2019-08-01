@@ -144,6 +144,9 @@ public class JSONParser {
                     if(dataObject.has(DairyNetworkConstant.ITEM_UNIT)){
                         list.setItemUnit(dataObject.getString(DairyNetworkConstant.ITEM_UNIT));
                     }
+                    if(dataObject.has(DairyNetworkConstant.ITEM_UNIT_QTY)){
+                        list.setItemUnitQty(dataObject.getString(DairyNetworkConstant.ITEM_UNIT_QTY));
+                    }
                     if(dataObject.has(DairyNetworkConstant.MER_CURRENT_STATUS)){
                         list.setCurrentStatus(dataObject.getString(DairyNetworkConstant.MER_CURRENT_STATUS));
                     }

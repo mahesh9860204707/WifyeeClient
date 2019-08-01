@@ -1316,6 +1316,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             return title.length;
         }
     }
+
     /**
      * recycle view adapter
      */
@@ -1499,23 +1500,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 "Soap",
                 "Masalas",
                 "Wheat",
-                "Atta | Rice",
-                "Dal | Pulses",
-                "Dry Fruits",
+                "Atta | Rice",//214
+                "Dal | Pulses",//261,266
+                "Dry Fruits",//228
                 "Healthy Oils",
-                "Namkeens",
-                "Noodles | Pasta",
+                "Namkeens",//215
+                "Noodles | Pasta",//271,229
                 "Health Drinks",
-                "Tea | Coffee"
+                "Tea | Coffee",//220
+                "Kitchen Cleaning",//268
+                "Exotic Corner",
+                "Oral Care",//264
+                "Liquid Detergents",
+                "Handwash | Antiseptic",//272,273
+                "Frozen Snack",
+                "Fresheners Repellents",
+                "Floor Toilet Cleaners",
+                "Face Cleaners | Moisturisers",//225
+                "Fabric Conditioners",
+                "Detergent Powders",//224
+                "Brooms | Brushes",//275
+                "Bath | Hair"
         };
-
-        /*private int[] mTabsIcons = {
-                R.drawable.ic_food,
-                R.drawable.ic_file_upload,
-                R.mipmap.product_icon,
-                R.drawable.ic_wifyee_plans,
-                R.drawable.ic_connect_wifyee,
-              };*/
 
         private int[] mTabsIcons = {
                 R.drawable.ic_oil,
@@ -1531,7 +1537,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 R.drawable.ic_namkeens,
                 R.drawable.ic_noodles_pasta,
                 R.drawable.ic_health_drinks,
-                R.drawable.ic_tea_coffee
+                R.drawable.ic_tea_coffee,
+                R.drawable.ic_kitchen_cleaning,
+                R.drawable.ic_exotic_corner,
+                R.drawable.ic_oral_care,
+                R.drawable.ic_liquid_detergents,
+                R.drawable.ic_handwash_antiseptic,
+                R.drawable.ic_frozen_snacks,
+                R.drawable.ic_freshners_repellents,
+                R.drawable.ic_floor_toilet_cleaners,
+                R.drawable.ic_face_cleaners_moisturisers,
+                R.drawable.ic_fabric_conditioners,
+                R.drawable.ic_detergent_powders,
+                R.drawable.ic_brooms_brushes,
+                R.drawable.ic_bath_hair
         };
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -1629,6 +1648,127 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Wheat");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "13");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+
+                        case 6:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Atta | Rice");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "214");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 7:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Dal | Pulses");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, " 212,261,266");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 8:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Dry Fruits");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "228");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 10:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Namkeens");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "215");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 11:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Noodels | Pasta");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "271,229");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 13:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Tea | Coffee");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "220");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 14:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Kitchen Cleaning");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "268");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 16:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Oral Care");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "264");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 18:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Handwash | Antiseptic");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "272");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 22:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Face Cleaners | Moisturisers");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "225");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 24:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Detergent Powders");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "224");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 25:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Brooms | Brushes");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "275");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }

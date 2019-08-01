@@ -48,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,8 +134,12 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         public void setData(DairyProductListItem item) {
             this.item = item;
             //textView.setText(item.getItemType());
+            DecimalFormat decimalFormat = new DecimalFormat("0.#");
+            String unitQty = decimalFormat.format(Float.parseFloat(item.getItemUnitQty()));
+            System.out.println("unitQty"+item.getItemUnitQty());
             tvPrice.setText("₹" + item.getItemPrice());
-            tvItemType.setText(item.getItemName());
+            //tvItemType.setText(item.getItemName());
+            tvItemType.setText(item.getItemName().concat(" (").concat(unitQty).concat(" ").concat(item.getItemUnit()).concat(")"));
             tvQuality.setText(item.getItemQuality());
             unit.setText(item.getItemUnit());
             discountAmt.setText("₹"+item.getItemDiscount());
@@ -148,6 +153,10 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
             Glide.with(mContext).load(item.getItemImagePath())
                     .apply(options)
                     .into(imageView);
+
+
+
+
 
             /*Picasso.with(mContext)
                     .load(item.getItemImagePath())
@@ -236,7 +245,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
                             mListener.onBuyCallBack(((DairyProductListItem) mValues.get(position)),
                                     ((DairyProductListItem) mValues.get(position)).getItemId(),
                                     myViewHolder.integerNumber.getText().toString(),
-                                    myViewHolder.unit.getText().toString(),0);
+                                    myViewHolder.unit.getText().toString(),0,myViewHolder.tvItemType.getText().toString());
 
                             LocalPreferenceUtility.putLatitudeOther(mContext, LocalPreferenceUtility.getLatitude(mContext));
                             LocalPreferenceUtility.putLongitudeOther(mContext, LocalPreferenceUtility.getLongitude(mContext));
@@ -309,7 +318,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
 
     public interface ItemListener {
         void onItemClick(DairyProductListItem item);
-        void onBuyCallBack(DairyProductListItem item,String itemId,String quantity,String qtyInUnit,int flag);
+        void onBuyCallBack(DairyProductListItem item,String itemId,String quantity,String qtyInUnit,int flag,String itemName);
         void onRemoveCartCallBack(String topicId,int flag);
     }
 
@@ -415,7 +424,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
 
         if(result.equals("Done")){
             Log.d("update","Record update");
-            mListener.onBuyCallBack(((DairyProductListItem) mValues.get(0)), "", "", "",1);
+            mListener.onBuyCallBack(((DairyProductListItem) mValues.get(0)), "", "", "",1,"");
         }else {
             Log.d("result",result);
         }

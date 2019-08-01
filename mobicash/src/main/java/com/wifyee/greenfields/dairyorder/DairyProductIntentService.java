@@ -497,6 +497,8 @@ public class DairyProductIntentService extends IntentService {
             Timber.e("JSONException. message : " + e.getMessage());
         }
 
+        Log.e("--item jsn--",jsonObject.toString());
+
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES)

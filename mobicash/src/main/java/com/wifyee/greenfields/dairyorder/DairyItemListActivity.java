@@ -155,6 +155,9 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
             if (countCart() != 0) {
                 Intent intent = new Intent(this, OrderSummaryActivity.class);
                 Bundle data = new Bundle();
+                intent.putExtra("flag",flag);
+                intent.putExtra("total_bal",totalBal);
+                intent.putExtra("tuv_id",tuvId);
                 //data.putParcelableArrayList("data", orderItem);
                 //intent.putExtra("main_data", data);
                 startActivity(intent);
@@ -329,7 +332,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
 
     @Override
     public void onBuyCallBack(final DairyProductListItem item,final String itemId,
-                              final String quantity,final String quantityUnit,int flag) {
+                              final String quantity,final String quantityUnit,int flag,String itemName) {
         if(flag == 0) {
             PlaceOrderData data = new PlaceOrderData();
             data.setItemImagePath(item.getItemImagePath());
@@ -342,7 +345,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
             data.setOrderPrice(item.getItemPrice());
             orderItem.add(data);
 
-            insert(item.getItemImagePath(), item.getItemName(), item.getItemQuality(), item.getMerchantId(), itemId,
+            insert(item.getItemImagePath(), itemName, item.getItemQuality(), item.getMerchantId(), itemId,
                     quantity, quantityUnit, item.getItemPrice(), item.getItemDiscount());
         }
 

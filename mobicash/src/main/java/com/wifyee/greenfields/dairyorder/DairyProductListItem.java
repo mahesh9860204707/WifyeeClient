@@ -24,6 +24,7 @@ public class DairyProductListItem implements Parcelable {
     private String itemImageId;
     private String itemImagePath;
     private String itemUnit;
+    private String itemUnitQty;
     private String currentStatus;
 
     public DairyProductListItem() {}
@@ -52,6 +53,7 @@ public class DairyProductListItem implements Parcelable {
         dest.writeString(getItemImageId());
         dest.writeString(getItemImagePath());
         dest.writeString(getItemUnit());
+        dest.writeString(getItemUnitQty());
         dest.writeString(getCurrentStatus());
     }
 
@@ -78,6 +80,7 @@ public class DairyProductListItem implements Parcelable {
         this.itemImageId = in.readString();
         this.itemImagePath = in.readString();
         this.itemUnit = in.readString();
+        this.itemUnitQty = in.readString();
         this.currentStatus = in.readString();
     }
 
@@ -245,6 +248,14 @@ public class DairyProductListItem implements Parcelable {
 
     public void setItemUnit(String itemUnit) {
         this.itemUnit = itemUnit;
+    }
+
+    public String getItemUnitQty() {
+        return itemUnitQty;
+    }
+
+    public void setItemUnitQty(String itemUnitQty) {
+        this.itemUnitQty = itemUnitQty;
     }
 
     public String getCurrentStatus() {

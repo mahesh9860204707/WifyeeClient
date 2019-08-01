@@ -672,10 +672,11 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:background="@color/gray" />
+                        android:background="@drawable/dotted"
+                        android:layerType="software"/>
 
 
                     <LinearLayout
@@ -716,10 +717,11 @@
                     <View
                         android:id="@+id/split_line_hor1"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:background="@color/gray" />
+                        android:background="@drawable/dotted"
+                        android:layerType="software" />
 
                     <LinearLayout
                         android:id="@+id/total"
@@ -762,6 +764,7 @@
             </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/card_view_payment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             card_view:cardElevation="4dp"

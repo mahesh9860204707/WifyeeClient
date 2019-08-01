@@ -34,6 +34,7 @@ public class DairyNetworkConstant {
     public static final String PAYMENT_MODE_COD = "cod";
     public static final String PAYMENT_MODE_WALLET = "wallet";
     public static final String PAYMENT_MODE_INSTAMOJO = "instamojo";
+    public static final String PAYMENT_MODE_ONLINE = "online";
 
 
     public static final String CHECK_ITEM_QUANTITY = "/api/usersellingitemapi.php?request=checkmultipleitemqty";
@@ -111,6 +112,7 @@ public class DairyNetworkConstant {
     public static final String ITEM_STATUS= "status";
     public static final String ITEM_CREATE_DATE= "createdDate";
     public static final String ITEM_UNIT= "unit";
+    public static final String ITEM_UNIT_QTY= "unit_quantity";
     public static final String ITEM_UPDATED_DATE= "updateddDate";
     public static final String ITEM_IMAGE_OBJ= "imageObj";
     public static final String ITEM_IMAGE_ID= "imageId";

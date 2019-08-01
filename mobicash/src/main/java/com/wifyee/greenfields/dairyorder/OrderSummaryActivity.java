@@ -10,7 +10,9 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +95,9 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
     public static String completeAddress,location,latitude,longitude,
             voucherId="",voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
     ImageView emptyCartIcon;
+    private double totalBalanceVoucher;
+    private String isflag,tuvId;
+    private CardView cardViewDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +119,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
         recyclerView = (RecyclerView) findViewById(R.id.order_recyclerview);
         claimHere = (TextView) findViewById(R.id.claim_here);
         txtClaimText = (TextView) findViewById(R.id.txt);
+        cardViewDiscount = findViewById(R.id.card_view_discount);
         emptyCartIcon = findViewById(R.id.empty_cart_icon);
         emptyCartTxt = findViewById(R.id.empty_txt);
         txtTotalDiscountAmt = findViewById(R.id.txt_total_discount_amt);
@@ -158,6 +164,14 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
         itemCount.setTypeface(Fonts.getRegular(this));
         txtTaxes.setTypeface(Fonts.getRegular(this));
 
+        isflag = getIntent().getStringExtra("flag");
+        String totalBal = getIntent().getStringExtra("total_bal");
+        tuvId = getIntent().getStringExtra("tuv_id");
+
+        if (totalBal!=null){
+            totalBalanceVoucher = Double.parseDouble(totalBal);
+        }
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -171,24 +185,42 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             @Override
             public void onClick(View view) {
                 String text = totalAmount.getText().toString();
-                if(isVoucherClaim) {
-                    if (containsDigit(text) && !text.equals("0.0")) {
-                        //  setDialog();
-                        orderItem = adapter.placeOrderData;
-                        checkItemQuantity(object);
+                double total_amount = Double.parseDouble(totalAmount.getText().toString());
+                if (containsDigit(text) && !text.equals("0.0")) {
+                    if (cardViewDiscount.getVisibility() == View.VISIBLE && isVoucherClaim) {
+                        if (isflag !=null) {
+                            if (isflag.equalsIgnoreCase("voucher")) {
+                                if(total_amount <= totalBalanceVoucher){
+                                    orderItem = adapter.placeOrderData;
+                                    checkItemQuantity(object);
+                                }else {
+                                    Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        }else {
+                            orderItem = adapter.placeOrderData;
+                            checkItemQuantity(object);
+                        }
 
-                    /* Intent intent = IntentFactory.createOrderSummaryDetailsActivity(OrderSummaryActivity.this);
-                    intent.putParcelableArrayListExtra("data",orderItem);
-                    intent.putExtra("amount",totalAmount.getText().toString());
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                    finish();*/
-
-                    }else{
-                        showErrorDialog("Add item quantity to continue payment!");
+                    } else if (cardViewDiscount.getVisibility() == View.GONE) {
+                        if (isflag !=null) {
+                            if (isflag.equalsIgnoreCase("voucher")) {
+                                if(total_amount <= totalBalanceVoucher){
+                                    orderItem = adapter.placeOrderData;
+                                    checkItemQuantity(object);
+                                }else {
+                                    Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        }else {
+                            orderItem = adapter.placeOrderData;
+                            checkItemQuantity(object);
+                        }
+                    } else {
+                        showErrorDialog("Please claim the discount amount first.");
                     }
                 }else {
-                    showErrorDialog("Please claim the discount amount first.");
+                    showErrorDialog("Add item quantity to continue payment!");
                 }
             }
         });
@@ -412,6 +444,8 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                             intent.putExtra("claim_type",claimType);
                             intent.putExtra("voucher_id",voucherId);
                             intent.putExtra("voucher_no",voucherNo);
+                            intent.putExtra("flag",isflag);
+                            intent.putExtra("tuv_id",tuvId);
                             intent.putExtra("discount_amt",totalDiscountAmt.getText().toString().replace("₹",""));
                             startActivity(intent);
                             isVoucherClaim = false;

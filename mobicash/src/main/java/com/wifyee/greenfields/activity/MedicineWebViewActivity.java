@@ -278,7 +278,7 @@ public class MedicineWebViewActivity extends AppCompatActivity {
 
         try {
             json = JSONBuilder.getPostAddOrderJson(mcontext, orderId, "", deliverAmt, discount_amt,
-                    amount, claimType, voucherId, voucherNo, orderOn, DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO,refId);
+                    amount, claimType, voucherId, voucherNo, orderOn, DairyNetworkConstant.PAYMENT_MODE_ONLINE,refId);
         }catch (Exception e) {
             e.printStackTrace();
         }

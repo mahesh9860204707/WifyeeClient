@@ -201,7 +201,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_grocery"
                     android:layout_width="match_parent"
-                    android:layout_height="755dp"/>
+                    android:layout_height="1359dp"/>
 
 
                 <ImageView

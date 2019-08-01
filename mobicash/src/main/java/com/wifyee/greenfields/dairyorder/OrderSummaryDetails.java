@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -154,7 +155,8 @@ public class OrderSummaryDetails extends BaseActivity {
     private SimpleDateFormat dateFormatter;
     private EditText dateFrom,dateTo;
     private Spinner perDayLitreSpinner;
-    String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo;
+    CardView card_view_payment;
+    String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo,flag,tuvId;
     /**
      * List of actions supported.
      */
@@ -181,6 +183,7 @@ public class OrderSummaryDetails extends BaseActivity {
         dateFrom = findViewById(R.id.date_from);
         dateTo = findViewById(R.id.date_to);
         perDayLitreSpinner = findViewById(R.id.per_day_litre);
+        card_view_payment = findViewById(R.id.card_view_payment);
 
         /*String amount = LocalPreferenceUtility.getWalletBalance(this);
         Log.e("amt","amt "+amount);*/
@@ -283,6 +286,14 @@ public class OrderSummaryDetails extends BaseActivity {
         claimType = getIntent().getStringExtra("claim_type");
         voucherId = getIntent().getStringExtra("voucher_id");
         voucherNo = getIntent().getStringExtra("voucher_no");
+        flag = getIntent().getStringExtra("flag");
+        tuvId = getIntent().getStringExtra("tuv_id");
+
+        if (flag!=null){
+            card_view_payment.setVisibility(View.GONE);
+        }else {
+            card_view_payment.setVisibility(View.VISIBLE);
+        }
 
         int size = orderItem.size();
        /*for(int i=0;i<size;i++){
@@ -356,70 +367,76 @@ public class OrderSummaryDetails extends BaseActivity {
                     perDay="";
                 }
 
-                if(paymentSelectedIndex == 1){
-                    double amount = Double.parseDouble(totalAmount);
-                    int walletAmount = !LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this).equals("")?Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this)) : 0;
-                    //int walletAmount = Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this));
-                    // if (!LocalPreferenceUtility.getPinCode(OrderSummaryActivity.this).isEmpty()) {
-                    if (walletAmount > amount) {
-                        showProgressDialog();
-                        DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
-                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_WALLET,
-                                "",location,latitude,longitude,complete_add,discount_amt,dtFrom,dtTo,perDay,
-                                claimType,voucherId,voucherNo);
-                    } else {
-                        //add amount and then place order.
-                        Intent i = new Intent(OrderSummaryDetails.this, DairyOrderSummaryWebViewActivity.class);
-                        i.putExtra("pay_amount", String.valueOf(amount-walletAmount));
-                        i.putExtra("paymode","wallet");
-                        i.putParcelableArrayListExtra("data",orderItem);
-                        i.putExtra("totalAmount",totalAmount);
-                        i.putExtra("location",location);
-                        i.putExtra("latitude",latitude);
-                        i.putExtra("longitude",longitude);
-                        i.putExtra("complete_add",complete_add);
-                        i.putExtra("discount_amt",discount_amt);
-                        i.putExtra("date_from",dtFrom);
-                        i.putExtra("date_to",dtTo);
-                        i.putExtra("per_day",perDay);
-                        i.putExtra("claim_type",claimType);
-                        i.putExtra("voucher_id",voucherId);
-                        i.putExtra("voucher_no",voucherNo);
-                        startActivity(i);
-                        finish();
+                if (flag!=null){
+                    if (flag.equalsIgnoreCase("voucher")){
+                        Snackbar.make(view,"you can order",Snackbar.LENGTH_SHORT).show();
+
                     }
-                }
-                else if(paymentSelectedIndex ==2) {
-                    if (!LocalPreferenceUtility.getPinCode(OrderSummaryDetails.this).isEmpty()) {
-                        Intent i = new Intent(OrderSummaryDetails.this, DairyOrderSummaryWebViewActivity.class);
-                        i.putExtra("pay_amount", totalAmount);
-                        i.putExtra("paymode",DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO);
-                        i.putParcelableArrayListExtra("data",orderItem);
-                        i.putExtra("location",location);
-                        i.putExtra("latitude",latitude);
-                        i.putExtra("longitude",longitude);
-                        i.putExtra("complete_add",complete_add);
-                        i.putExtra("discount_amt",discount_amt);
-                        i.putExtra("date_from",dtFrom);
-                        i.putExtra("date_to",dtTo);
-                        i.putExtra("per_day",perDay);
-                        i.putExtra("claim_type",claimType);
-                        i.putExtra("voucher_id",voucherId);
-                        i.putExtra("voucher_no",voucherNo);
-                        startActivity(i);
-                        finish();
-                    }else{
-                        showErrorDialog("Please update your profile before proceed!");
-                    }
-                }else if (paymentSelectedIndex ==0){
-                    if (!LocalPreferenceUtility.getPinCode(OrderSummaryDetails.this).isEmpty()) {
-                        showProgressDialog();
-                        DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
-                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_COD,
-                                "",location,latitude,longitude,complete_add,discount_amt,dtFrom,dtTo,perDay,
-                                claimType,voucherId,voucherNo);
-                    }else{
-                        showErrorDialog("Please update your profile before proceed!");
+                }else {
+                    if (paymentSelectedIndex == 1) {
+                        double amount = Double.parseDouble(totalAmount);
+                        int walletAmount = !LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this).equals("") ? Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this)) : 0;
+                        //int walletAmount = Integer.parseInt(LocalPreferenceUtility.getWalletBalance(OrderSummaryDetails.this));
+                        // if (!LocalPreferenceUtility.getPinCode(OrderSummaryActivity.this).isEmpty()) {
+                        if (walletAmount > amount) {
+                            showProgressDialog();
+                            DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
+                                    totalAmount, DairyNetworkConstant.PAYMENT_MODE_WALLET,
+                                    "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
+                                    claimType, voucherId, voucherNo);
+                        } else {
+                            //add amount and then place order.
+                            Intent i = new Intent(OrderSummaryDetails.this, DairyOrderSummaryWebViewActivity.class);
+                            i.putExtra("pay_amount", String.valueOf(amount - walletAmount));
+                            i.putExtra("paymode", "wallet");
+                            i.putParcelableArrayListExtra("data", orderItem);
+                            i.putExtra("totalAmount", totalAmount);
+                            i.putExtra("location", location);
+                            i.putExtra("latitude", latitude);
+                            i.putExtra("longitude", longitude);
+                            i.putExtra("complete_add", complete_add);
+                            i.putExtra("discount_amt", discount_amt);
+                            i.putExtra("date_from", dtFrom);
+                            i.putExtra("date_to", dtTo);
+                            i.putExtra("per_day", perDay);
+                            i.putExtra("claim_type", claimType);
+                            i.putExtra("voucher_id", voucherId);
+                            i.putExtra("voucher_no", voucherNo);
+                            startActivity(i);
+                            finish();
+                        }
+                    } else if (paymentSelectedIndex == 2) {
+                        if (!LocalPreferenceUtility.getPinCode(OrderSummaryDetails.this).isEmpty()) {
+                            Intent i = new Intent(OrderSummaryDetails.this, DairyOrderSummaryWebViewActivity.class);
+                            i.putExtra("pay_amount", totalAmount);
+                            i.putExtra("paymode", DairyNetworkConstant.PAYMENT_MODE_ONLINE);
+                            i.putParcelableArrayListExtra("data", orderItem);
+                            i.putExtra("location", location);
+                            i.putExtra("latitude", latitude);
+                            i.putExtra("longitude", longitude);
+                            i.putExtra("complete_add", complete_add);
+                            i.putExtra("discount_amt", discount_amt);
+                            i.putExtra("date_from", dtFrom);
+                            i.putExtra("date_to", dtTo);
+                            i.putExtra("per_day", perDay);
+                            i.putExtra("claim_type", claimType);
+                            i.putExtra("voucher_id", voucherId);
+                            i.putExtra("voucher_no", voucherNo);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            showErrorDialog("Please update your profile before proceed!");
+                        }
+                    } else if (paymentSelectedIndex == 0) {
+                        if (!LocalPreferenceUtility.getPinCode(OrderSummaryDetails.this).isEmpty()) {
+                            showProgressDialog();
+                            DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
+                                    totalAmount, DairyNetworkConstant.PAYMENT_MODE_COD,
+                                    "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
+                                    claimType, voucherId, voucherNo);
+                        } else {
+                            showErrorDialog("Please update your profile before proceed!");
+                        }
                     }
                 }
             }

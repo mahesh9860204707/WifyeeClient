@@ -61,6 +61,7 @@ public class DairyProductIntentService extends IntentService {
     private static final String EXTRA_PARAM13 = "com.wifyee.greenfields.dairyorder.extra.PARAM13";
     private static final String EXTRA_PARAM14 = "com.wifyee.greenfields.dairyorder.extra.PARAM14";
     private static final String EXTRA_PARAM15 = "com.wifyee.greenfields.dairyorder.extra.PARAM15";
+    private static final String EXTRA_PARAM16 = "com.wifyee.greenfields.dairyorder.extra.PARAM16";
 
     private static final String EXTRA_PARAM_CATEGORY = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_CATEGORY";
     private static final String EXTRA_PARAM_MER_TYPE = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_MER_TYPE";
@@ -145,7 +146,7 @@ public class DairyProductIntentService extends IntentService {
                                            String totalAmount, String paymentMode,String refId,
                                            String location, String lat, String lng, String complete_add,
                                            String discount_amt,String dateFrom,String dateTo, String perDay,
-                                           String claimType, String voucherId, String voucherNo) {
+                                           String claimType, String voucherId, String voucherNo,String tuvId) {
         ctx = context;
         Intent intent = new Intent(context, DairyProductIntentService.class);
         intent.putParcelableArrayListExtra(EXTRA_PARAM1,orderItem);
@@ -164,6 +165,7 @@ public class DairyProductIntentService extends IntentService {
         intent.putExtra(EXTRA_PARAM13,claimType);
         intent.putExtra(EXTRA_PARAM14,voucherId);
         intent.putExtra(EXTRA_PARAM15,voucherNo);
+        intent.putExtra(EXTRA_PARAM16,tuvId);
         intent.setAction(ACTION_ADD_ORDER);
         context.startService(intent);
     }
@@ -407,10 +409,11 @@ public class DairyProductIntentService extends IntentService {
         String claimType = intent.getStringExtra(EXTRA_PARAM13);
         String voucherId = intent.getStringExtra(EXTRA_PARAM14);
         String voucherNo = intent.getStringExtra(EXTRA_PARAM15);
+        String tuvId = intent.getStringExtra(EXTRA_PARAM16);
         try {
             obj = JSONBuilder.getAddOrderJSon(ctx,intent.<PlaceOrderData>getParcelableArrayListExtra(EXTRA_PARAM1)
                     ,intent.getStringExtra(EXTRA_PARAM2), paymentMode,pinCode,intent.getStringExtra("ref_id"),
-                    location,lat,lng,complete_add,discount_amt,dateFrom,dateTo,perDay,claimType,voucherId,voucherNo);
+                    location,lat,lng,complete_add,discount_amt,dateFrom,dateTo,perDay,claimType,voucherId,voucherNo,tuvId);
             Log.e("ORDER_JSON",obj.toString());
         } catch (Exception e) {
             obj = new JSONObject();

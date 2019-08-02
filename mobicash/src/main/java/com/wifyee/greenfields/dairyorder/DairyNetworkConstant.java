@@ -35,6 +35,7 @@ public class DairyNetworkConstant {
     public static final String PAYMENT_MODE_WALLET = "wallet";
     public static final String PAYMENT_MODE_INSTAMOJO = "instamojo";
     public static final String PAYMENT_MODE_ONLINE = "online";
+    public static final String PAYMENT_MODE_VOUCHER= "voucher";
 
 
     public static final String CHECK_ITEM_QUANTITY = "/api/usersellingitemapi.php?request=checkmultipleitemqty";
@@ -153,8 +154,8 @@ public class DairyNetworkConstant {
     public static final String CLAIM_TYPE = "claim_type";
     public static final String VOUCHER_ID = "voucher_id";
     public static final String VOUCHER_NO = "voucher_no";
-
     public static final String ORDER_REF_ID = "ref_id";
+    public static final String TUV_ID = "tuv_id";
 
     public static String getUniqueId(){
         return UUID.randomUUID().toString();

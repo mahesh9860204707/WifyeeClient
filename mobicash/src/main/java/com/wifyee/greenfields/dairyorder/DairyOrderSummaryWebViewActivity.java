@@ -62,7 +62,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
     private ArrayList<PlaceOrderData> orderData;
     private String totalAmount;
     private String payAmount,location,latitude,longitude,complete_add,discount_amt,dateFrom,dateTo,
-            perDay,claimType,voucherId,voucherNo;
+            perDay,claimType,voucherId,voucherNo,tuv_id;
     /**
      * List of actions supported.
      */
@@ -156,6 +156,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
         claimType = getIntent().getStringExtra("claim_type");
         voucherId = getIntent().getStringExtra("voucher_id");
         voucherNo = getIntent().getStringExtra("voucher_no");
+        tuv_id = getIntent().getStringExtra("tuv_id");
 
         if(intent!=null) {
             JSONObject data = new JSONObject();
@@ -252,7 +253,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
                         //request api add money to wallet
                         showSuccessTransactionDialog();
                         finish();
-                    } else if (pay_mode.equals(DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO)) {
+                    } else if (pay_mode.equals(DairyNetworkConstant.PAYMENT_MODE_ONLINE)) {
                         try {
                             webLoading.setVisibility(View.VISIBLE);
                             String refId1 = content.substring(content.indexOf("payment_request"));
@@ -260,9 +261,9 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
                             String refId3 = refId2.substring(refId2.indexOf("/")+1);
                             String refId = refId3.substring(0,(refId3.indexOf("/") - 1));
                             DairyProductIntentService.startActionAddOrder(DairyOrderSummaryWebViewActivity.this, orderData,
-                                    payAmount, DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO, refId,
+                                    payAmount, DairyNetworkConstant.PAYMENT_MODE_ONLINE, refId,
                                     location,latitude,longitude,complete_add,discount_amt,dateFrom,dateTo,
-                                    perDay,claimType,voucherId,voucherNo);
+                                    perDay,claimType,voucherId,voucherNo,tuv_id);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

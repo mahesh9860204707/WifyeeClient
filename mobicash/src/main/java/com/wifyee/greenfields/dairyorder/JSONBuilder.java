@@ -19,7 +19,7 @@ public class JSONBuilder {
                                              String totalAmount,String paymentMode,String pinCode,String refId,
                                              String location, String lat, String lng, String complete_add,String discount_amt,
                                              String dateFrom,String dateTo,String perDay,String claimType,String voucherId,
-                                             String voucherNo){
+                                             String voucherNo,String tuvId){
         JSONObject addOrderJson = new JSONObject();
        // GPSTracker gps = new GPSTracker(ctx);
         try {
@@ -36,9 +36,13 @@ public class JSONBuilder {
                 addOrderJson.put(DairyNetworkConstant.ORDER_MOB_NUMBER,LocalPreferenceUtility.getUserMobileNumber(ctx));
                 addOrderJson.put(DairyNetworkConstant.ORDER_DESCRIPTION,"test");
             }
-            if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO)){
+            if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_ONLINE)){
                 addOrderJson.put(DairyNetworkConstant.ORDER_REF_ID,refId);
             }
+            if (paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_VOUCHER)){
+                addOrderJson.put(DairyNetworkConstant.TUV_ID,tuvId);
+            }
+
 //            addOrderJson.put(DairyNetworkConstant.ORDER_LAT,getLatitude(gps));
 //            addOrderJson.put(DairyNetworkConstant.ORDER_LONG,getLogitude(gps));
             addOrderJson.put(DairyNetworkConstant.ORDER_LAT,lat);
@@ -90,7 +94,7 @@ public class JSONBuilder {
                 json.put(DairyNetworkConstant.ORDER_MOBILE_NUMBER,LocalPreferenceUtility.getUserMobileNumber(context));
                 json.put(DairyNetworkConstant.ORDER_DESCRIPTION,"Medicine");
             }
-            if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_INSTAMOJO)){
+            if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_ONLINE)){
                 json.put(DairyNetworkConstant.ORDER_REF_ID,refId);
             }
         } catch (JSONException e) {

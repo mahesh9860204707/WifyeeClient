@@ -336,7 +336,7 @@ public class OrderSummaryDetails extends BaseActivity {
                 } else if(checkedId == R.id.rb_wallet) {
                     paymentSelectedIndex = 1;
                 } else {
-                    paymentSelectedIndex = 2;
+                      paymentSelectedIndex = 2;
                 }
             }
         });
@@ -369,7 +369,11 @@ public class OrderSummaryDetails extends BaseActivity {
 
                 if (flag!=null){
                     if (flag.equalsIgnoreCase("voucher")){
-                        Snackbar.make(view,"you can order",Snackbar.LENGTH_SHORT).show();
+                        showProgressDialog();
+                        DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
+                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_VOUCHER,
+                                "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
+                                claimType, voucherId, voucherNo,tuvId);
 
                     }
                 }else {
@@ -383,7 +387,7 @@ public class OrderSummaryDetails extends BaseActivity {
                             DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
                                     totalAmount, DairyNetworkConstant.PAYMENT_MODE_WALLET,
                                     "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                    claimType, voucherId, voucherNo);
+                                    claimType, voucherId, voucherNo,"");
                         } else {
                             //add amount and then place order.
                             Intent i = new Intent(OrderSummaryDetails.this, DairyOrderSummaryWebViewActivity.class);
@@ -402,6 +406,7 @@ public class OrderSummaryDetails extends BaseActivity {
                             i.putExtra("claim_type", claimType);
                             i.putExtra("voucher_id", voucherId);
                             i.putExtra("voucher_no", voucherNo);
+                            i.putExtra("tuv_id", tuvId);
                             startActivity(i);
                             finish();
                         }
@@ -422,6 +427,7 @@ public class OrderSummaryDetails extends BaseActivity {
                             i.putExtra("claim_type", claimType);
                             i.putExtra("voucher_id", voucherId);
                             i.putExtra("voucher_no", voucherNo);
+                            i.putExtra("tuv_id", tuvId);
                             startActivity(i);
                             finish();
                         } else {
@@ -433,7 +439,7 @@ public class OrderSummaryDetails extends BaseActivity {
                             DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
                                     totalAmount, DairyNetworkConstant.PAYMENT_MODE_COD,
                                     "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                    claimType, voucherId, voucherNo);
+                                    claimType, voucherId, voucherNo,"");
                         } else {
                             showErrorDialog("Please update your profile before proceed!");
                         }

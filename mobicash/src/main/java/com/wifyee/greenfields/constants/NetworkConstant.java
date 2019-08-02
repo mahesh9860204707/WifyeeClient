@@ -263,6 +263,7 @@ public class NetworkConstant {
     public static final String PARAM_VOUCHER_LIST_BY_PINCODE= "/api/voucherapi.php?request=getVoucherListByPincode";
     public static final String PARAM_GET_CLIENT_VOUCHER_LIST = "/api/voucherapi.php?request=getClientsVoucher";
     public static final String PARAM_GET_FOOD_ITEM_BY_VOUCHER_ID = "/api/voucherapi.php?request=getVoucherItems";
+    public static final String PARAM_GET_OTHER_MERCHANT_LIST = "/api/merchantapi.php?request=getMerTypeListByPincode";
 
     // API end point
     public static final String USER_REQUEST_MERCHANT_CREDIT="http://wifyeepay.com/api/RequestMoneyApi.php?request=requestMoney";

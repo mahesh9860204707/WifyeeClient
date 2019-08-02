@@ -69,6 +69,7 @@ import com.wifyee.greenfields.activity.ProductsSellActivity;
 import com.wifyee.greenfields.activity.RequestBroadbandActivity;
 import com.wifyee.greenfields.activity.SignUpOTPActivity;
 import com.wifyee.greenfields.activity.VoucherList;
+import com.wifyee.greenfields.adapters.OtherMerchantAdapter;
 import com.wifyee.greenfields.adapters.VoucherListAdapter;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
@@ -77,6 +78,7 @@ import com.wifyee.greenfields.dairyorder.DairyProductActivity;
 import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
 import com.wifyee.greenfields.mapper.ModelMapper;
 import com.wifyee.greenfields.models.MyCreditModel;
+import com.wifyee.greenfields.models.OtherMerchantModel;
 import com.wifyee.greenfields.models.VoucherModel;
 import com.wifyee.greenfields.models.requests.GetClientProfileInfoRequest;
 import com.wifyee.greenfields.models.requests.LoginRequest;
@@ -115,7 +117,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public ProgressDialog progressDialog = null;
     private Context mContext = null;
     private LoginRequest mLoginRequest;
-    private RecyclerView recycleView,recyclerViewGrocery,recyclerViewVouchers,recycleViewNested,recyclerViewOrders;
+    private RecyclerView recycleView,recyclerViewGrocery,recyclerViewVouchers,recyclerViewOtherMerchant,recyclerViewOrders;
     private TextView walletBalance,approveCredit,textConnectWifi,helpDesk;
     private Button planWifi;
     private ImageView connectWifi,connect;
@@ -144,7 +146,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private Class ITelephonyClass;
     private boolean switchOn;
     private List<VoucherModel> list = new ArrayList<>();
+    private List<OtherMerchantModel> otherlist = new ArrayList<>();
     private VoucherModel[] voucher;
+    private OtherMerchantModel[] otherMerchant;
+    private OtherMerchantAdapter merchantAdapter;
     /**
      * List of actions supported.
      */
@@ -174,7 +179,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         System.gc();
     }
 
-    TextView view_more_voucher,txt_vouchers;
+    TextView view_more_voucher,txt_vouchers,txtOtherMerchant;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -442,6 +447,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         helpDesk= (TextView) view.findViewById(R.id.help_desk);
         txt_vouchers= (TextView) view.findViewById(R.id.txt_vouchers);
         view_more_voucher = view.findViewById(R.id.view_more_voucher);
+        txtOtherMerchant = view.findViewById(R.id.txt_other_merchant);
+
         helpDesk.setOnClickListener(this);
         connect = view.findViewById(R.id.connect);
         connect.setOnClickListener(this);
@@ -451,7 +458,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
       //  circularNetworkImageView = (CircularNetworkImageView) view.findViewById(R.id.iv_profileView);
         recycleView = (RecyclerView) view.findViewById(R.id.horizontal_recycler_view);
         recyclerViewGrocery = (RecyclerView) view.findViewById(R.id.recycler_grocery);
-        recycleViewNested = (RecyclerView) view.findViewById(R.id.horizontal_recycler_item_view);
+        recyclerViewOtherMerchant = (RecyclerView) view.findViewById(R.id.recycler_other_merchant);
         recyclerViewOrders= (RecyclerView) view.findViewById(R.id.horizontal_recycler_item);
         recyclerViewVouchers= (RecyclerView) view.findViewById(R.id.recycler_view_vouchers);
 
@@ -496,6 +503,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         callVoucherList();
 
+        LinearLayoutManager horizonatlOtherMerchant = new GridLayoutManager(mContext,3);
+        recyclerViewOtherMerchant.setLayoutManager(horizonatlOtherMerchant);
+        merchantAdapter = new OtherMerchantAdapter(mContext,otherlist);
+        recyclerViewOtherMerchant.setAdapter(merchantAdapter);
+        merchantAdapter.notifyDataSetChanged();
+
+        callOtherMerchantList();
+
         view_more_voucher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -512,8 +527,91 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recycleViewNested.setLayoutManager(horizontalLayoutManagaerr);
         recycleViewNested.setAdapter(recycleViewNestedPagerAdapter);*/
 
-
     }
+
+    private void callOtherMerchantList() {
+        if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
+
+            if (otherlist != null) { otherlist.clear(); }
+
+            JSONObject json = new JSONObject();
+            try {
+                json.put("pincode", LocalPreferenceUtility.getPinCode(mContext));
+                //json.put("pincode", "416510");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //Log.e("json",json.toString());
+
+            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                    .connectTimeout(5, TimeUnit.MINUTES)
+                    .readTimeout(5, TimeUnit.MINUTES)
+                    .writeTimeout(5, TimeUnit.MINUTES)
+                    .build();
+
+            AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING +
+                    NetworkConstant.PARAM_GET_OTHER_MERCHANT_LIST)
+                    .addJSONObjectBody(json)
+                    .setOkHttpClient(okHttpClient)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            Log.e("--RESPONSE--", object.toString());
+                            cancelProgressDialog();
+                            try {
+                                if (object.getInt(ResponseAttributeConstants.STATUS) != 0) {
+                                    JSONArray jsonArray = object.getJSONArray(ResponseAttributeConstants.OFFERS_DATA);
+                                    if (jsonArray.length()>0) {
+                                        txtOtherMerchant.setVisibility(View.VISIBLE);
+                                        recyclerViewOtherMerchant.setVisibility(View.VISIBLE);
+
+                                        otherMerchant = new OtherMerchantModel[jsonArray.length()];
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            otherMerchant[i] = new OtherMerchantModel(
+                                                    jsonObject.getString("id"),
+                                                    jsonObject.getString("merchant_type_name"),
+                                                    jsonObject.getString("image")
+                                            );
+                                            otherlist.add(otherMerchant[i]);
+                                        }
+                                        recyclerViewOtherMerchant.getRecycledViewPool().clear();
+                                        merchantAdapter.notifyDataSetChanged();
+                                    }else {
+                                        txtOtherMerchant.setVisibility(View.GONE);
+                                        recyclerViewOtherMerchant.setVisibility(View.GONE);
+                                    }
+                                } else {
+                                    String msg = object.getString(ResponseAttributeConstants.MSG);
+                                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                cancelProgressDialog();
+                                Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            cancelProgressDialog();
+                            // handle error
+                            Timber.e("called onError of User Invoice API.");
+                            Timber.e("Error Message : " + error.getMessage());
+                            Timber.e("Error code : " + error.getErrorCode());
+                            Timber.e("Error Body : " + error.getErrorBody());
+                            Timber.e("Error Detail : " + error.getErrorDetail());
+                        }
+                    });
+        }else {
+            view_more_voucher.setVisibility(View.GONE);
+            txt_vouchers.setVisibility(View.GONE);
+            recyclerViewVouchers.setVisibility(View.GONE);
+        }
+    }
+
+
 
     private void callVoucherList() {
         if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
@@ -1002,14 +1100,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
      */
     private class RecycleViewPagerAdapter extends RecyclerView.Adapter<RecycleViewPagerAdapter.MyViewHolder> {
 
-        /*private String[] title = {getString(R.string.menu_prepaid),
-                getString(R.string.menu_postpaid),
-                getString(R.string.menu_landline),
-                getString(R.string.menu_dth),
-                getString(R.string.menu_gas),
-                getString(R.string.menu_broadband),
-                getString(R.string.menu_electricity)};*/
-
         private String[] title = {
                 getString(R.string.menu_prepaid),
                 getString(R.string.menu_postpaid),
@@ -1494,7 +1584,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private class RecycleViewGroceryAdapter extends RecyclerView.Adapter<RecycleViewGroceryAdapter.MyViewHolder> {
 
         private String[] title = {
-                "Oil",
+                "Cooking Oil",
                 "Rice",
                 "Sugar",
                 "Soap",

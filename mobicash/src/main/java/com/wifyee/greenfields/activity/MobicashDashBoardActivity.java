@@ -1,5 +1,7 @@
 package com.wifyee.greenfields.activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -14,14 +16,21 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -65,12 +74,20 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.compat.Place;
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete;
@@ -80,6 +97,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.wifyee.greenfields.BuildConfig;
 import com.wifyee.greenfields.Intents.IntentFactory;
 import com.wifyee.greenfields.MobicashApplication;
 import com.wifyee.greenfields.R;
@@ -88,6 +106,7 @@ import com.wifyee.greenfields.Utils.CustomTypefaceSpan;
 import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
+import com.wifyee.greenfields.constants.Constants;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.constants.WifiConstant;
@@ -134,7 +153,9 @@ import timber.log.Timber;
 
 public class MobicashDashBoardActivity extends BaseActivity implements LogFragmentListener,
         ProfileFragment.ProfileFragmentListner, BankTransferFragment.BankTransferFragmentListener,
-        View.OnClickListener,NavigationView.OnNavigationItemSelectedListener, PlaceSelectionListener {
+        View.OnClickListener,NavigationView.OnNavigationItemSelectedListener, PlaceSelectionListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
     private Context mContext = null;
     private TabLayout mTabLayout;
@@ -164,12 +185,17 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
     private static final int REQUEST_SELECT_PLACE = 1000;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
-    public static TextView location;
-    GPSTracker gps;
+    public static TextView locationTxt;
     Geocoder geocoder;
     List<Address> addresses;
     String currentVersion,newVersion;
     LinearLayout ll;
+    private static final String TAG = MobicashDashBoardActivity.class.getSimpleName();
+    GoogleApiClient mLocationClient;
+    LocationRequest mLocationRequest = new LocationRequest();
+    private FusedLocationProviderClient fusedLocationClient;
+    String latitude,longitude;
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +203,18 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         setContentView(R.layout.activity_dashboard);
 
         //UpdateHelper.with(this).onUpdateNeeded(this).check();
+
+        mLocationClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mLocationRequest.setInterval(NetworkConstant.LOCATION_INTERVAL);
+        mLocationRequest.setFastestInterval(NetworkConstant.FASTEST_LOCATION_INTERVAL);
+        int priority = LocationRequest.PRIORITY_HIGH_ACCURACY; //by default
+        mLocationRequest.setPriority(priority);
+        mLocationClient.connect();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -196,10 +234,10 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         LinearLayout llLocation = toolbar.findViewById(R.id.ll_loc);
-        location = toolbar.findViewById(R.id.location);
+        locationTxt = toolbar.findViewById(R.id.location);
         TextView txtLocation = toolbar.findViewById(R.id.txt);
         txtLocation.setTypeface(Fonts.getRegular(this));
-        location.setTypeface(Fonts.getSemiBold(this));
+        locationTxt.setTypeface(Fonts.getSemiBold(this));
 
         llLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -283,8 +321,6 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         ButterKnife.bind(this);
         mContext = this;
 
-        //TextView location = findViewById(R.id.location);
-
         //addFireBaseEvent();
         // Setup the viewPager
         final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -328,18 +364,17 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
 
         System.gc();
 
-        gps = new GPSTracker(MobicashDashBoardActivity.this);
-        if (gps.canGetLocation()) {
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
+        //gps = new GPSTracker(MobicashDashBoardActivity.this);
+
+        /*if (latitude!=null && longitude!=null) {
             LocalPreferenceUtility.putLatitude(getApplicationContext(),String.valueOf(latitude));
             LocalPreferenceUtility.putLongitude(getApplicationContext(),String.valueOf(longitude));
-            String loc = getAddress(latitude,longitude);
+            String loc = getAddress(Double.parseDouble(latitude),Double.parseDouble(longitude));
             Log.e("location",loc);
-            location.setText(loc);
+            locationTxt.setText(loc);
         } else {
-            gps.showSettingsAlert();
-        }
+           // gps.showSettingsAlert();
+        }*/
 
         try {
             currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -378,7 +413,7 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
     @Override
     public void onPlaceSelected(Place place) {
         Log.e(LOG_TAG, "Place Selected: " + place.getName() + "LatLng"+place.getLatLng());
-        location.setText(place.getAddress().toString());
+        locationTxt.setText(place.getAddress().toString());
         String LatLng = place.getLatLng().toString().replace("lat/lng: (","").replace(")","");
         String[] arrStr = LatLng.split(",");
         LocalPreferenceUtility.putLatitude(getApplicationContext(),String.valueOf(arrStr[0]));
@@ -1199,7 +1234,6 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
                         alert.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                                 try {
                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
                                 } catch (android.content.ActivityNotFoundException anfe) {
@@ -1272,68 +1306,57 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
                     });
     }
 
-/*
-    public void sendFCMPush(String msg, String title, String token, Context context) {
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        JSONObject obj = null;
-        JSONObject objData = null;
-        JSONObject dataobjData = null;
+            Log.d(TAG, "== Error On onConnected() Permission not granted");
+            //Permission not granted by user so cancel the further execution.
 
-        try {
-            obj = new JSONObject();
-            objData = new JSONObject();
-
-            objData.put("body", msg);
-            objData.put("title", title);
-            objData.put("sound", "default");
-            objData.put("icon", "icon_name"); //   icon_name
-            objData.put("tag", token);
-            objData.put("priority", "high");
-
-            dataobjData = new JSONObject();
-            dataobjData.put("text", msg);
-            dataobjData.put("title", title);
-            dataobjData.put("image", "http://daily-basket.com/images/slider/7.jpg");
-
-            obj.put("to", token);
-            //obj.put("priority", "high");
-
-            obj.put("notification", objData);
-            obj.put("data", dataobjData);
-            Log.e("return here>>", obj.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return;
         }
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", obj,
-                new Response.Listener<JSONObject>() {
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("True", response + "");
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            //onLocationChanged(location);
+                            LocalPreferenceUtility.putLatitude(getApplicationContext(),String.valueOf(location.getLatitude()));
+                            LocalPreferenceUtility.putLongitude(getApplicationContext(),String.valueOf(location.getLongitude()));
+                            String loc = getAddress(location.getLatitude(),location.getLongitude());
+                            Log.e("location",loc);
+                            locationTxt.setText(loc);
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("False", error + "");
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "key=AAAAfStBltM:APA91bEYQcgpLPIXd4s7Eue1Dbi6LEDgdItgJnTCGE3tnIiqxN6LsrsGFViCxfygpGp31OERpxHkulc389LNAYQGtXhOF8ZdrmzN0jc1ezsDF_3vY8PW2uNI-obaFNITmlzzgnNBG7uU");
-                params.put("Content-Type", "application/json");
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        int socketTimeout = 3000 * 60;// 60 seconds
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsObjRequest.setRetryPolicy(policy);
-        requestQueue.add(jsObjRequest);
-    }
-*/
+                });
+        //LocationServices.FusedLocationApi.requestLocationUpdates(mLocationClient, mLocationRequest, this);
 
+        Log.d(TAG, "Connected to Google API");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "Connection suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "Failed to connect to Google API");
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d(TAG, "Location changed");
+        if (location != null) {
+            latitude = String.valueOf(location.getLatitude());
+            longitude = String.valueOf(location.getLongitude());
+            /*String loc = getAddress(location.getLatitude(),location.getLongitude());
+            Log.e("location",loc);
+            locationTxt.setText(loc);*/
+            Log.d(TAG, "== location != null");
+        }
+    }
 }

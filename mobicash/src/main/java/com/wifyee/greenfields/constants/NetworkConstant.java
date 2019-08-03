@@ -5,6 +5,8 @@ package com.wifyee.greenfields.constants;
  */
 
 public class NetworkConstant {
+    public static final int LOCATION_INTERVAL = 10000;
+    public static final int FASTEST_LOCATION_INTERVAL = 5000;
     public static final String STATUS_USER_OTP_FAIL ="user_otp_fail" ;
     public static final String STATUS_USER_OTP_SUCCESS = "user_otp_success";
     public static final String STATUS_USER_CONFIRMATION_OTP_FAIL ="user_Confirmation_otp_fail" ;

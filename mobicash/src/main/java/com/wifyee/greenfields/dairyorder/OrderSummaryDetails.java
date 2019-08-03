@@ -246,13 +246,6 @@ public class OrderSummaryDetails extends BaseActivity {
             }
         });
 
-        addressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(OrderSummaryDetails.this, AddressList.class);
-                startActivity(intent);
-            }
-        });
 
         tvSubscribe_here.setTypeface(Fonts.getRegular(this));
         dateFrom.setTypeface(Fonts.getSemiBold(this));

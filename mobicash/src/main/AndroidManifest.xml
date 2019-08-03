@@ -94,8 +94,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/place_api_key" />
 
-        <activity android:name=".dairyorder.ShippingAddress" />
-        <activity android:name=".dairyorder.AddressList" />
         <activity android:name=".activity.OrderItemDetails" />
         <activity android:name=".activity.MoreCategory" />
         <activity android:name=".activity.UploadPrescription" />

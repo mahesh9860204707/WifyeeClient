@@ -57,7 +57,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
     private LinearLayout emptyListView;
     public static RecyclerView recyclerView;
     private RelativeLayout btnPlaceOrder;
-    private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="",flag="",voucherId="",tuvId="",totalBal="";
+    private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="",flag="",voucherId="",tuvId="",mcId="",totalBal="";
 
     DairyListItemAdapter.ItemListener listener ;
     ArrayList<DairyProductListItem> selectedItem = new ArrayList<>();
@@ -126,6 +126,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         voucherId = getIntent().getStringExtra("v_id");
         totalBal = getIntent().getStringExtra("total_bal");
         tuvId = getIntent().getStringExtra("tuv_id");
+        mcId = getIntent().getStringExtra("mc_id");
         itemId = getIntent().getStringExtra("data");
         categoryId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID);
         merchantType = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA);
@@ -158,6 +159,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
                 intent.putExtra("flag",flag);
                 intent.putExtra("total_bal",totalBal);
                 intent.putExtra("tuv_id",tuvId);
+                intent.putExtra("mc_id",mcId);
                 //data.putParcelableArrayList("data", orderItem);
                 //intent.putExtra("main_data", data);
                 startActivity(intent);

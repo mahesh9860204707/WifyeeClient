@@ -156,7 +156,7 @@ public class OrderSummaryDetails extends BaseActivity {
     private EditText dateFrom,dateTo;
     private Spinner perDayLitreSpinner;
     CardView card_view_payment;
-    String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo,flag,tuvId;
+    String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo,flag,tuvId,mcId;
     /**
      * List of actions supported.
      */
@@ -281,6 +281,7 @@ public class OrderSummaryDetails extends BaseActivity {
         voucherNo = getIntent().getStringExtra("voucher_no");
         flag = getIntent().getStringExtra("flag");
         tuvId = getIntent().getStringExtra("tuv_id");
+        mcId = getIntent().getStringExtra("mc_id");
 
         if (flag!=null){
             card_view_payment.setVisibility(View.GONE);
@@ -368,6 +369,12 @@ public class OrderSummaryDetails extends BaseActivity {
                                 "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
                                 claimType, voucherId, voucherNo,tuvId);
 
+                    }else {
+                        showProgressDialog();
+                        DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
+                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_CREDIT,
+                                "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
+                                claimType, voucherId, voucherNo,mcId);
                     }
                 }else {
                     if (paymentSelectedIndex == 1) {

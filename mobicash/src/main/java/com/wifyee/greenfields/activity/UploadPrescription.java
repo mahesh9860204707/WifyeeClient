@@ -94,7 +94,7 @@ public class UploadPrescription extends AppCompatActivity {
     private TextView txtNotHere,txtDetailNotHere,medicalName,medicalAddress,txt_prescription_upload;
     private LinearLayout llPartner;
     private CircleImageView medicalImage;
-    private String currentStatus;
+    private String currentStatus,merIdentyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,6 +263,7 @@ public class UploadPrescription extends AppCompatActivity {
                             params.put("userType", "client");
                             params.put("lotLoc", latitude);
                             params.put("longLoc", longitude);
+                            params.put("mer_idt_id", merIdentyId);
 
                             return params;
                         }
@@ -303,6 +304,7 @@ public class UploadPrescription extends AppCompatActivity {
             jsonObject.put(ResponseAttributeConstants.MERCHANT_TYPE, "7");
             jsonObject.put(ResponseAttributeConstants.LATITUDE, latitude);
             jsonObject.put(ResponseAttributeConstants.LONGITUDE, longitude);
+            jsonObject.put(ResponseAttributeConstants.ZIP_CODE, LocalPreferenceUtility.getCurrentPincode(UploadPrescription.this));
 
             Log.e("merchantList",jsonObject.toString());
         } catch (JSONException e) {
@@ -338,6 +340,7 @@ public class UploadPrescription extends AppCompatActivity {
                                     int length = itemArray.length();
                                     for(int i=0;i<length;i++){
                                         JSONObject dataObject = itemArray.getJSONObject(0);
+                                        merIdentyId = dataObject.getString(DairyNetworkConstant.MER_IDT_ID);
                                         if(dataObject.has(DairyNetworkConstant.MER_COMPANY)){
                                             medicalName.setText(dataObject.getString(DairyNetworkConstant.MER_COMPANY));
                                         }

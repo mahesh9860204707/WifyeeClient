@@ -76,7 +76,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
     FoodOderListAdapter.ItemListener listener;
     TextView textCartItemCount,viewCart,itemCount,totalPrice,txtTaxes;
     private SpinKitView progressBar;
-    private String flag,voucherId,totalBal,tuvId;
+    private String flag,voucherId,totalBal,tuvId,mcId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +136,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
         voucherId = getIntent().getStringExtra("v_id");
         totalBal = getIntent().getStringExtra("total_bal");
         tuvId = getIntent().getStringExtra("tuv_id");
+        mcId = getIntent().getStringExtra("mc_id");
 
         if (flag.equals("voucher")){
             deleteAllItemFromCart();
@@ -168,6 +169,7 @@ public class FoodOrderListActivity extends AppCompatActivity implements FoodOder
                 intent.putExtra("flag",flag);
                 intent.putExtra("total_bal",totalBal);
                 intent.putExtra("tuv_id",tuvId);
+                intent.putExtra("mc_id",mcId);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     //finish();

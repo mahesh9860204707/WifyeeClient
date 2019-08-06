@@ -117,7 +117,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     private RadioGroup paymentGroup;
     private int total_amount;
     private double totalBalanceVoucher;
-    private String flag,tuvId;
+    private String flag,tuvId,mcId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +206,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         flag = getIntent().getStringExtra("flag");
         String totalBal = getIntent().getStringExtra("total_bal");
         tuvId = getIntent().getStringExtra("tuv_id");
+        mcId = getIntent().getStringExtra("mc_id");
 
         if (totalBal!=null){
             totalBalanceVoucher = Double.parseDouble(totalBal);
@@ -216,27 +217,27 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             public void onClick(View view) {
                 if (favorites.size() != 0) {
                     if (cardViewDiscount.getVisibility() == View.VISIBLE && isVoucherClaim) {
-                        if(flag.equalsIgnoreCase("voucher")){
+                        if(flag.equalsIgnoreCase("voucher") || flag.equalsIgnoreCase("credit")){
                             if(total_amount <= totalBalanceVoucher){
                                 showProgressDialog();
                                 MobicashIntentService.startActionSendFoodRequest(mcontext,
                                         getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,
                                         completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
                             }else {
-                                Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view,"Amount is exceeding to the "+flag+" amount balance",Snackbar.LENGTH_SHORT).show();
                             }
                         }else {
                             placeOrder();
                         }
                     } else if (cardViewDiscount.getVisibility() == View.GONE) {
-                        if(flag.equalsIgnoreCase("voucher")){
+                        if(flag.equalsIgnoreCase("voucher") || flag.equalsIgnoreCase("credit")){
                             if(total_amount <= totalBalanceVoucher){
                                 showProgressDialog();
                                 MobicashIntentService.startActionSendFoodRequest(mcontext,
                                         getaddToCartRequest(String.valueOf(total_amount)),location,latitude,longitude,
                                         completeAddress,voucherDiscAmt,claimType,voucherId,voucherNo,"");
                             }else {
-                                Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view,"Amount is exceeding to the "+flag+" amount balance",Snackbar.LENGTH_SHORT).show();
                             }
                         }else {
                             placeOrder();
@@ -482,7 +483,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             cardViewPayment.setVisibility(View.GONE);
         }
 
-        if (flag.equalsIgnoreCase("voucher")) {
+        if (flag.equalsIgnoreCase("voucher") || flag.equalsIgnoreCase("credit")) {
             cardViewPayment.setVisibility(View.GONE);
         }
     }
@@ -595,9 +596,12 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             foodOrderRequest.payment_mode="online";
         }
 
-        if(flag.equals("voucher")){
+        if(flag.equalsIgnoreCase("voucher")){
             foodOrderRequest.payment_mode="voucher";
             foodOrderRequest.tuvId = tuvId;
+        }else if (flag.equalsIgnoreCase("credit")){
+            foodOrderRequest.payment_mode = "credit";
+            foodOrderRequest.mcId = mcId;
         }
 
 
@@ -933,7 +937,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         int totalItem = 0;
 
         if(favorites.size()>0){
-            if (flag.equalsIgnoreCase("voucher")) {
+            if (flag.equalsIgnoreCase("voucher") || flag.equalsIgnoreCase("credit")) {
                 cardViewPayment.setVisibility(View.GONE);
             } else {
                 cardViewPayment.setVisibility(View.VISIBLE);

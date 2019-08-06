@@ -21,6 +21,7 @@ public class ResponseAttributeConstants {
     public static final String TOTAL_AMOUNT = "total_amount";
     public static final String MER_TYPE_ID = "mer_type_id";
     public static final String MER_TYPE_NAME = "mer_type_name";
+    public static final String MER_PROFILE_IMAGE = "merchant_profile_image";
     public static final String PAY_MODE = "payment_mode";
     public static final String TUV_ID = "tuv_id";
     public static final String LOCATION = "usa_geo_address";

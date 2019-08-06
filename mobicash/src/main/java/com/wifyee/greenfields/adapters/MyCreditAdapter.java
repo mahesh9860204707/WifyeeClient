@@ -20,11 +20,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.DateConvert;
 import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.activity.CreditMerchantWise;
 import com.wifyee.greenfields.activity.OrderItemDetails;
+import com.wifyee.greenfields.dairyorder.DairyItemListActivity;
+import com.wifyee.greenfields.foodorder.FoodOrderListActivity;
 import com.wifyee.greenfields.interfaces.ItemClickListener;
 import com.wifyee.greenfields.models.MyCreditModel;
 import com.wifyee.greenfields.models.OrderModel;
@@ -33,6 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Random;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyViewHolder> {
 
     private List<MyCreditModel> creditModels;
@@ -40,7 +47,7 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView merName,totalAmount,merTypeName;
-        public ImageView imageView;
+        public CircleImageView imageView;
         public View horizView;
         private ItemClickListener clickListener;
 
@@ -97,7 +104,18 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
         holder.totalAmount.setTypeface(Fonts.getRegular(context));
         holder.merTypeName.setTypeface(Fonts.getRegular(context));
 
-        if(credit.getMerTypeId().equals("6")){
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.oriz_icon)
+                .error(R.drawable.oriz_icon)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+        Glide.with(context).load(credit.getMerchantProfileImage())
+                .apply(options)
+                .into(holder.imageView);
+        //
+
+       /* if(credit.getMerTypeId().equals("6")){
             holder.imageView.setImageResource(R.drawable.ic_food_credit);
         }else if(credit.getMerTypeId().equals("7")){
             holder.imageView.setImageResource(R.drawable.ic_medicine_cred);
@@ -111,25 +129,42 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
             holder.imageView.setImageResource(R.drawable.ic_meat_cred);
         }else {
             holder.imageView.setImageResource(R.drawable.ic_fav_icon);
-        }
+        }*/
 
         int[] androidColors = context.getResources().getIntArray(R.array.credit_color);
         int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
         holder.horizView.setBackgroundColor(randomAndroidColor);
-        holder.imageView.setColorFilter(randomAndroidColor);
+       // holder.imageView.setColorFilter(randomAndroidColor);
+        holder.imageView.setBorderColor(randomAndroidColor);
 
-        Drawable myDrawable = holder.imageView.getDrawable();
-        final Bitmap bitmap = ((BitmapDrawable)myDrawable).getBitmap();
 
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 if(!isLongClick){
-                    Intent intent = new Intent(context, CreditMerchantWise.class);
+                    if(credit.getMerTypeId().equals("6")){
+                        Intent intent = new Intent(context, FoodOrderListActivity.class);
+                        intent.putExtra("merchantid",credit.getMerId());
+                        intent.putExtra("merchantName",credit.getMerCompany());
+                        intent.putExtra("current_status","1");
+                        intent.putExtra("flag","credit");
+                        intent.putExtra("total_bal",credit.getTotalAmount());
+                        intent.putExtra("mc_id",credit.getMerCreditId());
+                        context.startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(context, DairyItemListActivity.class);
+                        intent.putExtra("data",credit.getMerId());
+                        intent.putExtra("merchantName",credit.getMerCompany());
+                        intent.putExtra("current_status","1");
+                        intent.putExtra("flag","credit");
+                        intent.putExtra("total_bal",credit.getTotalAmount());
+                        intent.putExtra("mc_id",credit.getMerCreditId());
+                        context.startActivity(intent);
+                    }
+                    /*Intent intent = new Intent(context, CreditMerchantWise.class);
                     intent.putExtra("mer_id",credit.getMerId());
                     intent.putExtra("mer_name",credit.getMerCompany());
-                    intent.putExtra("bitmap", bitmap);
-                    context.startActivity(intent);
+                    context.startActivity(intent);*/
                 }
             }
         });

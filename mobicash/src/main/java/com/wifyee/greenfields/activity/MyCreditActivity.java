@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -75,11 +76,10 @@ public class MyCreditActivity extends AppCompatActivity {
         }
 
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
-        //Toast.makeText(this,LocalPreferenceUtility.getUserFirstsName(this),Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this,LocalPreferenceUtility.getUserLastName(this),Toast.LENGTH_SHORT).show();
 
         recyclerView = findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        //RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -136,7 +136,9 @@ public class MyCreditActivity extends AppCompatActivity {
                                             jsonObject.getString(ResponseAttributeConstants.MER_COMPANY),
                                             jsonObject.getString(ResponseAttributeConstants.TOTAL_AMOUNT),
                                             jsonObject.getString(ResponseAttributeConstants.MER_TYPE_ID),
-                                            jsonObject.getString(ResponseAttributeConstants.MER_TYPE_NAME)
+                                            jsonObject.getString(ResponseAttributeConstants.MER_TYPE_NAME),
+                                            jsonObject.getString(ResponseAttributeConstants.MER_PROFILE_IMAGE),
+                                            jsonObject.getString(ResponseAttributeConstants.MER_CREDIT_ID)
                                     );
                                     creditModels.add(credit[i]);
                                 }

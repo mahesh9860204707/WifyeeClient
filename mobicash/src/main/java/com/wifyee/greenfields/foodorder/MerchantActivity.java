@@ -146,6 +146,7 @@ public class MerchantActivity extends AppCompatActivity {
         AddressRequest addressRequest = new AddressRequest();
         addressRequest.latitude = LocalPreferenceUtility.getLatitude(MerchantActivity.this);
         addressRequest.longitude = LocalPreferenceUtility.getLongitude(MerchantActivity.this);
+        addressRequest.pincode = LocalPreferenceUtility.getCurrentPincode(MerchantActivity.this);
         /*if (gps.canGetLocation()) {
 
             double latitude = gps.getLatitude();

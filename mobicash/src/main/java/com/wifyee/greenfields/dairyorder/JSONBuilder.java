@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.foodorder.GPSTracker;
+import com.wifyee.greenfields.foodorder.NetworkConstant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,12 +36,14 @@ public class JSONBuilder {
                 addOrderJson.put(DairyNetworkConstant.ORDER_PIN,MobicashUtils.md5(pinCode));
                 addOrderJson.put(DairyNetworkConstant.ORDER_MOB_NUMBER,LocalPreferenceUtility.getUserMobileNumber(ctx));
                 addOrderJson.put(DairyNetworkConstant.ORDER_DESCRIPTION,"test");
-            }
-            if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_ONLINE)){
+
+            } else if(paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_ONLINE)){
                 addOrderJson.put(DairyNetworkConstant.ORDER_REF_ID,refId);
-            }
-            if (paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_VOUCHER)){
+
+            } else if (paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_VOUCHER)){
                 addOrderJson.put(DairyNetworkConstant.TUV_ID,tuvId);
+            }else if (paymentMode.equals(DairyNetworkConstant.PAYMENT_MODE_CREDIT)){
+                addOrderJson.put(DairyNetworkConstant.MER_CREDIT_ID,tuvId);
             }
 
 //            addOrderJson.put(DairyNetworkConstant.ORDER_LAT,getLatitude(gps));

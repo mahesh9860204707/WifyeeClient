@@ -130,6 +130,7 @@ public class DairyProductActivity extends AppCompatActivity implements DairyMain
         AddressRequest addressRequest = new AddressRequest();
         addressRequest.latitude = LocalPreferenceUtility.getLatitude(DairyProductActivity.this);
         addressRequest.longitude = LocalPreferenceUtility.getLongitude(DairyProductActivity.this);
+        addressRequest.pincode = LocalPreferenceUtility.getCurrentPincode(DairyProductActivity.this);
         addressRequest.productId = productId;
         /*if (gps.canGetLocation()) {
 

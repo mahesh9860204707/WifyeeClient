@@ -12,5 +12,6 @@ public class AddressRequest extends JSONObject implements Serializable {
 public String latitude;
 public String longitude;
 public String productId;
+public String pincode;
 
 }

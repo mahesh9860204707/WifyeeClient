@@ -26,6 +26,7 @@ public class LocalPreferenceUtility {
     public static final String KEY_DEVICE_MAC_ADDRESS = "mac_address";
     public static final String KEY_WALLET_BALANCE = "key_wallet_balance";
     public static final String KEY_PIN_CODE = "key_pin_code";
+    public static final String KEY_CURRENT_PIN_CODE = "key_current_pin_code";
     public static final String KEY_LATTITUDE = "key_latitude";
     public static final String KEY_LONGITUDE = "key_longitude";
     public static final String KEY_LATITUDE_FOOD = "key_latitude_food";
@@ -57,6 +58,19 @@ public class LocalPreferenceUtility {
         SharedPreferences preferences = context.getSharedPreferences(KEY_MOBICASH_LOCAL_PREFERENCE, android.content.Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(KEY_PIN_CODE, pinCode);
+        editor.commit();
+    }
+
+    public static String getCurrentPincode(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(KEY_MOBICASH_LOCAL_PREFERENCE, android.content.Context.MODE_PRIVATE);
+        return preferences.getString(KEY_CURRENT_PIN_CODE, "");
+    }
+
+
+    public static void putCurrentPincode(Context context, String current_pincode) {
+        SharedPreferences preferences = context.getSharedPreferences(KEY_MOBICASH_LOCAL_PREFERENCE, android.content.Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(KEY_CURRENT_PIN_CODE, current_pincode);
         editor.commit();
     }
 

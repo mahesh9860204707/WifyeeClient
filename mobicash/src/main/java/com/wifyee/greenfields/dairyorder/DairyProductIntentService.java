@@ -122,6 +122,7 @@ public class DairyProductIntentService extends IntentService {
     public static void startActionListDairyItem(Context context,String merId, String categoryId,
                                                 String merchantId, String latitude, String longitude,
                                                 String voucherId,String flag) {
+        ctx = context;
         Intent intent = new Intent(context, DairyProductIntentService.class);
         intent.putExtra(EXTRA_PARAM1,merId);
         intent.putExtra(EXTRA_PARAM_CATEGORY,categoryId);
@@ -328,6 +329,7 @@ public class DairyProductIntentService extends IntentService {
             jsonObject.put(ResponseAttributeConstants.MERCHANT_TYPE, mAddressRequest.productId);
             jsonObject.put(ResponseAttributeConstants.LATITUDE, mAddressRequest.latitude);
             jsonObject.put(ResponseAttributeConstants.LONGITUDE,mAddressRequest.longitude);
+            jsonObject.put(ResponseAttributeConstants.ZIP_CODE,mAddressRequest.pincode);
 
             Log.e("merchantList",jsonObject.toString());
         } catch (JSONException e) {
@@ -487,6 +489,14 @@ public class DairyProductIntentService extends IntentService {
                 if (intent.getStringExtra(EXTRA_PARAM_FLAG).equalsIgnoreCase("voucher")) {
                     url = DairyNetworkConstant.BASE_URL_DAIRY + NetworkConstant.PARAM_GET_FOOD_ITEM_BY_VOUCHER_ID;
                     jsonObject.put(ResponseAttributeConstants.VOUCHER_ID, intent.getStringExtra(EXTRA_PARAM_VOUCHERID));
+                }else {
+                    url = DairyNetworkConstant.BASE_URL_DAIRY + DairyNetworkConstant.REQUEST_LIST_ITEM;
+                    jsonObject.put("userId", intent.getStringExtra(EXTRA_PARAM1));
+                    jsonObject.put("categoryId", intent.getStringExtra(EXTRA_PARAM_CATEGORY));
+                    jsonObject.put("merchantType", intent.getStringExtra(EXTRA_PARAM_MER_TYPE));
+                    jsonObject.put("latitude", intent.getStringExtra(EXTRA_PARAM_LATITUDE));
+                    jsonObject.put("longitude", intent.getStringExtra(EXTRA_PARAM_LONGITUDE));
+                    jsonObject.put("zipcode", LocalPreferenceUtility.getCurrentPincode(ctx));
                 }
             }else {
                 url = DairyNetworkConstant.BASE_URL_DAIRY + DairyNetworkConstant.REQUEST_LIST_ITEM;
@@ -495,6 +505,7 @@ public class DairyProductIntentService extends IntentService {
                 jsonObject.put("merchantType", intent.getStringExtra(EXTRA_PARAM_MER_TYPE));
                 jsonObject.put("latitude", intent.getStringExtra(EXTRA_PARAM_LATITUDE));
                 jsonObject.put("longitude", intent.getStringExtra(EXTRA_PARAM_LONGITUDE));
+                jsonObject.put("zipcode", LocalPreferenceUtility.getCurrentPincode(ctx));
             }
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());

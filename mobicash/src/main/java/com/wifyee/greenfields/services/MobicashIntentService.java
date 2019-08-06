@@ -1692,6 +1692,7 @@ public class MobicashIntentService extends IntentService {
             jsonObject.put(ResponseAttributeConstants.ORDER_DATE_TIME,mCartFoodOrderRequest.orderDateTime);
             jsonObject.put(ResponseAttributeConstants.PAY_MODE,mCartFoodOrderRequest.payment_mode);
             jsonObject.put(ResponseAttributeConstants.TUV_ID,mCartFoodOrderRequest.tuvId);
+            jsonObject.put(ResponseAttributeConstants.MER_CREDIT_ID,mCartFoodOrderRequest.mcId);
             jsonObject.put(ResponseAttributeConstants.LOCATION,location);
             jsonObject.put(ResponseAttributeConstants.LAT,lat);
             jsonObject.put(ResponseAttributeConstants.LNG,lng);
@@ -1784,10 +1785,13 @@ public class MobicashIntentService extends IntentService {
         try {
             jsonObject.put(ResponseAttributeConstants.LATITUDE, mAddressRequest.latitude);
             jsonObject.put(ResponseAttributeConstants.LONGITUDE,mAddressRequest.longitude);
+            jsonObject.put(ResponseAttributeConstants.ZIP_CODE,mAddressRequest.pincode);
             //jsonObject.put(ResponseAttributeConstants.DISTANCE,mAddressRequest.distance);
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
+
+        Log.e("jsn",jsonObject.toString());
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.PARAM_FOODORDER_BYMERCHANT_LIST_REQUEST_MODEL)
                 .addJSONObjectBody(jsonObject)
                 .setTag(TAG_PERFORM_FOODORDER_BMERCHANT_LIST)

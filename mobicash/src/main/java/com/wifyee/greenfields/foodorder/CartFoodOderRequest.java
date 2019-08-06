@@ -87,10 +87,19 @@ public class CartFoodOderRequest extends JSONObject implements Serializable {
         this.tuvId = tuvId;
     }
 
+    public String getMcId() {
+        return mcId;
+    }
+
+    public void setMcId(String mcId) {
+        this.mcId = mcId;
+    }
+
     public String userType;
     public String orderPrice;
     public String orderDateTime;    //2017-12-01 12:30:40
     public String merchantId;
     public String tuvId;
+    public String mcId;
 
 }

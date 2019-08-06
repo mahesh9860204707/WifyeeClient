@@ -58,14 +58,13 @@ public class LocationHandler implements LocationListener,
                 .addOnSuccessListener((Executor) this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
+                       if (location != null) {
                             onLocationChanged(location);
                         }
                     }
                 });
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+        /*LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);*/
     }
 
    /* private void stopLocationUpdate(Context mContext) {

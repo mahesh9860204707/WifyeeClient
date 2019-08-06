@@ -133,8 +133,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private ConnectivityManager connectivityManager;
     private boolean off;
     private String formattedDate="";
-    private int colors[]={R.color.blue_highlightener_color,
-            R.color.orange_shade,R.color.green_shade,R.color.colorAccent,R.color.blue_highlightener_color};
     private final int REQUEST_CODE=99;
     private ImageView offersNears;
     private LinearLayout followBrandsLayout,bookExperienceLayout,broadbandLayout;
@@ -1430,22 +1428,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 "Meat"
         };
 
-        /*private int[] mTabsIcons = {
-                R.drawable.ic_food,
-                R.drawable.ic_file_upload,
-                R.mipmap.product_icon,
-                R.drawable.ic_wifyee_plans,
-                R.drawable.ic_connect_wifyee,
-              };*/
-
         private int[] mTabsIcons = {
                 R.drawable.ic_food_new,
                 R.drawable.ic_medicine_new,
-                //R.drawable.ic_dairy_d,
                 R.drawable.ic_dairy_new,
-                //R.drawable.ic_fruits_d,
                 R.drawable.ic_fruits_new,
-                //R.drawable.ic_vegetables_d,
                 R.drawable.ic_vegetables_new,
                 R.drawable.ic_meat_new,
         };
@@ -1502,9 +1489,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             break;
                         case 2:
                             if (getActivity() != null && isAdded()) {
-                               // startActivity(IntentFactory.createDairyProductActivity(getContext()));
-                               /* startActivity(IntentFactory.createProductActivity(getContext()));
-                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);*/
                                Intent productIntent = IntentFactory.createDairyProductActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "12");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Dairy");
@@ -1587,7 +1571,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 "Cooking Oil",
                 "Rice",
                 "Sugar",
-                "Soap",
+                "Soap | Shampoo",
                 "Masalas",
                 "Wheat",
                 "Atta | Rice",//214
@@ -1596,8 +1580,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 "Healthy Oils",
                 "Namkeens",//215
                 "Noodles | Pasta",//271,229
-                "Health Drinks",
-                "Tea | Coffee",//220
+                "Health Drinks",//298
+                "Tea | Coffee",//220,300
                 "Kitchen Cleaning",//268
                 "Exotic Corner",
                 "Oral Care",//264
@@ -1605,12 +1589,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 "Handwash | Antiseptic",//272,273
                 "Frozen Snack",
                 "Fresheners Repellents",
-                "Floor Toilet Cleaners",
+                "Floor Toilet Cleaners",//296
                 "Face Cleaners | Moisturisers",//225
                 "Fabric Conditioners",
                 "Detergent Powders",//224
-                "Brooms | Brushes",//275
-                "Bath | Hair"
+                "Brooms | Brushes"//297
+                //"Bath | Hair"
         };
 
         private int[] mTabsIcons = {
@@ -1639,8 +1623,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 R.drawable.ic_face_cleaners_moisturisers,
                 R.drawable.ic_fabric_conditioners,
                 R.drawable.ic_detergent_powders,
-                R.drawable.ic_brooms_brushes,
-                R.drawable.ic_bath_hair
+                R.drawable.ic_brooms_brushes
+                //R.drawable.ic_bath_hair
         };
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -1715,7 +1699,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Soap");
-                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "217");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "217,219");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
@@ -1793,12 +1777,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+                        case 12:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Health Drinks");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "298");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
                         case 13:
                             if (getActivity() != null && isAdded()) {
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Tea | Coffee");
-                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "220");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "220,300");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
@@ -1818,7 +1812,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Oral Care");
-                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "264");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "264,269");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
@@ -1829,6 +1823,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Handwash | Antiseptic");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "272");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 21:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Floor Toilet Cleaners");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "296");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
@@ -1858,7 +1862,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Brooms | Brushes");
-                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "275");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "297");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }

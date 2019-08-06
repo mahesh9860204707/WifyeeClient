@@ -96,7 +96,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
             voucherId="",voucherNo="",claimType="",voucherName="",voucherDiscAmt="";
     ImageView emptyCartIcon;
     private double totalBalanceVoucher;
-    private String isflag,tuvId;
+    private String isflag,tuvId,mcId;
     private CardView cardViewDiscount;
 
     @Override
@@ -167,6 +167,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
         isflag = getIntent().getStringExtra("flag");
         String totalBal = getIntent().getStringExtra("total_bal");
         tuvId = getIntent().getStringExtra("tuv_id");
+        mcId = getIntent().getStringExtra("mc_id");
 
         if (totalBal!=null){
             totalBalanceVoucher = Double.parseDouble(totalBal);
@@ -189,12 +190,12 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                 if (containsDigit(text) && !text.equals("0.0")) {
                     if (cardViewDiscount.getVisibility() == View.VISIBLE && isVoucherClaim) {
                         if (isflag !=null) {
-                            if (isflag.equalsIgnoreCase("voucher")) {
+                            if (isflag.equalsIgnoreCase("voucher") || isflag.equalsIgnoreCase("credit")) {
                                 if(total_amount <= totalBalanceVoucher){
                                     orderItem = adapter.placeOrderData;
                                     checkItemQuantity(object);
                                 }else {
-                                    Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(view,"Amount is exceeding to the "+isflag+" amount balance",Snackbar.LENGTH_SHORT).show();
                                 }
                             }
                         }else {
@@ -204,12 +205,12 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
 
                     } else if (cardViewDiscount.getVisibility() == View.GONE) {
                         if (isflag !=null) {
-                            if (isflag.equalsIgnoreCase("voucher")) {
+                            if (isflag.equalsIgnoreCase("voucher") || isflag.equalsIgnoreCase("credit")) {
                                 if(total_amount <= totalBalanceVoucher){
                                     orderItem = adapter.placeOrderData;
                                     checkItemQuantity(object);
                                 }else {
-                                    Snackbar.make(view,"Amount is exceeding to the voucher amount balance",Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(view,"Amount is exceeding to the "+isflag+" amount balance",Snackbar.LENGTH_SHORT).show();
                                 }
                             }
                         }else {
@@ -446,6 +447,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                             intent.putExtra("voucher_no",voucherNo);
                             intent.putExtra("flag",isflag);
                             intent.putExtra("tuv_id",tuvId);
+                            intent.putExtra("mc_id",mcId);
                             intent.putExtra("discount_amt",totalDiscountAmt.getText().toString().replace("₹",""));
                             startActivity(intent);
                             isVoucherClaim = false;

@@ -418,6 +418,9 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         String[] arrStr = LatLng.split(",");
         LocalPreferenceUtility.putLatitude(getApplicationContext(),String.valueOf(arrStr[0]));
         LocalPreferenceUtility.putLongitude(getApplicationContext(),String.valueOf(arrStr[1]));
+        String pincode = getPincode(Double.parseDouble(arrStr[0]),Double.parseDouble(arrStr[1]));
+        LocalPreferenceUtility.putCurrentPincode(getApplicationContext(),pincode);
+        Log.e("pincode",pincode);
     }
 
     @Override
@@ -1214,6 +1217,22 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         return addr;
     }
 
+    private String getPincode(Double Lat, Double Long){
+        String pincode="";
+        geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(Lat, Long, 1);
+            if (addresses != null && addresses.size() > 0) {
+                pincode = addresses.get(0).getPostalCode();
+                Log.e("pincode",pincode);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pincode;
+    }
+
     private void CheckVersion(final String currentVersion){
 
         String uri = NetworkConstant.CHECK_VERSION;
@@ -1326,7 +1345,8 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
                             LocalPreferenceUtility.putLatitude(getApplicationContext(),String.valueOf(location.getLatitude()));
                             LocalPreferenceUtility.putLongitude(getApplicationContext(),String.valueOf(location.getLongitude()));
                             String loc = getAddress(location.getLatitude(),location.getLongitude());
-                            Log.e("location",loc);
+                            String pincode = getPincode(location.getLatitude(),location.getLongitude());
+                            LocalPreferenceUtility.putCurrentPincode(getApplicationContext(),pincode);
                             locationTxt.setText(loc);
                         }
                     }
@@ -1340,6 +1360,8 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "Connection suspended");
     }
+
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

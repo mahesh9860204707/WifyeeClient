@@ -157,6 +157,7 @@ public class OrderSummaryDetails extends BaseActivity {
     private Spinner perDayLitreSpinner;
     CardView card_view_payment;
     String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo,flag,tuvId,mcId;
+    double totalBalanceVoucher = 0.0;
     /**
      * List of actions supported.
      */
@@ -282,7 +283,7 @@ public class OrderSummaryDetails extends BaseActivity {
         flag = getIntent().getStringExtra("flag");
         tuvId = getIntent().getStringExtra("tuv_id");
         mcId = getIntent().getStringExtra("mc_id");
-
+        totalBalanceVoucher = getIntent().getDoubleExtra("totalBalanceVoucher",totalBalanceVoucher);
         if (flag!=null){
             card_view_payment.setVisibility(View.GONE);
         }else {
@@ -362,19 +363,24 @@ public class OrderSummaryDetails extends BaseActivity {
                 }
 
                 if (flag!=null){
-                    if (flag.equalsIgnoreCase("voucher")){
-                        showProgressDialog();
-                        DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
-                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_VOUCHER,
-                                "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                claimType, voucherId, voucherNo,tuvId);
+                    double total_amount = Double.parseDouble(totalAmount);
+                    if(total_amount <= totalBalanceVoucher) {
+                        if (flag.equalsIgnoreCase("voucher")) {
+                            showProgressDialog();
+                            DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
+                                    totalAmount, DairyNetworkConstant.PAYMENT_MODE_VOUCHER,
+                                    "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
+                                    claimType, voucherId, voucherNo, tuvId);
 
+                        } else {
+                            showProgressDialog();
+                            DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
+                                    totalAmount, DairyNetworkConstant.PAYMENT_MODE_CREDIT,
+                                    "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
+                                    claimType, voucherId, voucherNo, mcId);
+                        }
                     }else {
-                        showProgressDialog();
-                        DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
-                                totalAmount, DairyNetworkConstant.PAYMENT_MODE_CREDIT,
-                                "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                claimType, voucherId, voucherNo,mcId);
+                        Snackbar.make(view,"Amount is exceeding to the "+flag+" amount balance",Snackbar.LENGTH_SHORT).show();
                     }
                 }else {
                     if (paymentSelectedIndex == 1) {

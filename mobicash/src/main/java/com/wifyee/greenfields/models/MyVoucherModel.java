@@ -2,12 +2,12 @@ package com.wifyee.greenfields.models;
 
 public class MyVoucherModel {
     private String Id, VoucherId, VoucherNo, VoucherName, VoucherDetails, VoucherAmount, BalanceAmount,
-            Quantity, ValidFrom, ValidUpto, ImageUrl, isVoucherExpired,MerId,MerName,MerType,MerCurrentStatus;
+            Quantity, ValidFrom, ValidUpto, ImageUrl, isVoucherExpired,MerId,MerName,MerType,MerCurrentStatus,MerchantsDistZipcode;
 
     public MyVoucherModel(String id, String voucherId, String voucherNo, String voucherName, String voucherDetails,
                           String voucherAmount, String balanceAmount, String quantity, String validFrom,
                           String validUpto, String imageUrl, String isVoucherExpired, String merId,
-                          String merName,String merType, String merCurrentStatus) {
+                          String merName,String merType, String merCurrentStatus,String merchantsDistZipcode) {
         Id = id;
         VoucherId = voucherId;
         VoucherNo = voucherNo;
@@ -24,6 +24,7 @@ public class MyVoucherModel {
         MerName = merName;
         MerType = merType;
         MerCurrentStatus = merCurrentStatus;
+        MerchantsDistZipcode = merchantsDistZipcode;
     }
 
     public String getId() {
@@ -88,5 +89,9 @@ public class MyVoucherModel {
 
     public String getMerCurrentStatus() {
         return MerCurrentStatus;
+    }
+
+    public String getMerchantsDistZipcode() {
+        return MerchantsDistZipcode;
     }
 }

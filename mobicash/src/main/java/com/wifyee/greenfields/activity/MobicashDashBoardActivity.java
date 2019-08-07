@@ -49,12 +49,14 @@ import android.text.TextUtils;
 import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -139,6 +141,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
@@ -196,6 +199,8 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
     private FusedLocationProviderClient fusedLocationClient;
     String latitude,longitude;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    MyPagerAdapter pagerAdapter;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -323,8 +328,8 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
 
         //addFireBaseEvent();
         // Setup the viewPager
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        final MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         if (viewPager != null) {
             viewPager.setAdapter(pagerAdapter);
         }
@@ -420,6 +425,9 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         LocalPreferenceUtility.putLongitude(getApplicationContext(),String.valueOf(arrStr[1]));
         String pincode = getPincode(Double.parseDouble(arrStr[0]),Double.parseDouble(arrStr[1]));
         LocalPreferenceUtility.putCurrentPincode(getApplicationContext(),pincode);
+        Fragment fragment = pagerAdapter.getFragment(mTabLayout
+                .getSelectedTabPosition());
+        ((HomeFragment) fragment).show();
         Log.e("pincode",pincode);
     }
 
@@ -798,6 +806,8 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
         public final int PAGE_COUNT = 5;
+        private final SparseArray<WeakReference<Fragment>> instantiatedFragments = new SparseArray<>();
+
         private final String[] mTabsTitle = {
                 getString(R.string.menu_home),
                 getString(R.string.my_order),
@@ -848,6 +858,29 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         @Override
         public int getCount() {
             return PAGE_COUNT;
+        }
+
+        @Override
+        public Object instantiateItem(final ViewGroup container, final int position) {
+            final Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            instantiatedFragments.put(position, new WeakReference<>(fragment));
+            return fragment;
+        }
+
+        @Override
+        public void destroyItem(final ViewGroup container, final int position, final Object object) {
+            instantiatedFragments.remove(position);
+            super.destroyItem(container, position, object);
+        }
+
+        @Nullable
+        public Fragment getFragment(final int position) {
+            final WeakReference<Fragment> wr = instantiatedFragments.get(position);
+            if (wr != null) {
+                return wr.get();
+            } else {
+                return null;
+            }
         }
 
         @Override
@@ -1339,7 +1372,6 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             //onLocationChanged(location);
                             LocalPreferenceUtility.putLatitude(getApplicationContext(),String.valueOf(location.getLatitude()));
@@ -1348,10 +1380,12 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
                             String pincode = getPincode(location.getLatitude(),location.getLongitude());
                             LocalPreferenceUtility.putCurrentPincode(getApplicationContext(),pincode);
                             locationTxt.setText(loc);
+                            Fragment fragment = pagerAdapter.getFragment(mTabLayout
+                                    .getSelectedTabPosition());
+                            ((HomeFragment) fragment).show();
                         }
                     }
                 });
-        //LocationServices.FusedLocationApi.requestLocationUpdates(mLocationClient, mLocationRequest, this);
 
         Log.d(TAG, "Connected to Google API");
     }

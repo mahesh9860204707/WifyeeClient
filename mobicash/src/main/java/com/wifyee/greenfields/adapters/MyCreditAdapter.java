@@ -1,6 +1,7 @@
 
 package com.wifyee.greenfields.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,13 +9,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +30,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.DateConvert;
 import com.wifyee.greenfields.Utils.Fonts;
+import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.CreditMerchantWise;
 import com.wifyee.greenfields.activity.OrderItemDetails;
 import com.wifyee.greenfields.dairyorder.DairyItemListActivity;
@@ -141,30 +146,54 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                if(!isLongClick){
-                    if(credit.getMerTypeId().equals("6")){
-                        Intent intent = new Intent(context, FoodOrderListActivity.class);
-                        intent.putExtra("merchantid",credit.getMerId());
-                        intent.putExtra("merchantName",credit.getMerCompany());
-                        intent.putExtra("current_status","1");
-                        intent.putExtra("flag","credit");
-                        intent.putExtra("total_bal",credit.getTotalAmount());
-                        intent.putExtra("mc_id",credit.getMerCreditId());
-                        context.startActivity(intent);
+                final Dialog layout = new Dialog(context);
+                layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                layout.setContentView(R.layout.popup_insufficient_balanc);
+                layout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                double value = Double.parseDouble(credit.getTotalAmount());
+                    if (value > 0) {
+                        if (credit.getMerchantsDistZipcode().equals(LocalPreferenceUtility.getCurrentPincode(context))) {
+                            if (credit.getMerTypeId().equals("6")) {
+                                Intent intent = new Intent(context, FoodOrderListActivity.class);
+                                intent.putExtra("merchantid", credit.getMerId());
+                                intent.putExtra("merchantName", credit.getMerCompany());
+                                intent.putExtra("current_status", "1");
+                                intent.putExtra("flag", "credit");
+                                intent.putExtra("total_bal", credit.getTotalAmount());
+                                intent.putExtra("mc_id", credit.getMerCreditId());
+                                context.startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(context, DairyItemListActivity.class);
+                                intent.putExtra("data", credit.getMerId());
+                                intent.putExtra("merchantName", credit.getMerCompany());
+                                intent.putExtra("current_status", "1");
+                                intent.putExtra("flag", "credit");
+                                intent.putExtra("total_bal", credit.getTotalAmount());
+                                intent.putExtra("mc_id", credit.getMerCreditId());
+                                context.startActivity(intent);
+                            }
+                        } else {
+                            layout.show();
+                            Button confirm = layout.findViewById(R.id.confirm_btn);
+                            TextView txt = layout.findViewById(R.id.message);
+                            txt.setText("This credit is inapplicable at this location, please set a valid location to use this credit!");
+                            confirm.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    layout.dismiss();
+                                }
+                            });
+                        }
                     }else {
-                        Intent intent = new Intent(context, DairyItemListActivity.class);
-                        intent.putExtra("data",credit.getMerId());
-                        intent.putExtra("merchantName",credit.getMerCompany());
-                        intent.putExtra("current_status","1");
-                        intent.putExtra("flag","credit");
-                        intent.putExtra("total_bal",credit.getTotalAmount());
-                        intent.putExtra("mc_id",credit.getMerCreditId());
-                        context.startActivity(intent);
-                    }
-                    /*Intent intent = new Intent(context, CreditMerchantWise.class);
-                    intent.putExtra("mer_id",credit.getMerId());
-                    intent.putExtra("mer_name",credit.getMerCompany());
-                    context.startActivity(intent);*/
+                        layout.show();
+                        Button confirm = layout.findViewById(R.id.confirm_btn);
+                        confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                layout.dismiss();
+                            }
+                        });
                 }
             }
         });

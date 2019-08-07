@@ -457,6 +457,7 @@ public class MobicashIntentService extends IntentService {
         context.startService(intent);
     }
     public static void startActionAllFoodOrderList(Context context,FoodOrderRequest foodOrderRequest) {
+        ctx = context;
         Intent intent = new Intent(context, MobicashIntentService.class);
         intent.setAction(ACTION_PERFORM_ALLFOODORDER_LIST);
         intent.putExtra(PARAM_AllFOODORDER_LIST_REQUEST_MODEL,foodOrderRequest);

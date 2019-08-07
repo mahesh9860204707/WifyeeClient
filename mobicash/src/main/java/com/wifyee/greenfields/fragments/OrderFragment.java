@@ -83,8 +83,6 @@ public class OrderFragment extends Fragment implements FragmentInterface {
         if(listArray!=null){
             listArray.clear();
         }
-        Log.e("in data","in load");
-        Log.e("id",LocalPreferenceUtility.getUserCode(getContext()));
         showProgressDialog();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -150,7 +148,6 @@ public class OrderFragment extends Fragment implements FragmentInterface {
 
     @Override
     public void fragmentBecameVisible() {
-        //Log.e("test","TestFragment");
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

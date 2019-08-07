@@ -138,7 +138,8 @@ public class MyCreditActivity extends AppCompatActivity {
                                             jsonObject.getString(ResponseAttributeConstants.MER_TYPE_ID),
                                             jsonObject.getString(ResponseAttributeConstants.MER_TYPE_NAME),
                                             jsonObject.getString(ResponseAttributeConstants.MER_PROFILE_IMAGE),
-                                            jsonObject.getString(ResponseAttributeConstants.MER_CREDIT_ID)
+                                            jsonObject.getString(ResponseAttributeConstants.MER_CREDIT_ID),
+                                            jsonObject.getString(ResponseAttributeConstants.MER_DIST_ZIPCODE)
                                     );
                                     creditModels.add(credit[i]);
                                 }

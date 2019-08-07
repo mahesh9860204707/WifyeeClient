@@ -489,7 +489,8 @@ public class DairyProductIntentService extends IntentService {
                 if (intent.getStringExtra(EXTRA_PARAM_FLAG).equalsIgnoreCase("voucher")) {
                     url = DairyNetworkConstant.BASE_URL_DAIRY + NetworkConstant.PARAM_GET_FOOD_ITEM_BY_VOUCHER_ID;
                     jsonObject.put(ResponseAttributeConstants.VOUCHER_ID, intent.getStringExtra(EXTRA_PARAM_VOUCHERID));
-                }else {
+
+                 }else {
                     url = DairyNetworkConstant.BASE_URL_DAIRY + DairyNetworkConstant.REQUEST_LIST_ITEM;
                     jsonObject.put("userId", intent.getStringExtra(EXTRA_PARAM1));
                     jsonObject.put("categoryId", intent.getStringExtra(EXTRA_PARAM_CATEGORY));

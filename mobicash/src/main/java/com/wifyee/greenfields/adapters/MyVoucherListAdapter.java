@@ -1,15 +1,19 @@
 package com.wifyee.greenfields.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,6 +24,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.Fonts;
+import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
+import com.wifyee.greenfields.activity.AddAddress;
 import com.wifyee.greenfields.activity.VoucherDetails;
 import com.wifyee.greenfields.dairyorder.DairyItemListActivity;
 import com.wifyee.greenfields.foodorder.FoodOrderListActivity;
@@ -135,28 +141,59 @@ public class MyVoucherListAdapter extends RecyclerView.Adapter<MyVoucherListAdap
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                if(voucher.getIsVoucherExpired().equalsIgnoreCase("n")){
-                    if(voucher.getMerType().equals("6")){
-                        Intent intent = new Intent(context, FoodOrderListActivity.class);
-                        intent.putExtra("merchantid",voucher.getMerId());
-                        intent.putExtra("merchantName",voucher.getMerName());
-                        intent.putExtra("current_status",voucher.getMerCurrentStatus());
-                        intent.putExtra("flag","voucher");
-                        intent.putExtra("v_id",voucher.getVoucherId());
-                        intent.putExtra("total_bal",voucher.getBalanceAmount());
-                        intent.putExtra("tuv_id",voucher.getId());
-                        context.startActivity(intent);
-                    }else {
-                        Intent intent = new Intent(context, DairyItemListActivity.class);
-                        intent.putExtra("merchantid",voucher.getMerId());
-                        intent.putExtra("merchantName",voucher.getMerName());
-                        intent.putExtra("current_status",voucher.getMerCurrentStatus());
-                        intent.putExtra("flag","voucher");
-                        intent.putExtra("v_id",voucher.getVoucherId());
-                        intent.putExtra("total_bal",voucher.getBalanceAmount());
-                        intent.putExtra("tuv_id",voucher.getId());
-                        context.startActivity(intent);
-                    }
+
+                final Dialog layout = new Dialog(context);
+                layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                layout.setContentView(R.layout.popup_insufficient_balanc);
+                layout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                double value = Double.parseDouble(voucher.getBalanceAmount());
+                if(voucher.getIsVoucherExpired().equalsIgnoreCase("n")) {
+                    if (value > 0) {
+                        if (voucher.getMerchantsDistZipcode().equals(LocalPreferenceUtility.getCurrentPincode(context))) {
+                            if (voucher.getMerType().equals("6")) {
+                                Intent intent = new Intent(context, FoodOrderListActivity.class);
+                                intent.putExtra("merchantid", voucher.getMerId());
+                                intent.putExtra("merchantName", voucher.getMerName());
+                                intent.putExtra("current_status", voucher.getMerCurrentStatus());
+                                intent.putExtra("flag", "voucher");
+                                intent.putExtra("v_id", voucher.getVoucherId());
+                                intent.putExtra("total_bal", voucher.getBalanceAmount());
+                                intent.putExtra("tuv_id", voucher.getId());
+                                context.startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(context, DairyItemListActivity.class);
+                                intent.putExtra("merchantid", voucher.getMerId());
+                                intent.putExtra("merchantName", voucher.getMerName());
+                                intent.putExtra("current_status", voucher.getMerCurrentStatus());
+                                intent.putExtra("flag", "voucher");
+                                intent.putExtra("v_id", voucher.getVoucherId());
+                                intent.putExtra("total_bal", voucher.getBalanceAmount());
+                                intent.putExtra("tuv_id", voucher.getId());
+                                context.startActivity(intent);
+                            }
+                        } else {
+                            layout.show();
+                            Button confirm = layout.findViewById(R.id.confirm_btn);
+                            TextView txt = layout.findViewById(R.id.message);
+                            txt.setText("This voucher is inapplicable at this location, please set a valid location to use this voucher!");
+                            confirm.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    layout.dismiss();
+                                }
+                            });
+                        }
+                   }else {
+                        layout.show();
+                        Button confirm = layout.findViewById(R.id.confirm_btn);
+                        confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                layout.dismiss();
+                            }
+                        });
+                     }
                 }else {
                     Snackbar.make(view,voucher.getVoucherName().concat(" Voucher expired"),Snackbar.LENGTH_LONG).show();
                 }

@@ -76,6 +76,7 @@ import com.wifyee.greenfields.constants.ResponseAttributeConstants;
 import com.wifyee.greenfields.constants.WifiConstant;
 import com.wifyee.greenfields.dairyorder.DairyProductActivity;
 import com.wifyee.greenfields.dairyorder.OrderSummaryDetails;
+import com.wifyee.greenfields.interfaces.FragmentInterface;
 import com.wifyee.greenfields.mapper.ModelMapper;
 import com.wifyee.greenfields.models.MyCreditModel;
 import com.wifyee.greenfields.models.OtherMerchantModel;
@@ -111,7 +112,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.telephony.TelephonyManager;
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public ProgressDialog progressDialog = null;
@@ -499,7 +500,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recyclerViewVouchers.setAdapter(voucherAdapter);
         voucherAdapter.notifyDataSetChanged();
 
-        callVoucherList();
+        //callVoucherList();
 
         LinearLayoutManager horizonatlOtherMerchant = new GridLayoutManager(mContext,3);
         recyclerViewOtherMerchant.setLayoutManager(horizonatlOtherMerchant);
@@ -507,7 +508,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recyclerViewOtherMerchant.setAdapter(merchantAdapter);
         merchantAdapter.notifyDataSetChanged();
 
-        callOtherMerchantList();
+        //callOtherMerchantList();
+
+        show();
 
         view_more_voucher.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -528,13 +531,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void callOtherMerchantList() {
-        if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
-
+        //if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
             if (otherlist != null) { otherlist.clear(); }
 
             JSONObject json = new JSONObject();
             try {
-                json.put("pincode", LocalPreferenceUtility.getPinCode(mContext));
+                json.put("pincode", LocalPreferenceUtility.getCurrentPincode(mContext));
                 //json.put("pincode", "416510");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -583,7 +585,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                     }
                                 } else {
                                     String msg = object.getString(ResponseAttributeConstants.MSG);
-                                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                                    Log.e("error",msg);
+                                    //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 cancelProgressDialog();
@@ -602,28 +605,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             Timber.e("Error Detail : " + error.getErrorDetail());
                         }
                     });
-        }else {
+        /*}else {
             view_more_voucher.setVisibility(View.GONE);
             txt_vouchers.setVisibility(View.GONE);
             recyclerViewVouchers.setVisibility(View.GONE);
-        }
+        }*/
     }
 
 
 
     private void callVoucherList() {
-        if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
-
+        //if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
             if (list != null) { list.clear(); }
 
             JSONObject json = new JSONObject();
             try {
-                json.put("pincode", LocalPreferenceUtility.getPinCode(mContext));
+                json.put("pincode", LocalPreferenceUtility.getCurrentPincode(mContext));
                 json.put("limit", "4");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //Log.e("json",json.toString());
 
             OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                     .connectTimeout(5, TimeUnit.MINUTES)
@@ -675,7 +676,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                     }
                                 } else {
                                     String msg = object.getString(ResponseAttributeConstants.MSG);
-                                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                                    Log.e("errorVoucher",msg);
+                                    //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 cancelProgressDialog();
@@ -694,12 +696,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             Timber.e("Error Detail : " + error.getErrorDetail());
                         }
                     });
-        }else {
+       /* }else {
             view_more_voucher.setVisibility(View.GONE);
             txt_vouchers.setVisibility(View.GONE);
             recyclerViewVouchers.setVisibility(View.GONE);
             showErrorDialog("Please update your profile to get voucher list");
-        }
+        }*/
     }
 
     /* private boolean getMobileDataEnabled() {
@@ -1930,4 +1932,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         BottomSheetHelpDeskFragment bottomSheetFragment = new BottomSheetHelpDeskFragment();
         bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }
+
+    public void show(){
+        callOtherMerchantList();
+        callVoucherList();
+
+    }
+
 }

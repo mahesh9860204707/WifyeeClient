@@ -448,6 +448,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
                             intent.putExtra("flag",isflag);
                             intent.putExtra("tuv_id",tuvId);
                             intent.putExtra("mc_id",mcId);
+                            intent.putExtra("totalBalanceVoucher",totalBalanceVoucher);
                             intent.putExtra("discount_amt",totalDiscountAmt.getText().toString().replace("₹",""));
                             startActivity(intent);
                             isVoucherClaim = false;

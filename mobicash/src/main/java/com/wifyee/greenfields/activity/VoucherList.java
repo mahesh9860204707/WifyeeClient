@@ -91,8 +91,8 @@ public class VoucherList extends AppCompatActivity {
         }
         JSONObject json = new JSONObject();
         try {
-            json.put("pincode", LocalPreferenceUtility.getPinCode(VoucherList.this));
-            json.put("limit","4");
+            json.put("pincode", LocalPreferenceUtility.getCurrentPincode(VoucherList.this));
+            //json.put("limit","4");
         } catch (JSONException e) {
             e.printStackTrace();
         }

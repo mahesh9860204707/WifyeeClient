@@ -12,6 +12,7 @@
     <string name="sign_up_title_bar">SignUp</string>
     <string name="otp">OTP</string>
     <string name="ref_can">Refund &amp; Cancellation</string>
+    <string name="terms_condition">Terms &amp; Condition :</string>
     <string name="request_credit">Request Credit</string>
     <string name="validate_mobile">Validate Mobile Number</string>
     <string name="send_passcode">Send Passcode?</string>

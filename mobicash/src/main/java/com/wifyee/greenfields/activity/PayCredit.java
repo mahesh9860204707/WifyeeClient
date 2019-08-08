@@ -43,18 +43,13 @@ import timber.log.Timber;
 
 public class PayCredit extends AppCompatActivity {
 
-    TextView totalCredit,paid;
+    TextView totalCredit;
     EditText amount;
     Toolbar mToolbar;
-    String totalAmt,paidAmt,mcId,merId;
+    String totalAmt,mcId;
     private int paymentSelectedIndex = 0;
     private RadioGroup paymentGroup;
     private SweetAlertDialog pDialog;
-
-    /*private String[] broadCastReceiverActionList = {
-            DairyNetworkConstant.DAIRY_WALLET_BALANCE_STATUS_SUCCESS,
-            DairyNetworkConstant.DAIRY_WALLET_BALANCE_STATUS_FAILURE
-    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +59,8 @@ public class PayCredit extends AppCompatActivity {
         mToolbar = findViewById(R.id.mtoolbar);
         TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
         totalCredit = findViewById(R.id.total_credit);
-        paid = findViewById(R.id.paid);
         amount = findViewById(R.id.amount);
         TextView txtTotalCredit = findViewById(R.id.txt_total_credit);
-        TextView txtPaid = findViewById(R.id.txt_paid);
         TextView txtSignRupee = findViewById(R.id.sign_rupee);
         TextView txtPayment = findViewById(R.id.txt_payment);
         RadioButton wallet = findViewById(R.id.rb_wallet);
@@ -75,10 +68,8 @@ public class PayCredit extends AppCompatActivity {
         paymentGroup = findViewById(R.id.payment_group);
         Button pay =  findViewById(R.id.pay);
 
-        totalAmt = getIntent().getStringExtra("total_amt");
-        paidAmt = getIntent().getStringExtra("paid_amt");
-        mcId = getIntent().getStringExtra("mcId");
-        merId = getIntent().getStringExtra("merId");
+        totalAmt = getIntent().getStringExtra("due_amt");
+        mcId = getIntent().getStringExtra("mc_id");
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
@@ -99,8 +90,6 @@ public class PayCredit extends AppCompatActivity {
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
         txtTotalCredit.setTypeface(Fonts.getRegular(this));
         totalCredit.setTypeface(Fonts.getRegular(this));
-        txtPaid.setTypeface(Fonts.getRegular(this));
-        paid.setTypeface(Fonts.getRegular(this));
         //txtSignRupee.setTypeface(Fonts.getSemiBold(this));
         amount.setTypeface(Fonts.getRegular(this));
         txtPayment.setTypeface(Fonts.getRegular(this));
@@ -113,7 +102,6 @@ public class PayCredit extends AppCompatActivity {
         wallet.setText("Wallet ( ₹"+walletAmount+" )");
 
         totalCredit.setText("₹"+totalAmt);
-        paid.setText("₹"+paidAmt);
 
         paymentGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -130,58 +118,50 @@ public class PayCredit extends AppCompatActivity {
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ((!amount.getText().toString().trim().isEmpty() && !amount.getText().toString().equals("0"))){
+                if (isValidate(view)){
                     if(paymentSelectedIndex == 0){
                         payWallet(amount.getText().toString().trim());
                     }else {
                         Intent i = new Intent(PayCredit.this,PayCreditWebViewActivity.class);
                         i.putExtra("mc_id",mcId);
-                        i.putExtra("mer_id",merId);
                         i.putExtra("amount",amount.getText().toString().trim());
                         startActivity(i);
                         finish();
                     }
-                }else {
-                    Snackbar.make(view,"Please enter valid amount",Snackbar.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    /*@Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(getWalletReceiver);
-    }*/
+    private boolean isValidate(View view){
+        if (amount.getText().toString().trim().isEmpty()){
+            Snackbar.make(view,"Please enter valid amount",Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+        if (!amount.getText().toString().trim().isEmpty()) {
+            int value = Integer.parseInt(amount.getText().toString());
+            if (value <= 0) {
+                Snackbar.make(view, "Please enter valid amount", Snackbar.LENGTH_SHORT).show();
+                return false;
+            }else if (value > Integer.parseInt(totalAmt)){
+                Snackbar.make(view, "Amount is exceeding to due amount", Snackbar.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        /*LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-        for (String action : broadCastReceiverActionList) {
-            broadcastManager.registerReceiver(getWalletReceiver, new IntentFilter(action));
-        }*/
 
         if (pDialog!=null && pDialog.isShowing() ){
             pDialog.dismiss();
         }
     }
 
-    /*private BroadcastReceiver getWalletReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            try {
-                if(action.equals(DairyNetworkConstant.DAIRY_WALLET_BALANCE_STATUS_SUCCESS)){
-                    LocalPreferenceUtility.saveWalletBalance(PayCredit.this,intent.getStringExtra(NetworkConstant.EXTRA_DATA));
-                }
-            } catch (Exception e) {
-                Timber.e(" Exception caught in getMerchantListDairyReceiver " + e.getMessage());
-            }
-        }
-    };
-*/
+
     private void payWallet(String amount){
         pDialog = new SweetAlertDialog(PayCredit.this, SweetAlertDialog.PROGRESS_TYPE)
                 .setTitleText("Please wait...");
@@ -190,9 +170,7 @@ public class PayCredit extends AppCompatActivity {
 
         JSONObject json = new JSONObject();
         try {
-            json.put("mcdId",mcId);
-            json.put("merchantId",merId);
-            json.put("clientId",LocalPreferenceUtility.getUserCode(PayCredit.this));
+            json.put("merchant_credits_id",mcId);
             json.put("clientPhone",LocalPreferenceUtility.getUserMobileNumber(PayCredit.this));
             json.put("paymentAmt",amount);
             json.put("paymentMode","wallet");

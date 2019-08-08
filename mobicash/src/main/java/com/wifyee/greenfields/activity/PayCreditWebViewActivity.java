@@ -45,7 +45,7 @@ public class PayCreditWebViewActivity extends AppCompatActivity {
             ACTION_STATUS,
             ACTION_STATUS_FAIL
     };
-    String mcId,merId,amount;
+    String mcId,amount;
     private SweetAlertDialog pDialog;
 
 
@@ -78,7 +78,6 @@ public class PayCreditWebViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         amount = intent.getStringExtra("amount");
         mcId = intent.getStringExtra("mc_id");
-        merId = intent.getStringExtra("mer_id");
 
         mcontext = this;
 
@@ -120,8 +119,7 @@ public class PayCreditWebViewActivity extends AppCompatActivity {
 
         JSONObject data = new JSONObject();
         try {
-            data.put("mcdId",mcId);
-            data.put("merchantId",merId);
+            data.put("merchant_credits_id",mcId);
             data.put("clientId",LocalPreferenceUtility.getUserCode(mcontext));
             data.put("clientPhone",LocalPreferenceUtility.getUserMobileNumber(mcontext));
             data.put("paymentAmt",amount);

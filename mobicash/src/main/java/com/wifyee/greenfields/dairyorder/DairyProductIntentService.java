@@ -64,6 +64,7 @@ public class DairyProductIntentService extends IntentService {
     private static final String EXTRA_PARAM16 = "com.wifyee.greenfields.dairyorder.extra.PARAM16";
 
     private static final String EXTRA_PARAM_CATEGORY = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_CATEGORY";
+    private static final String EXTRA_PARAM_SUBCATEGORY_ID = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_SUBCATEGORY_ID";
     private static final String EXTRA_PARAM_MER_TYPE = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_MER_TYPE";
     private static final String EXTRA_PARAM_LATITUDE = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_LATITUDE";
     private static final String EXTRA_PARAM_LONGITUDE = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_LONGITUDE";
@@ -119,13 +120,14 @@ public class DairyProductIntentService extends IntentService {
      * @see IntentService
      */
 
-    public static void startActionListDairyItem(Context context,String merId, String categoryId,
+    public static void startActionListDairyItem(Context context,String merId, String categoryId,String subClassificationId,
                                                 String merchantId, String latitude, String longitude,
                                                 String voucherId,String flag) {
         ctx = context;
         Intent intent = new Intent(context, DairyProductIntentService.class);
         intent.putExtra(EXTRA_PARAM1,merId);
         intent.putExtra(EXTRA_PARAM_CATEGORY,categoryId);
+        intent.putExtra(EXTRA_PARAM_SUBCATEGORY_ID,subClassificationId);
         intent.putExtra(EXTRA_PARAM_MER_TYPE,merchantId);
         intent.putExtra(EXTRA_PARAM_LATITUDE,latitude);
         intent.putExtra(EXTRA_PARAM_LONGITUDE,longitude);
@@ -503,6 +505,7 @@ public class DairyProductIntentService extends IntentService {
                 url = DairyNetworkConstant.BASE_URL_DAIRY + DairyNetworkConstant.REQUEST_LIST_ITEM;
                 jsonObject.put("userId", intent.getStringExtra(EXTRA_PARAM1));
                 jsonObject.put("categoryId", intent.getStringExtra(EXTRA_PARAM_CATEGORY));
+                jsonObject.put("sub_classification_id", intent.getStringExtra(EXTRA_PARAM_SUBCATEGORY_ID));
                 jsonObject.put("merchantType", intent.getStringExtra(EXTRA_PARAM_MER_TYPE));
                 jsonObject.put("latitude", intent.getStringExtra(EXTRA_PARAM_LATITUDE));
                 jsonObject.put("longitude", intent.getStringExtra(EXTRA_PARAM_LONGITUDE));

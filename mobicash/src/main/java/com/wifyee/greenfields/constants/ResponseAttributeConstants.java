@@ -15,6 +15,7 @@ public class ResponseAttributeConstants {
     public static final String MCD_ID = "mcd_id";
     public static final String MER_CREDIT_ID = "merchant_credits_id";
     public static final String MER_DIST_ZIPCODE = "merchants_dist_zipcode";
+    public static final String MER_DUE_AMOUNT = "due_amount";
     public static final String RECEIVED_CREDIT = "received_credit";
     public static final String PARTIAL_PAID_CREDIT = "partial_paid_credit";
     public static final String DESCRIPTION = "description";

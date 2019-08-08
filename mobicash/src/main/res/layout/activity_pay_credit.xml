@@ -41,7 +41,7 @@
             android:id="@+id/txt_total_credit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Credit : "
+            android:text="Due Credit : "
             android:textSize="14sp"/>
 
         <TextView
@@ -51,20 +51,7 @@
             android:layout_toEndOf="@+id/txt_total_credit"
             android:textSize="14sp"/>
 
-        <TextView
-            android:id="@+id/txt_paid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Paid : "
-            android:layout_toStartOf="@+id/paid"
-            android:textSize="14sp"/>
 
-        <TextView
-            android:id="@+id/paid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:textSize="14sp"/>
 
         <RelativeLayout
             android:id="@+id/rl_amount"
@@ -93,7 +80,7 @@
                 android:background="@null"
                 android:hint="Enter Amount"
                 android:layout_centerVertical="true"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:textSize="26sp"
                 android:layout_marginEnd="4dp"/>
 

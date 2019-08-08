@@ -33,6 +33,7 @@ import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.activity.CreditMerchantWise;
 import com.wifyee.greenfields.activity.OrderItemDetails;
+import com.wifyee.greenfields.activity.PayCredit;
 import com.wifyee.greenfields.dairyorder.DairyItemListActivity;
 import com.wifyee.greenfields.foodorder.FoodOrderListActivity;
 import com.wifyee.greenfields.interfaces.ItemClickListener;
@@ -51,9 +52,10 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView merName,totalAmount,merTypeName;
+        public TextView merName,totalAmount,merTypeName,due;
         public CircleImageView imageView;
         public View horizView;
+        public Button pay;
         private ItemClickListener clickListener;
 
         public MyViewHolder(View view) {
@@ -63,6 +65,8 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
             merTypeName =  view.findViewById(R.id.mer_type_name);
             imageView =  view.findViewById(R.id.imageView);
             horizView =  view.findViewById(R.id.horizview);
+            pay =  view.findViewById(R.id.pay);
+            due =  view.findViewById(R.id.due);
 
             context = view.getContext();
             view.setTag(view);
@@ -103,11 +107,13 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
         String upperString = credit.getMerCompany().substring(0,1).toUpperCase() + credit.getMerCompany().substring(1).toLowerCase();
         holder.merName.setText(upperString);
         holder.totalAmount.setText("₹"+credit.getTotalAmount());
+        holder.due.setText("Due : ₹"+credit.getDueAmount());
         holder.merTypeName.setText("("+credit.getMerTypeName()+")");
 
         holder.merName.setTypeface(Fonts.getSemiBold(context));
         holder.totalAmount.setTypeface(Fonts.getRegular(context));
         holder.merTypeName.setTypeface(Fonts.getRegular(context));
+        holder.due.setTypeface(Fonts.getRegular(context));
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()
@@ -142,6 +148,15 @@ public class MyCreditAdapter extends RecyclerView.Adapter<MyCreditAdapter.MyView
        // holder.imageView.setColorFilter(randomAndroidColor);
         holder.imageView.setBorderColor(randomAndroidColor);
 
+        holder.pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PayCredit.class);
+                intent.putExtra("due_amt",credit.getDueAmount());
+                intent.putExtra("mc_id",credit.getMerCreditId());
+                context.startActivity(intent);
+            }
+        });
 
         holder.setClickListener(new ItemClickListener() {
             @Override

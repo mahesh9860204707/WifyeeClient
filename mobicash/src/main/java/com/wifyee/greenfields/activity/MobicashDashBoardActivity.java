@@ -151,6 +151,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 
@@ -301,6 +302,14 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         //drawer.setBackgroundColor(getResources().getColor(R.color.secondaryPrimary));
 
         navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        TextView name =  header.findViewById(R.id.name);
+        TextView txtHello =  header.findViewById(R.id.txt);
+        name.setText(LocalPreferenceUtility.getUserLastName(this).concat(" ")
+                .concat(LocalPreferenceUtility.getUserFirstsName(this)));
+        txtHello.setTypeface(Fonts.getRegular(this));
+        name.setTypeface(Fonts.getRegular(this));
+
         Menu m = navigationView.getMenu();
         for (int i=0;i<m.size();i++) {
             MenuItem mi = m.getItem(i);

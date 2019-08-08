@@ -57,7 +57,8 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
     private LinearLayout emptyListView;
     public static RecyclerView recyclerView;
     private RelativeLayout btnPlaceOrder;
-    private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="",flag="",voucherId="",tuvId="",mcId="",totalBal="";
+    private String  itemId,merId,categoryId="",merchantType="",longitude="",latitude="",
+            flag="",voucherId="",tuvId="",mcId="",totalBal="",subClassificationId="";
 
     DairyListItemAdapter.ItemListener listener ;
     ArrayList<DairyProductListItem> selectedItem = new ArrayList<>();
@@ -129,6 +130,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         mcId = getIntent().getStringExtra("mc_id");
         itemId = getIntent().getStringExtra("data");
         categoryId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID);
+        subClassificationId = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA_SUB_CLASSIFICATION_ID);
         merchantType = getIntent().getStringExtra(NetworkConstant.EXTRA_DATA);
         latitude = LocalPreferenceUtility.getLatitude(DairyItemListActivity.this);
         longitude = LocalPreferenceUtility.getLongitude(DairyItemListActivity.this);
@@ -242,7 +244,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         }
         //showProgressDialog();
         progressBar.setVisibility(View.VISIBLE);
-        DairyProductIntentService.startActionListDairyItem(this,itemId,categoryId,merchantType,
+        DairyProductIntentService.startActionListDairyItem(this,itemId,categoryId,subClassificationId,merchantType,
                 latitude,longitude,voucherId,flag);
 
         //setupBadge();

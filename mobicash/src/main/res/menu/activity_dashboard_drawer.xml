@@ -6,7 +6,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/home"
-            android:title="Home" />
+            android:title="Home"
+            android:visible="false"/>
         <item
             android:id="@+id/my_cashback"
             android:title="My Cashback" />

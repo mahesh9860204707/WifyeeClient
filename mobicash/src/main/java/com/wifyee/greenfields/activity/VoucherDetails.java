@@ -73,6 +73,10 @@ public class VoucherDetails extends AppCompatActivity {
         RadioButton wallet = findViewById(R.id.rb_wallet);
         RadioButton onlinePayment = findViewById(R.id.rb_netbanking);
         paymentGroup = findViewById(R.id.payment_group);
+        TextView txt_terms_condition = findViewById(R.id.txt_terms_condition);
+        TextView first_tc = findViewById(R.id.first_tc);
+        TextView second_tc = findViewById(R.id.second_tc);
+        TextView third_tc = findViewById(R.id.third_tc);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -101,7 +105,10 @@ public class VoucherDetails extends AppCompatActivity {
         voucherAmt.setText("₹".concat(vAmt));
         validity.setText("Validity : ".concat(vValidity));
         voucherDetails.setText(vDetails);
-        buy_now.setText("BUY NOW (₹".concat(String.valueOf(vAmt)).concat(")"));
+        buy_now.setText("BUY NOW (₹".concat(vAmt).concat(")"));
+        first_tc.setText("\u25CF ".concat(vName).concat(" is applicable on selected items only."));
+        second_tc.setText("\u25CF No two or more vouchers can be clubbed together for a single transaction.");
+        third_tc.setText("\u25CF "+vName+" is applicable only in the area with zipcode: "+LocalPreferenceUtility.getCurrentPincode(this));
 
         toolBarTitle.setTypeface(Fonts.getSemiBold(this));
         voucherName.setTypeface(Fonts.getSemiBold(this));
@@ -115,7 +122,10 @@ public class VoucherDetails extends AppCompatActivity {
         buy_now.setTypeface(Fonts.getSemiBold(this));
         txtPayment.setTypeface(Fonts.getRegular(this));
         wallet.setTypeface(Fonts.getRegular(this));
-        onlinePayment.setTypeface(Fonts.getRegular(this));
+        txt_terms_condition.setTypeface(Fonts.getRegular(this));
+        first_tc.setTypeface(Fonts.getRegular(this));
+        second_tc.setTypeface(Fonts.getRegular(this));
+        third_tc.setTypeface(Fonts.getRegular(this));
 
         RequestOptions options = new RequestOptions()
                 .centerCrop()

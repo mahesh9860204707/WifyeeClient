@@ -86,15 +86,21 @@ public class MyCreditActivity extends AppCompatActivity {
         adapter = new MyCreditAdapter(this, creditModels);
         recyclerView.setAdapter(adapter);
 
-        dataLoad();
 
     }
 
-    private void dataLoad() {
+    @Override
+    protected void onResume() {
         if (creditModels != null) {
             creditModels.clear();
         }
 
+        dataLoad();
+
+        super.onResume();
+    }
+
+    private void dataLoad() {
         showProgressDialog();
         JSONObject json = new JSONObject();
         try {
@@ -139,7 +145,8 @@ public class MyCreditActivity extends AppCompatActivity {
                                             jsonObject.getString(ResponseAttributeConstants.MER_TYPE_NAME),
                                             jsonObject.getString(ResponseAttributeConstants.MER_PROFILE_IMAGE),
                                             jsonObject.getString(ResponseAttributeConstants.MER_CREDIT_ID),
-                                            jsonObject.getString(ResponseAttributeConstants.MER_DIST_ZIPCODE)
+                                            jsonObject.getString(ResponseAttributeConstants.MER_DIST_ZIPCODE),
+                                            String.valueOf(jsonObject.getInt(ResponseAttributeConstants.MER_DUE_AMOUNT))
                                     );
                                     creditModels.add(credit[i]);
                                 }

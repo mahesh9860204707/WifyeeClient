@@ -218,6 +218,7 @@ public class NetworkConstant {
     public static final String EXTRA_DATA_WALLET = "extra_data_wallet";
     public static final String EXTRA_DATA1 = "extra1_data";
     public static final String EXTRA_DATA_CATEGORY_ID = "extra1_data_category_id";
+    public static final String EXTRA_DATA_SUB_CLASSIFICATION_ID = "extra1_sub_classification_id";
     public static final String EXTRA_DATA_LONGITUDE = "extra1_data_longitude";
     public static final String EXTRA_DATA_LATITUDE = "extra1_data_latitude";
     public static final String MERCHANT_ID = "merchant_id";

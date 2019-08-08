@@ -77,6 +77,20 @@
                 android:layout_marginBottom="10dp"
                 />
 
+            <TextView
+                android:id="@+id/due"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Due : "
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_below="@+id/mer_type_name"
+                android:layout_toEndOf="@+id/total_amount"
+                android:layout_toStartOf="@+id/pay"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp" />
+
             <Button
                 android:id="@+id/pay"
                 android:layout_width="80dp"

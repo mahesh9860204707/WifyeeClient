@@ -2,10 +2,11 @@ package com.wifyee.greenfields.models;
 
 public class MyCreditModel {
     private String MerId,MerCompany,TotalAmount,MerTypeId,MerTypeName,
-            MerchantProfileImage,MerCreditId,MerchantsDistZipcode;
+            MerchantProfileImage,MerCreditId,MerchantsDistZipcode,DueAmount;
 
     public MyCreditModel(String merId, String merCompany, String totalAmount, String merTypeId,
-                         String merTypeName,String merchantProfileImage,String merCreditId,String merchantsDistZipcode) {
+                         String merTypeName,String merchantProfileImage,String merCreditId,
+                         String merchantsDistZipcode,String dueAmount) {
         MerId = merId;
         MerCompany = merCompany;
         TotalAmount = totalAmount;
@@ -14,6 +15,7 @@ public class MyCreditModel {
         MerchantProfileImage = merchantProfileImage;
         MerCreditId = merCreditId;
         MerchantsDistZipcode = merchantsDistZipcode;
+        DueAmount = dueAmount;
     }
 
     public String getMerchantsDistZipcode() {
@@ -48,5 +50,7 @@ public class MyCreditModel {
         return MerCreditId;
     }
 
-
+    public String getDueAmount() {
+        return DueAmount;
+    }
 }

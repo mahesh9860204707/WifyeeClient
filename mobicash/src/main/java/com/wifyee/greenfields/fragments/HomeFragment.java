@@ -1579,24 +1579,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 "Atta | Rice",//214
                 "Dal | Pulses",//261,266
                 "Dry Fruits",//228
-                "Healthy Oils",
+                "Healthy Oils",//3.189
                 "Namkeens",//215
                 "Noodles | Pasta",//271,229
                 "Health Drinks",//298
                 "Tea | Coffee",//220,300
                 "Kitchen Cleaning",//268
-                "Exotic Corner",
+                "Exotic Corner",//merType14,299
                 "Oral Care",//264
-                "Liquid Detergents",
+                "Liquid Detergents",//224.67
                 "Handwash | Antiseptic",//272,273
-                "Frozen Snack",
-                "Fresheners Repellents",
+                "Frozen Snack",//263.199
+                "Fresheners Repellents",//301
                 "Floor Toilet Cleaners",//296
                 "Face Cleaners | Moisturisers",//225
-                "Fabric Conditioners",
+                "Fabric Conditioners",//224.188
                 "Detergent Powders",//224
-                "Brooms | Brushes"//297
-                //"Bath | Hair"
+                "Brooms | Brushes",//297
+                "Feminine Hygiene"
+                //"Bath | Hair"//souces.jam//233
+                //Hygeine//302
         };
 
         private int[] mTabsIcons = {
@@ -1625,8 +1627,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 R.drawable.ic_face_cleaners_moisturisers,
                 R.drawable.ic_fabric_conditioners,
                 R.drawable.ic_detergent_powders,
-                R.drawable.ic_brooms_brushes
-                //R.drawable.ic_bath_hair
+                R.drawable.ic_brooms_brushes,
+                R.drawable.ic_feminine_hygiene
         };
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -1759,6 +1761,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+                        case 9:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Healthy Oils");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "3");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_SUB_CLASSIFICATION_ID, "189");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
                         case 10:
                             if (getActivity() != null && isAdded()) {
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
@@ -1809,6 +1822,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+                        case 15:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "14");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Exotic Corner");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "299");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
                         case 16:
                             if (getActivity() != null && isAdded()) {
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
@@ -1819,12 +1842,46 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+                        case 17:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Liquid Detergents");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "224");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_SUB_CLASSIFICATION_ID, "67");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
                         case 18:
                             if (getActivity() != null && isAdded()) {
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Handwash | Antiseptic");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "272");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+
+                        case 19:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Frozen Snack");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "263");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_SUB_CLASSIFICATION_ID, "199");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+
+                        case 20:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Fresheners Repellents");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "301");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
@@ -1849,6 +1906,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }
                             break;
+
+                        case 23:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Fabric Conditioners");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "224");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_SUB_CLASSIFICATION_ID, "188");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
                         case 24:
                             if (getActivity() != null && isAdded()) {
                                 Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
@@ -1865,6 +1934,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Brooms | Brushes");
                                 productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "297");
+                                startActivity(productIntent);
+                                getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            }
+                            break;
+                        case 26:
+                            if (getActivity() != null && isAdded()) {
+                                Intent productIntent = IntentFactory.createDairyItemLisActivity(getContext());
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA, "10");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA1, "Feminine Hygiene");
+                                productIntent.putExtra(NetworkConstant.EXTRA_DATA_CATEGORY_ID, "302");
                                 startActivity(productIntent);
                                 getActivity().overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             }

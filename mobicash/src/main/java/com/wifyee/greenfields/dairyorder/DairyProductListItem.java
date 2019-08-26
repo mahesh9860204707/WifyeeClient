@@ -26,6 +26,7 @@ public class DairyProductListItem implements Parcelable {
     private String itemUnit;
     private String itemUnitQty;
     private String currentStatus;
+    private String distCommission;
 
     public DairyProductListItem() {}
 
@@ -55,6 +56,7 @@ public class DairyProductListItem implements Parcelable {
         dest.writeString(getItemUnit());
         dest.writeString(getItemUnitQty());
         dest.writeString(getCurrentStatus());
+        dest.writeString(getDistCommission());
     }
 
     /**
@@ -82,6 +84,7 @@ public class DairyProductListItem implements Parcelable {
         this.itemUnit = in.readString();
         this.itemUnitQty = in.readString();
         this.currentStatus = in.readString();
+        this.distCommission = in.readString();
     }
 
     public static final Parcelable.Creator<DairyMerchantListModel> CREATOR = new Parcelable.Creator<DairyMerchantListModel>() {
@@ -264,6 +267,14 @@ public class DairyProductListItem implements Parcelable {
 
     public void setCurrentStatus(String currentStatus) {
         this.currentStatus = currentStatus;
+    }
+
+    public String getDistCommission() {
+        return distCommission;
+    }
+
+    public void setDistCommission(String distCommission) {
+        this.distCommission = distCommission;
     }
 }
 

@@ -1049,7 +1049,7 @@ public class MobicashIntentService extends IntentService {
                 . writeTimeout(3, TimeUnit.MINUTES)
                 .build();
         //AndroidNetworking.initialize(getApplicationContext(),okHttpClient);
-        System.out.println("handleActionUserConfirmationOTP Request"+jsonObject);
+        //System.out.println("handleActionUserConfirmationOTP Request"+jsonObject);
         AndroidNetworking.post(NetworkConstant.SEND_OTP_AUTHENTICATION_COMPLETE)
                 .addJSONObjectBody(jsonObject)
                 .setTag(TAG_PERFORM_CONFIRMATION_OTP_STATUS_DETAIL)
@@ -1702,6 +1702,11 @@ public class MobicashIntentService extends IntentService {
             jsonObject.put(ResponseAttributeConstants.CLAIM_TYPE,claimType);
             jsonObject.put(ResponseAttributeConstants.VOUCHER_ID,voucherId);
             jsonObject.put(ResponseAttributeConstants.VOUCHER_NO,voucherNo);
+            jsonObject.put(ResponseAttributeConstants.FOOD_WIFYEE_COMMISION,mCartFoodOrderRequest.wifyeeCommision);
+            jsonObject.put(ResponseAttributeConstants.FOOD_DIST_COMMISION,mCartFoodOrderRequest.distCommision);
+            jsonObject.put(ResponseAttributeConstants.GST_AMOUNT,mCartFoodOrderRequest.gstAmount);
+            jsonObject.put(ResponseAttributeConstants.DELIVERY_AMT,mCartFoodOrderRequest.deliveryFee);
+            jsonObject.put(ResponseAttributeConstants.SUB_TOTAL,String.valueOf(mCartFoodOrderRequest.subTotal));
             if(mCartFoodOrderRequest.payment_mode.equalsIgnoreCase("wallet")){
                 jsonObject.put(ResponseAttributeConstants.MOBILE_NUMBER,LocalPreferenceUtility.getUserMobileNumber(ctx));
                 jsonObject.put(ResponseAttributeConstants.PIN_CODE,MobicashUtils.md5(LocalPreferenceUtility.getUserPassCode(ctx)));
@@ -2194,6 +2199,9 @@ public class MobicashIntentService extends IntentService {
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
+
+        Log.e("regJson",jsonObject.toString());
+
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(3, TimeUnit.MINUTES)
                 .readTimeout(3, TimeUnit.MINUTES)

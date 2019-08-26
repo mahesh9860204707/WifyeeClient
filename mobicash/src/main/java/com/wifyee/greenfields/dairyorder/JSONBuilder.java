@@ -20,7 +20,8 @@ public class JSONBuilder {
                                              String totalAmount,String paymentMode,String pinCode,String refId,
                                              String location, String lat, String lng, String complete_add,String discount_amt,
                                              String dateFrom,String dateTo,String perDay,String claimType,String voucherId,
-                                             String voucherNo,String tuvId){
+                                             String voucherNo,String tuvId,String wifyeeComm, String distComm, String deliveryAmt,
+                                             String gstAmt,String subTotal){
         JSONObject addOrderJson = new JSONObject();
        // GPSTracker gps = new GPSTracker(ctx);
         try {
@@ -59,6 +60,11 @@ public class JSONBuilder {
             addOrderJson.put(DairyNetworkConstant.CLAIM_TYPE,claimType);
             addOrderJson.put(DairyNetworkConstant.VOUCHER_ID,voucherId);
             addOrderJson.put(DairyNetworkConstant.VOUCHER_NO,voucherNo);
+            addOrderJson.put(DairyNetworkConstant.WIFYEE_COMMISION,wifyeeComm);
+            addOrderJson.put(DairyNetworkConstant.DIST_COMMISSION,distComm);
+            addOrderJson.put(DairyNetworkConstant.DELIVERY_AMT,deliveryAmt);
+            addOrderJson.put(DairyNetworkConstant.GST_AMT,gstAmt);
+            addOrderJson.put(DairyNetworkConstant.SUB_TOTAL,subTotal);
             JSONArray jsonArr = new JSONArray();
             for(int i=0;i<size;i++){
                 JSONObject pnObj = new JSONObject();

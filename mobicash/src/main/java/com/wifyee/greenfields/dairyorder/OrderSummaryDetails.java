@@ -156,8 +156,9 @@ public class OrderSummaryDetails extends BaseActivity {
     private EditText dateFrom,dateTo;
     private Spinner perDayLitreSpinner;
     CardView card_view_payment;
-    String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo,flag,tuvId,mcId;
-    double totalBalanceVoucher = 0.0;
+    String perDay="",dtFrom="",dtTo="", claimType,voucherId,voucherNo,flag,tuvId,mcId,wifyeeCommission,
+            distCommission;
+    double totalBalanceVoucher = 0.0,subTotal=0.0,gstAmount=0.0;
     /**
      * List of actions supported.
      */
@@ -355,6 +356,7 @@ public class OrderSummaryDetails extends BaseActivity {
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int n = getCommission();
                 dtFrom = dateFrom.getText().toString();
                 dtTo = dateTo.getText().toString();
                 perDay = perDayLitreSpinner.getSelectedItem().toString().replace(" Litre","");
@@ -370,14 +372,16 @@ public class OrderSummaryDetails extends BaseActivity {
                             DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
                                     totalAmount, DairyNetworkConstant.PAYMENT_MODE_VOUCHER,
                                     "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                    claimType, voucherId, voucherNo, tuvId);
+                                    claimType, voucherId, voucherNo, tuvId,wifyeeCommission,distCommission,
+                                    String.valueOf(deliveryFee),String.valueOf(gstAmount),String.valueOf(subTotal));
 
                         } else {
                             showProgressDialog();
                             DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
                                     totalAmount, DairyNetworkConstant.PAYMENT_MODE_CREDIT,
                                     "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                    claimType, voucherId, voucherNo, mcId);
+                                    claimType, voucherId, voucherNo, mcId,wifyeeCommission,distCommission,
+                                    String.valueOf(deliveryFee),String.valueOf(gstAmount),String.valueOf(subTotal));
                         }
                     }else {
                         Snackbar.make(view,"Amount is exceeding to the "+flag+" amount balance",Snackbar.LENGTH_SHORT).show();
@@ -393,7 +397,8 @@ public class OrderSummaryDetails extends BaseActivity {
                             DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
                                     totalAmount, DairyNetworkConstant.PAYMENT_MODE_WALLET,
                                     "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                    claimType, voucherId, voucherNo,"");
+                                    claimType, voucherId, voucherNo,"",wifyeeCommission,distCommission,
+                                    String.valueOf(deliveryFee),String.valueOf(gstAmount),String.valueOf(subTotal));
                         } else {
                             //add amount and then place order.
                             Intent i = new Intent(OrderSummaryDetails.this, DairyOrderSummaryWebViewActivity.class);
@@ -413,6 +418,11 @@ public class OrderSummaryDetails extends BaseActivity {
                             i.putExtra("voucher_id", voucherId);
                             i.putExtra("voucher_no", voucherNo);
                             i.putExtra("tuv_id", tuvId);
+                            i.putExtra("wifyee_comm", wifyeeCommission);
+                            i.putExtra("dist_comm", distCommission);
+                            i.putExtra("delivery_fee", String.valueOf(deliveryFee));
+                            i.putExtra("gst_amt", String.valueOf(gstAmount));
+                            i.putExtra("sub_total", String.valueOf(subTotal));
                             startActivity(i);
                             finish();
                         }
@@ -434,6 +444,11 @@ public class OrderSummaryDetails extends BaseActivity {
                             i.putExtra("voucher_id", voucherId);
                             i.putExtra("voucher_no", voucherNo);
                             i.putExtra("tuv_id", tuvId);
+                            i.putExtra("wifyee_comm", wifyeeCommission);
+                            i.putExtra("dist_comm", distCommission);
+                            i.putExtra("delivery_fee", String.valueOf(deliveryFee));
+                            i.putExtra("gst_amt", String.valueOf(gstAmount));
+                            i.putExtra("sub_total", String.valueOf(subTotal));
                             startActivity(i);
                             finish();
                         } else {
@@ -445,7 +460,8 @@ public class OrderSummaryDetails extends BaseActivity {
                             DairyProductIntentService.startActionAddOrder(OrderSummaryDetails.this, orderItem,
                                     totalAmount, DairyNetworkConstant.PAYMENT_MODE_COD,
                                     "", location, latitude, longitude, complete_add, discount_amt, dtFrom, dtTo, perDay,
-                                    claimType, voucherId, voucherNo,"");
+                                    claimType, voucherId, voucherNo,"",wifyeeCommission,distCommission,
+                                    String.valueOf(deliveryFee),String.valueOf(gstAmount),String.valueOf(subTotal));
                         } else {
                             showErrorDialog("Please update your profile before proceed!");
                         }
@@ -525,44 +541,6 @@ public class OrderSummaryDetails extends BaseActivity {
         }*/
     }
 
-    public void fillList() {
-        SQLController controller=new SQLController(getApplicationContext());
-        controller.open();
-        DatabaseDB db = new DatabaseDB();
-        db.createTables(controller);
-        String query = "SELECT * from address order by id desc LIMIT 1";
-
-        Cursor data = controller.retrieve(query);
-        if(data.getCount()>0){
-            name.setVisibility(View.VISIBLE);
-            address.setVisibility(View.VISIBLE);
-            mobileNo.setVisibility(View.VISIBLE);
-            data.moveToFirst();
-            do{
-                fullname =  data.getString(data.getColumnIndex("name"));
-                mobile_no =  data.getString(data.getColumnIndex("mobile_no"));
-                alternate_no =  data.getString(data.getColumnIndex("alternate_no"));
-                city = data.getString(data.getColumnIndex("city"));
-                locality = data.getString(data.getColumnIndex("locality"));
-                flat_no = data.getString(data.getColumnIndex("flat_no"));
-                pincode = data.getString(data.getColumnIndex("pincode"));
-                state = data.getString(data.getColumnIndex("state"));
-
-                name.setText(fullname);
-                address.setText(flat_no+", "+locality+" ,"+city+", "+state+" - "+pincode);
-                mobileNo.setText(mobile_no);
-
-            }while (data.moveToNext());
-        }else {
-            name.setVisibility(View.GONE);
-            address.setVisibility(View.GONE);
-            mobileNo.setVisibility(View.GONE);
-        }
-
-        data.close();
-        controller.close();
-    }
-
     /**
      * Handling broadcast event for user Signup .
      */
@@ -627,7 +605,7 @@ public class OrderSummaryDetails extends BaseActivity {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "DELETE from cart_item";
+        String query = "DELETE from "+db.TblOtherOrder;
         String result = controller.fireQuery(query);
         if(result.equals("Done")){
             Log.w("delete","Delete all successfully");
@@ -652,5 +630,43 @@ public class OrderSummaryDetails extends BaseActivity {
         mDatePickerDialog.show();
         mDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
 
+    }
+
+    private int getCommission(){
+        int size;
+        double wifyeeCommTotal =0.0;
+        double distCommTotal =0.0;
+        SQLController controller=new SQLController(getApplicationContext());
+        controller.open();
+        DatabaseDB db = new DatabaseDB();
+        db.createTables(controller);
+        String query = "SELECT * from "+db.TblOtherOrder+" order by id asc";
+
+        Cursor cursor = controller.retrieve(query);
+        size = cursor.getCount();
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+            do{
+                String wifyeeComm = cursor.getString(cursor.getColumnIndex("wifyee_commission"));
+                String distComm = cursor.getString(cursor.getColumnIndex("dist_commission"));
+                String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
+
+                double wifyeeCommAmt = Double.parseDouble(wifyeeComm) * Integer.parseInt(quantity);
+                wifyeeCommTotal = wifyeeCommTotal + wifyeeCommAmt;
+
+                double distCommAmt = Double.parseDouble(distComm) * Integer.parseInt(quantity);
+                distCommTotal = distCommTotal + distCommAmt;
+
+
+            }while (cursor.moveToNext());
+        }
+
+        wifyeeCommission = String.valueOf(wifyeeCommTotal);
+        distCommission = String.valueOf(distCommTotal);
+        subTotal = Double.parseDouble(totalAmount) - deliveryFee;
+
+        cursor.close();
+        controller.close();
+        return size;
     }
 }

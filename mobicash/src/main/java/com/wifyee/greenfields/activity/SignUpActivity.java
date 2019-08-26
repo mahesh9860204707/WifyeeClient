@@ -184,7 +184,7 @@ public class SignUpActivity extends BaseActivity  {
     private Context mContext = null;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String[] genderArray={"Select Gender","Male","Female"};
-    private String gender="";
+    private String gender="mr.";
     private String selectedItem="";
     private ProgressDialog progressDialog = null;
     private OTP_Response mSendOtpData;
@@ -434,10 +434,10 @@ public class SignUpActivity extends BaseActivity  {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.female:
-                        gender="Mr.";
+                        gender="miss.";
                         break;
                     case R.id.male:
-                        gender="Mr.";
+                        gender="mr.";
                         break;
 
                 }

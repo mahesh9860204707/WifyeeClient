@@ -295,7 +295,7 @@ public class MyCartFragment extends Fragment implements FragmentInterface {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from cart_item order by id desc";
+        String query = "SELECT * from "+db.TblOtherOrder+" order by id desc";
 
         Cursor cursor = controller.retrieve(query);
         if(cursor.getCount()>0){

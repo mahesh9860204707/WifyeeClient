@@ -181,7 +181,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from cart_item";
+        String query = "SELECT * from "+db.TblOtherOrder;
 
         Cursor cursor = controller.retrieve(query);
         if(cursor.getCount()>0){
@@ -212,7 +212,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT count(*) as total from cart_item";
+        String query = "SELECT count(*) as total from "+db.TblOtherOrder;
 
         Cursor data = controller.retrieve(query);
         if(data.getCount()>0){
@@ -349,8 +349,8 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
             data.setOrderPrice(item.getItemPrice());
             orderItem.add(data);
 
-            insert(item.getItemImagePath(), itemName, item.getItemQuality(), item.getMerchantId(), itemId,
-                    quantity, quantityUnit, item.getItemPrice(), item.getItemDiscount());
+            insert(item.getItemImagePath(), itemName, item.getItemQuality(), item.getMerchantId(), itemId, quantity,
+                    quantityUnit, item.getItemPrice(), item.getItemDiscount(), item.getItemMobCommission(),item.getDistCommission());
         }
 
         fillListItem();
@@ -431,7 +431,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT count(*) as total from cart_item";
+        String query = "SELECT count(*) as total from "+db.TblOtherOrder;
 
         Cursor data = controller.retrieve(query);
         if(data.getCount()>0){
@@ -448,16 +448,17 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
     }
 
     private void insert(String image_path,String item_name, String item_type, String merchant_id,
-                        String item_id, String quantity, String unit,String price,String discount){
+                        String item_id, String quantity, String unit,String price,String discount,
+                        String wifyeeComm,String distComm){
         SQLController controller = new SQLController(mContext);
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "Insert into cart_item(image_path,item_name,item_type,merchant_id,item_id,quantity,unit,price,discount) values " +
-                "('"+image_path+"','"+item_name+"','"+item_type+"','"+merchant_id+"','"+item_id+"','"+quantity+"','"+unit+"','"+price+"','"+discount+"');";
+        String query = "Insert into "+db.TblOtherOrder+" (image_path,item_name,item_type,merchant_id,item_id,quantity,unit,price,discount,wifyee_commission,dist_commission) values " +
+                "('"+image_path+"','"+item_name+"','"+item_type+"','"+merchant_id+"','"+item_id+"','"+quantity+"','"+unit+"','"+price+"','"+discount+"','"+wifyeeComm+"','"+distComm+"');";
 
-        Log.e("query",query);
+        //Log.e("query",query);
 
         String result = controller.fireQuery(query);
 
@@ -477,7 +478,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from cart_item where item_id ='"+id+"'";
+        String query = "DELETE from "+db.TblOtherOrder+" where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -494,7 +495,7 @@ public class DairyItemListActivity extends AppCompatActivity implements DairyLis
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "DELETE from cart_item";
+        String query = "DELETE from "+db.TblOtherOrder;
         String result = controller.fireQuery(query);
         if(result.equals("Done")){
             Log.w("delete","Delete all successfully");

@@ -311,7 +311,7 @@ public class OrderSummaryActivity extends BaseActivity implements FragmentInterf
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from cart_item order by id asc";
+        String query = "SELECT * from "+db.TblOtherOrder+" order by id asc";
 
         Cursor cursor = controller.retrieve(query);
         if(cursor.getCount()>0){

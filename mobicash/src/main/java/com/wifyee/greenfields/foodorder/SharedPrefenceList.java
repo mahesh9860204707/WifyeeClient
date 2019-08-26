@@ -19,6 +19,8 @@ public class SharedPrefenceList extends JSONObject implements Serializable {
     private String discountAmt;
     public String category;
     public String qty_half_full;
+    public String wifyee_commission;
+    public String dist_commission;
 
 
     public String getMercantId() {
@@ -121,5 +123,21 @@ public SharedPrefenceList()
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    public String getWifyee_commission() {
+        return wifyee_commission;
+    }
+
+    public void setWifyee_commission(String wifyee_commission) {
+        this.wifyee_commission = wifyee_commission;
+    }
+
+    public String getDist_commission() {
+        return dist_commission;
+    }
+
+    public void setDist_commission(String dist_commission) {
+        this.dist_commission = dist_commission;
     }
 }

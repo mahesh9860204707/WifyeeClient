@@ -207,7 +207,7 @@ public class UploadPrescription extends AppCompatActivity {
                             .setTitleText("Please wait...");
                     pDialog.show();
                     pDialog.setCancelable(false);
-                    Log.e("URL",NetworkConstant.USER_MEDICINE_UPLOAD_END_POINT);
+                    //Log.e("URL",NetworkConstant.USER_MEDICINE_UPLOAD_END_POINT);
 
                     VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST,
                             NetworkConstant.USER_MEDICINE_UPLOAD_END_POINT,

@@ -298,7 +298,7 @@ public class FoodWebViewActivity extends AppCompatActivity {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "DELETE from food_cart";
+        String query = "DELETE from "+db.TblFoodOrder;
         String result = controller.fireQuery(query);
         if(result.equals("Done")){
             Log.w("delete","Delete all successfully");

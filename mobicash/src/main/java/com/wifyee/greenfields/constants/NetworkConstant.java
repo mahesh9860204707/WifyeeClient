@@ -235,17 +235,17 @@ public class NetworkConstant {
     public static final String WIFYEE_HOTSPOT_UPDATE_USER_POLICY ="http:/w1.wifi-soft.com/wifilan/api/wifyee/update_userpolicy.php?";*/
     public static final String WIFYEE_HOTSPOT_REGISTRATION ="http://wifyee.wifi-soft.com/wifilan/api/create_freeuser.php";
     public static final String WIFYEE_HOTSPOT_FETCH_USER ="http://wifyee.wifi-soft.com/wifilan/api/wifyee/fetch_userusage.php";
-    public static final String USER_DATA_HOTSPOT_FETCH_USER ="http://45.249.108.75/wifyee-api/rest/WifyeeApiToWifiSoft.php?request=update_user_data_usages";
+    public static final String USER_DATA_HOTSPOT_FETCH_USER = MOBICASH_BASE_URL_TESTING +"/wifyee-api/rest/WifyeeApiToWifiSoft.php?request=update_user_data_usages";
     public static final String WIFYEE_HOTSPOT_UPDATE_USER_POLICY ="http://wifyee.wifi-soft.com/wifilan/api/wifyee/update_userpolicy.php";
     public static final String LOGIN_STATUS ="http://10.0.0.1:3990/json/status";
     public static final String LOGON_STATUS_ON_WI_FI ="http://10.0.0.1:3990/logon?";
     public static final String LOGOUT_API_WIFYEE ="http://10.0.0.1:3990/logoff";
-    public static final String GET_ISP_LOGO ="http://45.249.108.75/api/merchantprofileapi.php?request=getISPImage";
+    public static final String GET_ISP_LOGO =MOBICASH_BASE_URL_TESTING+"/api/merchantprofileapi.php?request=getISPImage";
     public static final String LOGON_APP_USER_STATUS_ON_WI_FI ="http://wifyee.wifi-soft.com/wifilan/api/app2.6/user";
-    public static final String PLAN_UPDATE_ON_WIFYEE_SERVER ="http://45.249.108.75/wifyee-api/rest/Users.php?request=update_plan_data";
-    public static final String PAY_TO_MERCHANT_MONEY ="http://45.249.108.75/api/merchantCreditapi.php?request=merchantCredit";
+    public static final String PLAN_UPDATE_ON_WIFYEE_SERVER =MOBICASH_BASE_URL_TESTING+"/wifyee-api/rest/Users.php?request=update_plan_data";
+    public static final String PAY_TO_MERCHANT_MONEY =MOBICASH_BASE_URL_TESTING+"/api/merchantCreditapi.php?request=merchantCredit";
     public static final String ADD_KYC_TO_SERVER ="https://uat2yesmoney.easypay.co.in/web-mpm/rest/uploadCustomerKycDocumentData";
-    public static final String INSTA_MOJO_PAYMENT_GATEWAY_REQUEST ="http://wifyeepay.com/payments/rest/WifyeePayments.php?request=payment_request";
+    public static final String INSTA_MOJO_PAYMENT_GATEWAY_REQUEST = MOBICASH_BASE_URL_TESTING + "/payments/rest/WifyeePayments.php?request=payment_request";
 
     //Food Order End Point
     public static final String PARAM_FOODODER_LIST_REQUEST_MODEL = "/api/menuitemsapi.php?request=getmenuitemsbycategory";
@@ -269,7 +269,7 @@ public class NetworkConstant {
     public static final String PARAM_GET_OTHER_MERCHANT_LIST = "/api/merchantapi.php?request=getMerTypeListByPincode";
 
     // API end point
-    public static final String USER_REQUEST_MERCHANT_CREDIT="http://wifyeepay.com/api/RequestMoneyApi.php?request=requestMoney";
+    public static final String USER_REQUEST_MERCHANT_CREDIT = MOBICASH_BASE_URL_TESTING + "/api/RequestMoneyApi.php?request=requestMoney";
     public static final String USER_LOGIN_END_POINT = "/api/clientloginapi.php?request=clientLogin";
     public static final String USER_SPLIT_END_POINT = "/api/split_money_api.php?request=sendInvoiceToSplitPayments";
     public static final String USER_SIGNUP_END_POINT = "/api/clientenrollmentapi.php?request=clientEnrolment";
@@ -287,15 +287,15 @@ public class NetworkConstant {
     public static final String USER_CLIENT_ADD_BENEFICIARY_END_POINT ="/api/beneficiaryapi.php?request=createBeneficiary";
     public static final String USER_CLIENT_RESET_PASSCODE_END_POINT = "/api/clientresetpasscodeapi.php?request=clientResetPasscode";
     public static final String USER_CLIENT_UPDATE_CLIENT_PROFILE_PICTURE_END_POINT = "/api/clientprofilepictureapi.php?request=clientProfilePicture";
-    public static final String USER_MEDICINE_UPLOAD_END_POINT ="http://wifyeepay.com/api/usermedicineapi.php?request=medicineOrder";
-    public static final String USER_MAC_ADDRESS_END_POINT ="http://wifyeepay.com/api/updateMACAddress.php?request=updateMAC";
+    public static final String USER_MEDICINE_UPLOAD_END_POINT = MOBICASH_BASE_URL_TESTING + "/api/usermedicineapi.php?request=medicineOrder";
+    public static final String USER_MAC_ADDRESS_END_POINT = MOBICASH_BASE_URL_TESTING + "/api/updateMACAddress.php?request=updateMAC";
 
     public static final String USER_CLIENT_PAYU_PAYMENT_GATEWAY_END_POINT = "/payments/rest/PaymentRequest.php?request=payRequest";
     public static final String USER_CLIENT_BANK_LIST_END_POINT ="/payments/rest/PaymentRequest.php?request=getBankList";
     public static final String USER_CLIENT_CITY_LIST_END_POINT ="/api/busbookingapi.php?request=busBooking&requestType=1";
     public static final String BENEFICIARY_CLIENT_CITY_LIST_END_POINT ="/api/beneficiaryapi.php?request=getStateList";
     public static final String USER_CLIENT_BANK_TRANSFER ="/api/banktransferapi.php?request=bankTransfer";
-    public static final String USER_CLIENT_NEFT_IMPS_BANK_TRANSFER="http://45.249.108.74/api/banktransferapi.php?request=bankTransfer";
+    public static final String USER_CLIENT_NEFT_IMPS_BANK_TRANSFER= MOBICASH_BASE_URL_TESTING + "/api/banktransferapi.php?request=bankTransfer";
     public static final String USER_CLIENT_PAYU_PAYMENT_GATEWAY_PAYMENT_RESPONSE_URL = MOBICASH_BASE_URL_TESTING+"/app_response.php";
     public static final String USER_CLIENT_PAYU_PAYMENT_UNWALLET_GATEWAY_PAYMENT_RESPONSE_URL = MOBICASH_BASE_URL_TESTING+"/payments/app_response.php";
     public static final String WI_FI_PAYMENT_END_POINT = "/wifyee-api/rest/Users.php?request=paidbyapp";
@@ -304,7 +304,7 @@ public class NetworkConstant {
     public static final String USER_SPLIT_LIST_POINT =MOBICASH_BASE_URL_TESTING+"/api/split_money_api.php?request=getAllSplitRequestByUser&userId=";
     public static final String MERCHANT_PROFILE_POINT =MOBICASH_BASE_URL_TESTING+"/api/merchant_qrcode_api.php?request=getMerchantByQRCode";
     public static final String MERCHANT_PROFILE_MOBILE_POINT =MOBICASH_BASE_URL_TESTING+"/api/merchant_qrcode_api.php?request=getMerchantByMobile";
-    public static final String BUS_BOOKING_END_POINT ="http://www.wifyeepay.com/api/busbookingwebviewapi.php?request=busBooking";
+    public static final String BUS_BOOKING_END_POINT =MOBICASH_BASE_URL_TESTING + "/api/busbookingwebviewapi.php?request=busBooking";
     //Delete Beneficiary Item
     public static final String USER_TRANSACTIONS_LIST_END_POINT = MOBICASH_BASE_URL_TESTING+"/api/banktransferapi.php?request=getListTransactions";
     public static final String USER_BENEFICIARY_LIST_END_POINT = MOBICASH_BASE_URL_TESTING+"/api/beneficiaryapi.php?request=getBeneficiaryList";
@@ -314,8 +314,8 @@ public class NetworkConstant {
     public static final String USER_SEND_BENEFICIARY_OTP_VERIFICATION_END_POINT = MOBICASH_BASE_URL_TESTING+"/api/beneficiaryapi.php?request=generateOTP";
     public static final String USER_CLIENT_STATE_CITY_END_POINT = MOBICASH_BASE_URL_TESTING+"/api/beneficiaryapi.php?request=getCityListByStateId";
     public static final String USER_VIEW_DATA_USAGE = MOBICASH_BASE_URL_TESTING+"/wifyee-api/rest/Users.php?request=getCurrentPlanDataUsage";
-    public static final String USER_PROMO_CODDE ="http://wifyeepay.com/api/promocodeapi.php?request=getPromocodeList";
-    public static final String USER_PROMO_CODDE_APPLIED ="http://wifyeepay.com/api/promocodeapi.php?request=validatePromocode";
+    public static final String USER_PROMO_CODDE = MOBICASH_BASE_URL_TESTING + "/api/promocodeapi.php?request=getPromocodeList";
+    public static final String USER_PROMO_CODDE_APPLIED =MOBICASH_BASE_URL_TESTING +"/api/promocodeapi.php?request=validatePromocode";
 
     public static final String SEND_MONEY_TO_CLIENT_API = MOBICASH_BASE_URL_TESTING+"/api/clientsendmoneyapi.php?request=clientSendMoney";
     public static final String SEND_MONEY_CLIENT_TO_CLIENT_API =MOBICASH_BASE_URL_TESTING+"/api/clienttoclientmoneytransferapi.php?request=clientWalletToWallet";
@@ -333,7 +333,7 @@ public class NetworkConstant {
     public static final String UPDATE_PASSWORD_WIYEE_SERVER ="http://wifyee.wifi-soft.com/wifilan/api/wifyee/update_password.php";
     public static final String REFUND_CANCELLATION ="http://wifyee.com/refund-cancellation.html";
     public static final String PRIVACY_POLICY ="http://wifyee.com/privacy.html";
-    public static final String TOKEN_UPDATE ="http://wifyeepay.com/api/commonApi.php?request=updateToken";
+    public static final String TOKEN_UPDATE =MOBICASH_BASE_URL_TESTING + "/api/commonApi.php?request=updateToken";
     public static final String MEDICINE_UPDATE ="/api/usermedicineapi.php?request=updateMedicineOrder";
     public static final String CREDIT_WALLET_PAYMENT ="/api/merchantCreditsClientApi.php?request=creditPayment";
     public static final String PURCHASE_VOUCHER_WALLET_PAYMENT ="/api/voucherapi.php?request=purchaseVoucher";

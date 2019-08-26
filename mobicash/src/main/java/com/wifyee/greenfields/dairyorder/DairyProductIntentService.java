@@ -62,6 +62,11 @@ public class DairyProductIntentService extends IntentService {
     private static final String EXTRA_PARAM14 = "com.wifyee.greenfields.dairyorder.extra.PARAM14";
     private static final String EXTRA_PARAM15 = "com.wifyee.greenfields.dairyorder.extra.PARAM15";
     private static final String EXTRA_PARAM16 = "com.wifyee.greenfields.dairyorder.extra.PARAM16";
+    private static final String EXTRA_PARAM17 = "com.wifyee.greenfields.dairyorder.extra.PARAM17";
+    private static final String EXTRA_PARAM18 = "com.wifyee.greenfields.dairyorder.extra.PARAM18";
+    private static final String EXTRA_PARAM19 = "com.wifyee.greenfields.dairyorder.extra.PARAM19";
+    private static final String EXTRA_PARAM20 = "com.wifyee.greenfields.dairyorder.extra.PARAM20";
+    private static final String EXTRA_PARAM21 = "com.wifyee.greenfields.dairyorder.extra.PARAM21";
 
     private static final String EXTRA_PARAM_CATEGORY = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_CATEGORY";
     private static final String EXTRA_PARAM_SUBCATEGORY_ID = "com.wifyee.greenfields.dairyorder.extra.EXTRA_PARAM_SUBCATEGORY_ID";
@@ -149,7 +154,9 @@ public class DairyProductIntentService extends IntentService {
                                            String totalAmount, String paymentMode,String refId,
                                            String location, String lat, String lng, String complete_add,
                                            String discount_amt,String dateFrom,String dateTo, String perDay,
-                                           String claimType, String voucherId, String voucherNo,String tuvId) {
+                                           String claimType, String voucherId, String voucherNo,String tuvId,
+                                           String wifyeeCommission,String distCommission,String deliveryAmt,String gstAmount,
+                                           String subTotal) {
         ctx = context;
         Intent intent = new Intent(context, DairyProductIntentService.class);
         intent.putParcelableArrayListExtra(EXTRA_PARAM1,orderItem);
@@ -169,6 +176,11 @@ public class DairyProductIntentService extends IntentService {
         intent.putExtra(EXTRA_PARAM14,voucherId);
         intent.putExtra(EXTRA_PARAM15,voucherNo);
         intent.putExtra(EXTRA_PARAM16,tuvId);
+        intent.putExtra(EXTRA_PARAM17,wifyeeCommission);
+        intent.putExtra(EXTRA_PARAM18,distCommission);
+        intent.putExtra(EXTRA_PARAM19,deliveryAmt);
+        intent.putExtra(EXTRA_PARAM20,gstAmount);
+        intent.putExtra(EXTRA_PARAM21,subTotal);
         intent.setAction(ACTION_ADD_ORDER);
         context.startService(intent);
     }
@@ -414,10 +426,16 @@ public class DairyProductIntentService extends IntentService {
         String voucherId = intent.getStringExtra(EXTRA_PARAM14);
         String voucherNo = intent.getStringExtra(EXTRA_PARAM15);
         String tuvId = intent.getStringExtra(EXTRA_PARAM16);
+        String wifyeeComm = intent.getStringExtra(EXTRA_PARAM17);
+        String distComm = intent.getStringExtra(EXTRA_PARAM18);
+        String deliveryAmt = intent.getStringExtra(EXTRA_PARAM19);
+        String gstAmt = intent.getStringExtra(EXTRA_PARAM20);
+        String subTotal = intent.getStringExtra(EXTRA_PARAM21);
         try {
             obj = JSONBuilder.getAddOrderJSon(ctx,intent.<PlaceOrderData>getParcelableArrayListExtra(EXTRA_PARAM1)
                     ,intent.getStringExtra(EXTRA_PARAM2), paymentMode,pinCode,intent.getStringExtra("ref_id"),
-                    location,lat,lng,complete_add,discount_amt,dateFrom,dateTo,perDay,claimType,voucherId,voucherNo,tuvId);
+                    location,lat,lng,complete_add,discount_amt,dateFrom,dateTo,perDay,claimType,voucherId,voucherNo,tuvId,
+                    wifyeeComm,distComm,deliveryAmt,gstAmt,subTotal);
             Log.e("ORDER_JSON",obj.toString());
         } catch (Exception e) {
             obj = new JSONObject();

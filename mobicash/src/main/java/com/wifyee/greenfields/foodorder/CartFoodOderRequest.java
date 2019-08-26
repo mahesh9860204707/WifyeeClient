@@ -101,5 +101,10 @@ public class CartFoodOderRequest extends JSONObject implements Serializable {
     public String merchantId;
     public String tuvId;
     public String mcId;
+    public String wifyeeCommision;
+    public String distCommision;
+    public String deliveryFee;
+    public String gstAmount;
+    public double subTotal;
 
 }

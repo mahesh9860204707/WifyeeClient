@@ -914,7 +914,7 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
             controller.open();
             DatabaseDB db = new DatabaseDB();
             db.createTables(controller);
-            String query = "SELECT count(*) as total from cart_item";
+            String query = "SELECT count(*) as total from "+db.TblOtherOrder;
 
             Cursor data = controller.retrieve(query);
             if(data.getCount()>0){

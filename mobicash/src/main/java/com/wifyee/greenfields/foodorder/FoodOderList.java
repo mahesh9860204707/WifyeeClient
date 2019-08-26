@@ -25,6 +25,8 @@ public class FoodOderList extends JSONObject implements Serializable {
     public String foodImage;
     public String discountPrice;
     public String category;
+    public String wifyeeCommision;
+    public String distCommision;
     public  boolean checkvalue;
 
     public String getMerchantId() {
@@ -99,8 +101,25 @@ public class FoodOderList extends JSONObject implements Serializable {
         this.category = category;
     }
 
+    public String getWifyeeCommision() {
+        return wifyeeCommision;
+    }
+
+    public void setWifyeeCommision(String wifyeeCommision) {
+        this.wifyeeCommision = wifyeeCommision;
+    }
+
+    public String getDistCommision() {
+        return distCommision;
+    }
+
+    public void setDistCommision(String distCommision) {
+        this.distCommision = distCommision;
+    }
+
     public FoodOderList(String itemID, String name, String price, String description,
-                        String quantiy, String foodImage, String discountPrice, String category, boolean checked) {
+                        String quantiy, String foodImage, String discountPrice, String category,
+                        boolean checked,String wifyeeCommision,String distCommision) {
         this.itemID=itemID;
         this.name = name;
         this.price=price;
@@ -110,6 +129,8 @@ public class FoodOderList extends JSONObject implements Serializable {
         this.checkvalue = checked;
         this.discountPrice = discountPrice;
         this.category = category;
+        this.wifyeeCommision = wifyeeCommision;
+        this.distCommision = distCommision;
     }
     public FoodOderList(){}
 

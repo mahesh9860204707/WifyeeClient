@@ -34,6 +34,8 @@ public class ResponseAttributeConstants {
     public static final String CLAIM_TYPE = "claim_type";
     public static final String VOUCHER_ID = "voucher_id";
     public static final String VOUCHER_NO = "voucher_no";
+    public static final String GST_AMOUNT = "gst_amount";
+    public static final String SUB_TOTAL = "sub_total";
     public static final String CLIENT_STATUS = "clientStatus";
     public static final String CLIENT_BALANCE = "clientBalance";
     public static final String LOGIN_DATE = "loginDate";
@@ -117,6 +119,8 @@ public class ResponseAttributeConstants {
     public static final String FOOD_IMAGE = "image";
     public static final String FOOD_DISCOUNT_PRICE = "customer_discount";
     public static final String FOOD_CATEGORY = "category_id";
+    public static final String FOOD_WIFYEE_COMMISION = "wifyee_commission";
+    public static final String FOOD_DIST_COMMISION = "dist_commission";
     public static final String ORDERID = "orderId";
     public static final String ORDER_ID = "order_id";
     public static final String TASK_ID = "task_id";

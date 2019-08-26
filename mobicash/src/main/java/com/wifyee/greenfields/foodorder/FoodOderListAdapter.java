@@ -584,7 +584,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from food_cart where item_id='"+itemId+"'";
+        String query = "SELECT * from "+db.TblFoodOrder+" where item_id='"+itemId+"'";
 
         Cursor data = controller.retrieve(query);
         total = data.getCount();
@@ -608,7 +608,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from food_cart";
+        String query = "DELETE from "+db.TblFoodOrder;
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -625,7 +625,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from food_cart where item_id ='"+id+"'";
+        String query = "DELETE from "+db.TblFoodOrder+" where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -644,7 +644,7 @@ public class FoodOderListAdapter extends RecyclerView.Adapter<FoodOderListAdapte
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "UPDATE food_cart set quantity='"+quantity+"' where item_id ='"+id+"'";
+        String query = "UPDATE "+db.TblFoodOrder+" set quantity='"+quantity+"' where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

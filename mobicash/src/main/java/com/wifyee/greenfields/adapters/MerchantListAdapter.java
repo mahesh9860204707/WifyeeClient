@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.models.response.MerchantListBean;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     private int i=1;
     private List<MerchantListBean> merchantListBeanList;
     private Context context;
-    private String imageUrl="http://wifyeepay.com/uploads/";
+    private String imageUrl= NetworkConstant.MOBICASH_BASE_URL_TESTING+"/uploads/";
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView mer_type,mer_name,mer_mobile_number,mer_company,mer_email,mer_address,mer_city;

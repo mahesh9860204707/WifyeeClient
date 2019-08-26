@@ -208,9 +208,9 @@ public class NetworkConstant {
 
     public static final String MOBICASH_IP_ADDRESS = "45.249.108.75";
     public static final String MOBICASH_BASE_URL_TESTING = "http://" + MOBICASH_IP_ADDRESS;
-    public static final String LOGOUT_API ="http://45.249.108.75/api/clientlogoutapi.php?request=clientLogout";
+    public static final String LOGOUT_API =MOBICASH_BASE_URL_TESTING+"/api/clientlogoutapi.php?request=clientLogout";
     public static final String MOBICASH_BASE_URL_AIRTIME_TESTING = "http://45.114.246.152";
-    public static final String PLANS_URL ="http://45.249.108.75/wifyee-api/rest/Users.php?request=get_hotspot_user_plans";
+    public static final String PLANS_URL =MOBICASH_BASE_URL_TESTING +"/wifyee-api/rest/Users.php?request=get_hotspot_user_plans";
 
 
     // API end point
@@ -242,25 +242,25 @@ public class NetworkConstant {
     public static final String USER_CLIENT_PAYU_PAYMENT_GATEWAY_END_POINT = "/payments/rest/PaymentRequest.php?request=payRequest";
     public static final String USER_CLIENT_BANK_LIST_END_POINT ="/payments/rest/PaymentRequest.php?request=getBankList";
     public static final String USER_CLIENT_BANK_TRANSFER = "/api/banktransferapi.php?request=bankTransfer";
-    public static final String USER_CLIENT_PAYU_PAYMENT_GATEWAY_PAYMENT_RESPONSE_URL = "http://45.249.108.75/app_response.php";
-    public static final String USER_CLIENT_PAYU_PAYMENT_UNWALLET_GATEWAY_PAYMENT_RESPONSE_URL = "http://45.249.108.75/payments/app_response.php";
+    public static final String USER_CLIENT_PAYU_PAYMENT_GATEWAY_PAYMENT_RESPONSE_URL = MOBICASH_BASE_URL_TESTING +"/app_response.php";
+    public static final String USER_CLIENT_PAYU_PAYMENT_UNWALLET_GATEWAY_PAYMENT_RESPONSE_URL = MOBICASH_BASE_URL_TESTING +"/payments/app_response.php";
     public static final String WI_FI_PAYMENT_END_POINT = "/wifyee-api/rest/Users.php?request=paidbyapp";
     public static final String USER_CLIENT_DEDUCT_MONEY_WALLET ="/api/clientwalletdebitapi.php?request=clientWalletDebit";
     public static final String USER_CLIENT_ADD_MONEY_WALLET_END_POINT ="/api/clientloadbalancebypaymentgatewayapi.php?request=clientLoadBalanceByPaymentGateway";
-    public static final String USER_SPLIT_LIST_POINT ="http://45.249.108.75/api/split_money_api.php?request=getAllSplitRequestByUser&userId=";
-    public static final String MERCHANT_PROFILE_POINT ="http://45.249.108.75/api/merchant_qrcode_api.php?request=getMerchantByQRCode";
-    public static final String MERCHANT_PROFILE_MOBILE_POINT ="http://45.249.108.75/api/merchant_qrcode_api.php?request=getMerchantByMobile";
+    public static final String USER_SPLIT_LIST_POINT =MOBICASH_BASE_URL_TESTING +"/api/split_money_api.php?request=getAllSplitRequestByUser&userId=";
+    public static final String MERCHANT_PROFILE_POINT = MOBICASH_BASE_URL_TESTING +"/api/merchant_qrcode_api.php?request=getMerchantByQRCode";
+    public static final String MERCHANT_PROFILE_MOBILE_POINT =MOBICASH_BASE_URL_TESTING +"/api/merchant_qrcode_api.php?request=getMerchantByMobile";
 
-    public static final String USER_PARTICIPENT_SPLIT_LIST_POINT ="http://45.249.108.75/api/split_money_api.php?request=getAllSplitRequestParticipentsBySplitMoneyId&splitMoneyId=";
+    public static final String USER_PARTICIPENT_SPLIT_LIST_POINT =MOBICASH_BASE_URL_TESTING+"/api/split_money_api.php?request=getAllSplitRequestParticipentsBySplitMoneyId&splitMoneyId=";
     public static final String USER_CLIENT_PAYMENT_END_POINT = "/api/merchantpaymentapi.php?request=merchantPayment";
-    public static final String USER_VIEW_DATA_USAGE = "http://45.249.108.75/wifyee-api/rest/Users.php?request=getCurrentPlanDataUsage";
-    public static final String SEND_MONEY_TO_CLIENT_API = "http://45.249.108.75/api/clientsendmoneyapi.php?request=clientSendMoney";
-    public static final String SEND_MONEY_CLIENT_TO_CLIENT_API ="http://45.249.108.75/api/clienttoclientmoneytransferapi.php?request=clientWalletToWallet";
-    public static final String SEND_OTP_AUTHENTICATION="http://45.249.108.75/api/otpsmsapi.php?request=generateOTP";
-    public static final String SEND_OTP_AUTHENTICATION_COMPLETE="http://45.249.108.75//api/otpsmsapi.php?request=authenticateOTP";
-    public static final String CITY_LIST_API="http://45.249.108.75/api/busbookingapi.php?request=busBooking&requestType=1";
-    public static final String REQUEST_MONEY_TO_CLIENT_API="http://45.249.108.75/api/clientrequestmoneyapi.php?request=clientRequestMoney";
-    public static final String MENU_ITEM_BY_CATEGORY ="http://45.249.108.75/api/menuitemsapi.php?request=getmenuitemsbycategory";
+    public static final String USER_VIEW_DATA_USAGE = MOBICASH_BASE_URL_TESTING +"/wifyee-api/rest/Users.php?request=getCurrentPlanDataUsage";
+    public static final String SEND_MONEY_TO_CLIENT_API = MOBICASH_BASE_URL_TESTING +"/api/clientsendmoneyapi.php?request=clientSendMoney";
+    public static final String SEND_MONEY_CLIENT_TO_CLIENT_API = MOBICASH_BASE_URL_TESTING+"/api/clienttoclientmoneytransferapi.php?request=clientWalletToWallet";
+    public static final String SEND_OTP_AUTHENTICATION= MOBICASH_BASE_URL_TESTING+"/api/otpsmsapi.php?request=generateOTP";
+    public static final String SEND_OTP_AUTHENTICATION_COMPLETE= MOBICASH_BASE_URL_TESTING+"/api/otpsmsapi.php?request=authenticateOTP";
+    public static final String CITY_LIST_API= MOBICASH_BASE_URL_TESTING+"/api/busbookingapi.php?request=busBooking&requestType=1";
+    public static final String REQUEST_MONEY_TO_CLIENT_API=MOBICASH_BASE_URL_TESTING+"/api/clientrequestmoneyapi.php?request=clientRequestMoney";
+    public static final String MENU_ITEM_BY_CATEGORY =MOBICASH_BASE_URL_TESTING+"/api/menuitemsapi.php?request=getmenuitemsbycategory";
 
 
     // parameters

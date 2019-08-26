@@ -376,7 +376,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from cart_item where item_id='"+itemId+"'";
+        String query = "SELECT * from "+db.TblOtherOrder+" where item_id='"+itemId+"'";
 
         Cursor data = controller.retrieve(query);
         total = data.getCount();
@@ -400,7 +400,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from cart_item where item_id ='"+id+"'";
+        String query = "DELETE from "+db.TblOtherOrder+" where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -419,7 +419,7 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "UPDATE cart_item set quantity ='"+quantity+"' where item_id ='"+id+"'";
+        String query = "UPDATE "+db.TblOtherOrder+" set quantity ='"+quantity+"' where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

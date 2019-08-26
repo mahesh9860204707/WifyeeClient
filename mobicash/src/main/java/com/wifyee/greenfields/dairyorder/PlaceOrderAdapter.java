@@ -186,7 +186,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from cart_item where item_id ='"+id+"'";
+        String query = "DELETE from "+db.TblOtherOrder+" where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -203,7 +203,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter{
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "UPDATE cart_item set quantity='"+quantity+"' where item_id ='"+id+"'";
+        String query = "UPDATE "+db.TblOtherOrder+" set quantity='"+quantity+"' where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

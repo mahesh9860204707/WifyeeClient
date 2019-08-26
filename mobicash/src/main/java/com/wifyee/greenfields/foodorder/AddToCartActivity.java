@@ -116,7 +116,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     private CardView cardViewCoupon,cardViewDiscount,cardViewBillDetails,cardViewPayment;
     private RadioGroup paymentGroup;
     private int total_amount;
-    private double totalBalanceVoucher;
+    private double totalBalanceVoucher,wifyeeCommision=0.0,distCommision=0.0;
     private String flag,tuvId,mcId;
 
     @Override
@@ -370,7 +370,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "SELECT * from food_cart order by id asc";
+        String query = "SELECT * from "+db.TblFoodOrder+" order by id asc";
 
         Cursor cursor = controller.retrieve(query);
         if (cursor.getCount() > 0) {
@@ -386,6 +386,8 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 String discount = cursor.getString(cursor.getColumnIndex("discount"));
                 String qty_half_full = cursor.getString(cursor.getColumnIndex("qty_half_full"));
                 String category = cursor.getString(cursor.getColumnIndex("category"));
+                String wifyeeCommission = cursor.getString(cursor.getColumnIndex("wifyee_commission"));
+                String distCommission = cursor.getString(cursor.getColumnIndex("dist_commission"));
 
                 double calculateAmount = Double.parseDouble(price) * Integer.parseInt(quantity);
                 //double calculateDiscount = Double.parseDouble(discount) * Integer.parseInt(quantity);
@@ -401,6 +403,8 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
                 data.setDiscountAmt(discount);
                 data.setQty_half_full(qty_half_full);
                 data.setCategory(category);
+                data.setWifyee_commission(wifyeeCommission);
+                data.setDist_commission(distCommission);
 
                 favorites.add(data);
                 Log.w("data ", "Data Fetched");
@@ -421,21 +425,21 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
 
         double totalamount = 0.00;
         double discountAmt = 0.0;
-        int totalItem = 0;
+         int totalItem = 0;
 
         if (favorites.size() > 0){
             for (int k = 0; k < favorites.size(); k++) {
                 try {
                     String pricevlaue = favorites.get(k).calculatedAmt.trim();
-                    String qty = favorites.get(k).quantiy.trim();
+                    int qty = Integer.parseInt(favorites.get(k).quantiy.trim());
                     Double current = Double.valueOf(pricevlaue);
                     totalamount = current + totalamount;
                     //Log.e("amount",String.valueOf(totalamount));
 
-                    double quantityDiscountAmt = Double.parseDouble(favorites.get(k).getDiscountAmt()) * Integer.parseInt(qty);
+                    double quantityDiscountAmt = Double.parseDouble(favorites.get(k).getDiscountAmt()) * qty;
                     discountAmt = discountAmt + quantityDiscountAmt;
 
-                    totalItem = totalItem + Integer.parseInt(qty);
+                    totalItem = totalItem + qty;
 
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -573,7 +577,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
     }
 
     private CartFoodOderRequest getaddToCartRequest(String finalprice) {
-        foodOrderRequest =new CartFoodOderRequest();
+        foodOrderRequest = new CartFoodOderRequest();
         itemsArrayList.clear();
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.US);
@@ -583,8 +587,16 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         foodOrderRequest.orderId ="C_"+LocalPreferenceUtility.getMerchantId(mcontext)+code_format;
 
         for (int y = 0; y < favorites.size(); y++) {
-           itemsArrayList.add(new Items(favorites.get(y).itemId, favorites.get(y).quantiy, favorites.get(y).price));
-           foodOrderRequest.setItems(itemsArrayList);
+            int quantityValue = Integer.parseInt(favorites.get(y).getQuantiy());
+
+            double wifyeeCommisionAmount = Double.parseDouble(favorites.get(y).getWifyee_commission()) * quantityValue;
+            wifyeeCommision = wifyeeCommision + wifyeeCommisionAmount;
+
+            double distCommisionAmount = Double.parseDouble(favorites.get(y).getDist_commission()) * quantityValue;
+            distCommision = distCommision + distCommisionAmount;
+
+            itemsArrayList.add(new Items(favorites.get(y).itemId, favorites.get(y).quantiy, favorites.get(y).price));
+            foodOrderRequest.setItems(itemsArrayList);
         }
 
         if (paymentSelectedIndex==0) {
@@ -604,12 +616,17 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             foodOrderRequest.mcId = mcId;
         }
 
-
         foodOrderRequest.userId = LocalPreferenceUtility.getUserCode(mcontext);
         foodOrderRequest.merchantId = LocalPreferenceUtility.getMerchantId(mcontext);
         foodOrderRequest.orderDateTime = datetime;
         foodOrderRequest.orderPrice = finalprice;
         foodOrderRequest.userType = "client";
+        foodOrderRequest.wifyeeCommision = String.valueOf(wifyeeCommision);
+        foodOrderRequest.distCommision = String.valueOf(distCommision);
+        foodOrderRequest.deliveryFee = String.valueOf(deliveryFee);
+        foodOrderRequest.gstAmount = "0.0";
+        foodOrderRequest.subTotal = Double.parseDouble(finalprice) - deliveryFee;
+
         return foodOrderRequest;
     }
 
@@ -983,8 +1000,6 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
             int total = itemTotalAmount + deliveryFee;
             //totalAmount = String.valueOf(total);
 
-
-
             if(deliveryFee==0){
                 deliveryFeePrice.setText("Free");
                 deliveryFeePrice.setTextColor(getResources().getColor(R.color.secondaryPrimary));
@@ -1011,7 +1026,7 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "DELETE from food_cart";
+        String query = "DELETE from "+db.TblFoodOrder;
         String result = controller.fireQuery(query);
         if(result.equals("Done")){
             Log.w("delete","Delete all successfully");

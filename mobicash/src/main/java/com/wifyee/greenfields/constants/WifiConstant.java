@@ -40,7 +40,7 @@ public class WifiConstant
     //http://localhost/hotspot-user/rest/Users.php?request=user_register_request
 
     public static String WIFYEE_REG_BASE_URL = MOBICASH_BASE_URL_TESTING+"/wifyee-api/rest/Users.php?request=user_register_request";
-    public static String WIFYEE_CONNECTION_BASE_URL = "http://45.249.108.75/wifyee-api/rest/Users.php?request=connect";
+    public static String WIFYEE_CONNECTION_BASE_URL = MOBICASH_BASE_URL_TESTING + "/wifyee-api/rest/Users.php?request=connect";
 
 
 

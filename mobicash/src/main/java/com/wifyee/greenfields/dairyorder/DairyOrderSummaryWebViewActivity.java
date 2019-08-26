@@ -62,7 +62,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
     private ArrayList<PlaceOrderData> orderData;
     private String totalAmount;
     private String payAmount,location,latitude,longitude,complete_add,discount_amt,dateFrom,dateTo,
-            perDay,claimType,voucherId,voucherNo,tuv_id;
+            perDay,claimType,voucherId,voucherNo,tuv_id,wifyeeComm,distComm,deliveryFee,gstAmt,subTotal;
     /**
      * List of actions supported.
      */
@@ -157,6 +157,11 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
         voucherId = getIntent().getStringExtra("voucher_id");
         voucherNo = getIntent().getStringExtra("voucher_no");
         tuv_id = getIntent().getStringExtra("tuv_id");
+        wifyeeComm = getIntent().getStringExtra("wifyee_comm");
+        distComm = getIntent().getStringExtra("dist_comm");
+        deliveryFee = getIntent().getStringExtra("delivery_fee");
+        gstAmt = getIntent().getStringExtra("gst_amt");
+        subTotal = getIntent().getStringExtra("sub_total");
 
         if(intent!=null) {
             JSONObject data = new JSONObject();
@@ -263,7 +268,8 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
                             DairyProductIntentService.startActionAddOrder(DairyOrderSummaryWebViewActivity.this, orderData,
                                     payAmount, DairyNetworkConstant.PAYMENT_MODE_ONLINE, refId,
                                     location,latitude,longitude,complete_add,discount_amt,dateFrom,dateTo,
-                                    perDay,claimType,voucherId,voucherNo,tuv_id);
+                                    perDay,claimType,voucherId,voucherNo,tuv_id,wifyeeComm,distComm,
+                                    deliveryFee,gstAmt,subTotal);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -325,7 +331,7 @@ public class DairyOrderSummaryWebViewActivity extends BaseActivity {
         controller.open();
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
-        String query = "DELETE from cart_item";
+        String query = "DELETE from "+db.TblOtherOrder;
         String result = controller.fireQuery(query);
         if(result.equals("Done")){
             Log.w("delete","Delete all successfully");

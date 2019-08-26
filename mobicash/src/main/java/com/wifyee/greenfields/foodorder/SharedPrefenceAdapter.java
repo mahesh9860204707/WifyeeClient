@@ -266,7 +266,7 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "DELETE from food_cart where item_id ='"+id+"'";
+        String query = "DELETE from "+db.TblFoodOrder+" where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){
@@ -283,7 +283,7 @@ public class SharedPrefenceAdapter  extends RecyclerView.Adapter<SharedPrefenceA
         DatabaseDB db = new DatabaseDB();
         db.createTables(controller);
 
-        String query = "UPDATE food_cart set quantity='"+quantity+"' where item_id ='"+id+"'";
+        String query = "UPDATE "+db.TblFoodOrder+" set quantity='"+quantity+"' where item_id ='"+id+"'";
         String result = controller.fireQuery(query);
 
         if(result.equals("Done")){

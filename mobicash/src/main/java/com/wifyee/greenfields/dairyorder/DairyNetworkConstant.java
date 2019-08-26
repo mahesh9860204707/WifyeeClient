@@ -26,7 +26,7 @@ public class DairyNetworkConstant {
     //public static final String REQUEST_LIST_ITEM = "/api/usersellingitemapi.php?request=listSellingItems&userId=";
     public static final String REQUEST_LIST_ITEM = "/api/usersellingitemapi.php?request=listSellingItems";
 
-    //public static final String DAIRY_ADD_ORDER_URL = "http://45.249.108.75/api/dairy_order.php?request=addorder";
+    //public static final String DAIRY_ADD_ORDER_URL = BASE_URL_DAIRY +"/api/dairy_order.php?request=addorder";
     public static final String ADD_ORDER_URL = BASE_URL_DAIRY+"/api/wifyee_order.php?request=addorder";
     public static final String DAIRY_ADD_ORDER_STATUS_SUCCESS = "merchant_add_order_status_success";
     public static final String DAIRY_ADD_ORDER_STATUS_FAILURE = "merchant_add_order_status_failure";
@@ -46,7 +46,7 @@ public class DairyNetworkConstant {
     /**
      * get client wallet balance
      */
-    public static final String WALLET_BALANCE_URL = "http://wifyeepay.com/api/clientcheckonlybalanceapi.php?request=clientBalanceCheck";
+    public static final String WALLET_BALANCE_URL = BASE_URL_DAIRY + "/api/clientcheckonlybalanceapi.php?request=clientBalanceCheck";
     public static final String WALLET_PARAM = "clientmobile";
     public static final String DAIRY_WALLET_BALANCE_STATUS_SUCCESS = "merchant_wallet_balance_success";
     public static final String DAIRY_WALLET_BALANCE_STATUS_FAILURE = "merchant_wallet_balance_failure";
@@ -54,9 +54,9 @@ public class DairyNetworkConstant {
     /**
      * payment response URL
      */
-    public static final String PAYMENT_RESPONSE_URL = " http://wifyeepay.com/payments/app_response.php";
-    public static final String MEDICINE_PAYMENT_RESPONSE_URL = "http://wifyeepay.com/payments/common/instamojoAppResponse.php";
-    public static final String WEBHOOK = "http://wifyeepay.com/payments/instamojo_webhooks/online_transaction_wk.php";
+    public static final String PAYMENT_RESPONSE_URL = BASE_URL_DAIRY +"/payments/app_response.php";
+    public static final String MEDICINE_PAYMENT_RESPONSE_URL = BASE_URL_DAIRY + "/payments/common/instamojoAppResponse.php";
+    public static final String WEBHOOK = BASE_URL_DAIRY + "/payments/instamojo_webhooks/online_transaction_wk.php";
 
     /**
      * get merchant list
@@ -72,8 +72,8 @@ public class DairyNetworkConstant {
      * payment url
      */
 
-    public static final String PAYMENT_URL = "http://www.wifyeepay.com/payments/rest/WifyeePayments.php?request=payment_request";
-    public static final String MEDICINE_PAYMENT_URL = "http://wifyeepay.com/payments/rest/instaMojoWifyeePayment.php?request=payment_request";
+    public static final String PAYMENT_URL = BASE_URL_DAIRY +"/payments/rest/WifyeePayments.php?request=payment_request";
+    public static final String MEDICINE_PAYMENT_URL = BASE_URL_DAIRY +"/payments/rest/instaMojoWifyeePayment.php?request=payment_request";
 
     public static final String DATA = "data";
     public static final String MER_ID = "mer_id";
@@ -109,6 +109,7 @@ public class DairyNetworkConstant {
     public static final String ITEM_DISCOUNT= "discount";
     public static final String ITEM_DISCOUNT_AMT= "discount_amount";
     public static final String ITEM_MOB_COMMISSION= "mobicash_commission";
+    public static final String ITEM_DIST_COMMISSION= "dist_commission";
     public static final String ITEM_TYPE_COMMISSION= "commission_type";
     public static final String ITEM_QUENTITY= "quentity";
     public static final String ITEM_STATUS= "status";
@@ -158,6 +159,11 @@ public class DairyNetworkConstant {
     public static final String ORDER_REF_ID = "ref_id";
     public static final String TUV_ID = "tuv_id";
     public static final String MER_CREDIT_ID = "merchant_credits_id";
+    public static final String WIFYEE_COMMISION = "wifyee_commission";
+    public static final String DIST_COMMISSION = "dist_commission";
+    public static final String DELIVERY_AMT = "delivery_amount";
+    public static final String GST_AMT = "gst_amount";
+    public static final String SUB_TOTAL = "sub_total";
 
     public static String getUniqueId(){
         return UUID.randomUUID().toString();

@@ -150,6 +150,9 @@ public class JSONParser {
                     if(dataObject.has(DairyNetworkConstant.MER_CURRENT_STATUS)){
                         list.setCurrentStatus(dataObject.getString(DairyNetworkConstant.MER_CURRENT_STATUS));
                     }
+                    if(dataObject.has(DairyNetworkConstant.ITEM_DIST_COMMISSION)){
+                        list.setDistCommission(dataObject.getString(DairyNetworkConstant.ITEM_DIST_COMMISSION));
+                    }
 
                     if(dataObject.has(DairyNetworkConstant.ITEM_IMAGE_OBJ)){
                         JSONArray imageArray = dataObject.getJSONArray(DairyNetworkConstant.ITEM_IMAGE_OBJ);

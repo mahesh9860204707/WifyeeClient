@@ -3,6 +3,9 @@ package com.wifyee.greenfields.database;
 
 public class DatabaseDB {
 
+    public final String TblOtherOrder="tbl_other_order";
+    public final String TblFoodOrder="tbl_food_order";
+
     public String Address="CREATE TABLE IF NOT EXISTS address(" +
             "   id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "   name TEXT" +
@@ -15,7 +18,7 @@ public class DatabaseDB {
             ",  state TEXT " +
             ",  active_status INTEGER);";
 
-    public String CartItem="CREATE TABLE IF NOT EXISTS cart_item(" +
+    public String CartItem="CREATE TABLE IF NOT EXISTS tbl_other_order(" +
             "   id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "   image_path TEXT" +
             ",  item_name TEXT " +
@@ -26,9 +29,11 @@ public class DatabaseDB {
             ",  unit TEXT " +
             ",  price TEXT " +
             ",  discount TEXT " +
+            ",  wifyee_commission TEXT " +
+            ",  dist_commission TEXT " +
             ",  active_status INTEGER);";
 
-    public String FoodCart="CREATE TABLE IF NOT EXISTS food_cart(" +
+    public String FoodCart="CREATE TABLE IF NOT EXISTS tbl_food_order(" +
             "   id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "   image_path TEXT" +
             ",  item_name TEXT " +
@@ -39,6 +44,8 @@ public class DatabaseDB {
             ",  discount TEXT " +
             ",  qty_half_full TEXT " +
             ",  category TEXT " +
+            ",  wifyee_commission TEXT " +
+            ",  dist_commission TEXT " +
             ",  active_status INTEGER);";
 
     public String drop_table="DROP TABLE food_cart";

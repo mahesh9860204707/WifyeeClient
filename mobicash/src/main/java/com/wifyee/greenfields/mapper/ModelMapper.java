@@ -1346,6 +1346,7 @@ public class ModelMapper {
     }
 
     public static LogList transformJSONObjectToLogList(JSONObject response) {
+        Log.e("ProfileModelMapper",response.toString());
         LogList logList = null;
         try {
             if (response != null) {

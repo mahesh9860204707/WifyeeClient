@@ -531,177 +531,162 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void callOtherMerchantList() {
-        //if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
-            if (otherlist != null) { otherlist.clear(); }
+        if (otherlist != null) { otherlist.clear(); }
 
-            JSONObject json = new JSONObject();
-            try {
-                json.put("pincode", LocalPreferenceUtility.getCurrentPincode(mContext));
-                //json.put("pincode", "416510");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            //Log.e("json",json.toString());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("pincode", LocalPreferenceUtility.getCurrentPincode(mContext));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                    .connectTimeout(5, TimeUnit.MINUTES)
-                    .readTimeout(5, TimeUnit.MINUTES)
-                    .writeTimeout(5, TimeUnit.MINUTES)
-                    .build();
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES)
+                .build();
 
-            AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING +
-                    NetworkConstant.PARAM_GET_OTHER_MERCHANT_LIST)
-                    .addJSONObjectBody(json)
-                    .setOkHttpClient(okHttpClient)
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject object) {
-                            Log.e("--RESPONSE--", object.toString());
-                            cancelProgressDialog();
-                            try {
-                                if (object.getInt(ResponseAttributeConstants.STATUS) != 0) {
-                                    JSONArray jsonArray = object.getJSONArray(ResponseAttributeConstants.OFFERS_DATA);
-                                    if (jsonArray.length()>0) {
-                                        txtOtherMerchant.setVisibility(View.VISIBLE);
-                                        recyclerViewOtherMerchant.setVisibility(View.VISIBLE);
+        AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING +
+                NetworkConstant.PARAM_GET_OTHER_MERCHANT_LIST)
+                .addJSONObjectBody(json)
+                .setOkHttpClient(okHttpClient)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject object) {
+                        Log.e("--RESPONSE--", object.toString());
+                        cancelProgressDialog();
+                        try {
+                            if (object.getInt(ResponseAttributeConstants.STATUS) != 0) {
+                                JSONArray jsonArray = object.getJSONArray(ResponseAttributeConstants.OFFERS_DATA);
+                                if (jsonArray.length()>0) {
+                                    txtOtherMerchant.setVisibility(View.VISIBLE);
+                                    recyclerViewOtherMerchant.setVisibility(View.VISIBLE);
 
-                                        otherMerchant = new OtherMerchantModel[jsonArray.length()];
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            otherMerchant[i] = new OtherMerchantModel(
-                                                    jsonObject.getString("id"),
-                                                    jsonObject.getString("merchant_type_name"),
-                                                    jsonObject.getString("image")
-                                            );
-                                            otherlist.add(otherMerchant[i]);
-                                        }
-                                        recyclerViewOtherMerchant.getRecycledViewPool().clear();
-                                        merchantAdapter.notifyDataSetChanged();
-                                    }else {
-                                        txtOtherMerchant.setVisibility(View.GONE);
-                                        recyclerViewOtherMerchant.setVisibility(View.GONE);
+                                    otherMerchant = new OtherMerchantModel[jsonArray.length()];
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        otherMerchant[i] = new OtherMerchantModel(
+                                                jsonObject.getString("id"),
+                                                jsonObject.getString("merchant_type_name"),
+                                                jsonObject.getString("image")
+                                        );
+                                        otherlist.add(otherMerchant[i]);
                                     }
-                                } else {
-                                    String msg = object.getString(ResponseAttributeConstants.MSG);
-                                    Log.e("error",msg);
-                                    //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                                    recyclerViewOtherMerchant.getRecycledViewPool().clear();
+                                    merchantAdapter.notifyDataSetChanged();
+                                }else {
+                                    txtOtherMerchant.setVisibility(View.GONE);
+                                    recyclerViewOtherMerchant.setVisibility(View.GONE);
                                 }
-                            } catch (JSONException e) {
-                                cancelProgressDialog();
-                                Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                            } else {
+                                String msg = object.getString(ResponseAttributeConstants.MSG);
+                                Log.e("error",msg);
+                                //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
                             }
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
+                        } catch (JSONException e) {
                             cancelProgressDialog();
-                            // handle error
-                            Timber.e("called onError of User Invoice API.");
-                            Timber.e("Error Message : " + error.getMessage());
-                            Timber.e("Error code : " + error.getErrorCode());
-                            Timber.e("Error Body : " + error.getErrorBody());
-                            Timber.e("Error Detail : " + error.getErrorDetail());
+                            Timber.e("JSONException Caught.  Message : " + e.getMessage());
                         }
-                    });
-        /*}else {
-            view_more_voucher.setVisibility(View.GONE);
-            txt_vouchers.setVisibility(View.GONE);
-            recyclerViewVouchers.setVisibility(View.GONE);
-        }*/
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        cancelProgressDialog();
+                        // handle error
+                        Timber.e("called onError of User Invoice API.");
+                        Timber.e("Error Message : " + error.getMessage());
+                        Timber.e("Error code : " + error.getErrorCode());
+                        Timber.e("Error Body : " + error.getErrorBody());
+                        Timber.e("Error Detail : " + error.getErrorDetail());
+                    }
+                });
     }
 
 
 
     private void callVoucherList() {
-        //if (!LocalPreferenceUtility.getPinCode(mContext).isEmpty()) {
-            if (list != null) { list.clear(); }
+        if (list != null) { list.clear(); }
 
-            JSONObject json = new JSONObject();
-            try {
-                json.put("pincode", LocalPreferenceUtility.getCurrentPincode(mContext));
-                json.put("limit", "4");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        JSONObject json = new JSONObject();
+        try {
+            json.put("pincode", LocalPreferenceUtility.getCurrentPincode(mContext));
+            json.put("limit", "4");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-            OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                    .connectTimeout(5, TimeUnit.MINUTES)
-                    .readTimeout(5, TimeUnit.MINUTES)
-                    .writeTimeout(5, TimeUnit.MINUTES)
-                    .build();
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES)
+                .build();
 
-            AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING +
-                    NetworkConstant.PARAM_VOUCHER_LIST_BY_PINCODE)
-                    .addJSONObjectBody(json)
-                    .setOkHttpClient(okHttpClient)
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject object) {
-                            Log.e("--RESPONSE--", object.toString());
-                            cancelProgressDialog();
-                            try {
-                                if (object.getInt(ResponseAttributeConstants.STATUS) != 0) {
-                                    JSONArray jsonArray = object.getJSONArray(ResponseAttributeConstants.OFFERS_DATA);
-                                    if (jsonArray.length()>0) {
-                                        view_more_voucher.setVisibility(View.VISIBLE);
-                                        txt_vouchers.setVisibility(View.VISIBLE);
-                                        recyclerViewVouchers.setVisibility(View.VISIBLE);
+        AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING +
+                NetworkConstant.PARAM_VOUCHER_LIST_BY_PINCODE)
+                .addJSONObjectBody(json)
+                .setOkHttpClient(okHttpClient)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject object) {
+                        Log.e("--RESPONSE--", object.toString());
+                        cancelProgressDialog();
+                        try {
+                            if (object.getInt(ResponseAttributeConstants.STATUS) != 0) {
+                                JSONArray jsonArray = object.getJSONArray(ResponseAttributeConstants.OFFERS_DATA);
+                                if (jsonArray.length()>0) {
+                                    view_more_voucher.setVisibility(View.VISIBLE);
+                                    txt_vouchers.setVisibility(View.VISIBLE);
+                                    recyclerViewVouchers.setVisibility(View.VISIBLE);
 
-                                        voucher = new VoucherModel[jsonArray.length()];
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            voucher[i] = new VoucherModel(
-                                                    jsonObject.getString("id"),
-                                                    jsonObject.getString("voucher_no"),
-                                                    jsonObject.getString("voucher_name"),
-                                                    jsonObject.getString("voucher_details"),
-                                                    jsonObject.getString("voucher_amount"),
-                                                    jsonObject.getString("discount_amount"),
-                                                    jsonObject.getString("valid_from"),
-                                                    jsonObject.getString("valid_upto"),
-                                                    jsonObject.getString("image_path")
-                                            );
-                                            list.add(voucher[i]);
-                                        }
-                                        recyclerViewVouchers.getRecycledViewPool().clear();
-                                        voucherAdapter.notifyDataSetChanged();
-                                    }else {
-                                        view_more_voucher.setVisibility(View.GONE);
-                                        txt_vouchers.setVisibility(View.GONE);
-                                        recyclerViewVouchers.setVisibility(View.GONE);
+                                    voucher = new VoucherModel[jsonArray.length()];
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        voucher[i] = new VoucherModel(
+                                                jsonObject.getString("id"),
+                                                jsonObject.getString("voucher_no"),
+                                                jsonObject.getString("voucher_name"),
+                                                jsonObject.getString("voucher_details"),
+                                                jsonObject.getString("voucher_amount"),
+                                                jsonObject.getString("discount_amount"),
+                                                jsonObject.getString("valid_from"),
+                                                jsonObject.getString("valid_upto"),
+                                                jsonObject.getString("image_path")
+                                        );
+                                        list.add(voucher[i]);
                                     }
-                                } else {
-                                    String msg = object.getString(ResponseAttributeConstants.MSG);
-                                    Log.e("errorVoucher",msg);
-                                    //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                                    recyclerViewVouchers.getRecycledViewPool().clear();
+                                    voucherAdapter.notifyDataSetChanged();
+                                }else {
+                                    view_more_voucher.setVisibility(View.GONE);
+                                    txt_vouchers.setVisibility(View.GONE);
+                                    recyclerViewVouchers.setVisibility(View.GONE);
                                 }
-                            } catch (JSONException e) {
-                                cancelProgressDialog();
-                                Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                            } else {
+                                String msg = object.getString(ResponseAttributeConstants.MSG);
+                                Log.e("errorVoucher",msg);
+                                //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
                             }
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
+                        } catch (JSONException e) {
                             cancelProgressDialog();
-                            // handle error
-                            Timber.e("called onError of User Invoice API.");
-                            Timber.e("Error Message : " + error.getMessage());
-                            Timber.e("Error code : " + error.getErrorCode());
-                            Timber.e("Error Body : " + error.getErrorBody());
-                            Timber.e("Error Detail : " + error.getErrorDetail());
+                            Timber.e("JSONException Caught.  Message : " + e.getMessage());
                         }
-                    });
-       /* }else {
-            view_more_voucher.setVisibility(View.GONE);
-            txt_vouchers.setVisibility(View.GONE);
-            recyclerViewVouchers.setVisibility(View.GONE);
-            showErrorDialog("Please update your profile to get voucher list");
-        }*/
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        cancelProgressDialog();
+                        // handle error
+                        Timber.e("called onError of User Invoice API.");
+                        Timber.e("Error Message : " + error.getMessage());
+                        Timber.e("Error code : " + error.getErrorCode());
+                        Timber.e("Error Body : " + error.getErrorBody());
+                        Timber.e("Error Detail : " + error.getErrorDetail());
+                    }
+                });
     }
 
     /* private boolean getMobileDataEnabled() {

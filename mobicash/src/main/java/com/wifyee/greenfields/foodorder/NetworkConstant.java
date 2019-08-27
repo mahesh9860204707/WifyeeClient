@@ -206,7 +206,8 @@ public class NetworkConstant {
     private static final String MOBICASH_PRODUCTION_SITE_IP_ADDRESS = "45.249.108.74";;
     */
 
-    public static final String MOBICASH_IP_ADDRESS = "45.249.108.75";
+   // public static final String MOBICASH_IP_ADDRESS = "45.249.108.75";
+    public static final String MOBICASH_IP_ADDRESS = "45.114.141.206";
     public static final String MOBICASH_BASE_URL_TESTING = "http://" + MOBICASH_IP_ADDRESS;
     public static final String LOGOUT_API =MOBICASH_BASE_URL_TESTING+"/api/clientlogoutapi.php?request=clientLogout";
     public static final String MOBICASH_BASE_URL_AIRTIME_TESTING = "http://45.114.246.152";

@@ -581,10 +581,11 @@ public class AddToCartActivity extends AppCompatActivity implements FragmentInte
         itemsArrayList.clear();
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss", Locale.US);
-        SimpleDateFormat format=new SimpleDateFormat("yyyymmddHHmmss",Locale.US);
+        SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmssSSS",Locale.US);
         String datetime = formatter.format(today);
         String code_format = format.format(today);
-        foodOrderRequest.orderId ="C_"+LocalPreferenceUtility.getMerchantId(mcontext)+code_format;
+        //foodOrderRequest.orderId ="FO_"+LocalPreferenceUtility.getMerchantId(mcontext)+code_format;
+        foodOrderRequest.orderId ="FO_"+code_format;
 
         for (int y = 0; y < favorites.size(); y++) {
             int quantityValue = Integer.parseInt(favorites.get(y).getQuantiy());

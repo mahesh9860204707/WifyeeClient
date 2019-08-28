@@ -12,7 +12,11 @@ import com.wifyee.greenfields.foodorder.NetworkConstant;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class JSONBuilder {
 
@@ -23,10 +27,13 @@ public class JSONBuilder {
                                              String voucherNo,String tuvId,String wifyeeComm, String distComm, String deliveryAmt,
                                              String gstAmt,String subTotal){
         JSONObject addOrderJson = new JSONObject();
-       // GPSTracker gps = new GPSTracker(ctx);
+        String todayDate = new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.US).format(new Date());
+
+        // GPSTracker gps = new GPSTracker(ctx);
         try {
             int size = orderData.size();
-            addOrderJson.put(DairyNetworkConstant.ORDER_ID, MobicashUtils.generateTransactionId());
+            //addOrderJson.put(DairyNetworkConstant.ORDER_ID, MobicashUtils.generateTransactionId());
+            addOrderJson.put(DairyNetworkConstant.ORDER_ID, "WO_"+todayDate);
             addOrderJson.put(DairyNetworkConstant.ORDER_USER_TYPE,"client");
             addOrderJson.put(DairyNetworkConstant.ORDER_USER_ID, LocalPreferenceUtility.getUserCode(ctx));
             addOrderJson.put(DairyNetworkConstant.ORDER_DATE_TIME,MobicashUtils.getCurrentDateAndTime());

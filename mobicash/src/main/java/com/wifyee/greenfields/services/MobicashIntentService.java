@@ -3169,6 +3169,7 @@ public class MobicashIntentService extends IntentService {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.e("LogRes",response.toString());
                         Timber.e("called onResponse of Client log API.");
                         try {
                             if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {

@@ -30,6 +30,8 @@
     <color name="tracking_green">#35C399</color>
     <color name="prescription_color">#20ADAD</color>
     <color name="food_btn_color">#7D0A4E</color>
+    <color name="green">#006400</color>
+    <color name="red">#FF0000</color>
 
     <color name="lt_orange">#edae39</color>
     <color name="lt_pink">#FFDBFF</color>

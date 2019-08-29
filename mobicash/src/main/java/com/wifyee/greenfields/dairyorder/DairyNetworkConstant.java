@@ -5,8 +5,8 @@ import java.util.UUID;
 public class DairyNetworkConstant {
 
     public static final String DAIRY_MERCHANT_MAIN_LIST_TYPE = "12";
-    //public static final String BASE_URL_DAIRY = "http://45.249.108.75";
-    public static final String BASE_URL_DAIRY = "http://45.114.141.206";
+    public static final String BASE_URL_DAIRY = "http://45.249.108.75";
+    //public static final String BASE_URL_DAIRY = "http://45.114.141.206";
 
 
 

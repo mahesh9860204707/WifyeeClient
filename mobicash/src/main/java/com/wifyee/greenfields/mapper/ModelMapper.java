@@ -1363,7 +1363,7 @@ public class ModelMapper {
         return logList;
     }
 
-    private static List<LogItem> transformJSONArrayToClientLogs(JSONArray jsonArray) {
+    private static List<LogItem>  transformJSONArrayToClientLogs(JSONArray jsonArray) {
         List<LogItem> logItems = new ArrayList<>();
         try {
             LogItem tmpLogItem;

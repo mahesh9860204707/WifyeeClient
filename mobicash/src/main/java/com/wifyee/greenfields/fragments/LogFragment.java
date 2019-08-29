@@ -37,7 +37,7 @@ import timber.log.Timber;
  * Created by sumanta on 12/23/16.
  */
 
-public class LogFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class LogFragment extends android.support.v4.app.Fragment /*implements SwipeRefreshLayout.OnRefreshListener*/ {
     /**
      * List of actions supported.
      */
@@ -83,9 +83,9 @@ public class LogFragment extends android.support.v4.app.Fragment implements Swip
         mContext = getActivity();
     }
 
-    private void resetSwipeView() {
+    /*private void resetSwipeView() {
         swipeLayout.setRefreshing(false);
-    }
+    }*/
 
     @Override
     public void onDetach() {
@@ -93,13 +93,13 @@ public class LogFragment extends android.support.v4.app.Fragment implements Swip
         swipeLayout.setAcceptEvents(false);
     }
 
-    @Override
+    /*@Override
     public void onRefresh() {
         swipeLayout.setRefreshing(true);
         //refresh data
         requestData();
 
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,12 +107,12 @@ public class LogFragment extends android.support.v4.app.Fragment implements Swip
         View view = inflater.inflate(R.layout.log_fragment, container, false);
         ButterKnife.bind(this, view);
         mLogFragmentListener = (LogFragmentListener) getActivity();
-        swipeLayout = (CustomSwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        /*swipeLayout = (CustomSwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeResources(
                 android.R.color.holo_orange_light,
                 android.R.color.holo_green_light,
-                android.R.color.holo_blue_bright);
+                android.R.color.holo_blue_bright);*/
 
         setupUI();
         return view;
@@ -171,11 +171,12 @@ public class LogFragment extends android.support.v4.app.Fragment implements Swip
                 if (mClientLogResponse != null && mClientLogResponse.logList != null
                         && mClientLogResponse.logList.mobicashClientLogItem != null) {
                     emptyView.setVisibility(View.GONE);
+
                     mLogAdapter.setLogItemCollection(mClientLogResponse.logList.mobicashClientLogItem);
                 } else {
                     emptyView.setVisibility(View.VISIBLE);
                 }
-                resetSwipeView();
+                //resetSwipeView();
             } else if (action != null && action.equals(NetworkConstant.STATUS_USER_CLIENT_LOG_FAIL)) {
                 emptyView.setVisibility(View.VISIBLE);
                 FailureResponse failureResponse = (FailureResponse) intent.getSerializableExtra(NetworkConstant.EXTRA_DATA);
@@ -185,7 +186,7 @@ public class LogFragment extends android.support.v4.app.Fragment implements Swip
                     String errorMessage = getString(R.string.error_message);
                     mLogFragmentListener.showError(errorMessage);
                 }
-                resetSwipeView();
+                //resetSwipeView();
             }
         }
     };

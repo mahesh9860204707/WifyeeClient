@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wifyee.greenfields.R;
+import com.wifyee.greenfields.Utils.DateConvert;
+import com.wifyee.greenfields.Utils.Fonts;
 import com.wifyee.greenfields.models.response.LogItem;
 
 import java.text.ParseException;
@@ -50,17 +53,36 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.LogItemViewHol
     public void onBindViewHolder(LogItemViewHolder holder, int position) {
         final LogItem logItem = mLogItemCollection.get(position);
 
-        holder.mLogDate.setText(logItem.logDate);
-        try {
+        holder.mLogDate.setText(DateConvert.convertDate(logItem.logDate));
+
+        /*try {
             holder.mLogDate.setText(timeStampConverter(inputFormat, logItem.logDate, outputFormat));
         } catch (ParseException e) {
             Timber.e("ParseException, Message : " + e.getMessage());
-        }
-        holder.mLogRef.setText(logItem.logId);
-        holder.mLogBalance.setText(logItem.logBalance);
+        }*/
+        holder.mLogRef.setText("Ref #".concat(logItem.logId));
+       // holder.mLogBalance.setText(logItem.logBalance);
 
-        holder.mLogCreditOrDebit.setText(logItem.logCredit + "/" + logItem.logDebit);
-        holder.mLogFees.setText(logItem.logFees);
+        holder.mLogCreditOrDebit.setTypeface(Fonts.getSemiBold(mContext));
+        holder.mTxtDetails.setTypeface(Fonts.getSemiBold(mContext));
+        holder.mLogRef.setTypeface(Fonts.getRegular(mContext));
+        holder.mLogDate.setTypeface(Fonts.getRegular(mContext));
+        holder.mLogDescription.setTypeface(Fonts.getRegular(mContext));
+
+        if (!logItem.logCredit.equals("")){
+            holder.icArrow.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+            holder.mLogCreditOrDebit.setTextColor(mContext.getResources().getColor(R.color.green));
+            holder.mLogCreditOrDebit.setText("+₹"+logItem.logCredit.replace("Rs ",""));
+            holder.mTxtDetails.setText("Account credited with ₹".concat(logItem.logCredit.replace("Rs ","")));
+        }else {
+            holder.icArrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+            holder.mLogCreditOrDebit.setTextColor(mContext.getResources().getColor(R.color.red));
+            holder.mLogCreditOrDebit.setText("-₹"+logItem.logDebit.replace("Rs ",""));
+            holder.mTxtDetails.setText("Account dedited with ₹".concat(logItem.logDebit.replace("Rs ","")));
+        }
+
+        //holder.mLogCreditOrDebit.setText(logItem.logCredit + "/" + logItem.logDebit);
+        //holder.mLogFees.setText(logItem.logFees);
         holder.mLogDescription.setText(logItem.logDescription);
     }
 
@@ -94,14 +116,20 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.LogItemViewHol
         @BindView(R.id.log_ref)
         public TextView mLogRef;
 
-        @BindView(R.id.log_balance)
-        public TextView mLogBalance;
+        /*@BindView(R.id.log_balance)
+        public TextView mLogBalance;*/
 
         @BindView(R.id.log_credit_debit)
         public TextView mLogCreditOrDebit;
 
-        @BindView(R.id.log_fees)
-        public TextView mLogFees;
+        /*@BindView(R.id.log_fees)
+        public TextView mLogFees;*/
+
+        @BindView(R.id.txt_details)
+        public TextView mTxtDetails;
+
+        @BindView(R.id.ic_arrow)
+        ImageView icArrow;
 
         @BindView(R.id.log_description)
         public TextView mLogDescription;

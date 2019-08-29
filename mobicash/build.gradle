@@ -8,8 +8,8 @@ android {
         applicationId "com.wifyee.greenfields"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 101
-        versionName "1.57"
+        versionCode 102
+        versionName "1.58"
         multiDexEnabled true
         //vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

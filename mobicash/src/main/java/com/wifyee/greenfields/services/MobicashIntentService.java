@@ -1679,11 +1679,10 @@ public class MobicashIntentService extends IntentService {
                     obj.put("item_id",mCartFoodOrderRequest.items.get(i).id);
                     obj.put("quantity",mCartFoodOrderRequest.items.get(i).quantity);
                     obj.put("amount",mCartFoodOrderRequest.items.get(i).amount);
-                    Log.e("(JSON)",obj.toString());
+                    //Log.e("(JSON)",obj.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //  array.put(obj);
                 jsonObject.put(ResponseAttributeConstants.ITEM,array.put(obj));
             }
             jsonObject.put(ResponseAttributeConstants.USER_ID,mCartFoodOrderRequest.userId);
@@ -1714,7 +1713,6 @@ public class MobicashIntentService extends IntentService {
             }if(mCartFoodOrderRequest.payment_mode.equalsIgnoreCase("online")){
                 jsonObject.put(ResponseAttributeConstants.RefId,ref_no);
             }
-
 
             Log.e("order param",jsonObject.toString());
         } catch (JSONException e) {
@@ -3160,6 +3158,8 @@ public class MobicashIntentService extends IntentService {
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
         }
+
+        Log.e("LogJson",jsonObject.toString());
 
         AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.USER_CLIENT_LOG_END_POINT)
                 .addJSONObjectBody(jsonObject)

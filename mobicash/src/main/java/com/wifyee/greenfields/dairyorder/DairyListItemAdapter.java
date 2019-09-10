@@ -74,7 +74,6 @@ public class DairyListItemAdapter extends RecyclerView.Adapter  {
         public TextView tvItemType;
         public TextView tvQuality,unit;
         public ImageView imageView,icDiscount;
-        public CheckBox chbbuy;
         public LinearLayout ll,llAdd,llIncrDecr;
         DairyProductListItem item;
 

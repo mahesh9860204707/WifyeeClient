@@ -111,6 +111,7 @@ import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.Constants;
 import com.wifyee.greenfields.constants.NetworkConstant;
 import com.wifyee.greenfields.constants.ResponseAttributeConstants;
+import com.wifyee.greenfields.constants.UpdateHelper;
 import com.wifyee.greenfields.constants.WifiConstant;
 import com.wifyee.greenfields.dairyorder.OrderSummaryActivity;
 import com.wifyee.greenfields.database.DatabaseDB;
@@ -135,7 +136,7 @@ import com.wifyee.greenfields.models.response.LoginResponse;
 import com.wifyee.greenfields.models.response.PlanDataSummary;
 import com.wifyee.greenfields.models.response.ServerResponse;
 import com.wifyee.greenfields.services.MobicashIntentService;
-
+import com.google.android.gms.location.LocationServices;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -208,9 +209,9 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        //UpdateHelper.with(this).onUpdateNeeded(this).check();
+       // UpdateHelper.with(this).onUpdateNeeded(this).check();
 
-        mLocationClient = new GoogleApiClient.Builder(this)
+        GoogleApiClient  mLocationClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -1287,6 +1288,7 @@ public class MobicashDashBoardActivity extends BaseActivity implements LogFragme
                     JSONObject object = new JSONObject(response);
                     newVersion = object.getString("app_version");
 
+                    newVersion="1.58";
                     if (Float.valueOf(currentVersion) < Float.valueOf(newVersion)) {
                         AlertDialog.Builder alert = new AlertDialog.Builder(MobicashDashBoardActivity.this);
                         alert.setTitle("Update");

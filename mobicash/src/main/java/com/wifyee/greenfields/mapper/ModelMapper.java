@@ -20,6 +20,9 @@ import com.wifyee.greenfields.foodorder.OrderStatusDetailList;
 import com.wifyee.greenfields.foodorder.OrdersList;
 import com.wifyee.greenfields.foodorder.Restaurant;
 import com.wifyee.greenfields.foodorder.VegORNonVegList;
+import com.wifyee.greenfields.models.CountriesList;
+import com.wifyee.greenfields.models.CountriesResponse;
+import com.wifyee.greenfields.models.MerchantCategoryList;
 import com.wifyee.greenfields.models.requests.VerifyMobileNumber;
 import com.wifyee.greenfields.models.response.AirtimeResponse;
 import com.wifyee.greenfields.models.response.BankListResponseModel;
@@ -809,8 +812,8 @@ public class ModelMapper {
                 if (response.has(ResponseAttributeConstants.CLIENT_ID))
                     loginResponse.clientId = response.getString(ResponseAttributeConstants.CLIENT_ID);
 
-                if (response.has(ResponseAttributeConstants.CLIENT_MOBILE))
-                    loginResponse.clientMobile = response.getString(ResponseAttributeConstants.CLIENT_MOBILE);
+                if (response.has(ResponseAttributeConstants.USER_NAME_LOGIN))
+                    loginResponse.userName = response.getString(ResponseAttributeConstants.USER_NAME_LOGIN);
 
                 if (response.has(ResponseAttributeConstants.LOGIN_DATE))
                     loginResponse.loginDate = response.getString(ResponseAttributeConstants.LOGIN_DATE);
@@ -2215,6 +2218,116 @@ public class ModelMapper {
         }
         return bankListResponseModelsArray;
     }
+
+
+
+
+    /**
+     * Client Countries List Details....
+     */
+    public static ArrayList<CountriesList> getCountriesList(JSONObject response) {
+        ArrayList<CountriesList> bankListResponseModelsArray = new ArrayList<>();
+        CountriesList countryListResponseModel = null;
+        try {
+            if (response != null) {
+
+
+                if (response.has(ResponseAttributeConstants.RESPONCE_DATA))
+                {
+
+
+                    JSONArray countryListArray = response.getJSONArray(ResponseAttributeConstants.RESPONCE_DATA);
+
+                    int sizeOfCityListArray = countryListArray.length();
+                    for (int i = 0; i < sizeOfCityListArray; i++) {
+                        countryListResponseModel = new CountriesList();
+                       /* CountriesList rm = new Gson().fromJson(countryListArray.getJSONObject(i).toString(), CountriesList.class);
+                        bankListResponseModelsArray.add(rm);*/
+                        JSONObject countryData = countryListArray.getJSONObject(i);
+                        if(countryData.has(ResponseAttributeConstants.COUNTRIES_ID)){
+                            countryListResponseModel.setId(countryData.getString(ResponseAttributeConstants.COUNTRIES_ID));
+                        }
+                        if(countryData.has(ResponseAttributeConstants.COUNTRIES_NAME)){
+                            countryListResponseModel.setName(countryData.getString(ResponseAttributeConstants.COUNTRIES_NAME));
+                        }
+
+                        if(countryData.has(ResponseAttributeConstants.COUNTRIES_country_code)){
+                            countryListResponseModel.setCountryCode(countryData.getString(ResponseAttributeConstants.COUNTRIES_country_code));
+                        }
+
+                        if(countryData.has(ResponseAttributeConstants.COUNTRIES_flag_32)){
+                            countryListResponseModel.setFlag32(countryData.getString(ResponseAttributeConstants.COUNTRIES_flag_32));
+                        }
+
+                        if(countryData.has(ResponseAttributeConstants.COUNTRIES_phone_code)){
+                            countryListResponseModel.setPhoneCode(countryData.getString(ResponseAttributeConstants.COUNTRIES_phone_code));
+                        }
+
+                        if(countryData.has(ResponseAttributeConstants.COUNTRIES_flag_128)){
+                            countryListResponseModel.setFlag128(countryData.getString(ResponseAttributeConstants.COUNTRIES_flag_128));
+                        }
+
+                        bankListResponseModelsArray.add(countryListResponseModel);
+
+                    }
+
+                }
+            }
+
+        } catch (JSONException e) {
+            Timber.e("JSONException while transformJSONObjectToPayUPaymentGatewayResponse. Message : " + e.getMessage());
+        }
+        return bankListResponseModelsArray;
+    }
+
+
+
+    public static ArrayList<MerchantCategoryList> getMerchantCategoryList(JSONObject response) {
+        ArrayList<MerchantCategoryList> bankListResponseModelsArray = new ArrayList<>();
+        MerchantCategoryList countryListResponseModel = null;
+        try {
+            if (response != null) {
+
+
+                if (response.has(ResponseAttributeConstants.RESPONCE_DATA))
+                {
+
+
+                    JSONArray countryListArray = response.getJSONArray(ResponseAttributeConstants.RESPONCE_DATA);
+
+                    int sizeOfCityListArray = countryListArray.length();
+                    for (int i = 0; i < sizeOfCityListArray; i++) {
+                        countryListResponseModel = new MerchantCategoryList();
+                       /* CountriesList rm = new Gson().fromJson(countryListArray.getJSONObject(i).toString(), CountriesList.class);
+                        bankListResponseModelsArray.add(rm);*/
+                        JSONObject countryData = countryListArray.getJSONObject(i);
+                        if(countryData.has(ResponseAttributeConstants.COUNTRIES_ID)){
+                            countryListResponseModel.setId(countryData.getString(ResponseAttributeConstants.COUNTRIES_ID));
+                        }
+                        if(countryData.has(ResponseAttributeConstants.MERCHANT_IMAGE)){
+                            countryListResponseModel.setimage(countryData.getString(ResponseAttributeConstants.MERCHANT_IMAGE));
+                        }
+
+                        if(countryData.has(ResponseAttributeConstants.MERCHANT_ITEM_CATEGORY)){
+                            countryListResponseModel.setitem_category(countryData.getString(ResponseAttributeConstants.MERCHANT_ITEM_CATEGORY));
+                        }
+
+
+                        bankListResponseModelsArray.add(countryListResponseModel);
+
+                    }
+
+                }
+            }
+
+        } catch (JSONException e) {
+            Timber.e("JSONException while transformJSONObjectToPayUPaymentGatewayResponse. Message : " + e.getMessage());
+        }
+        return bankListResponseModelsArray;
+    }
+
+
+
 
     public static FailureResponse transformErrorResponseToFailureResponse(String errorbody) {
         FailureResponse failureResponse = null;

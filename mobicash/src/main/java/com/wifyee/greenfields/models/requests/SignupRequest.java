@@ -15,4 +15,7 @@ public class SignupRequest extends JSONObject implements Serializable {
     public String customerDOB;
     public String email;
     public String hash;
+    public String zipcode;
+    public String nationalityId;
+    public String countryId;
 }

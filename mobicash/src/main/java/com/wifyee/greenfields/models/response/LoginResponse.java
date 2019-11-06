@@ -10,7 +10,7 @@ public class LoginResponse extends JSONObject implements Serializable {
     public String responseCode;
     public String clientStatus;
     public String clientId;
-    public String clientMobile;
+    public String userName;
     public String loginDate;
     public String msg;
     public String passCode;

@@ -670,8 +670,8 @@ public class ModelMapper {
                 if (response.has(ResponseAttributeConstants.CLIENT_ID))
                     loginResponse.clientId = response.getString(ResponseAttributeConstants.CLIENT_ID);
 
-                if (response.has(ResponseAttributeConstants.CLIENT_MOBILE))
-                    loginResponse.clientMobile = response.getString(ResponseAttributeConstants.CLIENT_MOBILE);
+                if (response.has(ResponseAttributeConstants.USER_NAME_LOGIN))
+                    loginResponse.userName = response.getString(ResponseAttributeConstants.USER_NAME_LOGIN);
 
                 if (response.has(ResponseAttributeConstants.LOGIN_DATE))
                     loginResponse.loginDate = response.getString(ResponseAttributeConstants.LOGIN_DATE);

@@ -205,8 +205,14 @@ public class SignUpOTPActivity extends BaseActivity implements View.OnClickListe
         try {
             if(clientMobile!=null) {
                 jsonObject.put("mobile", clientMobile);
+                jsonObject.put("user_type", "client");
+                jsonObject.put("clientEmail", "abc@demo.com");
+                jsonObject.put("merchantId", getString(R.string.merchantId));
             }else {
                 jsonObject.put("mobile", LocalPreferenceUtility.getUserMobileNumber(context));
+                jsonObject.put("user_type", "client");
+                jsonObject.put("clientEmail", "abc@demo.com");
+                jsonObject.put("merchantId", getString(R.string.merchantId));
             }
         }
         catch (Exception ex) {

@@ -13,6 +13,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
 import com.google.gson.Gson;
+import com.wifyee.greenfields.R;
 import com.wifyee.greenfields.Utils.LocalPreferenceUtility;
 import com.wifyee.greenfields.Utils.MobicashUtils;
 import com.wifyee.greenfields.constants.NetworkConstant;
@@ -1304,9 +1305,10 @@ public class MobicashIntentService extends IntentService {
         LoginRequest mLoginRequest = (LoginRequest) paramData.getSerializableExtra(PARAM_LOGIN_REQUEST_MODEL);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(ResponseAttributeConstants.CLIENT_MOBILE_PARAMETER, mLoginRequest.clientmobile);
+            jsonObject.put(ResponseAttributeConstants.USER_NAME_LOGIN, mLoginRequest.clientmobile);
             jsonObject.put(ResponseAttributeConstants.PIN_CODE, mLoginRequest.pincode);
             jsonObject.put(ResponseAttributeConstants.HASH, mLoginRequest.hash);
+            jsonObject.put(ResponseAttributeConstants.MERCHANTID, getString(R.string.merchantId));
             jsonObject.put(ResponseAttributeConstants.MAC, MobicashUtils.getMacAddress(this));
 
         } catch (JSONException e) {

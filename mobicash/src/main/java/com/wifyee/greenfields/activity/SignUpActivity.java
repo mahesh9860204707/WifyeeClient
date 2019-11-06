@@ -107,6 +107,9 @@ public class SignUpActivity extends BaseActivity  {
     @BindView(R.id.tv_phone_number)
     EditText mPhoneNumber;
 
+    @BindView(R.id.tv_email)
+    EditText mEmail;
+
    /* @BindView(R.id.tv_customer_dob)
     EditText mDateOfBirth;*/
 
@@ -175,6 +178,9 @@ public class SignUpActivity extends BaseActivity  {
     @BindString(R.string.pincode_error_message)
     String mPincodeErrorMessage;
 
+
+
+
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
@@ -188,7 +194,7 @@ public class SignUpActivity extends BaseActivity  {
     private String selectedItem="";
     private ProgressDialog progressDialog = null;
     private OTP_Response mSendOtpData;
-
+    String nationalityId,countryId;
     /**
      * List of actions supported.
      */
@@ -235,11 +241,16 @@ public class SignUpActivity extends BaseActivity  {
             });*/
         }
 
+         nationalityId=getIntent().getExtras().getString("nationalityId");
+         countryId=getIntent().getExtras().getString("countryId");
+
         TextView toolBarTitle = mToolbar.findViewById(R.id.toolbar_title);
         TextView txtGender = findViewById(R.id.txt_gender);
         TextInputLayout tilFname = findViewById(R.id.til_fname);
         TextInputLayout tilLname = findViewById(R.id.til_lname);
         TextInputLayout tilMobile = findViewById(R.id.til_mobile);
+        TextInputLayout tilEmail = findViewById(R.id.til_email);
+
         TextInputLayout tilPassword = findViewById(R.id.til_password);
         TextInputLayout tilZipcode = findViewById(R.id.til_pincode);
 
@@ -247,9 +258,11 @@ public class SignUpActivity extends BaseActivity  {
         mFirstName.setTypeface(Fonts.getSemiBold(this));
         mLastName.setTypeface(Fonts.getSemiBold(this));
         mPhoneNumber.setTypeface(Fonts.getSemiBold(this));
+        mEmail.setTypeface(Fonts.getSemiBold(this));
         mPassword.setTypeface(Fonts.getSemiBold(this));
         mPincode.setTypeface(Fonts.getSemiBold(this));
         tilMobile.setTypeface(Fonts.getRegular(this));
+        tilEmail.setTypeface(Fonts.getRegular(this));
         tilPassword.setTypeface(Fonts.getRegular(this));
         tilFname.setTypeface(Fonts.getRegular(this));
         tilLname.setTypeface(Fonts.getRegular(this));
@@ -324,6 +337,30 @@ public class SignUpActivity extends BaseActivity  {
             }
         });
 
+        mEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(validate(mEmail.getText().toString())==true){
+                    mEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                }else {
+                    mEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+
+
         mPincode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -361,12 +398,17 @@ public class SignUpActivity extends BaseActivity  {
                         mSignupRequest.firstname = mFirstName.getText().toString().trim();
                         mSignupRequest.lastname = mLastName.getText().toString().trim();
                         mSignupRequest.pincode = mPassword.getText().toString().trim();
+                        mSignupRequest.zipcode=mPincode.getText().toString().trim();
+                        mSignupRequest.zipcode=mPincode.getText().toString().trim();
                         mSignupRequest.customerTitle=gender;
+                        mSignupRequest.nationalityId=nationalityId;
+                        mSignupRequest.countryId=countryId;
                         // mSignupRequest.customerDOB=mDateOfBirth.getText().toString().trim();
                         mSignupRequest.custAddess = mAddress.getText().toString().trim();
-                        mSignupRequest.email = mPhoneNumber.getText().toString().trim()+"@wifyee.com";
+                        //mSignupRequest.email = mPhoneNumber.getText().toString().trim()+"@wifyee.com";
+                        mSignupRequest.email = mEmail.getText().toString().trim();
                         try {
-                            mSignupRequest.hash = MobicashUtils.getSha1(mPhoneNumber.getText().toString() + mFirstName.getText().toString() + mLastName.getText().toString() + mPassword.getText().toString()+mPhoneNumber.getText().toString().trim()+"@wifyee.com");
+                            mSignupRequest.hash = MobicashUtils.getSha1(mPhoneNumber.getText().toString() + mFirstName.getText().toString() + mLastName.getText().toString() + mPassword.getText().toString()+mEmail.getText().toString().trim());
                         } catch (NoSuchAlgorithmException e) {
                             e.printStackTrace();
                         }
@@ -388,13 +430,14 @@ public class SignUpActivity extends BaseActivity  {
             @Override
             public void onClick(View view) {
                 String clientMobile=LocalPreferenceUtility.getUserMobileNumber(SignUpActivity.this);
+                String clientEmail=LocalPreferenceUtility.getUserEmail(SignUpActivity.this);
                 if (clientMobile.length()==0||clientMobile.equals("")) {
                     Toast.makeText(getApplicationContext(),"Mobile Number not found .Please try after some time.",Toast.LENGTH_SHORT).show();
                 } else {
                     //showProgressDialog();
                     loading.setVisibility(View.VISIBLE);
                     mainLayout.setAlpha(0.5f);
-                    MobicashIntentService.startActionCallOTPDetails(mContext,clientMobile);
+                    MobicashIntentService.startActionCallOTPDetails(mContext,clientMobile,clientEmail);
                 }
             }
         });
@@ -720,6 +763,12 @@ public class SignUpActivity extends BaseActivity  {
             return false;
         }
 
+        if (validate(mEmail.getText().toString())==false)
+        {
+            showDialog(mEmailErrorMessage);
+            return false;
+        }
+
         return true;
     }
 
@@ -798,6 +847,7 @@ public class SignUpActivity extends BaseActivity  {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            String clientEmail=LocalPreferenceUtility.getUserEmail(SignUpActivity.this);
             //cancelProgressDialog();
             loading.setVisibility(View.GONE);
             mainLayout.setAlpha(1f);
@@ -826,7 +876,7 @@ public class SignUpActivity extends BaseActivity  {
                     mSignupButton.setAlpha(0.6f);
                     startWifyeeRegistrationRequest(signupResponse);
                     startWifyeeRegistration(SignUpActivity.this);
-                    MobicashIntentService.startActionCallOTPDetails(mContext,signupResponse.clientMobile);
+                    MobicashIntentService.startActionCallOTPDetails(mContext,signupResponse.clientMobile,clientEmail);
                    /* runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -1040,7 +1090,7 @@ public class SignUpActivity extends BaseActivity  {
      * @param signupResponse
      */
     private void saveDataToLocalPreferences(SignupResponse signupResponse) {
-        LocalPreferenceUtility.putUserEmail(getApplicationContext(),mPhoneNumber.getText().toString().trim()+"@wifyee.com");
+        LocalPreferenceUtility.putUserEmail(getApplicationContext(),mEmail.getText().toString().trim());
         LocalPreferenceUtility.putUserFirstName(getApplicationContext(),mFirstName.getText().toString().trim());
         LocalPreferenceUtility.putUserMobileNumber(getApplicationContext(),mPhoneNumber.getText().toString().trim());
         LocalPreferenceUtility.putUserLastName(getApplicationContext(),mLastName.getText().toString().trim());
@@ -1090,7 +1140,7 @@ public class SignUpActivity extends BaseActivity  {
             jsonObject.put(WifiConstant.WIFYEE_REG_RES_LATITUDE, latitude);*/
             jsonObject.put(WifiConstant.WIFYEE_REG_USER_FIRST_NAME,mFirstName.getText().toString().trim());
             jsonObject.put(WifiConstant.WIFYEE_REG_USER_LAST_NAME,mLastName.getText().toString().trim());
-            jsonObject.put(WifiConstant.WIFYEE_REG_USER_EMAIL,mPhoneNumber.getText().toString().trim()+"@wifyee.com");
+            jsonObject.put(WifiConstant.WIFYEE_REG_USER_EMAIL,mEmail.getText().toString().trim());
             jsonObject.put(WifiConstant.WIFYEE_REG_USER_MOBILE_PHONE,mPhoneNumber.getText().toString().trim());
 
         } catch (JSONException e) {
@@ -1161,7 +1211,7 @@ public class SignUpActivity extends BaseActivity  {
             jsonObject.put("callback", "65464812313265");
             jsonObject.put("req_customercode", "95629568");
             jsonObject.put("req_action","create");
-            LocalPreferenceUtility.putUserEmail(this,(mPhoneNumber.getText().toString().trim()+"@wifyee.com"));
+            LocalPreferenceUtility.putUserEmail(this,(mEmail.getText().toString().trim()));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

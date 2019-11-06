@@ -60,6 +60,7 @@ import com.wifyee.greenfields.Utils.MobicashUtils;
 
 import com.wifyee.greenfields.activity.BaseActivity;
 import com.wifyee.greenfields.activity.BookExperinceActivity;
+import com.wifyee.greenfields.activity.CountriesActivity;
 import com.wifyee.greenfields.activity.FollowBrandsActivity;
 import com.wifyee.greenfields.activity.MerchantCategoryListActivity;
 import com.wifyee.greenfields.activity.MobicashDashBoardActivity;
@@ -149,6 +150,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private VoucherModel[] voucher;
     private OtherMerchantModel[] otherMerchant;
     private OtherMerchantAdapter merchantAdapter;
+    private ImageView img_banner;
     /**
      * List of actions supported.
      */
@@ -232,6 +234,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 broadcastManager.registerReceiver(walletBalanceReceiver, new IntentFilter(action));
             }
             MobicashIntentService.startActionGetClientProfileInfo(getContext(), getClientProfileInfoRequest());
+
         }
     }
 
@@ -380,6 +383,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                       //  approveCredit.setText(getString(R.string.Rs, getProfileInfo.clientApprovedCreditLimit));
                         walletBalance.setVisibility(View.VISIBLE);
+
+                        MobicashIntentService.startActionGetMerchantsCategory(getContext());
+
                       //  approveCredit.setVisibility(View.VISIBLE);
 //                        circularNetworkImageView.setImageUrl(getProfileInfo.clientProfileImage, MobicashApplication.getInstance().getImageLoader());
                     } else {
@@ -447,6 +453,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txt_vouchers= (TextView) view.findViewById(R.id.txt_vouchers);
         view_more_voucher = view.findViewById(R.id.view_more_voucher);
         txtOtherMerchant = view.findViewById(R.id.txt_other_merchant);
+
+        img_banner=view.findViewById(R.id.img_banner);
+
 
         helpDesk.setOnClickListener(this);
         connect = view.findViewById(R.id.connect);
@@ -603,6 +612,79 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 });
     }
+
+
+    private void callOtherMerchantBanners() {
+        if (otherlist != null) { otherlist.clear(); }
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("merchantId",getString(R.string.merchantId));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES)
+                .build();
+
+        AndroidNetworking.post(NetworkConstant.MERCHANT_BANNER_POINT)
+                .addJSONObjectBody(json)
+                .setOkHttpClient(okHttpClient)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject object) {
+                        Log.e("--RESPONSE--", object.toString());
+                        cancelProgressDialog();
+                        try {
+                            if (object.getInt(ResponseAttributeConstants.STATUS) != 0) {
+                                JSONArray jsonArray = object.getJSONArray(ResponseAttributeConstants.OFFERS_DATA);
+                                if (jsonArray.length()>0) {
+
+                                    otherMerchant = new OtherMerchantModel[jsonArray.length()];
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        otherMerchant[i] = new OtherMerchantModel(
+                                                jsonObject.getString("id"),
+                                                jsonObject.getString("banner_name"),
+                                                jsonObject.getString("banner_image")
+                                        );
+                                        otherlist.add(otherMerchant[i]);
+                                    }
+
+                                }else {
+
+                                }
+                            } else {
+                                String msg = object.getString(ResponseAttributeConstants.MSG);
+                                Log.e("error",msg);
+                                //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            cancelProgressDialog();
+                            Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        cancelProgressDialog();
+                        // handle error
+                        Timber.e("called onError of User Invoice API.");
+                        Timber.e("Error Message : " + error.getMessage());
+                        Timber.e("Error code : " + error.getErrorCode());
+                        Timber.e("Error Body : " + error.getErrorBody());
+                        Timber.e("Error Detail : " + error.getErrorDetail());
+                    }
+                });
+    }
+
+
+
 
 
 

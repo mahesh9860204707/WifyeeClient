@@ -119,6 +119,8 @@ public class MobicashIntentService extends IntentService {
     private static final String TAG_PERFORM_MAC_UPDATE_STATUS = "com.mobicashindia.mobicash.services.tag.mac_update_status";
     private static final String ACTION_PERFORM_MAC_UPDATE_STATUS = "com.mobicashindia.mobicash.services.action.mac_update_status";
     private static final String PARAM_MAC_UPDATE_STATUS_REQUEST_MODEL = "mobicash.services.extra.client.mac_update_status.request.model";
+    private static final String PARAM_MAC_UPDATE_STATUS_EMAIL_MOB_MODEL = "EMAIL_MOB";
+    private static final String PARAM_MAC_UPDATE_STATUS_CHECK_EMAIL_MOB_MODEL = "CHECK_EMAIL_MOB";
 
     /**
      * Food Order Stauts
@@ -136,6 +138,8 @@ public class MobicashIntentService extends IntentService {
     private static final String TAG_PERFORM_OTP_STATUS_DETAIL = "com.mobicashindia.mobicash.services.tag.otp_status_detail";
     private static final String ACTION_PERFORM_OTP_STATUS_DETAIL = "com.mobicashindia.mobicash.services.action.otp_status_detail";
     private static final String PARAM_OTP_STATUS_DETAIL_REQUEST_MODEL = "mobicash.services.extra.client.otp_status_detail.request.model";
+    private static final String PARAM_OTP_STATUS_Email = "clientEmail";
+
 
     private static final String TAG_PERFORM_CONFIRMATION_OTP_STATUS_DETAIL = "com.mobicashindia.mobicash.services.tag.confirmation_otp_status_detail";
     private static final String ACTION_PERFORM_CONFIRMATION_OTP_STATUS_DETAIL = "com.mobicashindia.mobicash.services.action.confirmation_otp_status_detail";
@@ -360,6 +364,18 @@ public class MobicashIntentService extends IntentService {
     private static final String ACTION_GET_CITY_LIST = "com.mobicashindia.mobicash.services.action.city.list";
 
     /**
+     * State Countries
+     */
+
+    private static final String ACTION_GET_COUNTRIES_LIST = "com.mobicashindia.mobicash.services.action.countries.list";
+
+
+
+   /* MerchandsCategory*/
+    private static final String ACTION_GET_MERCHANTS_CATEGORY = "com.mobicashindia.mobicash.services.action.merchant.category";
+
+
+    /**
      * State LIST
      */
 
@@ -470,10 +486,12 @@ public class MobicashIntentService extends IntentService {
         context.startService(intent);
     }
 
-    public static void startActionMacUpdateRequest(Context context, MacAddressUpdate mMacAddressUpdate) {
+    public static void startActionMacUpdateRequest(Context context, MacAddressUpdate mMacAddressUpdate,String EmailMob,String CheckEmaiMob) {
         Intent intent = new Intent(context, MobicashIntentService.class);
         intent.setAction(ACTION_PERFORM_MAC_UPDATE_STATUS);
         intent.putExtra(PARAM_MAC_UPDATE_STATUS_REQUEST_MODEL, mMacAddressUpdate);
+        intent.putExtra(PARAM_MAC_UPDATE_STATUS_EMAIL_MOB_MODEL, EmailMob);
+        intent.putExtra(PARAM_MAC_UPDATE_STATUS_CHECK_EMAIL_MOB_MODEL,CheckEmaiMob);
         context.startService(intent);
     }
     public static void startActionSendFoodRequest(Context context,
@@ -726,6 +744,10 @@ public class MobicashIntentService extends IntentService {
         context.startService(intent);
     }
 
+
+
+
+
     //TODO:Call below function from Activity after validation of  public String clientmobile, clientId, pincode, transferType, accountNo, IFSC, bankName, branchName, amount, firstName, lastName, beneficiaryMobile, hash.
     public static void startActionClientBankTransfer(Context context, ClientBankTransferRequest clientBankTransferRequest) {
         Intent intent = new Intent(context, MobicashIntentService.class);
@@ -789,6 +811,13 @@ public class MobicashIntentService extends IntentService {
         intent.setAction(ACTION_GET_CITY_LIST);
         context.startService(intent);
     }
+
+    public static void startActionGetCountriesList(Context context) {
+        Intent intent = new Intent(context, MobicashIntentService.class);
+        intent.setAction(ACTION_GET_COUNTRIES_LIST);
+        context.startService(intent);
+    }
+
     public static void startActionGetOfferNerar(Context context) {
         Intent intent = new Intent(context, MobicashIntentService.class);
         intent.setAction(ACTION_PERFORM_NERAR_OFFERBY_SUBMIT);
@@ -814,11 +843,18 @@ public class MobicashIntentService extends IntentService {
         context.startService(intent);
     }
 
-    public static void startActionCallOTPDetails(Context mContext, String clientMobile) {
+    public static void startActionCallOTPDetails(Context mContext, String clientMobile,String clientEmail) {
         Intent intent = new Intent(mContext, MobicashIntentService.class);
         intent.setAction(ACTION_PERFORM_OTP_STATUS_DETAIL);
         intent.putExtra(PARAM_OTP_STATUS_DETAIL_REQUEST_MODEL, clientMobile);
+        intent.putExtra(PARAM_OTP_STATUS_Email, clientEmail);
         mContext.startService(intent);
+    }
+
+    public static void startActionGetMerchantsCategory(Context context) {
+        Intent intent = new Intent(context, MobicashIntentService.class);
+        intent.setAction(ACTION_GET_MERCHANTS_CATEGORY);
+        context.startService(intent);
     }
 
 
@@ -883,6 +919,15 @@ public class MobicashIntentService extends IntentService {
             }
             else if (ACTION_GET_CITY_LIST.equals(action)) {
                 handleActionGetCityList(intent);
+            }
+            else if (ACTION_GET_MERCHANTS_CATEGORY.equals(action))
+            {
+                handleActionGetMerchantsCategory(intent);
+            }
+
+            else if (ACTION_GET_COUNTRIES_LIST.equals(action))
+            {
+                handleActionGetCountriesList(intent);
             }
             else if (ACTION_PERFORM_NERAR_OFFERBY_SUBMIT.equals(action)) {
                 handleActionNear_Offer(intent);
@@ -954,10 +999,13 @@ public class MobicashIntentService extends IntentService {
 
     private void handleActionUserOTP(Intent intent) {
         String  mClientMobile = (String) intent.getSerializableExtra(PARAM_OTP_STATUS_DETAIL_REQUEST_MODEL);
+        String  mClientEmail = (String) intent.getSerializableExtra(PARAM_OTP_STATUS_Email);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("mobile",mClientMobile);
             jsonObject.put("user_type","client");
+            jsonObject.put("clientEmail",mClientEmail);
+            jsonObject.put("merchantId",getString(R.string.merchantId));
 
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
@@ -2183,16 +2231,22 @@ public class MobicashIntentService extends IntentService {
         SignupRequest mSignupRequest = (SignupRequest) paramData.getSerializableExtra(PARAM_SIGNUP_REQUEST_MODEL);
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put(ResponseAttributeConstants.MERCHANTID, getString(R.string.merchantId));
             jsonObject.put(ResponseAttributeConstants.HASH, mSignupRequest.hash);
             jsonObject.put(ResponseAttributeConstants.CLIENT_MOBILE_PARAMETER, mSignupRequest.clientmobile);
             jsonObject.put(ResponseAttributeConstants.EMAIL, mSignupRequest.email);
             jsonObject.put(ResponseAttributeConstants.FIRST_NAME, mSignupRequest.firstname);
             jsonObject.put(ResponseAttributeConstants.LAST_NAME, mSignupRequest.lastname);
             jsonObject.put(ResponseAttributeConstants.PIN_CODE, mSignupRequest.pincode);
+            jsonObject.put(ResponseAttributeConstants.ZIP_CODE, mSignupRequest.zipcode);
+            jsonObject.put(ResponseAttributeConstants.NATIONALITYID, mSignupRequest.nationalityId);
+            jsonObject.put(ResponseAttributeConstants.COUNTRYID, mSignupRequest.countryId);
+
             jsonObject.put(ResponseAttributeConstants.MAC, MobicashUtils.getMacAddress(this));
             //  jsonObject.put(ResponseAttributeConstants.MAC, MobicashUtils.getMacAddress(this));
-            jsonObject.put(ResponseAttributeConstants.CUSTOMER_AADDRESS, mSignupRequest.custAddess);
+           // jsonObject.put(ResponseAttributeConstants.CUSTOMER_AADDRESS, mSignupRequest.custAddess);
             jsonObject.put(ResponseAttributeConstants.CUSTOMER_TITLE, mSignupRequest.customerTitle);
+
             /// jsonObject.put(ResponseAttributeConstants.CUSTOMER_DOB, mSignupRequest.customerDOB);
 
         } catch (JSONException e) {
@@ -2267,11 +2321,29 @@ public class MobicashIntentService extends IntentService {
     //Handle Mac Address update
     private void handleActionMacAddressUpated(Intent paramData) {
         MacAddressUpdate mMacAddressUpdate = (MacAddressUpdate) paramData.getSerializableExtra(PARAM_MAC_UPDATE_STATUS_REQUEST_MODEL);
+        MacAddressUpdate mEmailMob = (MacAddressUpdate) paramData.getSerializableExtra(PARAM_MAC_UPDATE_STATUS_EMAIL_MOB_MODEL);
+        MacAddressUpdate mCheckEmaiMob = (MacAddressUpdate) paramData.getSerializableExtra(PARAM_MAC_UPDATE_STATUS_CHECK_EMAIL_MOB_MODEL);
+
+
         JSONObject jsonObject = new JSONObject();
         try {
+
+            if (mCheckEmaiMob.equals("email"))
+            {
+                jsonObject.put("clientData","email");
+                jsonObject.put(ResponseAttributeConstants.EMAIL_ID_PLAN, mMacAddressUpdate.mobileNumbers);
+            }
+            if (mCheckEmaiMob.equals("mob"))
+            {
+                jsonObject.put("clientData","mobile");
+                jsonObject.put(ResponseAttributeConstants.MOBILE_NUMBER_PLAN, mMacAddressUpdate.mobileNumbers);
+            }
+
             jsonObject.put(ResponseAttributeConstants.HASH, mMacAddressUpdate.hash);
-            jsonObject.put(ResponseAttributeConstants.MOBILE_NUMBER_PLAN, mMacAddressUpdate.mobileNumbers);
+
             jsonObject.put(ResponseAttributeConstants.MAC_ADDRESSS, MobicashUtils.getMacAddress(this));
+            jsonObject.put(ResponseAttributeConstants.MERCHANT_ID,  getString(R.string.merchantId));
+
 
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
@@ -2643,9 +2715,10 @@ public class MobicashIntentService extends IntentService {
         LoginRequest mLoginRequest = (LoginRequest) paramData.getSerializableExtra(PARAM_LOGIN_REQUEST_MODEL);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(ResponseAttributeConstants.CLIENT_MOBILE_PARAMETER, mLoginRequest.clientmobile);
+            jsonObject.put(ResponseAttributeConstants.USER_NAME_LOGIN, mLoginRequest.clientmobile);
             jsonObject.put(ResponseAttributeConstants.PIN_CODE, mLoginRequest.pincode);
             jsonObject.put(ResponseAttributeConstants.HASH, mLoginRequest.hash);
+            jsonObject.put(ResponseAttributeConstants.MERCHANT_ID, getString(R.string.merchantId));
             jsonObject.put(ResponseAttributeConstants.MAC, MobicashUtils.getMacAddress(this));
         } catch (JSONException e) {
             Timber.e("JSONException. message : " + e.getMessage());
@@ -3367,6 +3440,9 @@ public class MobicashIntentService extends IntentService {
                 });
 
     }
+
+
+
     //Handle Action Client Profile Info
     private void handleActionGetClientProfileInfo(Intent paramData) {
         GetClientProfileInfoRequest mGetClientProfileInfoRequest = (GetClientProfileInfoRequest) paramData.getSerializableExtra(PARAM_GET_CLIENT_PROFILE_INFO_REQUEST_MODEL);
@@ -4020,6 +4096,122 @@ public class MobicashIntentService extends IntentService {
                     }
                 });
     }
+
+
+    //countries list
+    private void handleActionGetCountriesList(Intent paramData)
+    {
+
+        AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.USER_CLIENT_Countries_LIST_END_POINT)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Timber.e("called onResponse of Countries list API.");
+                        try {
+                            if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
+
+                                Timber.d("Got Success Countries List Response...");
+
+                                Timber.d("handleActionGetCountriesList = > JSONObject response ==>" + new Gson().toJson(response));
+
+                                Intent broadcastIntent = new Intent();
+                                broadcastIntent.putExtra(NetworkConstant.EXTRA_DATA, ModelMapper.getCountriesList(response));
+                                broadcastIntent.setAction(NetworkConstant.COUNTRIES_LIST_SUCCESS);
+                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                            } else {
+                                Timber.d("Got failure in Countries List ApiResponse...");
+                                FailureResponse mFailureResponse = ModelMapper.transformErrorResponseToFailureResponse(response.toString());
+                                Timber.w("handleCountriesGateway = > FailureResponse  ==>" + new Gson().toJson(mFailureResponse));
+
+                                Intent broadcastIntent = new Intent();
+                                broadcastIntent.putExtra(NetworkConstant.EXTRA_DATA, mFailureResponse);
+                                broadcastIntent.setAction(NetworkConstant.COUNTRIES_LIST_FAILURE);
+                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                            }
+                        } catch (JSONException e) {
+                            Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        Timber.e("called onError of Client  COUNTRIES List Api.");
+                        Timber.e("Error Message : " + error.getMessage());
+                        Timber.e("Error code : " + error.getErrorCode());
+                        Timber.e("Error Body : " + error.getErrorBody());
+                        Timber.e("Error Detail : " + error.getErrorDetail());
+
+                        FailureResponse mFailureResponse = ModelMapper.transformErrorResponseToFailureResponse(error.getErrorBody());
+                        Timber.w("handleActionCOUNTRIES List Api = > FailureResponse  ==>" + new Gson().toJson(mFailureResponse));
+
+                        Intent broadcastIntent = new Intent();
+                        broadcastIntent.putExtra(NetworkConstant.EXTRA_DATA, mFailureResponse);
+                        broadcastIntent.setAction(NetworkConstant.COUNTRIES_LIST_FAILURE);
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                    }
+                });
+    }
+
+
+    private void handleActionGetMerchantsCategory(Intent paramData)
+    {
+
+        AndroidNetworking.post(NetworkConstant.MOBICASH_BASE_URL_TESTING + NetworkConstant.USER_CLIENT_Merchants_category_POINT)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Timber.e("called onResponse of Countries list API.");
+                        try {
+                            if (response.getInt(ResponseAttributeConstants.STATUS) != 0) {
+
+                                Timber.d("Got Success Countries List Response...");
+
+                                Timber.d("handleActionGetCountriesList = > JSONObject response ==>" + new Gson().toJson(response));
+
+                                Intent broadcastIntent = new Intent();
+                                broadcastIntent.putExtra(NetworkConstant.EXTRA_DATA, ModelMapper.getMerchantCategoryList(response));
+                                broadcastIntent.setAction(NetworkConstant.COUNTRIES_LIST_SUCCESS);
+                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                            } else {
+                                Timber.d("Got failure in Countries List ApiResponse...");
+                                FailureResponse mFailureResponse = ModelMapper.transformErrorResponseToFailureResponse(response.toString());
+                                Timber.w("handleCountriesGateway = > FailureResponse  ==>" + new Gson().toJson(mFailureResponse));
+
+                                Intent broadcastIntent = new Intent();
+                                broadcastIntent.putExtra(NetworkConstant.EXTRA_DATA, mFailureResponse);
+                                broadcastIntent.setAction(NetworkConstant.COUNTRIES_LIST_FAILURE);
+                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                            }
+                        } catch (JSONException e) {
+                            Timber.e("JSONException Caught.  Message : " + e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        Timber.e("called onError of Client  COUNTRIES List Api.");
+                        Timber.e("Error Message : " + error.getMessage());
+                        Timber.e("Error code : " + error.getErrorCode());
+                        Timber.e("Error Body : " + error.getErrorBody());
+                        Timber.e("Error Detail : " + error.getErrorDetail());
+
+                        FailureResponse mFailureResponse = ModelMapper.transformErrorResponseToFailureResponse(error.getErrorBody());
+                        Timber.w("handleActionCOUNTRIES List Api = > FailureResponse  ==>" + new Gson().toJson(mFailureResponse));
+
+                        Intent broadcastIntent = new Intent();
+                        broadcastIntent.putExtra(NetworkConstant.EXTRA_DATA, mFailureResponse);
+                        broadcastIntent.setAction(NetworkConstant.COUNTRIES_LIST_FAILURE);
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                    }
+                });
+    }
+
 
 
     //Handle City List

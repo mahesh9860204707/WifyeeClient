@@ -35,11 +35,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="5dp"
-            android:ems="10"
-            android:hint="Mobile No"
-            android:inputType="phone"
-            android:maxLength="10"
-            android:maxLines="1"
+            android:hint="Mobile No / Email Id."
             android:textSize="16sp" />
 
     </android.support.design.widget.TextInputLayout>

@@ -200,6 +200,9 @@ public class NetworkConstant {
     public static final String CITY_LIST_SUCCESS ="city_list_success";
     public static final String CITY_LIST_FAILURE = "city_list_failure";
 
+    public static final String COUNTRIES_LIST_SUCCESS ="countries_list_success";
+    public static final String COUNTRIES_LIST_FAILURE = "countries_list_failure";
+
     public static final String STATE_LIST_SUCCESS ="state_list_success";
     public static final String STATE_LIST_FAILURE = "state_list_failure";
 
@@ -222,7 +225,7 @@ public class NetworkConstant {
     public static final String EXTRA_DATA_LONGITUDE = "extra1_data_longitude";
     public static final String EXTRA_DATA_LATITUDE = "extra1_data_latitude";
     public static final String MERCHANT_ID = "merchant_id";
-    public static final String MOBICASH_IP_ADDRESS = "45.249.108.75";
+    public static final String MOBICASH_IP_ADDRESS = "13.127.209.124";
     //public static final String MOBICASH_IP_ADDRESS = "45.114.141.206";
      //public static final String MOBICASH_IP_ADDRESS = "103.241.147.70";
     public static final String MOBICASH_BASE_URL_TESTING = "http://" + MOBICASH_IP_ADDRESS;
@@ -294,6 +297,10 @@ public class NetworkConstant {
     public static final String USER_CLIENT_PAYU_PAYMENT_GATEWAY_END_POINT = "/payments/rest/PaymentRequest.php?request=payRequest";
     public static final String USER_CLIENT_BANK_LIST_END_POINT ="/payments/rest/PaymentRequest.php?request=getBankList";
     public static final String USER_CLIENT_CITY_LIST_END_POINT ="/api/busbookingapi.php?request=busBooking&requestType=1";
+    public static final String USER_CLIENT_Countries_LIST_END_POINT ="/api/commonApi.php?request=getCountries";
+
+    public static final String USER_CLIENT_Merchants_category_POINT ="/api/usersellingitemapi.php?request=getMerchantsCategory";
+
     public static final String BENEFICIARY_CLIENT_CITY_LIST_END_POINT ="/api/beneficiaryapi.php?request=getStateList";
     public static final String USER_CLIENT_BANK_TRANSFER ="/api/banktransferapi.php?request=bankTransfer";
     public static final String USER_CLIENT_NEFT_IMPS_BANK_TRANSFER= MOBICASH_BASE_URL_TESTING + "/api/banktransferapi.php?request=bankTransfer";
@@ -306,6 +313,9 @@ public class NetworkConstant {
     public static final String MERCHANT_PROFILE_POINT =MOBICASH_BASE_URL_TESTING+"/api/merchant_qrcode_api.php?request=getMerchantByQRCode";
     public static final String MERCHANT_PROFILE_MOBILE_POINT =MOBICASH_BASE_URL_TESTING+"/api/merchant_qrcode_api.php?request=getMerchantByMobile";
     public static final String BUS_BOOKING_END_POINT =MOBICASH_BASE_URL_TESTING + "/api/busbookingwebviewapi.php?request=busBooking";
+    public static final String MERCHANT_BANNER_POINT =MOBICASH_BASE_URL_TESTING+"/api/merchantapi.php?request=getMerchantBanners";
+
+
     //Delete Beneficiary Item
     public static final String USER_TRANSACTIONS_LIST_END_POINT = MOBICASH_BASE_URL_TESTING+"/api/banktransferapi.php?request=getListTransactions";
     public static final String USER_BENEFICIARY_LIST_END_POINT = MOBICASH_BASE_URL_TESTING+"/api/beneficiaryapi.php?request=getBeneficiaryList";

@@ -45,6 +45,7 @@ import com.android.volley.toolbox.Volley;
 //import com.facebook.GraphResponse;
 //import com.facebook.Profile;
 //import com.facebook.login.LoginResult;
+import com.bumptech.glide.util.Util;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.goodiebag.pinview.Pinview;
 import com.google.gson.Gson;
@@ -77,8 +78,10 @@ import java.util.Map;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.internal.Utils;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
+
 
 public class SignInBaseActivity extends BaseActivity implements View.OnClickListener,LocationListener {
 
@@ -226,11 +229,11 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(mClientMobileNo.getText().toString().length()==10){
+                /*if(mClientMobileNo.getText().toString().length()==10){
                     mClientMobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
                 }else {
                     mClientMobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
-                }
+                }*/
             }
 
             @Override
@@ -362,7 +365,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
 
                     //Call Api for Mac Update
                     showProgressDialog();
-                    MobicashIntentService.startActionMacUpdateRequest(getApplicationContext(),macAddressUpdate);
+
+                    //for another test comment 30-9-18
+                    // MobicashIntentService.startActionMacUpdateRequest(getApplicationContext(),macAddressUpdate);
                     layout.dismiss();
                 }
                 catch (Exception ex)
@@ -459,11 +464,19 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(mobileNo.getText().toString().length()==10){
+                /*if(mobileNo.getText().toString().length()==10){
                     mobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
                 }else {
                     mobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                }*/
+
+                if (MobicashUtils.EmailValidation(mobileNo.getText().toString()) == false || mobileNo.getText().toString().length() == 10) {
+                    mobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_correct, 0);
+                } else {
+                    mobileNo.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 }
+                /*  */
+
             }
 
             @Override
@@ -484,11 +497,26 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
             public void onClick(View view) {
                 try {
                     mobileNumber = mobileNo.getText().toString();
-                    if(mobileNo.length()!=10)
+                    int checkvalue=0;
+
+
+                    if(mobileNo.length()!=10||MobicashUtils.EmailValidation(mobileNumber))
                     {
-                        Toast.makeText(SignInBaseActivity.this, "Please enter valid mobile no.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInBaseActivity.this, "Please enter valid mobile no or email.", Toast.LENGTH_SHORT).show();
                         return;
                     }
+
+
+                    if (MobicashUtils.EmailValidation(mobileNumber))
+                    {
+                        checkvalue=1;
+                    }else {
+                        if (mobileNo.length()!=10)
+                        {
+                            checkvalue=2;
+                        }
+                    }
+
 
                     //checking condition
                     if(option==0) {
@@ -503,14 +531,41 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                         //showProgressDialog();
                         loading.setVisibility(View.VISIBLE);
                         mainLayout.setAlpha(0.5f);
-                        MobicashIntentService.startActionMacUpdateRequest(mContext, macAddressUpdate);
-                        layout.dismiss();
+
+                        if (checkvalue==1)
+                        {
+                            MobicashIntentService.startActionMacUpdateRequest(mContext, macAddressUpdate,mobileNumber,"email");
+                            layout.dismiss();
+                        }
+                        if (checkvalue==2)
+                        {
+                            MobicashIntentService.startActionMacUpdateRequest(mContext, macAddressUpdate,mobileNumber,"mob");
+                            layout.dismiss();
+                        }
+
+
 
                     }else {
                         //showProgressDialog();
                         loading.setVisibility(View.VISIBLE);
                         mainLayout.setAlpha(0.5f);
-                        MobicashIntentService.startActionCallOTPDetails(mContext,mobileNumber);
+
+                     /*   if ()*/
+
+                       /* if (checkvalue==1)
+                        {
+                            MobicashIntentService.startActionMacUpdateRequest(mContext, macAddressUpdate,mobileNumber,"email");
+                            layout.dismiss();
+                        }
+                        if (checkvalue==2)
+                        {
+                            MobicashIntentService.startActionMacUpdateRequest(mContext, macAddressUpdate,mobileNumber,"mob");
+                            layout.dismiss();
+                        }
+                        */
+
+                        MobicashIntentService.startActionCallOTPDetails(mContext,mobileNumber,"");
+
                         layout.dismiss();
                     }
                 }
@@ -551,7 +606,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     }else{
 
                         showProgressDialog();
-                        MobicashIntentService.startActionCallOTPDetails(mContext,mobileNumber);
+                        MobicashIntentService.startActionCallOTPDetails(mContext,mobileNumber,"");
                         layout.dismiss();
                     }
 
@@ -642,7 +697,8 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
 
         switch (view.getId()) {
             case R.id.tv_sign_up:
-                startActivity(IntentFactory.createUserEnrollmentActivity(getApplicationContext()));
+               // startActivity(IntentFactory.createUserEnrollmentActivity(getApplicationContext()));
+                startActivity(new Intent(getApplicationContext(),CountriesActivity.class));
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 break;
             case R.id.btn_login:
@@ -741,8 +797,9 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
         String phoneNumber = mClientMobileNo.getText().toString();
         String passCode = mClientPasscode.getText().toString();
         //if (phoneNumber.length() != 10 && phoneNumber.matches(regex)) {
-        if (phoneNumber.length() != 10) {
-            Timber.d(" phone number are invalid");
+       /* if (phoneNumber.length() != 10) {*/
+            if (phoneNumber.equalsIgnoreCase("")) {
+            Timber.d(" Enter User Name");
             showDialog(mPhoneNumberErrorMessage);
             return false;
         }
@@ -799,7 +856,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                     Timber.d("STATUS_USER_LOGIN_SUCCESS = > LoginResponse  ==>" + new Gson().toJson(mLoginResponse));
                     saveClientDetailsOnLocalReference(mLoginResponse);
                     MobicashIntentService.startActionGetClientProfileInfo(getApplicationContext(), getClientProfileInfoRequest());
-                    startWifyeeRegistrationRequest(mLoginResponse);
+                   // startWifyeeRegistrationRequest(mLoginResponse);
                     startActivity(IntentFactory.createDashboardActivity(getApplicationContext()));
                     overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     finish();
@@ -873,6 +930,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
                         otp.putExtra("mobile_no",mSendOtpData.mobile);
                         otp.putExtra("timefrom",mSendOtpData.timefrom);
                         otp.putExtra("userId",mSendOtpData.userId);
+                        otp.putExtra("Email","");
                         startActivity(otp);
                         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
@@ -1030,13 +1088,13 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
      * save details on local preference
      */
     private void saveClientDetailsOnLocalReference(LoginResponse mLoginResponse) {
-        LocalPreferenceUtility.putUserMobileNumber(getApplicationContext(), mLoginResponse.clientMobile);
+        LocalPreferenceUtility.putUserMobileNumber(getApplicationContext(), mLoginResponse.userName);
         LocalPreferenceUtility.putUserCode(getApplicationContext(), mLoginResponse.clientId);
         LocalPreferenceUtility.putUserPassCode(getApplicationContext(), mClientPasscode.getText().toString());
         LocalPreferenceUtility.putDeviceMacID(getApplicationContext(),MobicashUtils.getMacAddress(this));
         //Update Password on Wifyee server
 //        showProgressDialog();
-        updatePasswordOnWifyee(this,mLoginResponse.clientMobile,mClientPasscode.getText().toString());
+       // updatePasswordOnWifyee(this,mLoginResponse.clientMobile,mClientPasscode.getText().toString());
     }
    //Update Password on Wifyee Server
 
@@ -1101,7 +1159,7 @@ public class SignInBaseActivity extends BaseActivity implements View.OnClickList
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(WifiConstant.WIFYEE_REG_USER_NAME, mLoginResponse.clientId);
-            jsonObject.put(WifiConstant.WIFYEE_REG_PASSWORD, mLoginResponse.passCode);
+          //  jsonObject.put(WifiConstant.WIFYEE_REG_PASSWORD, mLoginResponse.passCode);
             jsonObject.put(WifiConstant.WIFYEE_REG_IP,  MobicashUtils.getIPAddress(this));
             jsonObject.put(WifiConstant.WIFYEE_REG_MAC, MobicashUtils.getMacAddress(this));
             jsonObject.put(WifiConstant.WIFYEE_REG_RES_URL, WifiConstant.WIFYEE_DEFAULT_URL);

@@ -22,6 +22,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by sumanta on 12/13/16.
@@ -29,7 +31,8 @@ import java.util.UUID;
 
 public class MobicashUtils {
 
-
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final String ZERO_BALANCE = "0";
     public static final String AGE_ZERO = "0";
     public static final String AGE_ZERO_DIGITS = "00";
@@ -224,6 +227,12 @@ public class MobicashUtils {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(c.getTime());
+    }
+
+   public static Boolean EmailValidation(String emailStr)
+    {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 
 }

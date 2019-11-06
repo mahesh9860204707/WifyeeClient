@@ -129,11 +129,13 @@ public class LogFragment extends android.support.v4.app.Fragment /*implements Sw
     public void onResume() {
         super.onResume();
         // Register for all the actions
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(mContext);
+
+        //30-9
+      /*  LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(mContext);
         for (String action : broadCastReceiverActionList) {
             broadcastManager.registerReceiver(clientLogsReceiver, new IntentFilter(action));
         }
-        requestData();
+        requestData();*/
     }
 
     /**
@@ -148,7 +150,7 @@ public class LogFragment extends android.support.v4.app.Fragment /*implements Sw
         } catch (NoSuchAlgorithmException e) {
             Timber.e("NoSuchAlgorithmException message " + e.getMessage());
         }
-        MobicashIntentService.startActionClientLog(mContext, mClientLogRequest);
+      //  MobicashIntentService.startActionClientLog(mContext, mClientLogRequest);
     }
 
 

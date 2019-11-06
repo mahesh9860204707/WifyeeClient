@@ -94,9 +94,12 @@ public class ResponseAttributeConstants {
     public static final String RECHARGE_TYPE = "rechargeType";
     public static final String RECHARGE_ID = "rechargeID";
     public static final String USER_NAME = "username";
+    public static final String USER_NAME_LOGIN = "userName";
     public static final String ADDRESS = "address";
     public static final String ZIP_CODE = "zipcode";
     public static final String CITY = "city";
+    public static final String NATIONALITYID="nationalityId";
+    public static final String COUNTRYID="countryId";
     public static final String COUNTRY = "country";
     public static final String LANGUAGE = "language";
     public static final String DOB = "dob";
@@ -108,7 +111,7 @@ public class ResponseAttributeConstants {
     public static final String TASK_STATUS = "task_status";
     public static final String TASK_STATUS_DATE = "task_status_date";
 
-    public static final String MERCHANTID = "merchant_id";
+    public static final String MERCHANTID = "merchantId";
     public static final String MERCHANT_TYPE = "merchant_type";
     public static final String ITEMID = "item_id";
     public static final String QTY = "qty";
@@ -255,6 +258,19 @@ public class ResponseAttributeConstants {
     public static final String CITY_ID = "id";
     public static final String CITY_NAME = "name";
 
+    //countries
+    public static final String RESPONCE_DATA = "data";
+    public static final String COUNTRIES_ID = "id";
+    public static final String COUNTRIES_NAME = "name";
+    public static final String COUNTRIES_flag_32 = "flag_32";
+    public static final String COUNTRIES_phone_code = "phone_code";
+    public static final String COUNTRIES_country_code = "country_code";
+    public static final String COUNTRIES_flag_128 = "flag_128";
+
+
+    public static final String MERCHANT_IMAGE = "image";
+    public static final String MERCHANT_ITEM_CATEGORY = "item_category";
+
     // Availabel Bus trips
     public static final String BUS_AVAILABLE_TRIPS = "busBookingSearchAvailableTrips";
     public static final String BUS_AVAILABLE_SEARCH ="MOBICASH_BUS_BOOKING_SEARCH_AVAILABLE_TRIPS";
@@ -318,6 +334,7 @@ public class ResponseAttributeConstants {
     public static final String CUSTOMER_DOB= "customerDOB";
     public static final String MAC = "MAC";
     public static final String MAC_ADDRESSS = "newMacAddress";
+    public static final String ZIPCODE = "zipcode";
 
     public static final String INVOICE_ID = "invoice_id";
     public static final String PLAN_ID_ = "plan_id";
@@ -326,6 +343,7 @@ public class ResponseAttributeConstants {
     public static final String PLAN_DATE_TIME = "paid_on";
     public static final String MOBILE_NUMBER = "mobile";
     public static final String MOBILE_NUMBER_PLAN = "mobileNumber";
+    public static final String EMAIL_ID_PLAN = "clientEmail";
 
 
     // neft and imps
